@@ -97,7 +97,7 @@
 sub ParseArguments
 {
   my $options ;
-  getopt ("iTPe", \%options) ;
+  getopt ("iTAPe", \%options) ;
 
   &Abort ("Specify input file as: -i filename") if (! defined (@options {"i"})) ;
 
@@ -107,11 +107,18 @@ sub ParseArguments
   $makehtml  = @options {"h"} ; # make test html file with gif/png + svg output
   $bypass    = @options {"b"} ; # do not use in Wikipedia:bypass some checks
   $showmap   = @options {"d"} ; # debug: shows clickable areas in gif/png
+
   				# The following parameters are used by MediaWiki
 				# to pass config settings from LocalSettings.php to 
 				# the perl script
   $tmpdir    = @options {"T"} ; # For MediaWiki: temp directory to use
   $plcommand = @options {"P"} ; # For MediaWiki: full path of ploticus command
+  $articlepath=@options {"A"} ; # For MediaWiki: Path of an article, relative to this servers root
+
+  if (! defined @options {"A"} )
+  {
+  	$articlepath="http://en.wikipedia.org/wiki/";
+  }
 
   if (! -e $file_in)
   { &Abort ("Input file '" . $file_in . "' not found.") ; }
@@ -3321,7 +3328,7 @@ sub ProcessWikiLink
 
   if ($wikilink)
   {
-    if ($link =~ /^\[\[.+\:.+\]\]$/)
+    if ($link =~ /^\[\[.+\:.+\]\]$/) # Has a colon in its name
     {
       $wiki  = lc ($link) ;
       $title = $link ;
@@ -3337,11 +3344,11 @@ sub ProcessWikiLink
       $title =~ s/^\[\[(.*)\]\]$/$1/x ;
     }
     $title =~ s/ /_/g ;
-    $link = "http://$wiki.wikipedia.org/wiki/$title" ;
+    $link = $articlepath . "/$title" ;
   }
 
   if (($hint eq "") && ($title ne ""))
-  { $hint = "-> $wiki: $title" ; }
+  { $hint = "$title" ; }
 
   if (($link ne "") && ($text !~ /\[\[/) && ($text !~ /\]\]/))
   { $text = "[[" . $text . "]]" ; }

@@ -2,7 +2,7 @@
 
 function renderTimeline( $timelinesrc )
 {
-	global $wgUploadDirectory, $IP;
+	global $wgUploadDirectory, $IP, $wgPloticusCommand, $wgScript;
 	$hash = md5( $timelinesrc );
 	$fname = $wgUploadDirectory."/timeline/".$hash;
 
@@ -12,7 +12,11 @@ function renderTimeline( $timelinesrc )
 		fwrite($handle, $timelinesrc);
 		fclose($handle);
 
-		$ret = `{$IP}/extensions/timeline/EasyTimeline.pl -i {$fname} -m -P /usr/bin/ploticus -T /tmp`;
+		if ( $wgPloticusCommand == "" )
+		{
+			$wgPloticusCommand = "/usr/bin/ploticus";
+		}
+		$ret = `{$IP}/extensions/timeline/EasyTimeline.pl -i {$fname} -m -P {$wgPloticusCommand} -T /tmp -A {$wgScript}`;
 
 		unlink($fname);
 
