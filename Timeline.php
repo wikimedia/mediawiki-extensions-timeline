@@ -14,7 +14,8 @@ $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 $wgExtensionFunctions[] = "wfTimelineExtension";
 
 function wfTimelineExtension() {
-	Parser::setHook( "timeline", "renderTimeline" );
+	global $wgParser;
+	$wgParser->setHook( "timeline", "renderTimeline" );
 }
 
 function renderTimeline( $timelinesrc )
