@@ -111,7 +111,6 @@
     else
     { print "\nREADY\nNo errors found.\n" ; }
   }
-
   exit ;
 
 sub ParseArguments
@@ -2747,7 +2746,9 @@ sub WritePlotFile
   $map = ($MapSVG) ? "-map" : "";
 
   print "Running Ploticus to generate svg file\n" ;
-  my $cmd = "$pl $map -" . "svg" . " -o $file_vector $file_script -tightcrop" ;
+  my $cmd = EscapeShellArg($pl) . " $map -" . "svg" . " -o " . 
+    EscapeShellArg($file_vector) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
+  print "$cmd\n";
   system ($cmd) ;
 
   $script = $script_save ;
@@ -2778,7 +2779,9 @@ sub WritePlotFile
 
 # $crop = "-crop 0,0," + @ImageSize {"width"} . "," . @ImageSize {"height"} ;
   print "Running Ploticus to generate bitmap\n" ;
-  $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop" ;
+  $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " . 
+    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
+  print "$cmd\n";
   system ($cmd) ;
 
   if ((-e $file_bitmap) && (-s $file_bitmap > 200 * 1024))
@@ -2788,17 +2791,17 @@ sub WritePlotFile
     unlink $file_bitmap ;
   } ;
 
-  if ((-e $file_bitmap) && ($fmt eq "gif"))
-  {
-    print "Running nconvert to convert gif image to png format\n\n" ;
-    print "---------------------------------------------------------------------------\n" ;
-    $cmd = "nconvert.exe -out png $file_bitmap" ;
-    system ($cmd) ;
-    print "---------------------------------------------------------------------------\n" ;
-
-    if (! (-e $file_png))
-    { print "PNG file not created (is nconvert.exe missing?)\n\n" ; }
-  }
+#  if ((-e $file_bitmap) && ($fmt eq "gif"))
+#  {
+#    print "Running nconvert to convert gif image to png format\n\n" ;
+#    print "---------------------------------------------------------------------------\n" ;
+#    $cmd = "nconvert.exe -out png " . EscapeShellArg($file_bitmap) ;
+#    system ($cmd) ;
+#    print "---------------------------------------------------------------------------\n" ;
+#
+#    if (! (-e $file_png))
+#    { print "PNG file not created (is nconvert.exe missing?)\n\n" ; }
+#  }
 
   if (-e $file_vector)
   {
@@ -3710,5 +3713,19 @@ sub Abort
   exit ;
 }
 
+sub EscapeShellArg
+{
+  my $arg = shift;
+  if ($env eq "Linux") {
+    $arg =~ s/'/\\'/;
+    $arg = "'$arg'";
+  } else {
+    $arg =~ s/"/\\"/;
+    $arg = "\"$arg\"";
+  }
+  return $arg;
+}
 
+
+# vim: set sts=2 ts=2 sw=2 et :
 

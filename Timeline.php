@@ -1,24 +1,41 @@
 <?php
 
+# Timeline extension
+# To use, include this file from your LocalSettings.php
+# To configure, set members of $wgTimelineSettings after the inclusion
+
+class TimelineSettings {
+	var $ploticusCommand, $perlCommand;
+};
+$wgTimelineSettings = new TimelineSettings;
+$wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
+$wgTimelineSettings->perlCommand = "/usr/bin/perl";
+
+$wgExtensionFunctions[] = "wfTimelineExtension";
+
+function wfTimelineExtension() {
+	Parser::setHook( "timeline", "renderTimeline" );
+}
+
 function renderTimeline( $timelinesrc )
 {
-	global $wgUploadDirectory, $wgUploadPath, $IP, $wgPloticusCommand, $wgScript;
+	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgScript, $wgTmpDirectory;
 	$hash = md5( $timelinesrc );
 	$dest = $wgUploadDirectory."/timeline/";
 	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
-	$fname = $dest . $hash;
+	if ( ! is_dir( $wgTmpDirectory ) ) { mkdir( $wgTmpDirectory, 0777 ); }
 
+	$fname = $dest . $hash;
 	if ( ! ( file_exists( $fname.".png" ) || file_exists( $fname.".err" ) ) )
 	{
 		$handle = fopen($fname, "w");
 		fwrite($handle, $timelinesrc);
 		fclose($handle);
 
-		if ( $wgPloticusCommand == "" )
-		{
-			$wgPloticusCommand = "/usr/bin/ploticus";
-		}
-		$cmdline="/usr/bin/perl {$IP}/extensions/timeline/EasyTimeline.pl -i {$fname} -m -P {$wgPloticusCommand} -T /tmp -A {$wgScript}";
+		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $IP . "/extensions/timeline/EasyTimeline.pl" ) . 
+		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) . 
+		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgScript );
+
 		$ret = `{$cmdline}`;
 
 		unlink($fname);
@@ -29,14 +46,22 @@ function renderTimeline( $timelinesrc )
 		}
 
 	}
+	
+	@$err=file_get_contents( $fname.".err" ); 
 
-	@$err=file_get_contents( $fname.".err" );
 	if ( $err != "" ) {
 		$txt = "<div id=\"toc\"><tt>$err</tt></div>";
 	} else {
 		@$map = file_get_contents( $fname.".map" );
+		
+		if (substr(php_uname(), 0, 7) == "Windows") {
+			$ext = "gif";
+		} else {
+			$ext = "png";
+		}
+		
 		$txt  = "<map name=\"$hash\">{$map}</map>".
-		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.png\">";
+		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\">";
 	}
 	return $txt;
 }
