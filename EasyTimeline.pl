@@ -78,7 +78,10 @@
   close "FILE_IN" ;
 
   &InitVars ;
+
   &ParseScript ;
+
+  &Trace ("ParseScript done ($CntErrors errors)\n") ;
 
   if ($CntErrors == 0)
   { &WritePlotFile ; }
@@ -116,6 +119,7 @@
     { print "\nREADY\nNo errors found.\n" ; }
   }
 
+  &Trace (&GetDateTime(time) . "\nEasyTimeline ready\n") ;
   exit ;
 
 sub ParseArguments
@@ -187,6 +191,15 @@ sub InitFiles
 # $file_pl_err  = $file . ".err" ;
   print "Output: Image files $file_bitmap & $file_vector\n" ;
 
+  @fields = split ('\/', $file_in) ;
+  @fields [$#fields] = "#trace.txt" ;
+  $file_trace = join ('\/', @fields) ;
+  &Trace ("\n\n" . &GetDateTime(time) . "\n" .
+          "EasyTimeline started\n" .
+          "Temp dir: $tmpdir\n" .
+          "Ploticus cmd: $plcommand\n" .
+          "Article path: $articlepath\n") ;
+
   if ($linkmap)
   { print "        Map file $file_htmlmap (add to html for clickable map)\n" ; }
   if ($makehtml)
@@ -224,6 +237,8 @@ sub SetImageFormat
 }
 sub ParseScript
 {
+  &Trace ("ParseScript\n") ;
+
   my $command ; # local version, $Command = global
   $LineNo = 0 ;
   $InputParsed = $false ;
@@ -2854,6 +2869,8 @@ sub WriteProcDrawCommandsOld
 
 sub WritePlotFile
 {
+  &Trace ("WritePlotFile\n") ;
+
   &WriteTexts ;
 
   $script = "" ;
@@ -3346,7 +3363,10 @@ sub WritePlotFile
   my $cmd = EscapeShellArg($pl) . " $map -" . "svg" . " -o " .
     EscapeShellArg($file_vector) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
   print "$cmd\n";
+  &Trace ("Generate SVG\n") ;
+  &Trace ("Cmd = '$cmd'\n") ;
   system ($cmd) ;
+  &Trace ("Generate SVG done\n") ;
 
   $script = $script_save ;
   $script =~ s/dopagebox: no/dopagebox: yes/ ;
@@ -3380,8 +3400,11 @@ sub WritePlotFile
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
   $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " .
     EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
+  &Trace ("Generate PNG\n") ;
+  &Trace ("Cmd = '$cmd'\n") ;
   print "$cmd\n";
   system ($cmd) ;
+  &Trace ("Generate PNG done\n") ;
 
   if ((-e $file_bitmap) && (-s $file_bitmap > 500 * 1024))
   {
@@ -4569,6 +4592,14 @@ sub EncodeURL
   return ($url) ;
 }
 
+sub Trace
+{
+  my $msg = shift ;
+  open "FILE_TRACE", ">>", $file_trace ;
+  print FILE_TRACE $msg ;
+  close "FILE_TRACE" ;
+}
+
 sub Error
 {
   my $msg = &DecodeInput(shift) ;
@@ -4649,6 +4680,20 @@ sub Abort
     close "FILE_OUT" ;
   }
   exit ;
+}
+
+sub GetDateTime
+{
+  my $time = shift ;
+  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime($time);
+
+  my @weekdays_en = qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday);
+
+  my @months_en   = qw (January February March April May June July
+                        August September October November December);
+
+  return ($weekdays_en[$wday] . " " . $months_en[$mon] . " " .$mday . " " .(1900 + $year)) .
+          sprintf (", %02d:%02d:%02d", $hour, $min, $sec) ;
 }
 
 sub EscapeShellArg
