@@ -52,6 +52,16 @@
 # 1.9 June 2004
 # - stub display order fixed on non time axis
 
+# 1.10 July 2004
+# - tempory debug code (removed)
+
+# 1.11 August 2004
+# - dot in folder name in input path was misunderstood as start of file extension
+# - utf-8 chars within 160-255 range are translated to extended ascii
+#   however internal font used by Ploticus has strange mapping so some are replaced
+#   by undercore or unaccented version of character
+#   this is a make do solution until full unicode support with external fonts will be added
+
   $version = "1.9" ;
 
   use Time::Local ;
@@ -77,11 +87,19 @@
   @lines = <FILE_IN> ;
   close "FILE_IN" ;
 
+  # until real unicode support is available: translate extended ASCII chars
+  foreach $line (@lines)
+  {
+    $line =~ s/([\xc0-\xdf][\x80-\xbf]|
+                [\xe0-\xef][\x80-\xbf]{2}|
+                [\xf0-\xf7][\x80-\xbf]{3})/&UnicodeToAscii($1)/gxeo ;
+    # unfortunately Ploticus uses an odd character mapping lots of unicode chars
+    # in extended ascii range are not available
+    $line =~ tr /¡¢£¥¦©ª«¬­®¯±²³µ¶·¹º»¼½¾¿ÀÅÆÇÈÊÌÏÒÖØÛÞàåæèêìïðòøþÿ/_________________________AAACEEIIOO0Ü_aaaeeii_o0_y/ ;
+  }
+
   &InitVars ;
-
   &ParseScript ;
-
-  &Trace ("ParseScript done ($CntErrors errors)\n") ;
 
   if ($CntErrors == 0)
   { &WritePlotFile ; }
@@ -119,7 +137,6 @@
     { print "\nREADY\nNo errors found.\n" ; }
   }
 
-  &Trace (&GetDateTime(time) . "\nEasyTimeline ready\n") ;
   exit ;
 
 sub ParseArguments
@@ -179,7 +196,8 @@ sub InitFiles
   print "\nInput:  Script file $file_in\n" ;
 
   $file  = $file_in ;
-  $file  =~ s/\.[^\.]*$// ; # remove extension
+# 1.10 dot ignore dots in folder names ->
+  $file  =~ s/\.[^\\\/\.]*$// ; # remove extension
   $file_name    = $file ;
   $file_bitmap  = $file . "." . $fmt ;
   $file_vector  = $file . ".svg" ;
@@ -190,15 +208,6 @@ sub InitFiles
 # $file_pl_info = $file . ".inf" ;
 # $file_pl_err  = $file . ".err" ;
   print "Output: Image files $file_bitmap & $file_vector\n" ;
-
-  @fields = split ('\/', $file_in) ;
-  @fields [$#fields] = "#trace.txt" ;
-  $file_trace = join ('\/', @fields) ;
-  &Trace ("\n\n" . &GetDateTime(time) . "\n" .
-          "EasyTimeline started\n" .
-          "Temp dir: $tmpdir\n" .
-          "Ploticus cmd: $plcommand\n" .
-          "Article path: $articlepath\n") ;
 
   if ($linkmap)
   { print "        Map file $file_htmlmap (add to html for clickable map)\n" ; }
@@ -237,8 +246,6 @@ sub SetImageFormat
 }
 sub ParseScript
 {
-  &Trace ("ParseScript\n") ;
-
   my $command ; # local version, $Command = global
   $LineNo = 0 ;
   $InputParsed = $false ;
@@ -2869,8 +2876,6 @@ sub WriteProcDrawCommandsOld
 
 sub WritePlotFile
 {
-  &Trace ("WritePlotFile\n") ;
-
   &WriteTexts ;
 
   $script = "" ;
@@ -2899,9 +2904,9 @@ sub WritePlotFile
   open "FILE_OUT", ">", $file_script ;
 
   #proc settings
-# $script .= "#proc settings\n" ;
-# $script .= "  xml_encoding: utf-8\n" ;
-# $script .= "\n" ;
+#  $script .= "#proc settings\n" ;
+#  $script .= "  xml_encoding: utf-8\n" ;
+#  $script .= "\n" ;
 
   # proc page
   $script .= "#proc page\n" ;
@@ -3363,10 +3368,7 @@ sub WritePlotFile
   my $cmd = EscapeShellArg($pl) . " $map -" . "svg" . " -o " .
     EscapeShellArg($file_vector) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
   print "$cmd\n";
-  &Trace ("Generate SVG\n") ;
-  &Trace ("Cmd = '$cmd'\n") ;
   system ($cmd) ;
-  &Trace ("Generate SVG done\n") ;
 
   $script = $script_save ;
   $script =~ s/dopagebox: no/dopagebox: yes/ ;
@@ -3400,11 +3402,8 @@ sub WritePlotFile
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
   $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " .
     EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
-  &Trace ("Generate PNG\n") ;
-  &Trace ("Cmd = '$cmd'\n") ;
   print "$cmd\n";
   system ($cmd) ;
-  &Trace ("Generate PNG done\n") ;
 
   if ((-e $file_bitmap) && (-s $file_bitmap > 500 * 1024))
   {
@@ -4592,14 +4591,6 @@ sub EncodeURL
   return ($url) ;
 }
 
-sub Trace
-{
-  my $msg = shift ;
-  open "FILE_TRACE", ">>", $file_trace ;
-  print FILE_TRACE $msg ;
-  close "FILE_TRACE" ;
-}
-
 sub Error
 {
   my $msg = &DecodeInput(shift) ;
@@ -4682,20 +4673,6 @@ sub Abort
   exit ;
 }
 
-sub GetDateTime
-{
-  my $time = shift ;
-  my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime($time);
-
-  my @weekdays_en = qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday);
-
-  my @months_en   = qw (January February March April May June July
-                        August September October November December);
-
-  return ($weekdays_en[$wday] . " " . $months_en[$mon] . " " .$mday . " " .(1900 + $year)) .
-          sprintf (", %02d:%02d:%02d", $hour, $min, $sec) ;
-}
-
 sub EscapeShellArg
 {
   my $arg = shift;
@@ -4710,3 +4687,36 @@ sub EscapeShellArg
 }
 
 # vim: set sts=2 ts=2 sw=2 et :
+
+sub UnicodeToAscii {
+  my $unicode = shift ;
+  my $char = substr ($unicode,0,1) ;
+  my $ord = ord ($char) ;
+
+  if ($ord < 128)         # plain ascii character
+  { return ($unicode) ; } # (will not occur in this script)
+  else
+  {
+    # for completeness sake complete routine, only 2 byte unicodes sent here
+    if ($ord >= 252)
+    { $value = $ord - 252 ; }
+    elsif ($ord >= 248)
+    { $value = $ord - 248 ; }
+    elsif ($ord >= 240)
+    { $value = $ord - 240 ; }
+    elsif ($ord >= 224)
+    { $value = $ord - 224 ; }
+    else
+    { $value = $ord - 192 ; }
+    for ($c = 1 ; $c < length ($unicode) ; $c++)
+    { $value = $value * 64 + ord (substr ($unicode, $c,1)) - 128 ; }
+
+#   $html = "\&\#" . $value . ";" ; any unicode can be specified as html char
+
+    if (($value >= 128) && ($value <= 255))
+    { return (chr ($value)) ; }
+    else
+    { return "?" ; }
+  }
+}
+
