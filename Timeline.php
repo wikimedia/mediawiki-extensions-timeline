@@ -2,7 +2,7 @@
 
 function renderTimeline( $timelinesrc )
 {
-	global $wgUploadDirectory, $IP, $wgPloticusCommand, $wgScript;
+	global $wgUploadDirectory, $wgUploadPath, $IP, $wgPloticusCommand, $wgScript;
 	$hash = md5( $timelinesrc );
 	$fname = $wgUploadDirectory."/timeline/".$hash;
 
@@ -33,7 +33,7 @@ function renderTimeline( $timelinesrc )
 	} else {
 		@$map = file_get_contents( $fname.".map" );
 		$txt  = "<map name=\"$hash\">{$map}</map>".
-		        "<img usemap=\"#{$hash}\" src=\"/images/timeline/{$hash}.png\">";
+		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.png\">";
 	}
 	return $txt;
 }
