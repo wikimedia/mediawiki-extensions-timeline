@@ -229,7 +229,9 @@ sub SetImageFormat
 # if ($dir =~ /\\/) { $env = "Windows" ; $fmt = "gif" ; $pathseparator = "\\";}
 # cwd always to returns '/'s ? ->
   $OS = $^O ;
-  if ($OS =~ /win/i)
+  if ($OS =~ /darwin/i)
+  { $env = "Linux";    $fmt = "png" ; $pathseparator = "/";}
+  elsif ($OS =~ /win/i)
   { $env = "Windows" ; $fmt = "gif" ; $pathseparator = "\\";}
   else
   { $env = "Linux" ;   $fmt = "png" ; $pathseparator = "/";}
