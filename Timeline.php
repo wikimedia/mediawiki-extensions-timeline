@@ -20,7 +20,7 @@ function wfTimelineExtension() {
 
 function renderTimeline( $timelinesrc )
 {
-	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgScript, $wgTmpDirectory;
+	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgArticlePath, $wgTmpDirectory;
 	$hash = md5( $timelinesrc );
 	$dest = $wgUploadDirectory."/timeline/";
 	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
@@ -35,7 +35,7 @@ function renderTimeline( $timelinesrc )
 
 		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $IP . "/extensions/timeline/EasyTimeline.pl" ) . 
 		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) . 
-		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgScript );
+		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath );
 
 		$ret = `{$cmdline}`;
 

@@ -160,9 +160,7 @@ sub ParseArguments
   $articlepath=@options {"A"} ; # For MediaWiki: Path of an article, relative to this servers root
 
   if (! defined @options {"A"} )
-  { $articlepath="http://en.wikipedia.org/wiki/"; }
-
-  $articlepath =~ s/\/$// ;     # remove trailing backslash, if any
+  { $articlepath="http://en.wikipedia.org/wiki/\$1"; }
 
   if (! -e $file_in)
   { &Abort ("Input file '" . $file_in . "' not found.") ; }
@@ -4516,12 +4514,14 @@ sub ProcessWikiLink
 #   if ($link =~ /^\[\[.+\:.+\]\]$/) # has a colon in its name
     if ($link =~ /^\[\[ (?:.{2,3}|(?:zh\-.*)|simple|minnan|tokipona) \: .+\]\]$/xi) # has a interwiki link prefix
     {
+      # This will fail for all interwiki links other than Wikipedia.
       $wiki  = lc ($link) ;
       $title = $link ;
       $wiki  =~ s/\[\[([^\:]+)\:.*$/$1/x ;
       $title =~ s/^[^\:]+\:(.*)\]\]$/$1/x ;
       $title =~ s/ /_/g ;
       $link = "http://$wiki.wikipedia.org/wiki/$title" ;
+	  $link = &EncodeURL ($title) ;
       if (($hint eq "") && ($title ne ""))
       { $hint = "$wiki: $title" ; }
     }
@@ -4531,7 +4531,9 @@ sub ProcessWikiLink
       $title = $link ;
       $title =~ s/^\[\[(.*)\]\]$/$1/x ;
       $title =~ s/ /_/g ;
-      $link = $articlepath . "/$title" ;
+      $link = $articlepath ;
+	  $urlpart = &EncodeURL ($title) ;
+	  $link =~ s/\$1/$urlpart/ ;
       if (($hint eq "") && ($title ne ""))
       { $hint = "$title" ; }
     }
@@ -4547,7 +4549,6 @@ sub ProcessWikiLink
   { $text = "[[" . $text . "]]" ; }
 
   $hint = &EncodeHtml ($hint) ;
-  $link = &EncodeURL  ($link) ;
   return ($text, $link, $hint) ;
 }
 
