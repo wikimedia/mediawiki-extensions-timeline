@@ -4,7 +4,9 @@ function renderTimeline( $timelinesrc )
 {
 	global $wgUploadDirectory, $wgUploadPath, $IP, $wgPloticusCommand, $wgScript;
 	$hash = md5( $timelinesrc );
-	$fname = $wgUploadDirectory."/timeline/".$hash;
+	$dest = $wgUploadDirectory."/timeline/";
+	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
+	$fname = $dest . $hash;
 
 	if ( ! ( file_exists( $fname.".png" ) || file_exists( $fname.".err" ) ) )
 	{
@@ -16,13 +18,14 @@ function renderTimeline( $timelinesrc )
 		{
 			$wgPloticusCommand = "/usr/bin/ploticus";
 		}
-		$ret = `{$IP}/extensions/timeline/EasyTimeline.pl -i {$fname} -m -P {$wgPloticusCommand} -T /tmp -A {$wgScript}`;
+		$cmdline="/usr/bin/perl {$IP}/extensions/timeline/EasyTimeline.pl -i {$fname} -m -P {$wgPloticusCommand} -T /tmp -A {$wgScript}";
+		$ret = `{$cmdline}`;
 
 		unlink($fname);
 
 		if ( $ret == "" ) {
 			// Message not localized, only relevant during install
-			return "<div id=\"toc\"><tt>Timeline error: Executable not found</tt></div>";
+			return "<div id=\"toc\"><tt>Timeline error: Executable not found. Command line was: {$cmdline}</tt></div>";
 		}
 
 	}
