@@ -139,8 +139,8 @@ sub SetImageFormat
 {
   $env = "" ;
   $dir = cwd() ; # is there a better way to detect OS?
-  if ($dir =~ /\\/) { $env = "Linux" ;   $fmt = "png" ; }
-  if ($dir =~ /\//) { $env = "Windows" ; $fmt = "gif" ; }
+  if ($dir =~ /\//) { $env = "Linux" ;   $fmt = "png" ; }
+  if ($dir =~ /\\/) { $env = "Windows" ; $fmt = "gif" ; }
 
   if ($env ne "")
   { print "\nOS $env detected -> create image in $fmt format.\n" ; }
@@ -2126,7 +2126,7 @@ sub WritePlotFile
   else
   { $AxisBars = "x" ; }
 
-  $file_script = "EasyTimeline.txt" ;
+  $file_script = "/tmp/EasyTimeline.txt.$$" ;
 # $fmt = "gif" ;
   open "FILE_OUT", ">", $file_script ;
 
@@ -2529,7 +2529,7 @@ sub WritePlotFile
   print "\nGenerating output:\n" ;
   $pl = "pl.exe" ;
   if ($env eq "Linux")
-  { $pl = "pl" ; }
+  { $pl = "ploticus" ; }
 
   $script_save = $script ;
 
