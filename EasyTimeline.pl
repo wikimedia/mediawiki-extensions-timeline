@@ -48,7 +48,11 @@
 # - command ScaleMajor: subs for time axis can now be specified verbatim in option 'text'
 # - extra validation checks, defaults, etc
 # - function PlotScale now provides workaround for Ploticus bug: auto incrementing dates failed
-  $version = "1.8" ;
+
+# 1.9 June 2004
+# - stub display order fixed on non time axis
+
+  $version = "1.9" ;
 
   use Time::Local ;
   use Getopt::Std ;
@@ -3106,19 +3110,31 @@ sub WritePlotFile
     $scriptSvg2 .= "  tics: none\n" ;
     $scriptPng2 .= "  stubrange: 1\n" ;
     $scriptSvg2 .= "  stubrange: 1\n" ;
-    $scriptPng2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ;
-    $scriptSvg2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ;
+    if ($AxisBars eq "y")
+    {
+      $scriptPng2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ;
+      $scriptSvg2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ;
+    }
     $scriptPng2 .= "  stubs: text\n" ;
     $scriptSvg2 .= "  stubs: text\n" ;
 
     my ($text, $link, $hint) ;
 
+    undef (@Bars2) ;
     foreach $bar (@Bars)
+    {
+      if ($AxisBars eq "y")
+      { push @Bars2, $bar ; }
+      else
+      { unshift @Bars2, $bar ; }
+    }
+
+    foreach $bar (@Bars2)
     {
       $hint = "" ;
       $text = @BarLegend {lc ($bar)} ;
-      if (! defined ($text))
-      { $text = $bar ; }
+      if ($text =~ /^\s*$/)
+      { $text = "\\" ; }
 
       $link = @BarLink {lc ($bar)} ;
       if (! defined ($link))
@@ -3143,21 +3159,22 @@ sub WritePlotFile
 
     $scriptPng2 .= "#proc " . $AxisBars . "axis\n" ;
     if ($AxisBars eq "x")
-    { $scriptPng2 .= "  stubdetails: adjust=0,0.09 color=$linkcolor\n" ; }
+    { $scriptPng2 .= "  stubdetails: adjust=0,0.09 color=$LinkColor\n" ; }
     else
-    { $scriptPng2 .= "  stubdetails: adjust=0.09,0 color=$linkcolor\n" ; }
+    { $scriptPng2 .= "  stubdetails: adjust=0.09,0 color=$LinkColor\n" ; }
     $scriptPng2 .= "  tics: none\n" ;
     $scriptPng2 .= "  stubrange: 1\n" ;
-    $scriptPng2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ;
+    if ($AxisBars eq "y")
+    { $scriptPng2 .= "  stubslide: -" . sprintf ("%.2f", $MaxBarWidth / 2) . "\n" ; }
     $scriptPng2 .= "  stubs: text\n" ;
 
     $barcnt = $#Bars + 1 ;
-    foreach $bar (@Bars)
+    foreach $bar (@Bars2)
     {
       $hint = "" ;
       $text = @BarLegend {lc ($bar)} ;
-      if (! defined ($text))
-      { $text = $bar ; }
+      if ($text =~ /^\s*$/)
+      { $text = "\\" ; }
 
       $link = @BarLink {lc ($bar)} ;
       if (! defined ($link))
@@ -3293,6 +3310,7 @@ sub WritePlotFile
     if ($env eq "Linux")
     { $pl = "pl" ; }
   }
+
   print "Using ploticus command \"".$pl."\" (".$plcommand.")\n";
 
   $script_save = $script ;
@@ -3578,9 +3596,9 @@ sub PlotBars
         { $bar = ($#Bars - ($b - 1)) ; last ; }
       }
       if (@Axis {"order"} !~ /reverse/i)
-      { $entry = "$bar,$from,$till,$color,$link,$hint\n" ; }
+      { $entry = "$bar,$from,$till,$color,$link,$hint,\n" ; }
       else
-      { $entry = "$bar," . (-$till) . "," . (-$from) . ",$color,$link,$hint\n" ; }
+      { $entry = "$bar," . (-$till) . "," . (-$from) . ",$color,$link,$hint,\n" ; }
 
       $script .= "$entry" ;
     }
