@@ -10,7 +10,7 @@
 # http://www.fsf.org/licenses/gpl.html
 
 # history:
-# May 27 2004 :
+# 1.5 May 27 2004 :
 # - when a chart contains only one bar this bar was always centered in the image
 #     now AlignBars works well in this case aslo ("justify" treated as "center")
 # - interwiki links reinstalled e.g. [[de:Gorbachev]]
@@ -22,6 +22,12 @@
 # - BarData: no attribute 'text:..' supplied -> default to space = show no text on axis
 # - PlotData: new attribute 'anchor:..'
 # - revert html encoding of '<' & '>' by MediaWiki
+
+# 1.6 May 28 2004 :
+# - SVG decode special chars in SVG input fixed
+# - BarData: new attributes 'barset:..' and 'barcount:..' # autoincrement bar id
+# - PlotData: new attribute 'barset:..'
+# - DrawLines: new attribute 'stack:..', draw lines to back or front of bars and texts
 
   use Time::Local ;
   use Getopt::Std ;
@@ -805,7 +811,7 @@ sub ParseDrawLines
     return ;
   }
 
-  my ($at, $color, $ValidDate) ;
+  my ($at, $color, $stack, $ValidDate) ;
 
   my $data2 = $data ;
 
@@ -854,12 +860,23 @@ sub ParseDrawLines
 
         @Attributes {"color"} = $attrvalue ;
       }
+      elsif ($attribute =~ /Stack/i)
+      {
+        if (! ($attrvalue =~ /^(?:back|front)$/i))
+        { &Error ("Drawlines attribute '$attrvalue' invalid.\nSpecify back(default) or front") ;
+          &GetData ; next DrawLines ; }
+
+        @Attributes {"stack"} = $attrvalue ;
+      }
     }
+
+    if (@Attributes {"stack"} eq "")
+    { @Attributes {"stack"} = "back" ; }
 
     if (@Attributes {"color"} eq "")
     { @Attributes {"color"} = "black" ; }
 
-    push @DrawLines, sprintf ("%s|%s\n", @Attributes {"at"}, lc (@Attributes {"color"})) ;
+    push @DrawLines, sprintf ("%s|%s|%s\n", @Attributes {"at"}, lc (@Attributes {"color"}), lc (@Attributes {"stack"})) ;
 
     &GetData ;
   }
@@ -1072,7 +1089,7 @@ sub ParsePlotData
     if (! &ValidAttributes ("PlotData"))
     { &GetData ; next ;}
 
-    $bar = "" ; $barset = "" ;
+    $bar = "" ; # $barset = "" ;
     $at = "" ; $from = "" ; $till = "" ;
     $color = "" ; $bgcolor = "" ; $textcolor = "" ; $fontsize = "" ; $width = "" ;
     $text = "" ; $align = "" ; $shift = "" ; $anchor = "" ;
@@ -1080,7 +1097,7 @@ sub ParsePlotData
     $link = "" ; $hint = "" ;
 
     if (defined (@PlotDefs {"bar"}))       { $bar       = @PlotDefs {"bar"} ; }
-    if (defined (@PlotDefs {"barset"}))    { $barset    = @PlotDefs {"barset"} ; }
+ #  if (defined (@PlotDefs {"barset"}))    { $barset    = @PlotDefs {"barset"} ; }
     if (defined (@PlotDefs {"color"}))     { $color     = @PlotDefs {"color"} ; }
     if (defined (@PlotDefs {"bgcolor"}))   { $bgcolor   = @PlotDefs {"bgcolor"} ; }
     if (defined (@PlotDefs {"textcolor"})) { $textcolor = @PlotDefs {"textcolor"} ; }
@@ -1121,24 +1138,24 @@ sub ParsePlotData
         $bar = $attrvalue2 ;
         $prevbar = $bar ;
       }
-#      elsif ($attribute =~ /^BarSet$/i)
-#      {
-#        if (! ($attrvalue =~ /[a-zA-Z0-9\_]+/))
-#        { &Error ("PlotData attribute '$attribute' invalid.\n" .
-#                  "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n") ;
-#          &GetData ; next PlotData ; }
+      elsif ($attribute =~ /^BarSet$/i)
+      {
+        if (! ($attrvalue =~ /[a-zA-Z0-9\_]+/))
+        { &Error ("PlotData attribute '$attribute' invalid.\n" .
+                  "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n") ;
+          &GetData ; next PlotData ; }
 
-#        $attrvalue2 = $attrvalue ;
+        $attrvalue2 = $attrvalue ;
 
-#        if ($BarsCommandFound)
-#        {
-#          if (! &BarDefined ($attrvalue2 . "#0"))
-#          { &Error ("PlotData invalid. BarSet '$attrvalue' not (properly) defined with command BarData.") ;
-#            &GetData ; next PlotData ; }
-#        }
-#        $barset = $attrvalue2 ;
-#        $prevbar = $bar ;
-#      }
+        if ($BarsCommandFound)
+        {
+          if (! &BarDefined ($attrvalue2 . "#1"))
+          { &Error ("PlotData invalid. BarSet '$attrvalue' not (properly) defined with command BarData.") ;
+            &GetData ; next PlotData ; }
+        }
+        $bar = $attrvalue2 ;
+        $prevbar = $bar ;
+      }
       elsif ($attribute =~ /^At|From|Till$/i)
       {
         if ($attrvalue =~ /^Start$/i)
@@ -1360,7 +1377,7 @@ sub ParsePlotData
     if (($at eq "") && ($from eq "") && ($till eq "")) # upd defaults
     {
       if ($bar        ne "") { @PlotDefs {"bar"}       = $bar ; }
-      if ($barset     ne "") { @PlotDefs {"barset"}    = $barset ; }
+#     if ($barset     ne "") { @PlotDefs {"barset"}    = $barset ; }
       if ($color      ne "") { @PlotDefs {"color"}     = $color ; }
       if ($bgcolor    ne "") { @PlotDefs {"bgcolor"}   = $bgcolor ; }
       if ($textcolor  ne "") { @PlotDefs {"textcolor"} = $textcolor ; }
@@ -1382,8 +1399,8 @@ sub ParsePlotData
       { $bar = $prevbar ; }
       else
       {
-        if ($BarsCommandFound)
-        {
+#        if ($BarsCommandFound)
+#        {
           if ($#Bars > 0)
           { &Error ("PlotData invalid. Specify attribute 'bar'.") ;
             &GetData ; next PlotData ; }
@@ -1394,21 +1411,35 @@ sub ParsePlotData
           }
           else
           { $bar = "1" ; }
-        }
-        else
-        {
-          if ($#Bars > 0)
-          { &Error ("PlotData invalid. Attribute 'bar' missing.") ;
-            &GetData ; next PlotData ; }
-          elsif ($#Bars == 0)
-          {
-            $bar = @Bars [0] ;
-            &Info ($data, "PlotData incomplete. Attribute 'bar' missing, value '" . @Bars [0] . "' assumed.") ;
-          }
-          else { $bar = "1" ; }
-        }
+#        }
+#        else
+#        {
+#          if ($#Bars > 0)
+#          { &Error ("PlotData invalid. Attribute 'bar' missing.") ;
+#            &GetData ; next PlotData ; }
+#          elsif ($#Bars == 0)
+#          {
+#            $bar = @Bars [0] ;
+#            &Info ($data, "PlotData incomplete. Attribute 'bar' missing, value '" . @Bars [0] . "' assumed.") ;
+#          }
+#          else { $bar = "1" ; }
+#        }
         $prevbar = $bar ;
       }
+    }
+
+    if (&BarDefined ($bar . "#1")) # bar is actually a bar set
+    {
+      if (($from ne "") || ($at ne "") || ($text eq " ")) # data line ?
+      {
+        $barndx++ ;
+        if (! &BarDefined ($bar . "#" . $barndx))
+        { $barndx = 1 ; }
+        $bar = $bar . "#" . $barndx ;
+        # $text = $bar ;
+      }
+      if ($text eq " ")
+      { $a = 1 ; }
     }
 
     if (($at ne "") && (($from ne "") || ($till ne "")))
@@ -2426,7 +2457,7 @@ sub WritePlotFile
     $script .= "\n" ;
   }
 
-  if (defined (@BackgroundColors {"canvas"}))
+  if (defined (@BackgroundColors {"bars"}))
   {
     #proc getdata / #proc bars
     $script .= "#proc getdata\n" ;
@@ -2469,10 +2500,11 @@ sub WritePlotFile
   if (defined (@Scales {"Major grid"}))
   { &PlotScale ("Major", $true) ; }
 
+  &PlotLines ("back") ;
+
   @PlotBarsNow = @PlotBars ;
   &PlotBars ;
 
-  $script .= "\n([inc1])\n\n" ; # will be replace by annotations
   $script .= "\n([inc3])\n\n" ; # will be replace by rects
 
   foreach $entry (@PlotLines)
@@ -2481,6 +2513,7 @@ sub WritePlotFile
    $width = @BarWidths {$bar} ;
    $entry  = sprintf ("%6.3f",$width) . "," . $entry ;
   }
+
   @PlotBarsNow = @PlotLines ;
   &PlotBars ;
 
@@ -2581,38 +2614,9 @@ sub WritePlotFile
     }
     $scriptPng2 .= "\n" ;
   }
+
+  $script .= "\n([inc1])\n\n" ; # will be replace by annotations
   $script .= "\n([inc2])\n\n" ;
-
-  if ($#DrawLines >= 0)
-  {
-    $script .= "#proc drawcommands\n" ;
-    $script .= "  commands:\n" ;
-
-#      $script .= "  movp  $at" . "(s) " . @PlotArea {"bottom"} . "\n" ;
-#      $script .= "  mark 100 200 symbol 1\n" ;
-#      $script .= "  cblock 200 300 205 305 red\n" ;
-#      $script .= "  clickmaplabel: Vladimir Ilyich Lenin\n" ;
-#      $script .= "  clickmapurl: http://www.wikipedia.org/wiki/Vladimir_Lenin\n" ;
-
-    foreach $entry (@DrawLines)
-    {
-      chomp ($entry) ;
-      ($at, $color) = split ('\|', $entry) ;
-      $script .= "  color $color\n" ;
-      $script .= "  width 2\n" ;
-      if (@Axis {"time"} eq "x")
-      {
-        $script .= "  movp  $at" . "(s) " . @PlotArea {"bottom"} . "\n" ;
-        $script .= "  linp  $at" . "(s) " . (@PlotArea {"bottom"}+@PlotArea {"height"}) . "\n" ;
-      }
-      else
-      {
-        $script .= "  movp  " . @PlotArea {"left"}  . " $at" . "(s)\n" ;
-        $script .= "  linp  " . @PlotArea {"width"} . " $at" . "(s)\n" ;
-      }
-    }
-    $script .= "\n" ;
-  }
 
   if ($#PlotTextsPng >= 0)
   {
@@ -2660,6 +2664,8 @@ sub WritePlotFile
     { $script .= $entry ; }
     $script .= "\n" ;
   }
+
+  &PlotLines ("front") ;
 
   #proc legend
   if (defined (@Legend {"orientation"}))
@@ -2970,6 +2976,48 @@ sub PlotScale
 
   if ($grid)
   { $script .= "  grid: color=$color\n" ; }
+
+  $script .= "\n" ;
+}
+
+sub PlotLines
+{
+  my $stack = shift ;
+
+  if ($#DrawLines < 0)
+  { return ; }
+
+  undef (@DrawLinesNow) ;
+
+  foreach $line (@DrawLines)
+  {
+    if ($line =~ /\|$stack\n/)
+    { push @DrawLinesNow, $line ; }
+  }
+
+  if ($#DrawLinesNow < 0)
+  { return ; }
+
+  $script .= "#proc drawcommands\n" ;
+  $script .= "  commands:\n" ;
+
+  foreach $entry (@DrawLinesNow)
+  {
+    chomp ($entry) ;
+    ($at, $color) = split ('\|', $entry) ;
+    $script .= "  color $color\n" ;
+    $script .= "  width 2\n" ;
+    if (@Axis {"time"} eq "x")
+    {
+      $script .= "  movp  $at" . "(s) " . @PlotArea {"bottom"} . "\n" ;
+      $script .= "  linp  $at" . "(s) " . (@PlotArea {"bottom"}+@PlotArea {"height"}) . "\n" ;
+    }
+    else
+    {
+      $script .= "  movp  " . @PlotArea {"left"}  . " $at" . "(s)\n" ;
+      $script .= "  linp  " . @PlotArea {"width"} . " $at" . "(s)\n" ;
+    }
+  }
 
   $script .= "\n" ;
 }
@@ -3288,7 +3336,7 @@ sub ValidAttributes
   { return (CheckAttributes ($command, "id,value", "legend")) ; }
 
   if ($command =~ /^DrawLines$/i)
-  { return (CheckAttributes ($command, "at,color", "")) ; }
+  { return (CheckAttributes ($command, "at,color", "stack")) ; }
 
   if ($command =~ /^ImageSize$/i)
   { return (CheckAttributes ($command, "width,height", "")) ; }
@@ -3554,14 +3602,14 @@ sub EncodeInput
   # revert encoding of '<' & '>' by MediaWiki
   $text =~ s/\&lt\;/\</g ;
   $text =~ s/\&gt\;/\>/g ;
-  $text =~ s/([\`\{\}\%\&\@\$\(\)\;\=])/"<" . sprintf ("%X", ord($1)) . ">";/ge ;
+  $text =~ s/([\`\{\}\%\&\@\$\(\)\;\=])/"%" . sprintf ("%X", ord($1)) . "%";/ge ;
   return ($text) ;
 }
 
 sub DecodeInput
 {
   my $text = shift ;
-  $text =~ s/<([0-9A-F]{2})>/chr(hex($1))/ge ;
+  $text =~ s/\%([0-9A-F]{2})\%/chr(hex($1))/ge ;
   return ($text) ;
 }
 
