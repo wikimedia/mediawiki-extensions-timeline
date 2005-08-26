@@ -12,6 +12,11 @@ $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 
 $wgExtensionFunctions[] = "wfTimelineExtension";
+$wgExtensionCredits['parserhook'][] = array(
+	'name' => 'EasyTimeline',
+	'author' => 'Erik Zachte',
+	'url' => 'http://meta.wikimedia.org/wiki/EasyTimeline',
+);
 
 function wfTimelineExtension() {
 	global $wgParser;
