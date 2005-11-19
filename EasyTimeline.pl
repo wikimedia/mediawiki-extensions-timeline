@@ -87,17 +87,6 @@
   @lines = <FILE_IN> ;
   close "FILE_IN" ;
 
-  # until real unicode support is available: translate extended ASCII chars
-  foreach $line (@lines)
-  {
-    $line =~ s/([\xc0-\xdf][\x80-\xbf]|
-                [\xe0-\xef][\x80-\xbf]{2}|
-                [\xf0-\xf7][\x80-\xbf]{3})/&UnicodeToAscii($1)/gxeo ;
-    # unfortunately Ploticus uses an odd character mapping lots of unicode chars
-    # in extended ascii range are not available
-    $line =~ tr /¡¢£¥¦©ª«¬­®¯±²³µ¶·¹º»¼½¾¿ÀÅÆÇÈÊÌÏÒÖØÛÞàåæèêìïðòøþÿ/_________________________AAACEEIIOO0Ü_aaaeeii_o0_y/ ;
-  }
-
   &InitVars ;
   &ParseScript ;
 
@@ -3401,7 +3390,8 @@ sub WritePlotFile
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop" ; # -v $file_bitmap" ;
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
   $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " .
-    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
+    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop -font FreeSans.ttf" .
+    " -mapfile " . EscapeShellArg($file_htmlmap) ;
   print "$cmd\n";
   system ($cmd) ;
 
@@ -4590,7 +4580,10 @@ sub EncodeHtml
 sub EncodeURL
 {
   my $url = shift ;
-  $url =~ s/([^0-9a-zA-Z\%\:\/\.])/"%".sprintf ("%X",ord($1))/ge ;
+  # For some reason everything gets run through this weird internal
+  # encoding that's similar to URL-encoding. Armor against this as well,
+  # or else adjacent encoded bytes will be corrupted.
+  $url =~ s/([^0-9a-zA-Z\%\:\/\._])/"%25%".sprintf ("%02X",ord($1))/ge ;
   return ($url) ;
 }
 
