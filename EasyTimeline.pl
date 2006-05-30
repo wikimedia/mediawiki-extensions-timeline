@@ -4649,7 +4649,7 @@ sub Abort
   print "Execution aborted.\n" ;
 
   open "FILE_OUT", ">", $file_errors ;
-  print FILE_OUT "<left><p>EasyTimeline $version<p><b>Timeline generation failed: " . &EncodeHtml ($msg) ."</b><p></left>\n" ;
+  print FILE_OUT "<p>EasyTimeline $version</p><p><b>Timeline generation failed: " . &EncodeHtml ($msg) ."</b></p>\n" ;
   foreach $line (@Errors)
   { print FILE_OUT &EncodeHtml ($line) . "\n" ; }
   close "FILE_OUT" ;
