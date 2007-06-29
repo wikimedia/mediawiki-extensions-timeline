@@ -73,4 +73,4 @@ function renderTimeline( $timelinesrc )
 	return $txt;
 }
 
-?>
+
