@@ -14,6 +14,7 @@ $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 $wgExtensionFunctions[] = "wfTimelineExtension";
 $wgExtensionCredits['parserhook'][] = array(
 	'name' => 'EasyTimeline',
+	'version'     => '1.1',
 	'author' => 'Erik Zachte',
 	'url' => 'http://meta.wikimedia.org/wiki/EasyTimeline',
 	'description' => 'Timeline extension',
