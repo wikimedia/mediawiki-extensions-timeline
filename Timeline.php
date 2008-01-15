@@ -15,7 +15,7 @@ $wgExtensionFunctions[] = "wfTimelineExtension";
 $wgExtensionCredits['parserhook'][] = array(
 	'name' => 'EasyTimeline',
 	'author' => 'Erik Zachte',
-	'url' => 'http://meta.wikimedia.org/wiki/EasyTimeline',
+	'url' => 'http://www.mediawiki.org/wiki/Extension:EasyTimeline',
 	'description' => 'Timeline extension',
 );
 
@@ -72,5 +72,3 @@ function renderTimeline( $timelinesrc )
 	}
 	return $txt;
 }
-
-
