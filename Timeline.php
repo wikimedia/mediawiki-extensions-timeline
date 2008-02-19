@@ -13,11 +13,14 @@ $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 
 $wgExtensionFunctions[] = "wfTimelineExtension";
 $wgExtensionCredits['parserhook'][] = array(
-	'name' => 'EasyTimeline',
-	'author' => 'Erik Zachte',
-	'url' => 'http://www.mediawiki.org/wiki/Extension:EasyTimeline',
-	'description' => 'Timeline extension',
+	'name'           => 'EasyTimeline',
+	'author'         => 'Erik Zachte',
+	'url'            => 'http://www.mediawiki.org/wiki/Extension:EasyTimeline',
+	'version'        => '2008-02-19',
+	'description'    => 'Timeline extension',
+	'descriptionmsg' => 'timeline-desc',
 );
+$wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/timeline.i18n.php';
 
 function wfTimelineExtension() {
 	global $wgParser;
@@ -53,20 +56,20 @@ function renderTimeline( $timelinesrc )
 		}
 
 	}
-	
+
 	@$err=file_get_contents( $fname.".err" ); 
 
 	if ( $err != "" ) {
 		$txt = "<div id=\"toc\"><tt>$err</tt></div>";
 	} else {
 		@$map = file_get_contents( $fname.".map" );
-		
+
 		if (substr(php_uname(), 0, 7) == "Windows") {
 			$ext = "gif";
 		} else {
 			$ext = "png";
 		}
-		
+
 		$txt  = "<map name=\"$hash\">{$map}</map>".
 		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\">";
 	}
