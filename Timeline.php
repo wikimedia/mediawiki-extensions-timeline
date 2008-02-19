@@ -20,7 +20,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'description'    => 'Timeline extension',
 	'descriptionmsg' => 'timeline-desc',
 );
-$wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/timeline.i18n.php';
+$wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
 
 function wfTimelineExtension() {
 	global $wgParser;
@@ -42,8 +42,8 @@ function renderTimeline( $timelinesrc )
 		fwrite($handle, $timelinesrc);
 		fclose($handle);
 
-		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $IP . "/extensions/timeline/EasyTimeline.pl" ) . 
-		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) . 
+		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $IP . "/extensions/timeline/EasyTimeline.pl" ) .
+		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
 		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath );
 
 		$ret = `{$cmdline}`;
@@ -57,7 +57,7 @@ function renderTimeline( $timelinesrc )
 
 	}
 
-	@$err=file_get_contents( $fname.".err" ); 
+	@$err=file_get_contents( $fname.".err" );
 
 	if ( $err != "" ) {
 		$txt = "<div id=\"toc\"><tt>$err</tt></div>";
