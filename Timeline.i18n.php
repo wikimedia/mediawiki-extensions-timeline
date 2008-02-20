@@ -32,6 +32,14 @@ $messages['de'] = array(
 	'timeline-desc' => 'Fügt das <tt>&lt;timeline&gt;</tt>-Tag zur Erstellung von Zeitleisten hinzu',
 );
 
+/** فارسی (فارسی)
+ * @author Huji
+ */
+$messages['fa'] = array(
+	'timeline-desc' => 'برچسب <tt>&lt;timeline&gt;</tt> را برای نمایش خطوط زمانی می‌افزاید',
+
+);
+
 /** French (Français)
  * @author Grondin
  */
