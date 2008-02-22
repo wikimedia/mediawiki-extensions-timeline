@@ -11,6 +11,13 @@ $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 );
 
+/** Aragonese (Aragonés)
+ * @author Juanpabl
+ */
+$messages['an'] = array(
+	'timeline-desc' => "Adibe a etiqueta <tt>&lt;timeline&gt;</tt> ta creyar linias d'o tiempo",
+);
+
 /** Arabic (العربية)
  * @author Meno25
  */
