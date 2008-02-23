@@ -47,6 +47,13 @@ $messages['fa'] = array(
 
 );
 
+/** Finnish (Suomi)
+ * @author Crt
+ */
+$messages['fi'] = array(
+	'timeline-desc' => 'Lisää <tt>&lt;timeline&gt;</tt>-tagin aikajanan luomiseksi.',
+);
+
 /** French (Français)
  * @author Grondin
  */
@@ -68,11 +75,25 @@ $messages['hsb'] = array(
 	'timeline-desc' => 'Přidawa tafličku <tt>&lt;timeline&gt;</tt> za wutworjenje časowych lajstow',
 );
 
+/** Hungarian (Magyar)
+ * @author Bdanee
+ */
+$messages['hu'] = array(
+	'timeline-desc' => 'Idővonal készítése a <tt>&lt;timeline&gt;</tt> tag segítségével',
+);
+
 /** Japanese (日本語)
  * @author JtFuruhata
  */
 $messages['ja'] = array(
 	'timeline-desc' => '年表を作成するための <tt>&lt;timeline&gt;</tt> タグを追加する',
+);
+
+/** Limburgish (Limburgs)
+ * @author Matthias
+ */
+$messages['li'] = array(
+	'timeline-desc' => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tiedliene te make',
 );
 
 /** Lithuanian (Lietuvių)
