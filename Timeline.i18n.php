@@ -82,6 +82,13 @@ $messages['hu'] = array(
 	'timeline-desc' => 'Idővonal készítése a <tt>&lt;timeline&gt;</tt> tag segítségével',
 );
 
+/** Italian (Italiano)
+ * @author BrokenArrow
+ */
+$messages['it'] = array(
+	'timeline-desc' => 'Aggiunge il tag <tt>&lt;timeline&gt;</tt> per creare grafici temporali',
+);
+
 /** Japanese (日本語)
  * @author JtFuruhata
  */
