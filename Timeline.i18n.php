@@ -131,6 +131,13 @@ $messages['no'] = array(
 	'timeline-desc' => 'Legger til taggen <tt>&lt;timeline&gt;</tt> for å opprette tidslinjer',
 );
 
+/** Occitan (Occitan)
+ * @author Cedric31
+ */
+$messages['oc'] = array(
+	'timeline-desc' => 'Ajusta la balisa <tt>&lt;timeline&gt;</tt> per crear de frisas cronologicas',
+);
+
 /** Polish (Polski)
  * @author Sp5uhe
  */
