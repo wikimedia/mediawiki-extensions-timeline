@@ -25,6 +25,13 @@ $messages['ar'] = array(
 	'timeline-desc' => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
 );
 
+/** Bulgarian (Български)
+ * @author DCLXVI
+ */
+$messages['bg'] = array(
+	'timeline-desc' => 'Добавя етикета <tt>&lt;timeline&gt;</tt> за създаване на времеви линии',
+);
+
 /** Czech (Česky)
  * @author Li-sung
  */
