@@ -180,6 +180,20 @@ $messages['sv'] = array(
 	'timeline-desc' => 'Lägger till taggen <tt>&lt;timeline&gt;</tt> för att skapa tidslinjer',
 );
 
+/** Telugu (తెలుగు)
+ * @author Veeven
+ */
+$messages['te'] = array(
+	'timeline-desc' => 'కాలరేఖలని సృష్టించడానికై <tt>&lt;timeline&gt;</tt> అనే టాగుని చేరుస్తుంది',
+);
+
+/** Tajik (Тоҷикӣ)
+ * @author Ibrahim
+ */
+$messages['tg'] = array(
+	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
+);
+
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  */
