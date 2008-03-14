@@ -124,6 +124,13 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Laiko grafiko sukūrimui įstatyk žymę <tt>&lt;timeline&gt;</tt>',
 );
 
+/** Low German (Plattdüütsch)
+ * @author Slomox
+ */
+$messages['nds'] = array(
+	'timeline-desc' => 'Föögt dat <tt>&lt;timeline&gt;</tt>-Tag för dat Opstellen vun Tietliesten to',
+);
+
 /** Dutch (Nederlands)
  * @author Siebrand
  */
