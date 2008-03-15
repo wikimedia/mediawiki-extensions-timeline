@@ -124,6 +124,13 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Laiko grafiko sukūrimui įstatyk žymę <tt>&lt;timeline&gt;</tt>',
 );
 
+/** Marathi (मराठी)
+ * @author Kaustubh
+ */
+$messages['mr'] = array(
+	'timeline-desc' => 'टाईमलाईन तयार करण्यासाठी <tt>&lt;timeline&gt;</tt> टॅग वाढवितो',
+);
+
 /** Low German (Plattdüütsch)
  * @author Slomox
  */
