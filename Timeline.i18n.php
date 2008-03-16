@@ -110,6 +110,13 @@ $messages['ja'] = array(
 	'timeline-desc' => '年表を作成するための <tt>&lt;timeline&gt;</tt> タグを追加する',
 );
 
+/** Jutish (Jysk)
+ * @author Huslåke
+ */
+$messages['jut'] = array(
+	'timeline-desc' => 'Tilføje <tt>&lt;timeline&gt;</tt> tag til kreåsje der tiidlejner',
+);
+
 /** Limburgish (Limburgs)
  * @author Matthias
  */
