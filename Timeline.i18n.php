@@ -83,7 +83,7 @@ $messages['hsb'] = array(
 );
 
 /** Hungarian (Magyar)
- * @author Bdanee
+ * @author Dani
  */
 $messages['hu'] = array(
 	'timeline-desc' => 'Idővonal készítése a <tt>&lt;timeline&gt;</tt> tag segítségével',
