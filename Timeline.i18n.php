@@ -194,6 +194,13 @@ $messages['sk'] = array(
 	'timeline-desc' => 'Pridáva značku <tt>&lt;timeline&gt;</tt> pre tvorbu časových línií',
 );
 
+/** Sundanese (Basa Sunda)
+ * @author Kandar
+ */
+$messages['su'] = array(
+	'timeline-desc' => 'Nambahkeun tag <tt>&lt;timeline&gt;</tt> pikeun nyieun gurat waktu',
+);
+
 /** Swedish (Svenska)
  * @author Lejonel
  */
