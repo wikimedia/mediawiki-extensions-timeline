@@ -229,3 +229,23 @@ $messages['vi'] = array(
 	'timeline-desc' => 'Thêm thẻ <tt>&lt;timeline&gt;</tt> để xây dựng các thời biểu',
 );
 
+/** Cantonese
+ * @author Shinjiman
+ */
+$messages['yue'] = array(
+	'timeline-desc' => '加 <tt>&lt;timeline&gt;</tt> 標籤去建立時間綫',
+);
+
+/** Chinese (Simplified)
+ * @author Shinjiman
+ */
+$messages['zh-hans'] = array(
+	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 标签以建立时间线',
+);
+
+/** Chinese (Traditional)
+ * @author Shinjiman
+ */
+$messages['zh-hant'] = array(
+	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 標籤以建立時間線',
+);
