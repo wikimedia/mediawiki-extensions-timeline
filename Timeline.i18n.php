@@ -218,7 +218,7 @@ $messages['te'] = array(
 /** Tajik (Тоҷикӣ)
  * @author Ibrahim
  */
-$messages['tg'] = array(
+$messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
 );
 
