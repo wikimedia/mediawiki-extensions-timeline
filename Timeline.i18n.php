@@ -75,6 +75,13 @@ $messages['frp'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por crèar des frises cronologiques.',
 );
 
+/** Hindi (हिन्दी)
+ * @author Kaustubh
+ */
+$messages['hi'] = array(
+	'timeline-desc' => 'टाईमलाईन तैयार करने के लिये <tt>&lt;timeline&gt;</tt> टैग देता हैं',
+);
+
 /** Upper Sorbian (Hornjoserbsce)
  * @author Michawiki
  */
@@ -249,3 +256,4 @@ $messages['zh-hans'] = array(
 $messages['zh-hant'] = array(
 	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 標籤以建立時間線',
 );
+
