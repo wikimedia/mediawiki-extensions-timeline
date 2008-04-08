@@ -229,6 +229,13 @@ $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
 );
 
+/** Vèneto (Vèneto)
+ * @author Candalua
+ */
+$messages['vec'] = array(
+	'timeline-desc' => 'Zonta el tag <tt>&lt;timeline&gt;</tt> par crear grafici tenporali',
+);
+
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  */
