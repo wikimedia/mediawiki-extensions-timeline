@@ -138,6 +138,13 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Laiko grafiko sukūrimui įstatyk žymę <tt>&lt;timeline&gt;</tt>',
 );
 
+/** Malayalam (മലയാളം)
+ * @author Shijualex
+ */
+$messages['ml'] = array(
+	'timeline-desc' => 'നാള്‍ വഴി ഉണ്ടാക്കുവാന്‍ വേണ്ടി <tt>&lt;timeline&gt;</tt> എന്ന ടാഗ് ചേര്‍ക്കുന്നു',
+);
+
 /** Marathi (मराठी)
  * @author Kaustubh
  */
