@@ -124,6 +124,13 @@ $messages['jut'] = array(
 	'timeline-desc' => 'Tilføje <tt>&lt;timeline&gt;</tt> tag til kreåsje der tiidlejner',
 );
 
+/** Javanese (Basa Jawa)
+ * @author Meursault2004
+ */
+$messages['jv'] = array(
+	'timeline-desc' => 'Nambahaké tag <tt>&lt;timeline&gt;</tt> kanggo nggawé garis wektu',
+);
+
 /** Limburgish (Limburgs)
  * @author Matthias
  */
