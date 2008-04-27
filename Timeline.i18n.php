@@ -208,6 +208,13 @@ $messages['ru'] = array(
 	'timeline-desc' => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
 );
 
+/** Yakut (Саха тыла)
+ * @author HalanTul
+ */
+$messages['sah'] = array(
+	'timeline-desc' => 'Кэм шкалаатын оҥорорго анаан <tt>&lt;timeline&gt;</tt> тиэги эбэр',
+);
+
 /** Slovak (Slovenčina)
  * @author Helix84
  */
