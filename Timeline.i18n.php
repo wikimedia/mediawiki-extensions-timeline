@@ -46,6 +46,13 @@ $messages['de'] = array(
 	'timeline-desc' => 'Fügt das <tt>&lt;timeline&gt;</tt>-Tag zur Erstellung von Zeitleisten hinzu',
 );
 
+/** Esperanto (Esperanto)
+ * @author Yekrats
+ */
+$messages['eo'] = array(
+	'timeline-desc' => 'Aldonas etikedon <tt>&lt;timeline&gt;</tt> por krei tempoaksojn',
+);
+
 /** فارسی (فارسی)
  * @author Huji
  */
