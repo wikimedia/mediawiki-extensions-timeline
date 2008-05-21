@@ -216,7 +216,7 @@ $messages['pt'] = array(
 );
 
 /** Russian (Русский)
- * @author .:Ajvol:.
+ * @author Александр Сигачёв
  */
 $messages['ru'] = array(
 	'timeline-desc' => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
