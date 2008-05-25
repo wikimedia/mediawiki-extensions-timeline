@@ -145,6 +145,13 @@ $messages['jv'] = array(
 	'timeline-desc' => 'Nambahaké tag <tt>&lt;timeline&gt;</tt> kanggo nggawé garis wektu',
 );
 
+/** Luxembourgish (Lëtzebuergesch)
+ * @author Robby
+ */
+$messages['lb'] = array(
+	'timeline-desc' => 'Setzt den <tt>&lt;timeline&gt;</tt> Tag derbäi fir Zäitlinnen ze maachen',
+);
+
 /** Limburgish (Limburgs)
  * @author Matthias
  */
