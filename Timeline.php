@@ -11,7 +11,12 @@ $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 
-$wgExtensionFunctions[] = "wfTimelineExtension";
+if ( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
+	$wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
+} else {
+	$wgExtensionFunctions[] = 'wfTimelineExtension';
+}
+
 $wgExtensionCredits['parserhook'][] = array(
 	'name'           => 'EasyTimeline',
 	'author'         => 'Erik Zachte',
@@ -26,6 +31,7 @@ $wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php'
 function wfTimelineExtension() {
 	global $wgParser;
 	$wgParser->setHook( "timeline", "renderTimeline" );
+	return true;
 }
 
 function renderTimeline( $timelinesrc )
