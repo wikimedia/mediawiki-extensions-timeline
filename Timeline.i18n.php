@@ -89,6 +89,13 @@ $messages['frp'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por crèar des frises cronologiques.',
 );
 
+/** Hebrew (עברית)
+ * @author Rotem Liss
+ */
+$messages['he'] = array(
+	'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+);
+
 /** Hindi (हिन्दी)
  * @author Kaustubh
  */
