@@ -89,6 +89,13 @@ $messages['frp'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por crèar des frises cronologiques.',
 );
 
+/** Galician (Galego)
+ * @author Toliño
+ */
+$messages['gl'] = array(
+	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
+);
+
 /** Hebrew (עברית)
  * @author Rotem Liss
  */
@@ -185,6 +192,13 @@ $messages['ml'] = array(
  */
 $messages['mr'] = array(
 	'timeline-desc' => 'टाईमलाईन तयार करण्यासाठी <tt>&lt;timeline&gt;</tt> टॅग वाढवितो',
+);
+
+/** Malay (Bahasa Melayu)
+ * @author Aviator
+ */
+$messages['ms'] = array(
+	'timeline-desc' => 'Menambah tag <tt>&lt;timeline&gt;</tt> untuk mencipta garis masa',
 );
 
 /** Low German (Plattdüütsch)
