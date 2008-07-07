@@ -292,6 +292,13 @@ $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
 );
 
+/** Ukrainian (Українська)
+ * @author Ahonc
+ */
+$messages['uk'] = array(
+	'timeline-desc' => 'Додає тег <tt>&lt;timeline&gt;</tt> для створення часових шкал',
+);
+
 /** Vèneto (Vèneto)
  * @author Candalua
  */
