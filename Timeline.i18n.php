@@ -53,6 +53,13 @@ $messages['de'] = array(
 	'timeline-desc' => 'Fügt das <tt>&lt;timeline&gt;</tt>-Tag zur Erstellung von Zeitleisten hinzu',
 );
 
+/** Lower Sorbian (Dolnoserbski)
+ * @author Michawiki
+ */
+$messages['dsb'] = array(
+	'timeline-desc' => 'Pśidawa toflicku <tt>&lt;timeline&gt;</tt> za napóranje casoweje bałki',
+);
+
 /** Esperanto (Esperanto)
  * @author Yekrats
  */
