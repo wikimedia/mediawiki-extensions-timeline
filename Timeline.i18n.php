@@ -67,12 +67,11 @@ $messages['eo'] = array(
 	'timeline-desc' => 'Aldonas etikedon <tt>&lt;timeline&gt;</tt> por krei tempoaksojn',
 );
 
-/** فارسی (فارسی)
+/** Persian (فارسی)
  * @author Huji
  */
 $messages['fa'] = array(
 	'timeline-desc' => 'برچسب <tt>&lt;timeline&gt;</tt> را برای نمایش خطوط زمانی می‌افزاید',
-
 );
 
 /** Finnish (Suomi)
@@ -222,7 +221,7 @@ $messages['nl'] = array(
 	'timeline-desc' => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
 );
 
-/** Norwegian (‪Norsk (bokmål)‬)
+/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Jon Harald Søby
  */
 $messages['no'] = array(
@@ -292,7 +291,7 @@ $messages['te'] = array(
 	'timeline-desc' => 'కాలరేఖలని సృష్టించడానికై <tt>&lt;timeline&gt;</tt> అనే టాగుని చేరుస్తుంది',
 );
 
-/** Tajik (Тоҷикӣ)
+/** Tajik (Cyrillic) (Тоҷикӣ/tojikī (Cyrillic))
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
@@ -320,21 +319,21 @@ $messages['vi'] = array(
 	'timeline-desc' => 'Thêm thẻ <tt>&lt;timeline&gt;</tt> để xây dựng các thời biểu',
 );
 
-/** Cantonese
+/** Yue (粵語)
  * @author Shinjiman
  */
 $messages['yue'] = array(
 	'timeline-desc' => '加 <tt>&lt;timeline&gt;</tt> 標籤去建立時間綫',
 );
 
-/** Chinese (Simplified)
+/** Simplified Chinese (‪中文(简体)‬)
  * @author Shinjiman
  */
 $messages['zh-hans'] = array(
 	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 标签以建立时间线',
 );
 
-/** Chinese (Traditional)
+/** Traditional Chinese (‪中文(繁體)‬)
  * @author Shinjiman
  */
 $messages['zh-hant'] = array(
