@@ -11,6 +11,13 @@ $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 );
 
+/** Afrikaans (Afrikaans)
+ * @author Naudefj
+ */
+$messages['af'] = array(
+	'timeline-desc' => 'Maak die <tt>&lt;timeline&gt;</tt> etiket beskikbaar om tydslyne te maak',
+);
+
 /** Aragonese (Aragonés)
  * @author Juanpabl
  */
@@ -268,6 +275,13 @@ $messages['sah'] = array(
  */
 $messages['sk'] = array(
 	'timeline-desc' => 'Pridáva značku <tt>&lt;timeline&gt;</tt> pre tvorbu časových línií',
+);
+
+/** Serbian Cyrillic ekavian (ћирилица)
+ * @author Millosh
+ */
+$messages['sr-ec'] = array(
+	'timeline-desc' => 'Додаје <tt>&lt;timeline&gt;</tt> ознаку за стварање временских оса.',
 );
 
 /** Sundanese (Basa Sunda)
