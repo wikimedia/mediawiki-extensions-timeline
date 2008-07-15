@@ -39,6 +39,13 @@ $messages['ast'] = array(
 	'timeline-desc' => 'Añade la etiqueta <tt>&lt;timeline&gt;</tt> pa crear llinies de tiempu',
 );
 
+/** Southern Balochi (بلوچی مکرانی)
+ * @author Mostafadaneshvar
+ */
+$messages['bcc'] = array(
+	'timeline-desc' => 'هورکنت <tt>&lt;timeline&gt;</tt>برچسپء په شرکتن خط زمان',
+);
+
 /** Bulgarian (Български)
  * @author DCLXVI
  */
