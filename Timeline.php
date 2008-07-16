@@ -81,7 +81,5 @@ function renderTimeline( $timelinesrc )
 		        "<img usemap=\"#timeline_{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\" alt=\"" . 
 					wfMsgReplaceArgs('timeline', $wgTitle->getPrefixedText() ) . "\">";
 	}
-
-	}
 	return $txt;
 }
