@@ -60,7 +60,7 @@ function renderTimeline( $timelinesrc )
 
 		if ( $ret == "" ) {
 			$error = htmlspecialchars( wfMsg( 'timeline-install-error', $cmdline ) );
-			return "<div id=\"toc\"><tt>$eror</tt></div>";
+			return "<div id=\"toc\"><tt>$error</tt></div>";
 		}
 
 	}
