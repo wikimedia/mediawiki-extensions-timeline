@@ -39,6 +39,7 @@ function renderTimeline( $timelinesrc )
 	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgArticlePath, $wgTmpDirectory;
 	$hash = md5( $timelinesrc );
 	$dest = $wgUploadDirectory."/timeline/";
+	wfLoadExtensionMessages('Timeline');
 	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
 	if ( ! is_dir( $wgTmpDirectory ) ) { mkdir( $wgTmpDirectory, 0777 ); }
 
@@ -58,8 +59,7 @@ function renderTimeline( $timelinesrc )
 		unlink($fname);
 
 		if ( $ret == "" ) {
-			// Message not localized, only relevant during install
-			return "<div id=\"toc\"><tt>Timeline error: Executable not found. Command line was: {$cmdline}</tt></div>";
+			return "<div id=\"toc\"><tt>" . wfMsgReplaceArgs( 'timeline-install-error', $cmdline ) . "</tt></div>";
 		}
 
 	}
@@ -77,8 +77,11 @@ function renderTimeline( $timelinesrc )
 			$ext = "png";
 		}
 
-		$txt  = "<map name=\"$hash\">{$map}</map>".
-		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\">";
+		$txt  = "<map id=\"timeline_$hash\">{$map}</map>".
+		        "<img usemap=\"#timeline_{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\" alt=\"" . 
+					wfMsgReplaceArgs('timeline', $wgTitle->getPrefixedText() ) . "\">";
+	}
+
 	}
 	return $txt;
 }
