@@ -10,7 +10,7 @@ $messages = array();
 $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 	'timeline-install-error' => 'Timeline error: Executable not found. Command line was: $1',
-	'timeline' => 'Timeline for $1', // Where $1 is the article name
+	'timeline' => 'Timeline for page $1', // Where $1 is the page name
 );
 
 /** Afrikaans (Afrikaans)
