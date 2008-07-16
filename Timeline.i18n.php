@@ -115,7 +115,9 @@ $messages['frp'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
-	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
+	'timeline-desc'          => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
+	'timeline-install-error' => 'Erro na liña de tempo: o ficheiro executable non foi atopado. A liña do comandos foi: $1',
+	'timeline'               => 'Liña de tempo de $1',
 );
 
 /** Hebrew (עברית)
@@ -148,9 +150,12 @@ $messages['hu'] = array(
 
 /** Indonesian (Bahasa Indonesia)
  * @author IvanLanin
+ * @author Rex
  */
 $messages['id'] = array(
-	'timeline-desc' => 'Menambahkan tag <tt>&lt;timeline&gt;</tt> untuk membuat garis waktu',
+	'timeline-desc'          => 'Menambahkan tag <tt>&lt;timeline&gt;</tt> untuk membuat garis waktu',
+	'timeline-install-error' => 'Kesalahan garis waktu: Berkas tidak dapat dijalankan karena tidak ditemukan. Baris perintah adalah: $1',
+	'timeline'               => 'Garis waktu untuk $1',
 );
 
 /** Italian (Italiano)
@@ -220,7 +225,9 @@ $messages['mr'] = array(
  * @author Aviator
  */
 $messages['ms'] = array(
-	'timeline-desc' => 'Menambah tag <tt>&lt;timeline&gt;</tt> untuk mencipta garis masa',
+	'timeline-desc'          => 'Menambah tag <tt>&lt;timeline&gt;</tt> untuk mencipta garis masa',
+	'timeline-install-error' => 'Ralat garis masa: Fail boleh laksana tidak dijumpai. Baris perintah ialah: $1',
+	'timeline'               => 'Garis masa bagi laman $1',
 );
 
 /** Low German (Plattdüütsch)
@@ -255,7 +262,8 @@ $messages['oc'] = array(
  * @author Sp5uhe
  */
 $messages['pl'] = array(
-	'timeline-desc' => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
+	'timeline-desc'          => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
+	'timeline-install-error' => 'Błąd instalacji osi czasu – Nie odnaleziono programu. Linia poleceń zawierała: $1',
 );
 
 /** Portuguese (Português)
@@ -269,7 +277,9 @@ $messages['pt'] = array(
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
-	'timeline-desc' => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
+	'timeline-desc'          => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
+	'timeline-install-error' => 'Ошибка временной шкалы. Исполняемый файл не найден. Команда была: $1',
+	'timeline'               => 'Временная шкала для $1',
 );
 
 /** Yakut (Саха тыла)
@@ -302,9 +312,13 @@ $messages['su'] = array(
 
 /** Swedish (Svenska)
  * @author Lejonel
+ * @author M.M.S.
+ * @author Boivie
  */
 $messages['sv'] = array(
-	'timeline-desc' => 'Lägger till taggen <tt>&lt;timeline&gt;</tt> för att skapa tidslinjer',
+	'timeline-desc'          => 'Lägger till taggen <tt>&lt;timeline&gt;</tt> för att skapa tidslinjer',
+	'timeline-install-error' => 'Tidslinjefel: Executable ej funnen. Kommandorad var: $1',
+	'timeline'               => 'Tidslinje för $1',
 );
 
 /** Telugu (తెలుగు)
