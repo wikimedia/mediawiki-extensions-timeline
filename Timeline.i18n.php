@@ -31,7 +31,9 @@ $messages['an'] = array(
  * @author Meno25
  */
 $messages['ar'] = array(
-	'timeline-desc' => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
+	'timeline-desc'          => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
+	'timeline-install-error' => 'خطأ إطار زمني: المنفذ لم يتم العثور عليه. سطر الأمر كان: $1',
+	'timeline'               => 'إطار زمني للصفحة $1',
 );
 
 /** Asturian (Asturianu)
@@ -101,7 +103,9 @@ $messages['fi'] = array(
  * @author Grondin
  */
 $messages['fr'] = array(
-	'timeline-desc' => 'Ajoute la balise <tt>&lt;timeline&gt;</tt> pour créer des frises chronologiques',
+	'timeline-desc'          => 'Ajoute la balise <tt>&lt;timeline&gt;</tt> pour créer des frises chronologiques',
+	'timeline-install-error' => 'Erreur de ligne de temps : Fichier exécutable introuvable. La ligne de commande était : $1',
+	'timeline'               => 'Ligne de temps pour la page $1',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -243,7 +247,9 @@ $messages['nds'] = array(
  * @author Siebrand
  */
 $messages['nl'] = array(
-	'timeline-desc' => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
+	'timeline-desc'          => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
+	'timeline-install-error' => 'Fout in timeline: het uitvoerbare bestand is niet aangetroffen. De commandoregel was: $1',
+	'timeline'               => 'Tijdlijn voor pagina $1',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
@@ -266,6 +272,7 @@ $messages['oc'] = array(
 $messages['pl'] = array(
 	'timeline-desc'          => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
 	'timeline-install-error' => 'Błąd instalacji osi czasu – Nie odnaleziono programu. Linia poleceń zawierała: $1',
+	'timeline'               => 'Oś czasu dla strony $1',
 );
 
 /** Portuguese (Português)
