@@ -124,7 +124,9 @@ $messages['gl'] = array(
  * @author Rotem Liss
  */
 $messages['he'] = array(
-	'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+	'timeline-desc'          => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+	'timeline-install-error' => 'שגיאת ציר זמן: לא נמצא קובץ ההרצה. הפקודה הייתה:: $1',
+	'timeline'               => 'ציר זמן לדף $1', // Where $1 is the page name
 );
 
 /** Hindi (हिन्दी)
