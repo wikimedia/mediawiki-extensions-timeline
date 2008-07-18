@@ -48,6 +48,7 @@ $messages['ast'] = array(
  */
 $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <tt>&lt;timeline&gt;</tt>برچسپء په شرکتن خط زمان',
+	'timeline'      => 'خط زمان په صفحه $1',
 );
 
 /** Bulgarian (Български)
