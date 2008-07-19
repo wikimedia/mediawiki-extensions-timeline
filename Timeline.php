@@ -78,10 +78,8 @@ function renderTimeline( $timelinesrc )
 			$ext = "png";
 		}
 
-		$alt = htmlspecialchars( wfMsg('timeline', $wgTitle->getPrefixedText() ) );
-
 		$txt  = "<map id=\"timeline_$hash\">{$map}</map>".
-		        "<img usemap=\"#timeline_{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\" alt=\"$alt\" />";
+		        "<img usemap=\"#timeline_{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\" />";
 	}
 	return $txt;
 }

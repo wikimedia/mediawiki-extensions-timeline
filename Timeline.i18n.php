@@ -10,7 +10,6 @@ $messages = array();
 $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 	'timeline-install-error' => 'Timeline error: Executable not found. Command line was: $1',
-	'timeline' => 'Timeline for page $1', // Where $1 is the page name
 );
 
 /** Afrikaans (Afrikaans)
@@ -33,7 +32,6 @@ $messages['an'] = array(
 $messages['ar'] = array(
 	'timeline-desc'          => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
 	'timeline-install-error' => 'خطأ إطار زمني: المنفذ لم يتم العثور عليه. سطر الأمر كان: $1',
-	'timeline'               => 'إطار زمني للصفحة $1',
 );
 
 /** Asturian (Asturianu)
@@ -48,7 +46,6 @@ $messages['ast'] = array(
  */
 $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <tt>&lt;timeline&gt;</tt>برچسپء په شرکتن خط زمان',
-	'timeline'      => 'خط زمان په صفحه $1',
 );
 
 /** Bulgarian (Български)
@@ -106,7 +103,6 @@ $messages['fi'] = array(
 $messages['fr'] = array(
 	'timeline-desc'          => 'Ajoute la balise <tt>&lt;timeline&gt;</tt> pour créer des frises chronologiques',
 	'timeline-install-error' => 'Erreur de ligne de temps : Fichier exécutable introuvable. La ligne de commande était : $1',
-	'timeline'               => 'Ligne de temps pour la page $1',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -122,7 +118,6 @@ $messages['frp'] = array(
 $messages['gl'] = array(
 	'timeline-desc'          => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
 	'timeline-install-error' => 'Erro na liña de tempo: o ficheiro executable non foi atopado. A liña do comandos foi: $1',
-	'timeline'               => 'Liña de tempo de $1',
 );
 
 /** Hebrew (עברית)
@@ -131,7 +126,6 @@ $messages['gl'] = array(
 $messages['he'] = array(
 	'timeline-desc'          => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
 	'timeline-install-error' => 'שגיאת ציר זמן: לא נמצא קובץ ההרצה. הפקודה הייתה:: $1',
-	'timeline'               => 'ציר זמן לדף $1', // Where $1 is the page name
 );
 
 /** Hindi (हिन्दी)
@@ -162,7 +156,6 @@ $messages['hu'] = array(
 $messages['id'] = array(
 	'timeline-desc'          => 'Menambahkan tag <tt>&lt;timeline&gt;</tt> untuk membuat garis waktu',
 	'timeline-install-error' => 'Kesalahan garis waktu: Berkas tidak dapat dijalankan karena tidak ditemukan. Baris perintah adalah: $1',
-	'timeline'               => 'Garis waktu untuk $1',
 );
 
 /** Italian (Italiano)
@@ -234,7 +227,6 @@ $messages['mr'] = array(
 $messages['ms'] = array(
 	'timeline-desc'          => 'Menambah tag <tt>&lt;timeline&gt;</tt> untuk mencipta garis masa',
 	'timeline-install-error' => 'Ralat garis masa: Fail boleh laksana tidak dijumpai. Baris perintah ialah: $1',
-	'timeline'               => 'Garis masa bagi laman $1',
 );
 
 /** Low German (Plattdüütsch)
@@ -250,7 +242,6 @@ $messages['nds'] = array(
 $messages['nl'] = array(
 	'timeline-desc'          => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
 	'timeline-install-error' => 'Fout in timeline: het uitvoerbare bestand is niet aangetroffen. De commandoregel was: $1',
-	'timeline'               => 'Tijdlijn voor pagina $1',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
@@ -273,7 +264,6 @@ $messages['oc'] = array(
 $messages['pl'] = array(
 	'timeline-desc'          => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
 	'timeline-install-error' => 'Błąd instalacji osi czasu – Nie odnaleziono programu. Linia poleceń zawierała: $1',
-	'timeline'               => 'Oś czasu dla strony $1',
 );
 
 /** Portuguese (Português)
@@ -289,7 +279,6 @@ $messages['pt'] = array(
 $messages['ru'] = array(
 	'timeline-desc'          => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
 	'timeline-install-error' => 'Ошибка временной шкалы. Исполняемый файл не найден. Команда была: $1',
-	'timeline'               => 'Временная шкала для $1',
 );
 
 /** Yakut (Саха тыла)
@@ -328,7 +317,6 @@ $messages['su'] = array(
 $messages['sv'] = array(
 	'timeline-desc'          => 'Lägger till taggen <tt>&lt;timeline&gt;</tt> för att skapa tidslinjer',
 	'timeline-install-error' => 'Tidslinjefel: Executable ej funnen. Kommandorad var: $1',
-	'timeline'               => 'Tidslinje för $1',
 );
 
 /** Telugu (తెలుగు)
