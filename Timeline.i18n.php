@@ -116,6 +116,13 @@ $messages['gl'] = array(
 	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
 );
 
+/** Hebrew (עברית)
+ * @author Rotem Liss
+ */
+$messages['he'] = array(
+    'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+);
+
 /** Hindi (हिन्दी)
  * @author Kaustubh
  */
