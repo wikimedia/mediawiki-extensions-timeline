@@ -144,6 +144,13 @@ $messages['hu'] = array(
 	'timeline-desc' => 'Idővonal készítése a <tt>&lt;timeline&gt;</tt> tag segítségével',
 );
 
+/** Interlingua (Interlingua)
+ * @author McDutchie
+ */
+$messages['ia'] = array(
+	'timeline-desc' => 'Adde le etiquetta <tt>&lt;timeline&gt;</tt> pro crear lineas temporal',
+);
+
 /** Indonesian (Bahasa Indonesia)
  * @author IvanLanin
  */
