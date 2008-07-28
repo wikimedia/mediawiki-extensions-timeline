@@ -109,6 +109,13 @@ $messages['frp'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por crèar des frises cronologiques.',
 );
 
+/** Friulian (Furlan)
+ * @author Klenje
+ */
+$messages['fur'] = array(
+	'timeline-desc' => 'Zonte il tag <tt>&lt;timeline&gt;</tt> par creâ grafics temporâi',
+);
+
 /** Galician (Galego)
  * @author Toliño
  */
@@ -184,6 +191,13 @@ $messages['jut'] = array(
  */
 $messages['jv'] = array(
 	'timeline-desc' => 'Nambahaké tag <tt>&lt;timeline&gt;</tt> kanggo nggawé garis wektu',
+);
+
+/** Ripoarisch (Ripoarisch)
+ * @author Purodha
+ */
+$messages['ksh'] = array(
+	'timeline-desc' => 'Deit dä <tt>&lt;timeline&gt;</tt>-Befäähl em Wiki dobei, wo mer Belldsche med Minnije med ennem Verlauf fun de Zick met maache kann.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
