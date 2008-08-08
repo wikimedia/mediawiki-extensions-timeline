@@ -53,6 +53,13 @@ $messages['bg'] = array(
 	'timeline-desc' => 'Добавя етикета <tt>&lt;timeline&gt;</tt> за създаване на времеви линии',
 );
 
+/** Catalan (Català)
+ * @author Paucabot
+ */
+$messages['ca'] = array(
+	'timeline-desc' => "Afegeix l'etiqueta <tt>&lt;timeline&gt;</tt> per crear cronologies",
+);
+
 /** Czech (Česky)
  * @author Li-sung
  */
