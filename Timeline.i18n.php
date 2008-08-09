@@ -11,6 +11,13 @@ $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 );
 
+/** Message documentation (Message documentation)
+ * @author Raymond
+ */
+$messages['qqq'] = array(
+	'timeline-desc' => 'Extension description displayed on [[Special:Version]]',
+);
+
 /** Afrikaans (Afrikaans)
  * @author Naudefj
  */
@@ -134,7 +141,7 @@ $messages['gl'] = array(
  * @author Rotem Liss
  */
 $messages['he'] = array(
-    'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+	'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
 );
 
 /** Hindi (हिन्दी)
@@ -340,7 +347,7 @@ $messages['te'] = array(
 	'timeline-desc' => 'కాలరేఖలని సృష్టించడానికై <tt>&lt;timeline&gt;</tt> అనే టాగుని చేరుస్తుంది',
 );
 
-/** Tajik (Cyrillic) (Тоҷикӣ/tojikī (Cyrillic))
+/** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
