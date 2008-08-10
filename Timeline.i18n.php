@@ -12,7 +12,7 @@ $messages['en'] = array(
 );
 
 /** Message documentation (Message documentation)
- * @author Raymond
+ * @author Raimond Spekking
  */
 $messages['qqq'] = array(
 	'timeline-desc' => 'Extension description displayed on [[Special:Version]]',
