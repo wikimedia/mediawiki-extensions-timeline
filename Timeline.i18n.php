@@ -151,6 +151,13 @@ $messages['hi'] = array(
 	'timeline-desc' => 'टाईमलाईन तैयार करने के लिये <tt>&lt;timeline&gt;</tt> टैग देता हैं',
 );
 
+/** Croatian (Hrvatski)
+ * @author Dalibor Bosits
+ */
+$messages['hr'] = array(
+	'timeline-desc' => 'Dodaje <tt>&lt;timeline&gt;</tt> oznaku za stvaranje vremenskih linija',
+);
+
 /** Upper Sorbian (Hornjoserbsce)
  * @author Michawiki
  */
