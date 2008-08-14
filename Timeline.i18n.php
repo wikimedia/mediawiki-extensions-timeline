@@ -218,7 +218,7 @@ $messages['jv'] = array(
  * @author Purodha
  */
 $messages['ksh'] = array(
-	'timeline-desc' => 'Deit dä <tt>&lt;timeline&gt;</tt>-Befäähl em Wiki dobei, wo mer Belldsche med Minnije med ennem Verlauf fun de Zick met maache kann.',
+	'timeline-desc' => 'Deit dä <tt>&lt;timeline&gt;</tt>-Befäähl em Wiki dobei, wo mer Belldsche med Linnije med ennem Verlauf fun de Zick met maache kann.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
