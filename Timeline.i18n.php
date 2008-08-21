@@ -39,6 +39,13 @@ $messages['ar'] = array(
 	'timeline-desc' => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
 );
 
+/** Egyptian Spoken Arabic (مصرى)
+ * @author Ramsis II
+ */
+$messages['arz'] = array(
+	'timeline-desc' => 'بيضيف تاج ال <tt>&lt;timeline&gt;</tt> علشان ينشيء خطوط الزمن',
+);
+
 /** Asturian (Asturianu)
  * @author Esbardu
  */
