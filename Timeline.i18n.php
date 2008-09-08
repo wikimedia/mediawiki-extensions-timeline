@@ -221,6 +221,13 @@ $messages['jv'] = array(
 	'timeline-desc' => 'Nambahaké tag <tt>&lt;timeline&gt;</tt> kanggo nggawé garis wektu',
 );
 
+/** Khmer (ភាសាខ្មែរ)
+ * @author Lovekhmer
+ */
+$messages['km'] = array(
+	'timeline-desc' => 'ដាក់ប្លាក<tt>&lt;timeline&gt;</tt>ដើម្បីបង្កើតតារាងពេលវេលា',
+);
+
 /** Ripoarisch (Ripoarisch)
  * @author Purodha
  */
