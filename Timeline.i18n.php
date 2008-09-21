@@ -102,6 +102,13 @@ $messages['eo'] = array(
 	'timeline-desc' => 'Aldonas etikedon <tt>&lt;timeline&gt;</tt> por krei tempoaksojn',
 );
 
+/** Spanish (Español)
+ * @author Remember the dot
+ */
+$messages['es'] = array(
+	'timeline-desc' => 'Añade elemento <tt>&lt;timeline&gt;</tt> para mostrar cronogramas',
+);
+
 /** Persian (فارسی)
  * @author Huji
  */
