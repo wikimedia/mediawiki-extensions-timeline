@@ -309,7 +309,7 @@ $messages['no'] = array(
  * @author Cedric31
  */
 $messages['oc'] = array(
-	'timeline-desc' => 'Apondís la balisa <tt>&lt;timeline&gt;</tt> per crear de frisas cronologicas',
+	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> per crear de frisas cronologicas',
 );
 
 /** Polish (Polski)
