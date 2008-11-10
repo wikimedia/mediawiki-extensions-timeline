@@ -13,6 +13,7 @@ $messages['en'] = array(
 
 /** Message documentation (Message documentation)
  * @author Raimond Spekking
+ * @author Raymond
  */
 $messages['qqq'] = array(
 	'timeline-desc' => 'Extension description displayed on [[Special:Version]]',
@@ -296,6 +297,13 @@ $messages['nds'] = array(
  */
 $messages['nl'] = array(
 	'timeline-desc' => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
+);
+
+/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
+ * @author Frokor
+ */
+$messages['nn'] = array(
+	'timeline-desc' => 'Legg til taggen <tt>&lt;timeline&gt;</tt> for å opprette tidslinjer',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
