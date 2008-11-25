@@ -432,3 +432,10 @@ $messages['zh-hant'] = array(
 	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 標籤以建立時間線',
 );
 
+/** Chinese (Taiwan) (‪中文(台灣)‬)
+ * @author Roc michael
+ */
+$messages['zh-tw'] = array(
+	'timeline-desc' => '新增<tt>&lt;timeline&gt;</tt> 標記以建立時間線',
+);
+
