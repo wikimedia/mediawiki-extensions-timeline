@@ -6,6 +6,11 @@
 
 class TimelineSettings {
 	var $ploticusCommand, $perlCommand;
+	
+	// Update this timestamp to force older rendered timelines
+	// to be generated when the page next gets rendered.
+	// Can help to resolve old image-generation bugs.
+	var $epochTimestamp = '20010115000000';
 };
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
@@ -43,7 +48,14 @@ function renderTimeline( $timelinesrc )
 	if ( ! is_dir( $wgTmpDirectory ) ) { mkdir( $wgTmpDirectory, 0777 ); }
 
 	$fname = $dest . $hash;
-	if ( ! ( file_exists( $fname.".png" ) || file_exists( $fname.".err" ) ) )
+	
+	$previouslyFailed = file_exists( $fname.".err" );
+	$previouslyRendered = file_exists( $fname.".png" );
+	$expired = $previouslyRendered &&
+		(filemtime( $fname.".png" ) <
+			wfTimestamp( TS_UNIX, $wgTimelineSettings->epochTimestamp ) );
+	
+	if ( $expired || ( !$previouslyRendered && !$previouslyFailed ) )
 	{
 		$handle = fopen($fname, "w");
 		fwrite($handle, $timelinesrc);
@@ -77,8 +89,18 @@ function renderTimeline( $timelinesrc )
 			$ext = "png";
 		}
 
+		$url = "{$wgUploadPath}/timeline/{$hash}.{$ext}";
 		$txt  = "<map name=\"$hash\">{$map}</map>".
-		        "<img usemap=\"#{$hash}\" src=\"{$wgUploadPath}/timeline/{$hash}.{$ext}\">";
+		        "<img usemap=\"#{$hash}\" src=\"$url\">";
+		
+		if( $expired ) {
+			// Replacing an older file, we may need to purge the old one.
+			global $wgUseSquid;
+			if( $wgUseSquid ) {
+				$u = new SquidUpdate( array( $url ) );
+				$u->doUpdate();
+			}
+		}
 	}
 	return $txt;
 }
