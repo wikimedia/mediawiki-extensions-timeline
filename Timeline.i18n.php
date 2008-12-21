@@ -348,6 +348,13 @@ $messages['sah'] = array(
 	'timeline-desc' => 'Кэм шкалаатын оҥорорго анаан <tt>&lt;timeline&gt;</tt> тиэги эбэр',
 );
 
+/** Sicilian (Sicilianu)
+ * @author Santu
+ */
+$messages['scn'] = array(
+	'timeline-desc' => 'Nzirisci li tag <tt>&lt;timeline&gt;</tt> pi criari gràfichi timpurali',
+);
+
 /** Slovak (Slovenčina)
  * @author Helix84
  */
