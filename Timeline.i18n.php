@@ -250,6 +250,13 @@ $messages['km'] = array(
 	'timeline-desc' => 'ដាក់ប្លាក<tt>&lt;timeline&gt;</tt>ដើម្បីបង្កើតតារាងពេលវេលា',
 );
 
+/** Korean (한국어)
+ * @author Kwj2772
+ */
+$messages['ko'] = array(
+	'timeline-desc' => '시간표를 만들기 위해 <tt>&lt;timeline&gt;</tt> 태그를 추가',
+);
+
 /** Ripoarisch (Ripoarisch)
  * @author Purodha
  */
