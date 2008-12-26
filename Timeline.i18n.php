@@ -61,6 +61,13 @@ $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <tt>&lt;timeline&gt;</tt>برچسپء په شرکتن خط زمان',
 );
 
+/** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
+ * @author Jim-by
+ */
+$messages['be-tarask'] = array(
+	'timeline-desc' => 'Дадае тэг <tt>&lt;timeline&gt;</tt> для стварэньня часавых шкалаў',
+);
+
 /** Bulgarian (Български)
  * @author DCLXVI
  */
