@@ -418,6 +418,13 @@ $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
 );
 
+/** Tagalog (Tagalog)
+ * @author AnakngAraw
+ */
+$messages['tl'] = array(
+	'timeline-desc' => "Nagdaragdag ng tatak na <tt>&lt;pana-panahon&gt;</tt> upang makalikha ng mga pana-panahon (''timeline'')",
+);
+
 /** Ukrainian (Українська)
  * @author Ahonc
  */
