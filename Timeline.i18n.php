@@ -124,6 +124,13 @@ $messages['es'] = array(
 	'timeline-desc' => 'Añade elemento <tt>&lt;timeline&gt;</tt> para mostrar cronogramas',
 );
 
+/** Basque (Euskara)
+ * @author Theklan
+ */
+$messages['eu'] = array(
+	'timeline-desc' => '<tt>&lt;timeline&gt;</tt> etiketa gehitzeko du denbora-lerroak sortzeko',
+);
+
 /** Persian (فارسی)
  * @author Huji
  */
