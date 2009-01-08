@@ -173,6 +173,13 @@ $messages['gl'] = array(
 	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
 );
 
+/** Swiss German (Alemannisch)
+ * @author Als-Holder
+ */
+$messages['gsw'] = array(
+	'timeline-desc' => 'Fiegt s <tt>&lt;timeline&gt;</tt>-Tag fir s Aalege vu Zytleischte yy',
+);
+
 /** Hebrew (עברית)
  * @author Rotem Liss
  */
@@ -395,6 +402,13 @@ $messages['sk'] = array(
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <tt>&lt;timeline&gt;</tt> ознаку за стварање временских оса.',
+);
+
+/** Seeltersk (Seeltersk)
+ * @author Pyt
+ */
+$messages['stq'] = array(
+	'timeline-desc' => 'Föiget dät <tt>&lt;timeline&gt;</tt>-Tag tou dät Moakjen fon Tiedliesten bietou',
 );
 
 /** Sundanese (Basa Sunda)
