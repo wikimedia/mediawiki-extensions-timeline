@@ -369,6 +369,13 @@ $messages['pt'] = array(
 	'timeline-desc' => 'Adiciona a marca <tt>&lt;timeline&gt;</tt> para criar linhas temporais',
 );
 
+/** Tarandíne (Tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'timeline-desc' => "Aggiunge 'u tag <tt>&lt;timeline&gt;</tt> pe ccreà le linee de timbe",
+);
+
 /** Russian (Русский)
  * @author Александр Сигачёв
  */
@@ -444,6 +451,13 @@ $messages['tg-cyrl'] = array(
  */
 $messages['tl'] = array(
 	'timeline-desc' => "Nagdaragdag ng tatak na <tt>&lt;pana-panahon&gt;</tt> upang makalikha ng mga pana-panahon (''timeline'')",
+);
+
+/** Turkish (Türkçe)
+ * @author Joseph
+ */
+$messages['tr'] = array(
+	'timeline-desc' => 'Zaman çizelgesi oluşturmak için <tt>&lt;timeline&gt;</tt> etiketini ekler',
 );
 
 /** Ukrainian (Українська)
