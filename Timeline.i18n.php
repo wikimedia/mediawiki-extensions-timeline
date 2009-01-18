@@ -75,6 +75,14 @@ $messages['bg'] = array(
 	'timeline-desc' => 'Добавя етикета <tt>&lt;timeline&gt;</tt> за създаване на времеви линии',
 );
 
+/** Bengali (বাংলা)
+ * @author Abdullah Harun Jewel
+ */
+$messages['bn'] = array(
+	'timeline-desc' => 'সময়সীমা নির্ধারণ
+সময়সীমা নির্ধারণ ট্যাগ ব্যবহার করতে যুক্ত করুন: <tt>&lt;timeline&gt;</tt>',
+);
+
 /** Bosnian (Bosanski)
  * @author CERminator
  */
