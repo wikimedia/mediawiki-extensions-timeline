@@ -1,12 +1,14 @@
 <?php
 /**
- * Internationalisation file for Timeline extension.
+ * Internationalisation file for EasyTimeline extension.
  *
- * @addtogroup Extensions
+ * @file
+ * @ingroup Extensions
  */
 
 $messages = array();
 
+/** English */
 $messages['en'] = array(
 	'timeline-desc' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 );
