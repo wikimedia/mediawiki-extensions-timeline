@@ -25,7 +25,7 @@ class TimelineSettings {
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
-$wgTimelineSettings->timelineFile = '/extensions/timeline/EasyTimeline.pl';
+$wgTimelineSettings->timelineFile = "$IP/extensions/timeline/EasyTimeline.pl";
 
 if ( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
 	$wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
@@ -70,7 +70,7 @@ function renderTimeline( $timelinesrc ){
 		fwrite($handle, $timelinesrc);
 		fclose($handle);
 
-		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $IP . $wgTimelineSettings->timelineFile ) .
+		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
 		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
 		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath );
 
