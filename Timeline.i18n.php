@@ -379,6 +379,13 @@ $messages['pt'] = array(
 	'timeline-desc' => 'Adiciona a marca <tt>&lt;timeline&gt;</tt> para criar linhas temporais',
 );
 
+/** Brazilian Portuguese (Português do Brasil)
+ * @author Eduardo.mps
+ */
+$messages['pt-br'] = array(
+	'timeline-desc' => 'Adiciona a marca <tt>&lt;timeline&gt;</tt> para criar linhas de tempo',
+);
+
 /** Tarandíne (Tarandíne)
  * @author Joetaras
  */
