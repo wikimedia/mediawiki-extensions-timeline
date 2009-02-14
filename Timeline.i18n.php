@@ -120,6 +120,13 @@ $messages['dsb'] = array(
 	'timeline-desc' => 'Pśidawa toflicku <tt>&lt;timeline&gt;</tt> za napóranje casoweje bałki',
 );
 
+/** Greek (Ελληνικά)
+ * @author Dead3y3
+ */
+$messages['el'] = array(
+	'timeline-desc' => 'Προσθέτει την ετικέτα <tt>&lt;timeline&gt;</tt> για την δημιουργία χρονολογιών',
+);
+
 /** Esperanto (Esperanto)
  * @author Yekrats
  */
