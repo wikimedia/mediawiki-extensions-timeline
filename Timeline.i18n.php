@@ -310,10 +310,11 @@ $messages['li'] = array(
 );
 
 /** Lithuanian (Lietuvių)
+ * @author Garas
  * @author Vpovilaitis
  */
 $messages['lt'] = array(
-	'timeline-desc' => 'Laiko grafiko sukūrimui įstatyk žymę <tt>&lt;timeline&gt;</tt>',
+	'timeline-desc' => 'Sukuria laiko grafikus naudojant gairę <tt>&lt;timeline&gt;</tt>',
 );
 
 /** Malayalam (മലയാളം)
