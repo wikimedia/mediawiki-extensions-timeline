@@ -34,6 +34,7 @@ if ( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
 }
 
 $wgExtensionCredits['parserhook'][] = array(
+	'path' => __FILE__,
 	'name' => 'EasyTimeline',
 	'author' => 'Erik Zachte',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:EasyTimeline',
