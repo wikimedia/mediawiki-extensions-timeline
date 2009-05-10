@@ -173,7 +173,7 @@ $messages['fr'] = array(
  * @author ChrisPtDe
  */
 $messages['frp'] = array(
-	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por crèar des frises cronologiques.',
+	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por fâre des diagramos cronologicos.',
 );
 
 /** Friulian (Furlan)
