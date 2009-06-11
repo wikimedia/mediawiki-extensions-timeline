@@ -190,6 +190,13 @@ $messages['gl'] = array(
 	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
 );
 
+/** Ancient Greek (Ἀρχαία ἑλληνικὴ)
+ * @author Omnipaedista
+ */
+$messages['grc'] = array(
+	'timeline-desc' => 'Προσθέτει τὴν πινακίδα <timeline> καὶ οὕτως ποιεῖ χρονολογίας',
+);
+
 /** Swiss German (Alemannisch)
  * @author Als-Holder
  */
