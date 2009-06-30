@@ -3381,17 +3381,20 @@ sub WritePlotFile
   print FILE_OUT &DecodeInput($script) ;
   close "FILE_OUT" ;
 
-  $map = ($MapPNG && $linkmap) ? "-csmap" : "";
-  if ($linkmap && $showmap)
-  { $map .= " -csmapdemo" ; }
+  if ($MapPNG && $linkmap) {
+	$map = "-csmap -mapfile " . EscapeShellArg($file_htmlmap);
+  } elsif ($linkmap && $showmap) { 
+	$map = "-csmapdemo -mapfile ". EscapeShellArg($file_htmlmap);
+  } else {
+	$map = '';
+  }
 
 # $crop = "-crop 0,0," + @ImageSize {"width"} . "," . @ImageSize {"height"} ;
   print "Running Ploticus to generate bitmap\n" ;
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop" ; # -v $file_bitmap" ;
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
   $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " .
-    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop -font FreeSans.ttf" .
-    " -mapfile " . EscapeShellArg($file_htmlmap) ;
+    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop -font FreeSans.ttf";
   print "$cmd\n";
   system ($cmd) ;
 
