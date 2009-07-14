@@ -281,6 +281,13 @@ $messages['jv'] = array(
 	'timeline-desc' => 'Nambahaké tag <tt>&lt;timeline&gt;</tt> kanggo nggawé garis wektu',
 );
 
+/** Georgian (ქართული)
+ * @author გიორგიმელა
+ */
+$messages['ka'] = array(
+	'timeline-desc' => 'ჩაამატეთ თეგი <tt>&lt;timeline&gt;</tt> დროის სკალის შესაქმნელად',
+);
+
 /** Khmer (ភាសាខ្មែរ)
  * @author Lovekhmer
  */
