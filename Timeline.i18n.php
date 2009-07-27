@@ -218,6 +218,13 @@ $messages['hi'] = array(
 	'timeline-desc' => 'टाईमलाईन तैयार करने के लिये <tt>&lt;timeline&gt;</tt> टैग देता हैं',
 );
 
+/** Hiligaynon (Ilonggo)
+ * @author Tagimata
+ */
+$messages['hil'] = array(
+	'timeline-desc' => 'Nagadugang <tt>&lt;timeline&gt;</tt> tag para mahimo ang mga timeline',
+);
+
 /** Croatian (Hrvatski)
  * @author Dalibor Bosits
  */
