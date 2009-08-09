@@ -141,6 +141,13 @@ $messages['es'] = array(
 	'timeline-desc' => 'Añade elemento <tt>&lt;timeline&gt;</tt> para mostrar cronogramas',
 );
 
+/** Estonian (Eesti)
+ * @author Pikne
+ */
+$messages['et'] = array(
+	'timeline-desc' => 'Lisab <tt>&lt;timeline&gt;</tt>-märgendi ajatelgede loomiseks.',
+);
+
 /** Basque (Euskara)
  * @author Theklan
  */
