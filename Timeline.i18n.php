@@ -464,6 +464,13 @@ $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <tt>&lt;timeline&gt;</tt> ознаку за стварање временских оса.',
 );
 
+/** latinica (latinica)
+ * @author Michaello
+ */
+$messages['sr-el'] = array(
+	'timeline-desc' => 'Dodaje <tt>&lt;timeline&gt;</tt> oznaku za stvaranje vremenskih osa.',
+);
+
 /** Seeltersk (Seeltersk)
  * @author Pyt
  */
