@@ -311,9 +311,10 @@ $messages['km'] = array(
 
 /** Korean (한국어)
  * @author Kwj2772
+ * @author ToePeu
  */
 $messages['ko'] = array(
-	'timeline-desc' => '시간표를 만들기 위해 <tt>&lt;timeline&gt;</tt> 태그를 추가',
+	'timeline-desc' => '시간표를 만들기 위해 <tt>&lt;timeline&gt;</tt> 태그를 추가합니다.',
 );
 
 /** Ripoarisch (Ripoarisch)
