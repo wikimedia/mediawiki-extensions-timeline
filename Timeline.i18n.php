@@ -346,6 +346,13 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Sukuria laiko grafikus naudojant gairę <tt>&lt;timeline&gt;</tt>',
 );
 
+/** Macedonian (Македонски)
+ * @author Bjankuloski06
+ */
+$messages['mk'] = array(
+	'timeline-desc' => 'Додава ознака <tt>&lt;timeline&gt;</tt> за да прави хронологии',
+);
+
 /** Malayalam (മലയാളം)
  * @author Shijualex
  */
