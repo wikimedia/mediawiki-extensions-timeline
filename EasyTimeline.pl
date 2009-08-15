@@ -61,8 +61,12 @@
 #   however internal font used by Ploticus has strange mapping so some are replaced
 #   by undercore or unaccented version of character
 #   this is a make do solution until full unicode support with external fonts will be added
+#
+# 1.12 June 2009
+# - Don't send -mapfile to ploticus without also sending -csmap, this creates an XSS 
+#   vulnerability
 
-  $version = "1.9" ;
+  $version = "1.12" ;
 
   use Time::Local ;
   use Getopt::Std ;
