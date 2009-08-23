@@ -416,6 +416,13 @@ $messages['pl'] = array(
 	'timeline-desc' => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
 );
 
+/** Piedmontese (Piemontèis)
+ * @author Dragonòt
+ */
+$messages['pms'] = array(
+	'timeline-desc' => 'A gionta ël tag <tt>&lt;timeline&gt;</tt> për creé dle "timeline"',
+);
+
 /** Portuguese (Português)
  * @author Malafaya
  */
@@ -465,14 +472,14 @@ $messages['sk'] = array(
 	'timeline-desc' => 'Pridáva značku <tt>&lt;timeline&gt;</tt> pre tvorbu časových línií',
 );
 
-/** Serbian Cyrillic ekavian (ћирилица)
+/** Serbian Cyrillic ekavian (Српски (ћирилица))
  * @author Millosh
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <tt>&lt;timeline&gt;</tt> ознаку за стварање временских оса.',
 );
 
-/** latinica (latinica)
+/** Serbian Latin ekavian (Srpski (latinica))
  * @author Michaello
  */
 $messages['sr-el'] = array(
