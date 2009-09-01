@@ -85,6 +85,13 @@ $messages['bn'] = array(
 সময়সীমা নির্ধারণ ট্যাগ ব্যবহার করতে যুক্ত করুন: <tt>&lt;timeline&gt;</tt>',
 );
 
+/** Breton (Brezhoneg)
+ * @author Fulup
+ */
+$messages['br'] = array(
+	'timeline-desc' => 'Ouzhpennañ a ra ar valizenn <tt>&lt;timeline&gt;</tt> da grouiñ frizennoù kronologel',
+);
+
 /** Bosnian (Bosanski)
  * @author CERminator
  */
