@@ -27,12 +27,7 @@ $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 $wgTimelineSettings->timelineFile = dirname(__FILE__)."/EasyTimeline.pl";
 
-if ( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
-	$wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
-} else {
-	$wgExtensionFunctions[] = 'wfTimelineExtension';
-}
-
+$wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
 $wgExtensionCredits['parserhook'][] = array(
 	'path' => __FILE__,
 	'name' => 'EasyTimeline',
@@ -43,9 +38,8 @@ $wgExtensionCredits['parserhook'][] = array(
 );
 $wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
 
-function wfTimelineExtension() {
-	global $wgParser;
-	$wgParser->setHook( 'timeline', 'renderTimeline' );
+function wfTimelineExtension( &$parser ) {
+	$parser->setHook( 'timeline', 'renderTimeline' );
 	return true;
 }
 
