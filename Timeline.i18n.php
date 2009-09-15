@@ -126,6 +126,7 @@ $messages['de'] = array(
  */
 $messages['dsb'] = array(
 	'timeline-desc' => 'Pśidawa toflicku <tt>&lt;timeline&gt;</tt> za napóranje casoweje bałki',
+	'timeline-invalidmap' => 'Njepłaśiwa wobrazowa kórta napórana pśez EasyTimeline',
 );
 
 /** Greek (Ελληνικά)
@@ -178,10 +179,12 @@ $messages['fi'] = array(
 );
 
 /** French (Français)
+ * @author Crochet.david
  * @author Grondin
  */
 $messages['fr'] = array(
 	'timeline-desc' => 'Ajoute la balise <tt>&lt;timeline&gt;</tt> pour créer des frises chronologiques',
+	'timeline-invalidmap' => "Carte invalide de l'image générée par EasyTimeline",
 );
 
 /** Franco-Provençal (Arpetan)
@@ -252,6 +255,7 @@ $messages['hr'] = array(
  */
 $messages['hsb'] = array(
 	'timeline-desc' => 'Přidawa tafličku <tt>&lt;timeline&gt;</tt> za wutworjenje časowych lajstow',
+	'timeline-invalidmap' => 'Njepłaćiwa wobrazowa karta spłodźena přez EasyTimeline',
 );
 
 /** Hungarian (Magyar)
@@ -283,10 +287,12 @@ $messages['it'] = array(
 );
 
 /** Japanese (日本語)
+ * @author Fryed-peach
  * @author JtFuruhata
  */
 $messages['ja'] = array(
 	'timeline-desc' => '年表を作成するための <tt>&lt;timeline&gt;</tt> タグを追加する',
+	'timeline-invalidmap' => 'EasyTimeline によって生成された不正なイメージマップ',
 );
 
 /** Jutish (Jysk)
@@ -394,6 +400,7 @@ $messages['nds'] = array(
  */
 $messages['nl'] = array(
 	'timeline-desc' => 'Voegt de tag <tt>&lt;timeline&gt;</tt> toe om tijdlijnen te maken',
+	'timeline-invalidmap' => 'EasyTimeline heeft een ongeldige afbeelding gegenereerd',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
@@ -429,6 +436,7 @@ $messages['pl'] = array(
  */
 $messages['pms'] = array(
 	'timeline-desc' => 'A gionta ël tag <tt>&lt;timeline&gt;</tt> për creé dle "timeline"',
+	'timeline-invalidmap' => 'Mapa pa bon-a generà da EasyTimeline',
 );
 
 /** Portuguese (Português)
@@ -541,6 +549,7 @@ $messages['tl'] = array(
  */
 $messages['tr'] = array(
 	'timeline-desc' => 'Zaman çizelgesi oluşturmak için <tt>&lt;timeline&gt;</tt> etiketini ekler',
+	'timeline-invalidmap' => 'EasyTimeline tarafından geçersiz resim haritası oluşturuldu',
 );
 
 /** Ukrainian (Українська)
