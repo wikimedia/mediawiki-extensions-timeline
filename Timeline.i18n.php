@@ -69,6 +69,7 @@ $messages['bcc'] = array(
  */
 $messages['be-tarask'] = array(
 	'timeline-desc' => 'Дадае тэг <tt>&lt;timeline&gt;</tt> для стварэньня часавых шкалаў',
+	'timeline-invalidmap' => 'Няслушная выява мапы створаная праз EasyTimeline',
 );
 
 /** Bulgarian (Български)
@@ -98,6 +99,7 @@ $messages['br'] = array(
  */
 $messages['bs'] = array(
 	'timeline-desc' => 'Dodaje oznaku <tt>&lt;timeline&gt;</tt> za pravljenje vremenskih linija',
+	'timeline-invalidmap' => 'Nevaljana mapa slika generisana putem EasyTimeline',
 );
 
 /** Catalan (Català)
@@ -109,9 +111,11 @@ $messages['ca'] = array(
 
 /** Czech (Česky)
  * @author Li-sung
+ * @author Mormegil
  */
 $messages['cs'] = array(
 	'timeline-desc' => 'Přidává značku <tt>&lt;timeline&gt;</tt> na vytváření časových os',
+	'timeline-invalidmap' => 'Neplatná mapa k obrázku vytvořená pomocí EasyTimeline',
 );
 
 /** German (Deutsch)
@@ -206,6 +210,7 @@ $messages['fur'] = array(
  */
 $messages['gl'] = array(
 	'timeline-desc' => 'Engade a etiqueta <tt>&lt;timeline&gt;</tt> para crear liñas de tempo',
+	'timeline-invalidmap' => 'Mapa inválido da imaxe xerada por EasyTimeline',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -220,6 +225,7 @@ $messages['grc'] = array(
  */
 $messages['gsw'] = array(
 	'timeline-desc' => 'Fiegt s <tt>&lt;timeline&gt;</tt>-Tag fir s Aalege vu Zytleischte yy',
+	'timeline-invalidmap' => 'EasyTimeline het e nit giltigi Abbildig generiert',
 );
 
 /** Hebrew (עברית)
@@ -422,6 +428,7 @@ $messages['no'] = array(
  */
 $messages['oc'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> per crear de frisas cronologicas',
+	'timeline-invalidmap' => "Carta invalida de l'imatge generit per EasyTimeline",
 );
 
 /** Polish (Polski)
@@ -429,6 +436,7 @@ $messages['oc'] = array(
  */
 $messages['pl'] = array(
 	'timeline-desc' => 'Dodaje znacznik <tt>&lt;timeline&gt;</tt> umożliwiający tworzenie spisu na osi czasu',
+	'timeline-invalidmap' => 'Nieprawidłowa mapa obrazka wygenerowana przez EasyTimeline',
 );
 
 /** Piedmontese (Piemontèis)
@@ -465,6 +473,7 @@ $messages['roa-tara'] = array(
  */
 $messages['ru'] = array(
 	'timeline-desc' => 'Добавляет тег <tt>&lt;timeline&gt;</tt> для создания временных шкал',
+	'timeline-invalidmap' => 'Ошибочная карта изображения, созданная EasyTimeline',
 );
 
 /** Yakut (Саха тыла)
@@ -486,6 +495,7 @@ $messages['scn'] = array(
  */
 $messages['sk'] = array(
 	'timeline-desc' => 'Pridáva značku <tt>&lt;timeline&gt;</tt> pre tvorbu časových línií',
+	'timeline-invalidmap' => 'Neplatná obrazová mapa, ktorú vytvoril EasyTimeline',
 );
 
 /** Serbian Cyrillic ekavian (Српски (ћирилица))
