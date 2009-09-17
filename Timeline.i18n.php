@@ -92,6 +92,7 @@ $messages['bn'] = array(
  */
 $messages['br'] = array(
 	'timeline-desc' => 'Ouzhpennañ a ra ar valizenn <tt>&lt;timeline&gt;</tt> da grouiñ frizennoù kronologel',
+	'timeline-invalidmap' => 'Kartenn direizh ganet dre EasyTimeline',
 );
 
 /** Bosnian (Bosanski)
@@ -120,9 +121,11 @@ $messages['cs'] = array(
 
 /** German (Deutsch)
  * @author Raimond Spekking
+ * @author Umherirrender
  */
 $messages['de'] = array(
 	'timeline-desc' => 'Fügt das <tt>&lt;timeline&gt;</tt>-Tag zur Erstellung von Zeitleisten hinzu',
+	'timeline-invalidmap' => 'EasyTimeline hat eine ungültige Grafik generiert',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -342,6 +345,7 @@ $messages['ko'] = array(
  */
 $messages['ksh'] = array(
 	'timeline-desc' => 'Deit dä <tt>&lt;timeline&gt;</tt>-Befäähl em Wiki dobei, wo mer Belldsche med Linnije med ennem Verlauf fun de Zick met maache kann.',
+	'timeline-invalidmap' => '<i lang="en">EasyTimeline</i> hädd_e kapot Diajramm afjelivvert',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -578,9 +582,11 @@ $messages['vec'] = array(
 
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
+ * @author Vinhtantran
  */
 $messages['vi'] = array(
 	'timeline-desc' => 'Thêm thẻ <tt>&lt;timeline&gt;</tt> để xây dựng các thời biểu',
+	'timeline-invalidmap' => 'EasyTimeline tạo ra bản đồ hình không hợp lệ',
 );
 
 /** Yue (粵語)
