@@ -452,10 +452,12 @@ $messages['pms'] = array(
 );
 
 /** Portuguese (Português)
+ * @author Giro720
  * @author Malafaya
  */
 $messages['pt'] = array(
 	'timeline-desc' => 'Adiciona a marca <tt>&lt;timeline&gt;</tt> para criar linhas temporais',
+	'timeline-invalidmap' => 'Image map inválido gerado pelo EasyTimeline',
 );
 
 /** Brazilian Portuguese (Português do Brasil)
