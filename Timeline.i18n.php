@@ -279,6 +279,7 @@ $messages['hu'] = array(
  */
 $messages['ia'] = array(
 	'timeline-desc' => 'Adde le etiquetta <tt>&lt;timeline&gt;</tt> pro crear lineas temporal',
+	'timeline-invalidmap' => 'Mappa de imagine invalide generate per EasyTimeline',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -472,6 +473,7 @@ $messages['pt-br'] = array(
  */
 $messages['roa-tara'] = array(
 	'timeline-desc' => "Aggiunge 'u tag <tt>&lt;timeline&gt;</tt> pe ccreà le linee de timbe",
+	'timeline-invalidmap' => "Immaggine d'a mappe invalide generate da EasyTimeline",
 );
 
 /** Russian (Русский)
