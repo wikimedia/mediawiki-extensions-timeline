@@ -236,6 +236,7 @@ $messages['gsw'] = array(
  */
 $messages['he'] = array(
 	'timeline-desc' => 'הוספת תגית <tt>&lt;timeline&gt;</tt> ליצירת צירי זמן',
+	'timeline-invalidmap' => 'נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline',
 );
 
 /** Hindi (हिन्दी)
