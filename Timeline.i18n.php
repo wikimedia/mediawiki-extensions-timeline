@@ -270,9 +270,11 @@ $messages['hsb'] = array(
 
 /** Hungarian (Magyar)
  * @author Dani
+ * @author Glanthor Reviol
  */
 $messages['hu'] = array(
 	'timeline-desc' => 'Idővonal készítése a <tt>&lt;timeline&gt;</tt> tag segítségével',
+	'timeline-invalidmap' => 'Az EasyTimeline érvénytelen image mapet generált',
 );
 
 /** Interlingua (Interlingua)
