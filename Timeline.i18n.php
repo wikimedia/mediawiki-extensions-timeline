@@ -138,9 +138,11 @@ $messages['dsb'] = array(
 
 /** Greek (Ελληνικά)
  * @author Dead3y3
+ * @author Omnipaedista
  */
 $messages['el'] = array(
 	'timeline-desc' => 'Προσθέτει την ετικέτα <tt>&lt;timeline&gt;</tt> για την δημιουργία χρονολογιών',
+	'timeline-invalidmap' => 'Μή έγκυρος χάρτης εικόνας παρηγμένης από το EasyTimeline',
 );
 
 /** Esperanto (Esperanto)
@@ -419,9 +421,11 @@ $messages['nl'] = array(
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
  * @author Frokor
+ * @author Gunnernett
  */
 $messages['nn'] = array(
 	'timeline-desc' => 'Legg til taggen <tt>&lt;timeline&gt;</tt> for å opprette tidslinjer',
+	'timeline-invalidmap' => 'Ugyldig biletkart oppretta av EasyTimeline',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
@@ -429,6 +433,7 @@ $messages['nn'] = array(
  */
 $messages['no'] = array(
 	'timeline-desc' => 'Legger til taggen <tt>&lt;timeline&gt;</tt> for å opprette tidslinjer',
+	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
 );
 
 /** Occitan (Occitan)
