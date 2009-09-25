@@ -359,6 +359,7 @@ $messages['ksh'] = array(
  */
 $messages['lb'] = array(
 	'timeline-desc' => 'Setzt den <tt>&lt;timeline&gt;</tt> Tag derbäi fir Zäitlinnen ze maachen',
+	'timeline-invalidmap' => 'EasyTimeLine huet e Bild vun enger Kaart generéiert dat net valabel ass',
 );
 
 /** Limburgish (Limburgs)
