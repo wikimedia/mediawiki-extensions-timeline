@@ -288,10 +288,12 @@ $messages['ia'] = array(
 );
 
 /** Indonesian (Bahasa Indonesia)
+ * @author Bennylin
  * @author IvanLanin
  */
 $messages['id'] = array(
 	'timeline-desc' => 'Menambahkan tag <tt>&lt;timeline&gt;</tt> untuk membuat garis waktu',
+	'timeline-invalidmap' => 'Peta gambar tidak sah dibuat oleh EasyTimeline',
 );
 
 /** Italian (Italiano)
@@ -498,6 +500,7 @@ $messages['ru'] = array(
  */
 $messages['sah'] = array(
 	'timeline-desc' => 'Кэм шкалаатын оҥорорго анаан <tt>&lt;timeline&gt;</tt> тиэги эбэр',
+	'timeline-invalidmap' => 'Алҕастаах ойуу каартата, EasyTimeline көмөтүнэн оҥоһуллубут',
 );
 
 /** Sicilian (Sicilianu)
