@@ -153,10 +153,12 @@ $messages['eo'] = array(
 );
 
 /** Spanish (Español)
+ * @author Crazymadlover
  * @author Remember the dot
  */
 $messages['es'] = array(
 	'timeline-desc' => 'Añade elemento <tt>&lt;timeline&gt;</tt> para mostrar cronogramas',
+	'timeline-invalidmap' => 'Mapa de imagen inválida generada por EasyTimeline',
 );
 
 /** Estonian (Eesti)
