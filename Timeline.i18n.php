@@ -550,9 +550,11 @@ $messages['su'] = array(
 
 /** Swedish (Svenska)
  * @author Lejonel
+ * @author Per
  */
 $messages['sv'] = array(
 	'timeline-desc' => 'Lägger till taggen <tt>&lt;timeline&gt;</tt> för att skapa tidslinjer',
+	'timeline-invalidmap' => 'EasyTimeline har skapat en ogiltig bildkarta',
 );
 
 /** Telugu (తెలుగు)
