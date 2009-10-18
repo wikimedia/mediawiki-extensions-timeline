@@ -128,6 +128,14 @@ $messages['de'] = array(
 	'timeline-invalidmap' => 'EasyTimeline hat eine ungültige Grafik generiert',
 );
 
+/** Zazaki (Zazaki)
+ * @author Aspar
+ */
+$messages['diq'] = array(
+	'timeline-desc' => 'qey vıraştışê teqwimi na <tt>&lt;timeline&gt;</tt> etiket têare keno.',
+	'timeline-invalidmap' => 'hetê easyTimeline ra yew xeritaya resmi ya  nemeqbul vıraziya.',
+);
+
 /** Lower Sorbian (Dolnoserbski)
  * @author Michawiki
  */
@@ -587,10 +595,12 @@ $messages['tr'] = array(
 );
 
 /** Ukrainian (Українська)
+ * @author AS
  * @author Ahonc
  */
 $messages['uk'] = array(
 	'timeline-desc' => 'Додає тег <tt>&lt;timeline&gt;</tt> для створення часових шкал',
+	'timeline-invalidmap' => 'Неправильна карта зображення, створена EasyTimeline',
 );
 
 /** Vèneto (Vèneto)
