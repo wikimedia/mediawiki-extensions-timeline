@@ -394,6 +394,7 @@ $messages['lt'] = array(
  */
 $messages['mk'] = array(
 	'timeline-desc' => 'Додава ознака <tt>&lt;timeline&gt;</tt> за да прави хронологии',
+	'timeline-invalidmap' => 'Грешна карта за слика доздадена од EasyTimeline',
 );
 
 /** Malayalam (മലയാളം)
@@ -608,6 +609,7 @@ $messages['uk'] = array(
  */
 $messages['vec'] = array(
 	'timeline-desc' => 'Zonta el tag <tt>&lt;timeline&gt;</tt> par crear grafici tenporali',
+	'timeline-invalidmap' => 'EasyTimeline gà generà na mapa de imagine mia valida',
 );
 
 /** Vietnamese (Tiếng Việt)
