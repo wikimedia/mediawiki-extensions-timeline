@@ -267,9 +267,11 @@ $messages['hil'] = array(
 
 /** Croatian (Hrvatski)
  * @author Dalibor Bosits
+ * @author Mnalis
  */
 $messages['hr'] = array(
 	'timeline-desc' => 'Dodaje <tt>&lt;timeline&gt;</tt> oznaku za stvaranje vremenskih linija',
+	'timeline-invalidmap' => 'EasyTimeline je generirao neispravnu slikovnu mapu',
 );
 
 /** Upper Sorbian (Hornjoserbsce)
