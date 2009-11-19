@@ -400,10 +400,12 @@ $messages['mk'] = array(
 );
 
 /** Malayalam (മലയാളം)
+ * @author Praveenp
  * @author Shijualex
  */
 $messages['ml'] = array(
 	'timeline-desc' => 'നാള്‍ വഴി ഉണ്ടാക്കുവാന്‍ വേണ്ടി <tt>&lt;timeline&gt;</tt> എന്ന ടാഗ് ചേര്‍ക്കുന്നു',
+	'timeline-invalidmap' => 'ഈസിറ്റൈംലൈൻ സൃഷ്ടിച്ച അസാധുവായ രേഖാചിത്രം',
 );
 
 /** Marathi (मराठी)
