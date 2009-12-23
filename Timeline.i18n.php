@@ -41,6 +41,7 @@ $messages['an'] = array(
  */
 $messages['ar'] = array(
 	'timeline-desc' => 'يضيف الوسم <tt>&lt;timeline&gt;</tt> لإنشاء الخطوط الزمنية',
+	'timeline-invalidmap' => 'صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -633,17 +634,21 @@ $messages['yue'] = array(
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
+ * @author Bencmq
  * @author Shinjiman
  */
 $messages['zh-hans'] = array(
 	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 标签以建立时间线',
+	'timeline-invalidmap' => 'EasyTimeline生成的无效图片',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
+ * @author Gaoxuewei
  * @author Shinjiman
  */
 $messages['zh-hant'] = array(
 	'timeline-desc' => '加入 <tt>&lt;timeline&gt;</tt> 標籤以建立時間線',
+	'timeline-invalidmap' => 'EasyTimeline生成的無效地圖',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
