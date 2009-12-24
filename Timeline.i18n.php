@@ -159,6 +159,7 @@ $messages['el'] = array(
  */
 $messages['eo'] = array(
 	'timeline-desc' => 'Aldonas etikedon <tt>&lt;timeline&gt;</tt> por krei tempoaksojn',
+	'timeline-invalidmap' => 'Malvalida bildomapo generita de EasyTimeline',
 );
 
 /** Spanish (Español)
