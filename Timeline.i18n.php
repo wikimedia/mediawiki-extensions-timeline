@@ -213,6 +213,7 @@ $messages['fr'] = array(
  */
 $messages['frp'] = array(
 	'timeline-desc' => 'Apond la balisa <tt>&lt;timeline&gt;</tt> por fâre des diagramos cronologicos.',
+	'timeline-invalidmap' => 'Mapa envalida de l’émâge fêta per EasyTimeline',
 );
 
 /** Friulian (Furlan)
@@ -584,6 +585,13 @@ $messages['te'] = array(
  */
 $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <tt>&lt;timeline&gt;</tt>-ро баро намоиши хати замоне илова мекунад',
+);
+
+/** Tajik (Latin) (Тоҷикӣ (Latin))
+ * @author Liangent
+ */
+$messages['tg-latn'] = array(
+	'timeline-desc' => 'Barcasbi <tt>&lt;timeline&gt;</tt>-ro baro namoişi xati zamone ilova mekunad',
 );
 
 /** Tagalog (Tagalog)
