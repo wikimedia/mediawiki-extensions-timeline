@@ -194,9 +194,11 @@ $messages['fa'] = array(
 
 /** Finnish (Suomi)
  * @author Crt
+ * @author ZeiP
  */
 $messages['fi'] = array(
 	'timeline-desc' => 'Lisää <tt>&lt;timeline&gt;</tt>-tagin aikajanan luomiseksi.',
+	'timeline-invalidmap' => 'EasyTimeline loi virheellisen kuvakartan',
 );
 
 /** French (Français)
