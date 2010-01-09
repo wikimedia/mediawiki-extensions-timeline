@@ -44,8 +44,10 @@ function wfTimelineExtension( &$parser ) {
 }
 
 function renderTimeline( $timelinesrc ){
-	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgArticlePath, $wgTmpDirectory;
+	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 	$hash = md5( $timelinesrc );
+	if ($wgRenderHashAppend != "")
+		$hash = md5( $hash . $wgRenderHashAppend );
 	$dest = $wgUploadDirectory."/timeline/";
 	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
 	if ( ! is_dir( $wgTmpDirectory ) ) { mkdir( $wgTmpDirectory, 0777 ); }
@@ -102,7 +104,7 @@ function renderTimeline( $timelinesrc ){
 		$map = "<map name=\"" . htmlspecialchars( $hash ) . "\">{$map}</map>";
 		$map = easyTimelineFixMap( $map );
 
-		if( substr( php_uname(), 0, 7 ) == "Windows" ) {
+		if (wfIsWindows()) {
 			$ext = "gif";
 		} else {
 			$ext = "png";
@@ -110,7 +112,7 @@ function renderTimeline( $timelinesrc ){
 
 		$url = "{$wgUploadPath}/timeline/{$hash}.{$ext}";
 		$txt = $map .
-			"<img usemap=\"#" . htmlspecialchars( $hash ) . "\" " . 
+			"<img usemap=\"#timeline_" . htmlspecialchars( $hash ) . "\" " . 
 			"src=\"" . htmlspecialchars( $url ) . "\">";
 
 		if( $expired ) {
