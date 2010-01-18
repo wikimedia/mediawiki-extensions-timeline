@@ -493,10 +493,12 @@ $messages['pt'] = array(
 );
 
 /** Brazilian Portuguese (Português do Brasil)
+ * @author Daemorris
  * @author Eduardo.mps
  */
 $messages['pt-br'] = array(
 	'timeline-desc' => 'Adiciona a marca <tt>&lt;timeline&gt;</tt> para criar linhas de tempo',
+	'timeline-invalidmap' => 'O mapa de imagem gerado pelo EasyTimeline é inválido',
 );
 
 /** Tarandíne (Tarandíne)
