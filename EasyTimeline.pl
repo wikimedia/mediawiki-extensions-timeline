@@ -65,8 +65,11 @@
 # 1.12 June 2009
 # - Don't send -mapfile to ploticus without also sending -csmap, this creates an XSS 
 #   vulnerability
+#
+# 1.13 Jan 2009
+# -change svg encoding from iso-8859-1 -> UTF-8
 
-  $version = "1.12" ;
+  $version = "1.13" ;
 
   use Time::Local ;
   use Getopt::Std ;
@@ -3359,7 +3362,7 @@ sub WritePlotFile
 # my $cmd = "$pl $map -" . "svg" . " -o $file_vector $file_script -tightcrop -font \"Times\"" ;
 # my $cmd = "$pl $map -" . "svg" . " -o $file_vector $file_script -tightcrop" ;
   my $cmd = EscapeShellArg($pl) . " $map -" . "svg" . " -o " .
-    EscapeShellArg($file_vector) . " " . EscapeShellArg($file_script) . " -tightcrop" ;
+    EscapeShellArg($file_vector) . " " . EscapeShellArg($file_script) . " -tightcrop -xml_encoding UTF-8" ;
   print "$cmd\n";
   system ($cmd) ;
 
