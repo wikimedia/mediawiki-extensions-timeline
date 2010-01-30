@@ -66,7 +66,7 @@
 # - Don't send -mapfile to ploticus without also sending -csmap, this creates an XSS 
 #   vulnerability
 #
-# 1.13 Jan 2009
+# 1.13 Jan 2010
 # -change svg encoding from iso-8859-1 -> UTF-8
 
   $version = "1.13" ;
