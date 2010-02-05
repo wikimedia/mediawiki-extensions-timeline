@@ -101,7 +101,7 @@ function renderTimeline( $timelinesrc ){
 	} else {
 		@$map = file_get_contents( $fname.".map" );
 		$map = str_replace( ' >', ' />', $map );
-		$map = "<map name=\"" . htmlspecialchars( $hash ) . "\">{$map}</map>";
+		$map = "<map name=\"timeline_" . htmlspecialchars( $hash ) . "\">{$map}</map>";
 		$map = easyTimelineFixMap( $map );
 
 		if (wfIsWindows()) {
