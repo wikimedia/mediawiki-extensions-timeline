@@ -68,6 +68,7 @@
 #
 # 1.13 Jan 2010
 # -change svg encoding from iso-8859-1 -> UTF-8
+# -allow font to be specified using -f option as opposed to hardcoded FreeSans.
 
   $version = "1.13" ;
 
@@ -138,7 +139,7 @@
 sub ParseArguments
 {
   my $options ;
-  getopt ("iTAPe", \%options) ;
+  getopt ("iTAPef", \%options) ;
 
   &Abort ("Specify input file as: -i filename") if (! defined (@options {"i"})) ;
 
@@ -154,6 +155,10 @@ sub ParseArguments
   $tmpdir    = @options {"T"} ; # For MediaWiki: temp directory to use
   $plcommand = @options {"P"} ; # For MediaWiki: full path of ploticus command
   $articlepath=@options {"A"} ; # For MediaWiki: Path of an article, relative to this servers root
+  $font_file = @options {"f"} ; # font to use. Must be in environemnt variable GDFONTPATH unless builtin "ascii" font
+
+  if (! defined @options {"f"} )
+  { $font_file="ascii"; }
 
   if (! defined @options {"A"} )
   { $articlepath="http://en.wikipedia.org/wiki/\$1"; }
@@ -3401,7 +3406,7 @@ sub WritePlotFile
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop" ; # -v $file_bitmap" ;
 # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
   $cmd = EscapeShellArg($pl) . " $map -" . $fmt . " -o " .
-    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop -font FreeSans.ttf";
+    EscapeShellArg($file_bitmap) . " " . EscapeShellArg($file_script) . " -tightcrop -font " . EscapeShellArg($font_file);
   print "$cmd\n";
   system ($cmd) ;
 

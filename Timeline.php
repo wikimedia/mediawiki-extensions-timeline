@@ -21,6 +21,12 @@ class TimelineSettings {
 
 	// Path to the EasyTimeline.pl perl file, which is used to actually generate the timelines.
 	var $timelineFile;
+	
+	//Font file. Must in path specified by environment variable $GDFONTPATH
+	//use the fontname 'ascii' to use the internal ploticus font that does not require
+	//an external font file. Default to FreeSans for backwards compatability.
+	//Note: according to ploticus docs, filename should not have any space in it or issues may occur.
+	var $fontFile = 'FreeSans.ttf';
 };
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
@@ -67,7 +73,8 @@ function renderTimeline( $timelinesrc ){
 
 		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
 		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
-		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath );
+		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
+		  " -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
 
 		wfDebug( "Timeline cmd: $cmdline\n" );
 		$ret = `{$cmdline}`;
