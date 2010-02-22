@@ -39,7 +39,6 @@ $wgExtensionCredits['parserhook'][] = array(
 	'name' => 'EasyTimeline',
 	'author' => 'Erik Zachte',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:EasyTimeline',
-	'description' => 'Adds <tt>&lt;timeline&gt;</tt> tag to create timelines',
 	'descriptionmsg' => 'timeline-desc',
 );
 $wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
