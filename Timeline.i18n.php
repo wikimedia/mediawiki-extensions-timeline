@@ -566,6 +566,7 @@ $messages['stq'] = array(
  */
 $messages['su'] = array(
 	'timeline-desc' => 'Nambahkeun tag <tt>&lt;timeline&gt;</tt> pikeun nyieun gurat waktu',
+	'timeline-invalidmap' => 'Peta gambar nu dihasilkeun ku EasyTimeline teu bener',
 );
 
 /** Swedish (Svenska)
