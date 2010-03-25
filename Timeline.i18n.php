@@ -204,10 +204,11 @@ $messages['fi'] = array(
 /** French (Français)
  * @author Crochet.david
  * @author Grondin
+ * @author Urhixidur
  */
 $messages['fr'] = array(
 	'timeline-desc' => 'Ajoute la balise <tt>&lt;timeline&gt;</tt> pour créer des frises chronologiques',
-	'timeline-invalidmap' => "Carte invalide de l'image générée par EasyTimeline",
+	'timeline-invalidmap' => 'Carte de l’image générée par EasyTimeline invalide',
 );
 
 /** Franco-Provençal (Arpetan)
