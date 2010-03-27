@@ -364,6 +364,7 @@ $messages['km'] = array(
  */
 $messages['ko'] = array(
 	'timeline-desc' => '시간표를 만들기 위해 <tt>&lt;timeline&gt;</tt> 태그를 추가합니다.',
+	'timeline-invalidmap' => 'EasyTimeline이 잘못된 이미지 맵을 생성하였습니다.',
 );
 
 /** Ripoarisch (Ripoarisch)
