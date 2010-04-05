@@ -542,6 +542,14 @@ $messages['sk'] = array(
 	'timeline-invalidmap' => 'Neplatná obrazová mapa, ktorú vytvoril EasyTimeline',
 );
 
+/** Slovenian (Slovenščina)
+ * @author Dbc334
+ */
+$messages['sl'] = array(
+	'timeline-desc' => 'Doda etiketo <tt>&lt;timeline&gt;</tt> za ustvarjanje časovnih potekov',
+	'timeline-invalidmap' => 'Neveljavna slika zemljevida generirana z EasyTimeline',
+);
+
 /** Serbian Cyrillic ekavian (Српски (ћирилица))
  * @author Millosh
  */
