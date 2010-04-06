@@ -315,10 +315,12 @@ $messages['id'] = array(
 );
 
 /** Italian (Italiano)
+ * @author Beta16
  * @author BrokenArrow
  */
 $messages['it'] = array(
 	'timeline-desc' => 'Aggiunge il tag <tt>&lt;timeline&gt;</tt> per creare grafici temporali',
+	'timeline-invalidmap' => 'Mappa immagine invalida generata da EasyTimeline',
 );
 
 /** Japanese (日本語)
