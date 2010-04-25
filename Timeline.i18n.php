@@ -369,7 +369,7 @@ $messages['ko'] = array(
 	'timeline-invalidmap' => 'EasyTimeline이 잘못된 이미지 맵을 생성하였습니다.',
 );
 
-/** Ripoarisch (Ripoarisch)
+/** Colognian (Ripoarisch)
  * @author Purodha
  */
 $messages['ksh'] = array(
@@ -652,7 +652,7 @@ $messages['vi'] = array(
 	'timeline-invalidmap' => 'EasyTimeline tạo ra bản đồ hình không hợp lệ',
 );
 
-/** Yue (粵語)
+/** Cantonese (粵語)
  * @author Shinjiman
  */
 $messages['yue'] = array(
