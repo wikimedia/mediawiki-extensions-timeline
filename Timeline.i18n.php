@@ -179,10 +179,12 @@ $messages['et'] = array(
 );
 
 /** Basque (Euskara)
+ * @author An13sa
  * @author Theklan
  */
 $messages['eu'] = array(
 	'timeline-desc' => '<tt>&lt;timeline&gt;</tt> etiketa gehitzeko du denbora-lerroak sortzeko',
+	'timeline-invalidmap' => 'EasyTimeline-k sortutako mapa irudi okerra',
 );
 
 /** Persian (فارسی)
