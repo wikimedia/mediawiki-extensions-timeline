@@ -232,7 +232,7 @@ $messages['fur'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
-	'timeline-desc' => 'Engade a etiqueta <code>&lt;timeline&gt;</code> para crear liñas de tempo',
+	'timeline-desc' => 'Engade a etiqueta <code>&lt;timeline&gt;</code> para crear liñas do tempo',
 	'timeline-invalidmap' => 'Mapa inválido da imaxe xerada por EasyTimeline',
 );
 
