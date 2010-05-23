@@ -618,6 +618,7 @@ $messages['tg-latn'] = array(
  */
 $messages['tl'] = array(
 	'timeline-desc' => "Nagdaragdag ng tatak na <code>&lt;timeline&gt;</code> upang makalikha ng mga pana-panahon (''timeline'')",
+	'timeline-invalidmap' => 'Hindi tanggap na mapa ng larawan na nilikha ng EasyTimeline',
 );
 
 /** Turkish (Türkçe)
