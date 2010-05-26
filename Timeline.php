@@ -143,13 +143,11 @@ function easyTimelineFixMap( $html ) {
 	$status = $doc->loadXML( $html );
 	wfRestoreWarnings();
 	if ( !$status ) {
-		wfLoadExtensionMessages( 'Timeline' ); // Load messages only if error occurs
 		return '<strong class="error">' . wfMsg( 'timeline-invalidmap' ) . '</strong>';
 	}
 
 	$map = $doc->firstChild;
 	if ( strtolower( $map->nodeName ) !== 'map' ) {
-		wfLoadExtensionMessages( 'Timeline' ); // Load messages only if error occurs
 		return '<strong class="error">' . wfMsg( 'timeline-invalidmap' ) . '</strong>';
 	}
 	$name = $map->attributes->getNamedItem( 'name' )->value;
