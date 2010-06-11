@@ -656,10 +656,12 @@ $messages['vi'] = array(
 );
 
 /** Cantonese (粵語)
+ * @author Horacewai2
  * @author Shinjiman
  */
 $messages['yue'] = array(
 	'timeline-desc' => '加 <code>&lt;timeline&gt;</code> 標籤去建立時間綫',
+	'timeline-invalidmap' => '錯誤的圖像地圖 (由EasyTimeline產生)',
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
