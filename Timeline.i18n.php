@@ -402,6 +402,14 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Sukuria laiko grafikus naudojant gairę <code>&lt;timeline&gt;</code>',
 );
 
+/** Latvian (Latviešu)
+ * @author Xil
+ */
+$messages['lv'] = array(
+	'timeline-desc' => 'Pievieno <code>&lt;timeline&gt;</code> tagu, lai varētu izveidot hronoloģijas',
+	'timeline-invalidmap' => 'EasyTimeline',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
