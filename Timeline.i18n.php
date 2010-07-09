@@ -516,6 +516,14 @@ $messages['pt-br'] = array(
 	'timeline-invalidmap' => 'O mapa de imagem gerado pelo EasyTimeline é inválido',
 );
 
+/** Romanian (Română)
+ * @author AdiJapan
+ */
+$messages['ro'] = array(
+	'timeline-desc' => 'Adaugă baliza <code>&lt;timeline&gt;</code> pentru a crea grafice temporale.',
+	'timeline-invalidmap' => 'Imagine invalidă creată de EasyTimeline',
+);
+
 /** Tarandíne (Tarandíne)
  * @author Joetaras
  */
