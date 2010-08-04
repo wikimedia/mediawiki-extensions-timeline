@@ -683,11 +683,12 @@ $messages['yue'] = array(
 
 /** Simplified Chinese (‪中文(简体)‬)
  * @author Bencmq
+ * @author Chenxiaoqino
  * @author Shinjiman
  */
 $messages['zh-hans'] = array(
 	'timeline-desc' => '加入 <code>&lt;timeline&gt;</code> 标签以建立时间线',
-	'timeline-invalidmap' => 'EasyTimeline生成的无效图片',
+	'timeline-invalidmap' => 'EasyTimeline生成的无效图片地图',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
