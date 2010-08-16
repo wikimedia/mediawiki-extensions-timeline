@@ -189,9 +189,11 @@ $messages['eu'] = array(
 
 /** Persian (فارسی)
  * @author Huji
+ * @author Wayiran
  */
 $messages['fa'] = array(
 	'timeline-desc' => 'برچسب <code>&lt;timeline&gt;</code> را برای نمایش خطوط زمانی می‌افزاید',
+	'timeline-invalidmap' => 'تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline',
 );
 
 /** Finnish (Suomi)
