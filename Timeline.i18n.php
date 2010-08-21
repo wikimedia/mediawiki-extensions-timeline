@@ -391,9 +391,11 @@ $messages['lb'] = array(
 
 /** Limburgish (Limburgs)
  * @author Matthias
+ * @author Ooswesthoesbes
  */
 $messages['li'] = array(
 	'timeline-desc' => 'Voegt de tag <code>&lt;timeline&gt;</code> toe om tiedliene te make',
+	'timeline-invalidmap' => 'Óngeljig gegenereerd EasyTimelineaafbeilding',
 );
 
 /** Lithuanian (Lietuvių)
