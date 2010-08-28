@@ -485,6 +485,14 @@ $messages['oc'] = array(
 	'timeline-invalidmap' => "Carta invalida de l'imatge generit per EasyTimeline",
 );
 
+/** Deitsch (Deitsch)
+ * @author Xqt
+ */
+$messages['pdc'] = array(
+	'timeline-desc' => "Duht's <code>&lt;timeline&gt;</code>-Tag zum Schtaerte vun de Zeitlein dezu",
+	'timeline-invalidmap' => "'S Pikder wu EasyTimeline gmacht hot iss letz.",
+);
+
 /** Polish (Polski)
  * @author Sp5uhe
  */
