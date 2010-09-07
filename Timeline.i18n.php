@@ -443,6 +443,7 @@ $messages['mr'] = array(
  */
 $messages['ms'] = array(
 	'timeline-desc' => 'Menambah tag <code>&lt;timeline&gt;</code> untuk mencipta garis masa',
+	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
 /** Low German (Plattdüütsch)
