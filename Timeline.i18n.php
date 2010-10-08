@@ -121,11 +121,12 @@ $messages['cs'] = array(
 );
 
 /** German (Deutsch)
+ * @author Kghbln
  * @author Raimond Spekking
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'timeline-desc' => 'Fügt das <code>&lt;timeline&gt;</code>-Tag zur Erstellung von Zeitleisten hinzu',
+	'timeline-desc' => 'Ergänzt das <code>&lt;timeline&gt;</code>-Tag zur Erstellung von Zeitleisten',
 	'timeline-invalidmap' => 'EasyTimeline hat eine ungültige Grafik generiert',
 );
 
