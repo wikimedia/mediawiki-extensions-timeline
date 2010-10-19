@@ -554,6 +554,14 @@ $messages['ru'] = array(
 	'timeline-invalidmap' => 'Ошибочная карта изображения, созданная EasyTimeline',
 );
 
+/** Rusyn (Русиньскый)
+ * @author Gazeb
+ */
+$messages['rue'] = array(
+	'timeline-desc' => 'Придасть значку <code>&lt;timeline&gt;</code> про створїня часовых шкал',
+	'timeline-invalidmap' => 'Неправилна мапа про образок створена EasyTimeline',
+);
+
 /** Yakut (Саха тыла)
  * @author HalanTul
  */
