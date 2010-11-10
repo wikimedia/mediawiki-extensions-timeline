@@ -58,6 +58,14 @@ $messages['ast'] = array(
 	'timeline-desc' => 'Añade la etiqueta <code>&lt;timeline&gt;</code> pa crear llinies de tiempu',
 );
 
+/** Bashkir (Башҡорт)
+ * @author Assele
+ */
+$messages['ba'] = array(
+	'timeline-desc' => 'Ваҡыт һыҙыҡтарын булдырыу өсөн <code>&lt;timeline&gt;</code> билдәһен өҫтәй',
+	'timeline-invalidmap' => 'EasyTimeline тарафынан булдырылған рәсем картаһы дөрөҫ түгел',
+);
+
 /** Southern Balochi (بلوچی مکرانی)
  * @author Mostafadaneshvar
  */
