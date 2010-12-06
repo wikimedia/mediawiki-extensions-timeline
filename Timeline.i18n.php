@@ -113,10 +113,12 @@ $messages['bs'] = array(
 );
 
 /** Catalan (Català)
+ * @author El libre
  * @author Paucabot
  */
 $messages['ca'] = array(
 	'timeline-desc' => "Afegeix l'etiqueta <code>&lt;timeline&gt;</code> per crear cronologies",
+	'timeline-invalidmap' => "Mapa d'imatge invàlid generat per EasyTimeline",
 );
 
 /** Czech (Česky)
