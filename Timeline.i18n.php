@@ -212,7 +212,7 @@ $messages['fa'] = array(
  * @author ZeiP
  */
 $messages['fi'] = array(
-	'timeline-desc' => 'Lisää <code>&lt;timeline&gt;</code>-tagin aikajanan luomiseksi.',
+	'timeline-desc' => 'Lisää <code>&lt;timeline&gt;</code>-elementin aikajanan luomiseksi.',
 	'timeline-invalidmap' => 'EasyTimeline loi virheellisen kuvakartan',
 );
 
