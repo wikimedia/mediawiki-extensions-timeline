@@ -587,6 +587,14 @@ $messages['scn'] = array(
 	'timeline-desc' => 'Nzirisci li tag <code>&lt;timeline&gt;</code> pi criari gràfichi timpurali',
 );
 
+/** Sinhala (සිංහල)
+ * @author Budhajeewa
+ */
+$messages['si'] = array(
+	'timeline-desc' => 'කාලරේඛා තැනුමට <code>&lt;timeline&gt;</code> ටැගය එක් කරයි',
+	'timeline-invalidmap' => 'EasyTimeline මගින් සදොස් image map යක් ජනිතය',
+);
+
 /** Slovak (Slovenčina)
  * @author Helix84
  */
