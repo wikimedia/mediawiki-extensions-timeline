@@ -733,11 +733,12 @@ $messages['zh-hans'] = array(
 
 /** Traditional Chinese (‪中文(繁體)‬)
  * @author Gaoxuewei
+ * @author Mark85296341
  * @author Shinjiman
  */
 $messages['zh-hant'] = array(
 	'timeline-desc' => '加入 <code>&lt;timeline&gt;</code> 標籤以建立時間線',
-	'timeline-invalidmap' => 'EasyTimeline生成的無效地圖',
+	'timeline-invalidmap' => 'EasyTimeline 產生的無效地圖',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
