@@ -58,7 +58,7 @@ $messages['ast'] = array(
 	'timeline-desc' => 'Añade la etiqueta <code>&lt;timeline&gt;</code> pa crear llinies de tiempu',
 );
 
-/** Bashkir (Башҡорт)
+/** Bashkir (Башҡортса)
  * @author Assele
  */
 $messages['ba'] = array(
@@ -73,7 +73,7 @@ $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <code>&lt;timeline&gt;</code>برچسپء په شرکتن خط زمان',
 );
 
-/** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
+/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
  * @author Jim-by
  */
 $messages['be-tarask'] = array(
@@ -611,14 +611,14 @@ $messages['sl'] = array(
 	'timeline-invalidmap' => 'Neveljavna slika zemljevida generirana z EasyTimeline',
 );
 
-/** Serbian Cyrillic ekavian (Српски (ћирилица))
+/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
  * @author Millosh
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса.',
 );
 
-/** Serbian Latin ekavian (Srpski (latinica))
+/** Serbian Latin ekavian (‪Srpski (latinica)‬)
  * @author Michaello
  */
 $messages['sr-el'] = array(
@@ -715,6 +715,7 @@ $messages['vi'] = array(
 /** Cantonese (粵語)
  * @author Horacewai2
  * @author Shinjiman
+ * @author Waihorace
  */
 $messages['yue'] = array(
 	'timeline-desc' => '加 <code>&lt;timeline&gt;</code> 標籤去建立時間綫',
