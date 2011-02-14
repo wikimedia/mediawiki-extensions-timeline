@@ -611,6 +611,14 @@ $messages['sl'] = array(
 	'timeline-invalidmap' => 'Neveljavna slika zemljevida generirana z EasyTimeline',
 );
 
+/** Albanian (Shqip)
+ * @author Olsi
+ */
+$messages['sq'] = array(
+	'timeline-desc' => 'Shton etiketën <code>&lt;timeline&gt;</code> për të krijuar afate',
+	'timeline-invalidmap' => 'Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline',
+);
+
 /** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
  * @author Millosh
  */
