@@ -362,10 +362,12 @@ $messages['jv'] = array(
 );
 
 /** Georgian (ქართული)
+ * @author Dawid Deutschland
  * @author გიორგიმელა
  */
 $messages['ka'] = array(
 	'timeline-desc' => 'ჩაამატეთ თეგი <code>&lt;timeline&gt;</code> დროის სკალის შესაქმნელად',
+	'timeline-invalidmap' => 'EasyTimeline-მა არასწორი გრაფიკა გამოიმუშავა',
 );
 
 /** Khmer (ភាសាខ្មែរ)
