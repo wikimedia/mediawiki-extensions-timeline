@@ -130,6 +130,13 @@ $messages['cs'] = array(
 	'timeline-invalidmap' => 'Neplatná mapa k obrázku vytvořená pomocí EasyTimeline',
 );
 
+/** Danish (Dansk)
+ * @author Peter Alberti
+ */
+$messages['da'] = array(
+	'timeline-desc' => 'Tilføjer tagget <code>&lt;timeline&gt;</code> til at oprette tidslinjer',
+);
+
 /** German (Deutsch)
  * @author Kghbln
  * @author Raimond Spekking
