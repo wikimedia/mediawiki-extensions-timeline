@@ -53,9 +53,11 @@ $messages['arz'] = array(
 
 /** Asturian (Asturianu)
  * @author Esbardu
+ * @author Xuacu
  */
 $messages['ast'] = array(
 	'timeline-desc' => 'Añade la etiqueta <code>&lt;timeline&gt;</code> pa crear llinies de tiempu',
+	'timeline-invalidmap' => "Mapa d'imaxe inválidu xeneráu por EasyTimeline",
 );
 
 /** Bashkir (Башҡортса)
