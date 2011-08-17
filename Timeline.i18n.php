@@ -583,7 +583,7 @@ $messages['rue'] = array(
 	'timeline-invalidmap' => 'Неправилна мапа про образок створена EasyTimeline',
 );
 
-/** Yakut (Саха тыла)
+/** Sakha (Саха тыла)
  * @author HalanTul
  */
 $messages['sah'] = array(
