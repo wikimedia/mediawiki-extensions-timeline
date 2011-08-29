@@ -745,9 +745,10 @@ $messages['yue'] = array(
  * @author Bencmq
  * @author Chenxiaoqino
  * @author Shinjiman
+ * @author Xiaomingyan
  */
 $messages['zh-hans'] = array(
-	'timeline-desc' => '加入 <code>&lt;timeline&gt;</code> 标签以建立时间线',
+	'timeline-desc' => '添加“<code>&lt;timeline&gt;</code>”标签以创建时间轴',
 	'timeline-invalidmap' => 'EasyTimeline生成的无效图片地图',
 );
 
