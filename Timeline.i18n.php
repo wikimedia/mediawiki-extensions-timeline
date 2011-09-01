@@ -274,10 +274,11 @@ $messages['gsw'] = array(
 );
 
 /** Hebrew (עברית)
+ * @author Amire80
  * @author Rotem Liss
  */
 $messages['he'] = array(
-	'timeline-desc' => 'הוספת תגית <code>&lt;timeline&gt;</code> ליצירת צירי זמן',
+	'timeline-desc' => 'הוספת תג <code>&lt;timeline&gt;</code> ליצירת צירי זמן',
 	'timeline-invalidmap' => 'נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline',
 );
 
