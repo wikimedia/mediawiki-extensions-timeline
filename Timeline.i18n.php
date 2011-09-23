@@ -509,6 +509,14 @@ $messages['oc'] = array(
 	'timeline-invalidmap' => "Carta invalida de l'imatge generit per EasyTimeline",
 );
 
+/** Oriya (ଓଡ଼ିଆ)
+ * @author Psubhashish
+ */
+$messages['or'] = array(
+	'timeline-desc' => 'ସମୟକାଳ ତିଆରି କରିବା ନିମନ୍ତେ <code>&lt;timeline&gt;</code> ଚିହ୍ନ ଯୋଡ଼ିଥାଏ',
+	'timeline-invalidmap' => 'EasyTimeline ଦେଇ ତିଆରି ଅଚଳ ଛବି ମାନଚିତ୍ର',
+);
+
 /** Deitsch (Deitsch)
  * @author Xqt
  */
