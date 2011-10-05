@@ -541,6 +541,14 @@ $messages['pms'] = array(
 	'timeline-invalidmap' => 'Mapa pa bon-a generà da EasyTimeline',
 );
 
+/** Western Punjabi (پنجابی)
+ * @author Khalid Mahmood
+ */
+$messages['pnb'] = array(
+	'timeline-desc' => 'جوڑو <code>&lt;timeline&gt;</code> ٹیگ ویلہ لیک بنان لئی۔',
+	'timeline-invalidmap' => 'ناں منیا جان والا مورت نقشہ ایزیٹائملائن تے بنیا',
+);
+
 /** Portuguese (Português)
  * @author Giro720
  * @author Hamilton Abreu
