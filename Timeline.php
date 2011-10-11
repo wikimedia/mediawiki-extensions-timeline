@@ -82,7 +82,7 @@ function renderTimeline( $timelinesrc ){
 
 		if ( $ret == "" ) {
 			// Message not localized, only relevant during install
-			return "<div id=\"toc\"><tt>Timeline error: Executable not found." . 
+			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
 				"Command line was: " . htmlspecialchars( $cmdline ) . "</tt></div>";
 		}
 
@@ -103,7 +103,7 @@ function renderTimeline( $timelinesrc ){
 
 		// Now convert back to HTML again
 		$encErr = nl2br( htmlspecialchars( $err ) );
-		$txt = "<div id=\"toc\"><tt>$encErr</tt></div>";
+		$txt = "<div id=\"toc\" dir=\"ltr\"><tt>$encErr</tt></div>";
 	} else {
 		@$map = file_get_contents( $fname.".map" );
 		$map = str_replace( ' >', ' />', $map );
