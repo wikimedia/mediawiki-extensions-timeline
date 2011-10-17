@@ -67,18 +67,113 @@
 #   vulnerability
 #
 # 1.13 Jan 2010
-# -change svg encoding from iso-8859-1 -> UTF-8
-# -allow font to be specified using -f option as opposed to hardcoded FreeSans.
+# - change svg encoding from iso-8859-1 -> UTF-8
+# - allow font to be specified using -f option as opposed to hardcoded FreeSans.
 
-$version = "1.13";
+our $VERSION = "1.13";
 
 use Time::Local;
 use Getopt::Std;
 use Cwd;
+use English '-no_match_vars';
 
+# Global variables.
+# Many of these should be refactored.
+my @PlotLines;
+my $CntErrors = 0;
+my @Info;
+my @Warnings;
+
+my $file_in;
+my $file_name;
+my $file_bitmap;
+my $file_vector;
+my $file_png;
+my $file_htmlmap;
+my $file_html;
+my $file_errors;
+
+my %options;
+my $listinput;
+my $linkmap;
+my $makehtml;
+my $bypass;
+my $showmap;
+my $tmpdir;
+my $ploticus_command;
+my $articlepath;
+my $font_file;
+
+my $true  = 1;
+my $false = 0;
+
+my $LinkColor              = "brightblue";
+my $MapPNG                 = $false;        # switched when link or hint found
+my $MapSVG                 = $false;        # switched when link found
+my $WarnTextOutsideArea    = 0;
+my $WarnOnRightAlignedText = 0;
+
+my $hPerc   = &EncodeInput("\%");
+my $hAmp    = &EncodeInput("\&");
+my $hAt     = &EncodeInput("\@");
+my $hDollar = &EncodeInput("\$");
+my $hBrO    = &EncodeInput("\(");
+my $hBrC    = &EncodeInput("\)");
+my $hSemi   = &EncodeInput("\;");
+my $hIs     = &EncodeInput("\=");
+my $hLt     = &EncodeInput("\<");
+my $hGt     = &EncodeInput("\>");
+
+my $file;
+my $image_file_fmt;
+my $env;
+my $pathseparator;
+
+my $LineNo;
+my $InputParsed;
+my $CommandNext = q();
+my $Command;
+my $DateFormat;
+my $Line;
+my $NoData;
+
+my %Consts; # see sub GetDefine
+my %Colors; # see sub StoreColor
+my %BackgroundColors;
+my %Axis;
+my @Bars;
+my %BarLegend;
+my %BarLink;
+my @LegendData;
+my %LineDefs;
+my $AlignBars;
+my %ColorLabels;
+my %Period;
+my @DrawLines;
+my %Image;
+my %Legend;
+my %PlotArea;
+my %PlotDefs;
+my @PlotBars;
+my @PlotText;
+my $MaxBarWidth;
+my %BarWidths;
+my $maxwidth; # XXX problematic
+my $Preset;
+my @PresetList;
+my %Scales;
+my %TextDefs;
+
+# These two must definitely be refactored
+my %Attributes;
+my @Attributes;
+
+my $firstcmd;
+
+# BEGIN
 $| = 1;    # flush screen output
 
-print "EasyTimeline version $version\n"
+print "EasyTimeline version $VERSION\n"
     . "Copyright (C) 2004 Erik Zachte\n"
     . "Email xxx\@chello.nl (nospam: xxx=epzachte)\n\n"
     . "This program is free software; you can redistribute it\n"
@@ -92,23 +187,29 @@ print "EasyTimeline version $version\n"
 &InitFiles;
 
 open "FILE_IN", "<", $file_in;
-@lines = <FILE_IN>;
+my @lines = <FILE_IN>;
 close "FILE_IN";
 
-&InitVars;
 &ParseScript;
 
-if ($CntErrors == 0) { &WritePlotFile; }
+if ($CntErrors == 0) {
+    &WritePlotFile;
+}
 
-if    ($CntErrors == 1) { &Abort("1 error found"); }
-elsif ($CntErrors > 1)  { &Abort("$CntErrors errors found"); }
+if    ($CntErrors == 1) {
+    &Abort("1 error found");
+}
+elsif ($CntErrors > 1)  {
+    &Abort("$CntErrors errors found");
+}
 else {
-    if (defined @Info) {
+    if (@Info) {
         print "\nINFO\n";
         print @Info;
         print "\n";
     }
-    if (defined @Warnings) {
+
+    if (@Warnings) {
         print "\nWARNING(S)\n";
         print @Warnings;
         print "\n";
@@ -133,53 +234,48 @@ sub ParseArguments {
     my $options;
     getopt("iTAPef", \%options);
 
-    &Abort("Specify input file as: -i filename") if (!defined(@options{"i"}));
+    &Abort("Specify input file as: -i filename") if (!defined($options{"i"}));
 
-    $file_in   = @options{"i"};
-    $listinput = @options{"l"};    # list all input lines (not recommended)
-    $linkmap   = @options{"m"};    # make clickmap for inclusion in html
-    $makehtml = @options{"h"}; # make test html file with gif/png + svg output
-    $bypass   = @options{"b"}; # do not use in Wikipedia:bypass some checks
-    $showmap  = @options{"d"}; # debug: shows clickable areas in gif/png
-         # The following parameters are used by MediaWiki
-         # to pass config settings from LocalSettings.php to
-         # the perl script
-    $tmpdir    = @options{"T"}; # For MediaWiki: temp directory to use
-    $plcommand = @options{"P"}; # For MediaWiki: full path of ploticus command
-    $articlepath = @options{"A"
-        };  # For MediaWiki: Path of an article, relative to this servers root
-    $font_file = @options{"f"
-        }; # font to use. Must be in environemnt variable GDFONTPATH unless builtin "ascii" font
+    $file_in   = $options{"i"};
+    $listinput = $options{"l"};    # list all input lines (not recommended)
+    $linkmap   = $options{"m"};    # make clickmap for inclusion in html
+         # make test html file with gif/png + svg output
+    $makehtml = $options{"h"};
 
-    if (!defined @options{"f"}) { $font_file = "ascii"; }
+    # do not use in Wikipedia:bypass some checks
+    $bypass = $options{"b"};
 
-    if (!defined @options{"A"}) {
+    # debug: shows clickable areas in gif/png
+    $showmap = $options{"d"};
+
+    # The following parameters are used by MediaWiki
+    # to pass config settings from LocalSettings.php to
+    # the perl script
+
+    # For MediaWiki: temp directory to use
+    $tmpdir = $options{"T"};
+
+    # For MediaWiki: full path of ploticus command
+    $ploticus_command = $options{"P"};
+
+    # For MediaWiki: Path of an article, relative to this servers root
+    $articlepath = $options{"A"};
+
+    # font to use. Must be in environemnt variable
+    # GDFONTPATH unless builtin "ascii" font
+    $font_file = $options{"f"};
+
+    if (!defined $options{"f"}) {
+        $font_file = "ascii";
+    }
+
+    if (!defined $options{"A"}) {
         $articlepath = "http://en.wikipedia.org/wiki/\$1";
     }
 
-    if (!-e $file_in) { &Abort("Input file '" . $file_in . "' not found."); }
-}
-
-sub InitVars {
-    $true                   = 1;
-    $false                  = 0;
-    $CntErrors              = 0;
-    $LinkColor              = "brightblue";
-    $MapPNG                 = $false;       # switched when link or hint found
-    $MapSVG                 = $false;       # switched when link found
-    $WarnTextOutsideArea    = 0;
-    $WarnOnRightAlignedText = 0;
-
-    $hPerc   = &EncodeInput("\%");
-    $hAmp    = &EncodeInput("\&");
-    $hAt     = &EncodeInput("\@");
-    $hDollar = &EncodeInput("\$");
-    $hBrO    = &EncodeInput("\(");
-    $hBrC    = &EncodeInput("\)");
-    $hSemi   = &EncodeInput("\;");
-    $hIs     = &EncodeInput("\=");
-    $hLt     = &EncodeInput("\<");
-    $hGt     = &EncodeInput("\>");
+    if (!-e $file_in) {
+        &Abort("Input file '" . $file_in . "' not found.");
+    }
 }
 
 sub InitFiles {
@@ -190,7 +286,7 @@ sub InitFiles {
     # 1.10 dot ignore dots in folder names ->
     $file =~ s/\.[^\\\/\.]*$//;    # remove extension
     $file_name    = $file;
-    $file_bitmap  = $file . "." . $fmt;
+    $file_bitmap  = $file . "." . $image_file_fmt;
     $file_vector  = $file . ".svg";
     $file_png     = $file . ".png";
     $file_htmlmap = $file . ".map";
@@ -220,28 +316,28 @@ sub SetImageFormat {
     $env = "";
 
     # $dir = cwd() ; # is there a better way to detect OS?
-    # if ($dir =~ /\//) { $env = "Linux" ;   $fmt = "png" ; $pathseparator = "/";}
-    # if ($dir =~ /\\/) { $env = "Windows" ; $fmt = "gif" ; $pathseparator = "\\";}
+    # if ($dir =~ /\//) { $env = "Linux" ;   $image_file_fmt = "png" ; $pathseparator = "/";}
+    # if ($dir =~ /\\/) { $env = "Windows" ; $image_file_fmt = "gif" ; $pathseparator = "\\";}
     # cwd always to returns '/'s ? ->
-    $OS = $^O;
-    if ($OS =~ /darwin/i) {
-        $env           = "Linux";
-        $fmt           = "png";
-        $pathseparator = "/";
+    if ($OSNAME =~ /darwin/i) {
+        $env            = "Linux";
+        $image_file_fmt = "png";
+        $pathseparator  = "/";
     }
-    elsif ($OS =~ /win/i) {
-        $env           = "Windows";
-        $fmt           = "gif";
-        $pathseparator = "\\";
+    elsif ($OSNAME =~ /win/i) {
+        $env            = "Windows";
+        $image_file_fmt = "gif";
+        $pathseparator  = "\\";
     }
-    else { $env = "Linux"; $fmt = "png"; $pathseparator = "/"; }
+    else { $env = "Linux"; $image_file_fmt = "png"; $pathseparator = "/"; }
 
     if ($env ne "") {
-        print "\nOS $env detected -> create image in $fmt format.\n";
+        print
+            "\nOS $env detected -> create image in $image_file_fmt format.\n";
     }
     else {
         print
-            "\nOS not detected. Assuming Windows -> create image in $fmt format.\n";
+            "\nOS not detected. Assuming Windows -> create image in $image_file_fmt format.\n";
         $env = "Windows";
     }
 }
@@ -337,7 +433,7 @@ sub ParseScript {
             )
         {
             my @attributes = split(" ", $value);
-            foreach $attribute (@attributes) {
+            foreach my $attribute (@attributes) {
                 my ($attrname, $attrvalue) = split("\:", $attribute);
                 if (
                     !(
@@ -395,16 +491,21 @@ sub ParseScript {
 }
 
 sub GetLine {
-    if ($#lines < 0) { $InputParsed = $true; return (""); }
+    if ($#lines < 0) {
+        $InputParsed = $true;
+        return ("");
+    }
 
     # running in Wikipedia context and first line empty ?
     # skip first line without incrementing line count
     # this is part behind <timeline> and will not be thought of as line 1
-    if (defined @options{"A"}) {
-        if (($#lines >= 0) && (@lines[0] =~ /^\s*$/)) {
+    if (defined $options{"A"}) {
+        if (($#lines >= 0) && ($lines[0] =~ /^\s*$/)) {
             $Line = shift(@lines);
         }
     }
+
+    my $commentstart;
 
     $Line = "";
     while (($#lines >= 0) && ($Line =~ /^\s*$/)) {
@@ -412,7 +513,9 @@ sub GetLine {
         $Line = shift(@lines);
         chomp($Line);
 
-        if ($listinput) { print "$LineNo: " . &DecodeInput($Line) . "\n"; }
+        if ($listinput) {
+            print "$LineNo: " . &DecodeInput($Line) . "\n";
+        }
 
         # preserve '#' within double quotes
         $Line =~ s/(\"[^\"]*\")/$a=$1,$a=~s^\#^\%\?\+^g,$a/ge;
@@ -473,7 +576,7 @@ sub GetCommand {
     }
 
     if ($Command =~ /^[^\s]/) {
-        $line = $Command;
+        my $line = $Command;
         $line =~ s/^.*$hIs\s*//;
         &CollectAttributes($line);
     }
@@ -503,12 +606,10 @@ sub GetData {
 sub CollectAttributes {
     my $line = shift;
 
-    $line =~ s/(\slink\:[^\s\:]*)\:/$1'colon'/i
-        ;    # replace colon (:), would conflict with syntax
-    $line =~ s/(\stext\:[^\s\:]*)\:/$1'colon'/i
-        ;    # replace colon (:), would conflict with syntax
-    $line =~ s/(https?)\:/$1'colon'/i
-        ;    # replace colon (:), would conflict with syntax
+    # replace colon (:), would conflict with syntax
+    $line =~ s/(\slink\:[^\s\:]*)\:/$1'colon'/i;
+    $line =~ s/(\stext\:[^\s\:]*)\:/$1'colon'/i;
+    $line =~ s/(https?)\:/$1'colon'/i;
 
     my $text;
     ($line, $text) = &ExtractText($line);
@@ -517,10 +618,10 @@ sub CollectAttributes {
     $line =~ s/( $hBrO .+? $hBrC )/&RemoveSpaces($1)/gxe;
     $line =~ s/\s*\:\s*/:/g;
     $line =~ s/([a-zA-Z0-9\_]+)\:/lc($1) . ":"/gxe;
-    @Fields = split(" ", $line);
+    my @Fields = split(" ", $line);
 
-    $name = "";
-    foreach $field (@Fields) {
+    my ($name, $value);
+    foreach my $field (@Fields) {
         if ($field =~ /\:/) {
             ($name, $value) = split(":", $field);
             $name  =~ s/^\s*(.*)\s*$/lc($1)/gxe;
@@ -546,29 +647,29 @@ sub CollectAttributes {
                     );
                 }
             }
-            else { @Attributes{$name} = $value; }
+            else { $Attributes{$name} = $value; }
         }
         else {
-            if (defined(@Attributes{"single"})) {
+            if (defined($Attributes{"single"})) {
                 &Error(
                     "Invalid attribute '$field' ignored.\nSpecify attributes as 'name:value' pair(s)."
                 );
             }
             else {
                 $field =~ s/^\s*(.*)\s*$/$1/gxe;
-                @Attributes{"single"} = $field;
+                $Attributes{"single"} = $field;
             }
         }
     }
-    if (($name ne "") && (@Attributes{"single"} ne "")) {
+    if (($name ne "") && ($Attributes{"single"} ne "")) {
         &Error(   "Invalid attribute '"
-                . @Attributes{"single"}
+                . $Attributes{"single"}
                 . "' ignored.\nSpecify attributes as 'name:value' pairs.");
-        delete(@Attributes{"single"});
+        delete($Attributes{"single"});
     }
 
     if ((defined($text)) && ($text ne "")) {
-        @Attributes{"text"} = &ParseText($text);
+        $Attributes{"text"} = &ParseText($text);
     }
 }
 
@@ -576,7 +677,7 @@ sub GetDefine {
     my $command = shift;
     my $const   = shift;
     $const = lc($const);
-    my $value = @Consts{ lc($const) };
+    my $value = $Consts{ lc($const) };
     if (!defined($value)) {
         &Error("Unknown constant. 'Define $const = ... ' expected.");
         return ($const);
@@ -587,7 +688,7 @@ sub GetDefine {
 sub ParseAlignBars {
     &CheckPreset("AlignBars");
 
-    $align = @Attributes{"single"};
+    my $align = $Attributes{"single"};
     if (!($align =~ /^(?:justify|early|late)$/i)) {
         &Error(
             "AlignBars value '$align' invalid. Specify 'justify', 'early' or 'late'."
@@ -599,16 +700,19 @@ sub ParseAlignBars {
 }
 
 sub ParseBackgroundColors {
-    if (!&ValidAttributes("BackgroundColors")) { &GetData; next; }
+    if (!&ValidAttributes("BackgroundColors")) {
+        &GetData;
+        next;
+    }
 
     &CheckPreset("BackGroundColors");
 
-    foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Canvas/i) {
             if (!&ColorPredefined($attrvalue)) {
-                if (!defined(@Colors{ lc($attrvalue) })) {
+                if (!defined($Colors{ lc($attrvalue) })) {
                     &Error(
                         "BackgroundColors definition invalid. Attribute '$attribute': unknown color '$attrvalue'.\n"
                             . "  Specify command 'Color' before this command."
@@ -616,20 +720,22 @@ sub ParseBackgroundColors {
                     return;
                 }
             }
-            if (defined(@Colors{ lc($attrvalue) })) {
-                @Attributes{"canvas"} = @Colors{ lc($attrvalue) };
+            if (defined($Colors{ lc($attrvalue) })) {
+                $Attributes{"canvas"} = $Colors{ lc($attrvalue) };
             }
-            else { @Attributes{"canvas"} = lc($attrvalue); }
+            else {
+                $Attributes{"canvas"} = lc($attrvalue);
+            }
         }
         elsif ($attribute =~ /Bars/i) {
-            if (!defined(@Colors{ lc($attrvalue) })) {
+            if (!defined($Colors{ lc($attrvalue) })) {
                 &Error(
                     "BackgroundColors definition invalid. Attribute '$attribute' unknown color '$attrvalue'.\n"
                         . "  Specify command 'Color' before this command.");
                 return;
             }
 
-            @Attributes{"bars"} = lc($attrvalue);
+            $Attributes{"bars"} = lc($attrvalue);
         }
     }
 
@@ -656,12 +762,13 @@ sub ParseBarData {
         $hint   = "";
         $barset = "";                           # $barcount = "" ;
 
-        my $data2 = $data;
+        # warn "data: $data";
+        my $data2; # = $data;
         ($data2, $text) = &ExtractText($data2);
         @Attributes = split(" ", $data2);
 
-        foreach $attribute (keys %Attributes) {
-            my $attrvalue = @Attributes{$attribute};
+        foreach my $attribute (keys %Attributes) {
+            my $attrvalue = $Attributes{$attribute};
 
             if ($attribute =~ /^Bar$/i) {
                 $bar = $attrvalue;
@@ -761,13 +868,13 @@ sub ParseBarData {
         }
 
         if ($bar ne "") {
-            if (@Axis{"time"} eq "x") { push @Bars, $bar; }
+            if ($Axis{"time"} eq "x") { push @Bars, $bar; }
             else                      { unshift @Bars, $bar; }
 
-            if   ($text ne "") { @BarLegend{ lc($bar) } = $text; }
-            else               { @BarLegend{ lc($bar) } = " "; }
+            if   ($text ne "") { $BarLegend{ lc($bar) } = $text; }
+            else               { $BarLegend{ lc($bar) } = " "; }
 
-            if ($link ne "") { @BarLink{ lc($bar) } = $link; }
+            if ($link ne "") { $BarLink{ lc($bar) } = $link; }
         }
         else {
 
@@ -776,11 +883,11 @@ sub ParseBarData {
             #       $bar = $barset . "#" . $b ;
 
             $bar = $barset . "#1";
-            if (@Axis{"time"} eq "x") { push @Bars, $bar; }
+            if ($Axis{"time"} eq "x") { push @Bars, $bar; }
             else                      { unshift @Bars, $bar; }
 
-            if ($text ne "") { @BarLegend{ lc($bar) } = $text . " - " . $b; }
-            else             { @BarLegend{ lc($bar) } = " "; }
+            if ($text ne "") { $BarLegend{ lc($bar) } = $text . " - " . $b; }
+            else             { $BarLegend{ lc($bar) } = " "; }
 
             #     }
         }
@@ -790,6 +897,7 @@ sub ParseBarData {
 }
 
 sub ParseColors {
+    my $colorname;
 
     &GetData;
     if ($NoData) {
@@ -809,8 +917,8 @@ sub ParseColors {
         my $legendvalue = "";
         my $colorvalue  = "";
 
-        foreach $attribute (keys %Attributes) {
-            my $attrvalue = @Attributes{$attribute};
+        foreach my $attribute (keys %Attributes) {
+            my $attrvalue = $Attributes{$attribute};
 
             if ($attribute =~ /Id/i) {
                 $colorname = $attrvalue;
@@ -924,19 +1032,19 @@ sub StoreColor {
     my $colorname   = shift;
     my $colorvalue  = shift;
     my $legendvalue = shift;
-    if (defined(@Colors{ lc($colorname) })) {
+    if (defined($Colors{ lc($colorname) })) {
         &Warning("Color '$colorname' redefined.");
     }
-    @Colors{ lc($colorname) } = lc($colorvalue);
+    $Colors{ lc($colorname) } = lc($colorvalue);
     if ((defined($legendvalue)) && ($legendvalue ne "")) {
-        @ColorLabels{ lc($colorname) } = $legendvalue;
+        $ColorLabels{ lc($colorname) } = $legendvalue;
     }
 }
 
 sub ParseDateFormat {
     &CheckPreset("DateFormat");
 
-    my $datevalue = lc(@Attributes{"single"});
+    my $datevalue = lc($Attributes{"single"});
     $datevalue =~ s/\s//g;
     $datevalue = lc($datevalue);
     if (   ($datevalue ne "dd/mm/yyyy")
@@ -974,7 +1082,7 @@ sub ParseDefine {
     }
 
     $value =~ s/($hDollar[a-zA-Z0-9]+)/&GetDefine($command,$1)/ge;
-    @Consts{ lc($name) } = $value;
+    $Consts{ lc($name) } = $value;
 }
 
 sub ParseLineData {
@@ -986,7 +1094,7 @@ sub ParseLineData {
         return;
     }
 
-    if ((!(defined($DateFormat))) || (!(defined(@Period{"from"})))) {
+    if ((!(defined($DateFormat))) || (!(defined($Period{"from"})))) {
         if (!(defined($DateFormat))) {
             &Error(
                 "LineData invalid. No (valid) command 'DateFormat' specified in previous lines."
@@ -1011,7 +1119,8 @@ sub ParseLineData {
     $layer = "front";
     $width = 2.0;
 
-    my $data2 = $data;
+    # warn "data: $data";
+    my $data2; # = $data;
 
     LineData:
     while ((!$InputParsed) && (!$NoData)) {
@@ -1027,26 +1136,26 @@ sub ParseLineData {
 
         if (!&ValidAttributes("LineData")) { &GetData; next; }
 
-        if (defined(@LineDefs{"color"})) { $color = @LineDefs{"color"}; }
-        if (defined(@LineDefs{"layer"})) { $layer = @LineDefs{"layer"}; }
-        if (defined(@LineDefs{"width"})) { $width = @LineDefs{"width"}; }
-        if (defined(@LineDefs{"frompos"})) {
-            $frompos = @LineDefs{"frompos"};
+        if (defined($LineDefs{"color"})) { $color = $LineDefs{"color"}; }
+        if (defined($LineDefs{"layer"})) { $layer = $LineDefs{"layer"}; }
+        if (defined($LineDefs{"width"})) { $width = $LineDefs{"width"}; }
+        if (defined($LineDefs{"frompos"})) {
+            $frompos = $LineDefs{"frompos"};
         }
-        if (defined(@LineDefs{"tillpos"})) {
-            $tillpos = @LineDefs{"tillpos"};
+        if (defined($LineDefs{"tillpos"})) {
+            $tillpos = $LineDefs{"tillpos"};
         }
-        if (defined(@LineDefs{"atpos"})) { $atpos = @LineDefs{"atpos"}; }
+        if (defined($LineDefs{"atpos"})) { $atpos = $LineDefs{"atpos"}; }
 
-        foreach $attribute (keys %Attributes) {
-            my $attrvalue = @Attributes{$attribute};
+        foreach my $attribute (keys %Attributes) {
+            my $attrvalue = $Attributes{$attribute};
 
             if ($attribute =~ /^(?:At|From|Till)$/i) {
                 if ($attrvalue =~ /^Start$/i) {
-                    $attrvalue = @Period{"from"};
+                    $attrvalue = $Period{"from"};
                 }
 
-                if ($attrvalue =~ /^End$/i) { $attrvalue = @Period{"till"}; }
+                if ($attrvalue =~ /^End$/i) { $attrvalue = $Period{"till"}; }
 
                 if (!&ValidDateFormat($attrvalue)) {
                     &Error(   "LineData attribute '$attribute' invalid.\n"
@@ -1101,7 +1210,7 @@ sub ParseLineData {
             }
             elsif ($attribute =~ /Color/i) {
                 if (   (!&ColorPredefined($attrvalue))
-                    && (!defined(@Colors{ lc($attrvalue) })))
+                    && (!defined($Colors{ lc($attrvalue) })))
                 {
                     &Error(
                         "LineData  attribute '$attribute' invalid. Unknown color '$attrvalue'.\n"
@@ -1112,7 +1221,7 @@ sub ParseLineData {
                 }
 
                 if (!&ColorPredefined($attrvalue)) {
-                    $attrvalue = @Colors{ lc($attrvalue) };
+                    $attrvalue = $Colors{ lc($attrvalue) };
                 }
 
                 $color = $attrvalue;
@@ -1168,12 +1277,12 @@ sub ParseLineData {
             && ($till   eq "")
             && ($points eq ""))    # upd defaults
         {
-            if ($color   ne "") { @LineDefs{"color"}   = $color; }
-            if ($layer   ne "") { @LineDefs{"layer"}   = $layer; }
-            if ($width   ne "") { @LineDefs{"width"}   = $width; }
-            if ($atpos   ne "") { @LineDefs{"atpos"}   = $atpos; }
-            if ($frompos ne "") { @LineDefs{"frompos"} = $frompos; }
-            if ($tillpos ne "") { @LineDefs{"tillpos"} = $tillpos; }
+            if ($color   ne "") { $LineDefs{"color"}   = $color; }
+            if ($layer   ne "") { $LineDefs{"layer"}   = $layer; }
+            if ($width   ne "") { $LineDefs{"width"}   = $width; }
+            if ($atpos   ne "") { $LineDefs{"atpos"}   = $atpos; }
+            if ($frompos ne "") { $LineDefs{"frompos"} = $frompos; }
+            if ($tillpos ne "") { $LineDefs{"tillpos"} = $tillpos; }
         }
 
         if ($layer eq "") { $layer = "back"; }
@@ -1247,8 +1356,8 @@ sub ParseImageSize {
 
     &CheckPreset("ImageSize");
 
-    foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Width|Height/i) {
             if ($attrvalue !~ /auto/i) {
@@ -1269,19 +1378,19 @@ sub ParseImageSize {
                 return;
             }
 
-            @Attributes{"barinc"} = $attrvalue;
+            $Attributes{"barinc"} = $attrvalue;
         }
 
         #   if ($attribute =~ /Width/i)
-        #   { @Attributes {"width"} = $attrvalue ; }
+        #   { $Attributes{"width"} = $attrvalue ; }
         #   elsif ($attribute =~ /Height/i)
-        #   { @Attributes {"height"} = $attrvalue ; }
+        #   { $Attributes{"height"} = $attrvalue ; }
     }
 
-    if (   (@Attributes{"width"} =~ /auto/i)
-        || (@Attributes{"height"} =~ /auto/i))
+    if (   ($Attributes{"width"} =~ /auto/i)
+        || ($Attributes{"height"} =~ /auto/i))
     {
-        if (@Attributes{"barinc"} eq "") {
+        if ($Attributes{"barinc"} eq "") {
             &Error(   "ImageSize attribute 'barincrement' missing.\n"
                     . "Automatic determination of image width or height implies specification of this attribute"
             );
@@ -1289,10 +1398,10 @@ sub ParseImageSize {
         }
     }
 
-    if (   (@Attributes{"width"} !~ /auto/i)
-        && (@Attributes{"height"} !~ /auto/i))
+    if (   ($Attributes{"width"} !~ /auto/i)
+        && ($Attributes{"height"} !~ /auto/i))
     {
-        if (@Attributes{"barinc"} ne "") {
+        if ($Attributes{"barinc"} ne "") {
             &Error(   "ImageSize attribute 'barincrement' not valid now.\n"
                     . "This attribute is only valid (and mandatory) in combination with 'width:auto' or 'height:auto'"
             );
@@ -1308,8 +1417,8 @@ sub ParseLegend {
 
     &CheckPreset("Legend");
 
-    foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Columns/i) {
             if (($attrvalue < 1) || ($attrvalue > 4)) {
@@ -1326,7 +1435,7 @@ sub ParseLegend {
                 return;
             }
 
-            @Attributes{"orientation"} = substr($attrvalue, 0, 3);
+            $Attributes{"orientation"} = substr($attrvalue, 0, 3);
         }
         elsif ($attribute =~ /Position/i) {
             if (!($attrvalue =~ /^(?:top|bottom|right)$/i)) {
@@ -1362,8 +1471,8 @@ sub ParseLegend {
         }
     }
 
-    if (defined(@Attributes{"position"})) {
-        if (defined(@Attributes{"left"})) {
+    if (defined($Attributes{"position"})) {
+        if (defined($Attributes{"left"})) {
             &Error(
                 "Legend definition invalid. Attributes 'position' and 'left' are mutually exclusive."
             );
@@ -1371,15 +1480,15 @@ sub ParseLegend {
         }
     }
     else {
-        if ((!defined(@Attributes{"left"})) && (!defined(@Attributes{"top"})))
+        if ((!defined($Attributes{"left"})) && (!defined($Attributes{"top"})))
         {
             &Info(
                 "Legend definition: none of attributes 'position', 'left' or 'top' have been defined. Position 'bottom' assumed."
             );
-            @Attributes{"position"} = "bottom";
+            $Attributes{"position"} = "bottom";
         }
-        elsif ((!defined(@Attributes{"left"}))
-            || (!defined(@Attributes{"top"})))
+        elsif ((!defined($Attributes{"left"}))
+            || (!defined($Attributes{"top"})))
         {
             &Error(
                 "Legend definition invalid. Specify 'position', or 'left' & 'top'."
@@ -1388,14 +1497,14 @@ sub ParseLegend {
         }
     }
 
-    if (@Attributes{"position"} =~ /right/i) {
-        if (defined(@Attributes{"columns"})) {
+    if ($Attributes{"position"} =~ /right/i) {
+        if (defined($Attributes{"columns"})) {
             &Error(
                 "Legend definition invalid.\nAttribute 'columns' and 'position:right' are mutually exclusive."
             );
             return;
         }
-        if (defined(@Attributes{"columnwidth"})) {
+        if (defined($Attributes{"columnwidth"})) {
             &Error(
                 "Legend definition invalid.\nAttribute 'columnwidth' and 'position:right' are mutually exclusive."
             );
@@ -1403,20 +1512,20 @@ sub ParseLegend {
         }
     }
 
-    if (@Attributes{"orientation"} =~ /hor/i) {
-        if (@Attributes{"position"} =~ /right/i) {
+    if ($Attributes{"orientation"} =~ /hor/i) {
+        if ($Attributes{"position"} =~ /right/i) {
             &Error(
                 "Legend definition invalid.\n'position:right' and 'orientation:horizontal' are mutually exclusive."
             );
             return;
         }
-        if (defined(@Attributes{"columns"})) {
+        if (defined($Attributes{"columns"})) {
             &Error(
                 "Legend definition invalid.\nAttribute 'columns' and 'orientation:horizontal' are mutually exclusive."
             );
             return;
         }
-        if (defined(@Attributes{"columnwidth"})) {
+        if (defined($Attributes{"columnwidth"})) {
             &Error(
                 "Legend definition invalid.\nAttribute 'columnwidth' and 'orientation:horizontal' are mutually exclusive."
             );
@@ -1424,8 +1533,8 @@ sub ParseLegend {
         }
     }
 
-    if (   (@Attributes{"orientation"} =~ /hor/i)
-        && (defined(@Attributes{"columns"})))
+    if (   ($Attributes{"orientation"} =~ /hor/i)
+        && (defined($Attributes{"columns"})))
     {
         &Error(
             "Legend definition invalid.\nDo not specify attribute 'columns' with 'orientation:horizontal'."
@@ -1433,9 +1542,9 @@ sub ParseLegend {
         return;
     }
 
-    if (@Attributes{"columns"} > 1) {
-        if (   (defined(@Attributes{"left"}))
-            && (!defined(@Attributes{"columnwidth"})))
+    if ($Attributes{"columns"} > 1) {
+        if (   (defined($Attributes{"left"}))
+            && (!defined($Attributes{"columnwidth"})))
         {
             &Error(
                 "Legend attribute 'columnwidth' not defined.\nThis is needed when attribute 'left' is specified."
@@ -1444,8 +1553,8 @@ sub ParseLegend {
         }
     }
 
-    if (!defined(@Attributes{"orientation"})) {
-        @Attributes{"orientation"} = "ver";
+    if (!defined($Attributes{"orientation"})) {
+        $Attributes{"orientation"} = "ver";
     }
 
     %Legend = %Attributes;
@@ -1461,8 +1570,8 @@ sub ParsePeriod {
 
     if (!ValidAttributes("Period")) { return; }
 
-    foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        my $attrvalue = $Attributes{$attribute};
 
         if ($DateFormat eq "yyyy") {
             if ($attrvalue !~ /^\-?\d+$/) {
@@ -1496,8 +1605,7 @@ sub ParsePeriod {
                 }
             }
 
-            $ValidDate = &ValidDateFormat($attrvalue);
-            if (!$ValidDate) {
+            if (!&ValidDateFormat($attrvalue)) {
                 &Error(   "Period attribute '$attribute' invalid.\n"
                         . "Date does not conform to specified DateFormat '$DateFormat'."
                 );
@@ -1510,7 +1618,7 @@ sub ParsePeriod {
                 return;
             }
 
-            @Attributes{$attribute} = $attrvalue;
+            $Attributes{$attribute} = $attrvalue;
         }
     }
 
@@ -1518,12 +1626,14 @@ sub ParsePeriod {
 }
 
 sub ParsePlotArea {
-    if (!&ValidAttributes("PlotArea")) { return; }
+    if (!&ValidAttributes("PlotArea")) {
+        return;
+    }
 
     &CheckPreset("PlotArea");
 
-    foreach $attribute (@Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (@Attributes) {
+        my $attrvalue = $Attributes{$attribute};
         if (!&ValidAbsRel($attrvalue)) {
             &Error(   "PlotArea attribute '$attribute' invalid.\n"
                     . "Specify value as x[.y][px, in, cm, %] examples: '200', '20px', '1.3in', '80%'"
@@ -1532,28 +1642,28 @@ sub ParsePlotArea {
         }
     }
 
-    if ((@Attributes{"top"} ne "") && (@Attributes{"height"} ne "")) {
+    if (($Attributes{"top"} ne "") && ($Attributes{"height"} ne "")) {
         &Error(
             "PlotArea attributes 'top' and 'height' are mutually exclusive. Specify only one of them."
         );
         return;
     }
 
-    if ((@Attributes{"right"} ne "") && (@Attributes{"width"} ne "")) {
+    if (($Attributes{"right"} ne "") && ($Attributes{"width"} ne "")) {
         &Error(
             "PlotArea attributes 'right' and 'width' are mutually exclusive. Specify only one of them."
         );
         return;
     }
 
-    if ((@Attributes{"top"} eq "") && (@Attributes{"height"} eq "")) {
+    if (($Attributes{"top"} eq "") && ($Attributes{"height"} eq "")) {
         &Error(
             "PlotArea definition incomplete. Either attribute 'top' (advised) or 'height' should be specified"
         );
         return;
     }
 
-    if ((@Attributes{"right"} eq "") && (@Attributes{"width"} eq "")) {
+    if (($Attributes{"right"} eq "") && ($Attributes{"width"} eq "")) {
         &Error(
             "PlotArea definition incomplete. Either attribute 'right' (advised) or 'width' should be specified"
         );
@@ -1574,24 +1684,25 @@ sub ParsePlotArea {
 #          |  bar: |== 0            | -  | assume    |      |
 #          |       | assume bar:--- |    |  bar:---  |      |
 #          |       |== 1            |
-#          |       | assume @Bar[0] |
+#          |       | assume $Bar[0] |
 #          |       |> 1             |
 #          |       | err            |
 sub ParsePlotData {
-    if   (defined(@Bars)) { $BarsCommandFound = $true; }
-    else                  { $BarsCommandFound = $false; }
-    $prevbar = "";
+    my $attrvalue2;
+    my $BarsCommandFound = @Bars;
+    my $prevbar = "";
+    my $barndx;
 
     if (   (!(defined($DateFormat)))
-        || (@Period{"from"} eq "")
-        || (@Axis{"time"}   eq ""))
+        || ($Period{"from"} eq "")
+        || ($Axis{"time"}   eq ""))
     {
         if (!(defined($DateFormat))) {
             &Error(
                 "PlotData invalid. No (valid) command 'DateFormat' specified in previous lines."
             );
         }
-        elsif (@Period{"from"} eq "") {
+        elsif ($Period{"from"} eq "") {
             &Error(
                 "PlotData invalid. No (valid) command 'Period' specified in previous lines."
             );
@@ -1622,7 +1733,7 @@ sub ParsePlotData {
         $mark,    $markcolor, $link,     $hint
     );
 
-    @PlotDefs{"anchor"} = "middle";
+    $PlotDefs{"anchor"} = "middle";
 
     PlotData:
     while ((!$InputParsed) && (!$NoData)) {
@@ -1650,34 +1761,34 @@ sub ParsePlotData {
 
         &CheckPreset("PlotData");
 
-        if (defined(@PlotDefs{"bar"})) { $bar = @PlotDefs{"bar"}; }
+        if (defined($PlotDefs{"bar"})) { $bar = $PlotDefs{"bar"}; }
 
-        #  if (defined (@PlotDefs {"barset"}))    { $barset    = @PlotDefs {"barset"} ; }
-        if (defined(@PlotDefs{"color"})) { $color = @PlotDefs{"color"}; }
-        if (defined(@PlotDefs{"bgcolor"})) {
-            $bgcolor = @PlotDefs{"bgcolor"};
+        #  if (defined ($PlotDefs{"barset"}))    { $barset    = $PlotDefs{"barset"} ; }
+        if (defined($PlotDefs{"color"})) { $color = $PlotDefs{"color"}; }
+        if (defined($PlotDefs{"bgcolor"})) {
+            $bgcolor = $PlotDefs{"bgcolor"};
         }
-        if (defined(@PlotDefs{"textcolor"})) {
-            $textcolor = @PlotDefs{"textcolor"};
+        if (defined($PlotDefs{"textcolor"})) {
+            $textcolor = $PlotDefs{"textcolor"};
         }
-        if (defined(@PlotDefs{"fontsize"})) {
-            $fontsize = @PlotDefs{"fontsize"};
+        if (defined($PlotDefs{"fontsize"})) {
+            $fontsize = $PlotDefs{"fontsize"};
         }
-        if (defined(@PlotDefs{"width"}))  { $width  = @PlotDefs{"width"}; }
-        if (defined(@PlotDefs{"anchor"})) { $anchor = @PlotDefs{"anchor"}; }
-        if (defined(@PlotDefs{"align"}))  { $align  = @PlotDefs{"align"}; }
-        if (defined(@PlotDefs{"shiftx"})) { $shiftx = @PlotDefs{"shiftx"}; }
-        if (defined(@PlotDefs{"shifty"})) { $shifty = @PlotDefs{"shifty"}; }
-        if (defined(@PlotDefs{"mark"}))   { $mark   = @PlotDefs{"mark"}; }
-        if (defined(@PlotDefs{"markcolor"})) {
-            $markcolor = @PlotDefs{"markcolor"};
+        if (defined($PlotDefs{"width"}))  { $width  = $PlotDefs{"width"}; }
+        if (defined($PlotDefs{"anchor"})) { $anchor = $PlotDefs{"anchor"}; }
+        if (defined($PlotDefs{"align"}))  { $align  = $PlotDefs{"align"}; }
+        if (defined($PlotDefs{"shiftx"})) { $shiftx = $PlotDefs{"shiftx"}; }
+        if (defined($PlotDefs{"shifty"})) { $shifty = $PlotDefs{"shifty"}; }
+        if (defined($PlotDefs{"mark"}))   { $mark   = $PlotDefs{"mark"}; }
+        if (defined($PlotDefs{"markcolor"})) {
+            $markcolor = $PlotDefs{"markcolor"};
         }
 
-        #   if (defined (@PlotDefs {"link"}))      { $link      = @PlotDefs {"link"} ; }
-        #   if (defined (@PlotDefs {"hint"}))      { $hint      = @PlotDefs {"hint"} ; }
+        #   if (defined ($PlotDefs{"link"}))      { $link      = $PlotDefs{"link"} ; }
+        #   if (defined ($PlotDefs{"hint"}))      { $hint      = $PlotDefs{"hint"} ; }
 
-        foreach $attribute (keys %Attributes) {
-            my $attrvalue = @Attributes{$attribute};
+        foreach my $attribute (keys %Attributes) {
+            my $attrvalue = $Attributes{$attribute};
 
             if ($attribute =~ /^Bar$/i) {
                 if (!($attrvalue =~ /[a-zA-Z0-9\_]+/)) {
@@ -1701,8 +1812,12 @@ sub ParsePlotData {
                 }
                 else {
                     if (!&BarDefined($attrvalue2)) {
-                        if (@Axis{"time"} eq "x") { push @Bars, $attrvalue2; }
-                        else { unshift @Bars, $attrvalue2; }
+                        if ($Axis{"time"} eq "x") {
+                            push @Bars, $attrvalue2;
+                        }
+                        else {
+                            unshift @Bars, $attrvalue2;
+                        }
                     }
                 }
                 $bar     = $attrvalue2;
@@ -1719,7 +1834,9 @@ sub ParsePlotData {
 
                 $attrvalue2 = $attrvalue;
 
-                if ($attrvalue =~ /break/i) { $barndx = 0; }
+                if ($attrvalue =~ /break/i) {
+                    $barndx = 0;
+                }
                 elsif ($attrvalue =~ /skip/i) {
                     $barndx++;
                     &BarDefined($prevbar . "#" . $barndx);
@@ -1741,9 +1858,9 @@ sub ParsePlotData {
             }
             elsif ($attribute =~ /^(?:At|From|Till)$/i) {
                 if ($attrvalue =~ /^Start$/i) {
-                    $attrvalue = @Period{"from"};
+                    $attrvalue = $Period{"from"};
                 }
-                if ($attrvalue =~ /^End$/i) { $attrvalue = @Period{"till"}; }
+                if ($attrvalue =~ /^End$/i) { $attrvalue = $Period{"till"}; }
 
                 if (!&ValidDateFormat($attrvalue)) {
                     &Error(   "PlotData attribute '$attribute' invalid.\n"
@@ -1770,7 +1887,7 @@ sub ParsePlotData {
             #      elsif ($attribute =~ /^From$/i)
             #      {
             #        if ($attrvalue =~ /^Start$/i)
-            #        { $attrvalue = @Period {"from"} ; }
+            #        { $attrvalue = $Period{"from"} ; }
 
             #        if (! &ValidDateFormat ($attrvalue))
             #        { &Error ("PlotData invalid.\nDate '$attrvalue' does not conform to specified DateFormat $DateFormat.") ;
@@ -1786,7 +1903,7 @@ sub ParsePlotData {
             #      elsif ($attribute =~ /^Till$/i)
             #      {
             #        if ($attrvalue =~ /^End$/i)
-            #        { $attrvalue = @Period {"till"} ; }
+            #        { $attrvalue = $Period{"till"} ; }
 
             #        if (! &ValidDateFormat ($attrvalue))
             #        { &Error ("PlotData invalid. Date '$attrvalue' does not conform to specified DateFormat $DateFormat.") ;
@@ -1801,7 +1918,7 @@ sub ParsePlotData {
             #      }
             elsif ($attribute =~ /^Color$/i) {
                 if (!&ColorPredefined($attrvalue)) {
-                    if (!defined(@Colors{ lc($attrvalue) })) {
+                    if (!defined($Colors{ lc($attrvalue) })) {
                         &Error(
                             "PlotData invalid. Attribute '$attribute' has unknown color '$attrvalue'.\n"
                                 . "  Specify command 'Color' before this command."
@@ -1810,8 +1927,8 @@ sub ParsePlotData {
                         next PlotData;
                     }
                 }
-                if (defined(@Colors{ lc($attrvalue) })) {
-                    $color = @Colors{ lc($attrvalue) };
+                if (defined($Colors{ lc($attrvalue) })) {
+                    $color = $Colors{ lc($attrvalue) };
                 }
                 else { $color = lc($attrvalue); }
 
@@ -1819,7 +1936,7 @@ sub ParsePlotData {
             }
             elsif ($attribute =~ /^BgColor$/i) {
                 if (!&ColorPredefined($attrvalue)) {
-                    if (!defined(@Colors{ lc($attrvalue) })) {
+                    if (!defined($Colors{ lc($attrvalue) })) {
                         &Error(
                             "PlotData invalid. Attribute '$attribute' has unknown color '$attrvalue'.\n"
                                 . "  Specify command 'Color' before this command."
@@ -1828,14 +1945,14 @@ sub ParsePlotData {
                         next PlotData;
                     }
                 }
-                if (defined(@Colors{ lc($attrvalue) })) {
-                    $bgcolor = @Colors{ lc($attrvalue) };
+                if (defined($Colors{ lc($attrvalue) })) {
+                    $bgcolor = $Colors{ lc($attrvalue) };
                 }
                 else { $bgcolor = lc($attrvalue); }
             }
             elsif ($attribute =~ /^TextColor$/i) {
                 if (!&ColorPredefined($attrvalue)) {
-                    if (!defined(@Colors{ lc($attrvalue) })) {
+                    if (!defined($Colors{ lc($attrvalue) })) {
                         &Error(
                             "PlotData invalid. Attribute '$attribute' contains unknown color '$attrvalue'.\n"
                                 . "  Specify command 'Color' before this command."
@@ -1844,8 +1961,8 @@ sub ParsePlotData {
                         next PlotData;
                     }
                 }
-                if (defined(@Colors{ lc($attrvalue) })) {
-                    $textcolor = @Colors{ lc($attrvalue) };
+                if (defined($Colors{ lc($attrvalue) })) {
+                    $textcolor = $Colors{ lc($attrvalue) };
                 }
                 else { $textcolor = lc($attrvalue); }
             }
@@ -1908,7 +2025,7 @@ sub ParsePlotData {
                 $shift = $attrvalue;
                 $shift =~ s/$hBrO(.*?)$hBrC/$1/;
                 $shift =~ s/\s//g;
-                ($shiftx2, $shifty2) = split(",", $shift);
+                my ($shiftx2, $shifty2) = split(",", $shift);
                 if ($shiftx2 ne "") { $shiftx = &Normalize($shiftx2); }
                 if ($shifty2 ne "") { $shifty = &Normalize($shifty2); }
 
@@ -1949,8 +2066,8 @@ sub ParsePlotData {
             #     }
             elsif ($attribute =~ /^Mark$/i) {
                 $attrvalue =~ s/$hBrO (.*) $hBrC/$1/x;
-                (@suboptions) = split(",", $attrvalue);
-                $mark = @suboptions[0];
+                my (@suboptions) = split(",", $attrvalue);
+                $mark = $suboptions[0];
                 if (!($mark =~ /^(?:Line|None)$/i)) {
                     &Error(
                         "PlotData invalid. Value '$mark' for attribute 'mark' unknown."
@@ -1959,11 +2076,11 @@ sub ParsePlotData {
                     next PlotData;
                 }
 
-                if (defined(@suboptions[1])) {
-                    $markcolor = @suboptions[1];
+                if (defined($suboptions[1])) {
+                    $markcolor = $suboptions[1];
 
                     if (!&ColorPredefined($markcolor)) {
-                        if (!defined(@Colors{ lc($markcolor) })) {
+                        if (!defined($Colors{ lc($markcolor) })) {
                             &Error(
                                 "PlotData invalid. Attribute 'mark': unknown color '$markcolor'.\n"
                                     . "  Specify command 'Color' before this command."
@@ -1997,33 +2114,33 @@ sub ParsePlotData {
         if ($MaxBarWidth eq "") { $MaxBarWidth = $width - 0.001; }
 
         if ($bar ne "") {
-            if (!defined(@BarLegend{ lc($bar) })) {
-                @BarLegend{ lc($bar) } = $bar;
+            if (!defined($BarLegend{ lc($bar) })) {
+                $BarLegend{ lc($bar) } = $bar;
             }
-            if (!defined(@BarWidths{$bar})) {
-                @BarWidths{$bar} = $width;
+            if (!defined($BarWidths{$bar})) {
+                $BarWidths{$bar} = $width;
             }    # was 0 ??
         }
 
         if (($at eq "") && ($from eq "") && ($till eq ""))    # upd defaults
         {
-            if ($bar ne "") { @PlotDefs{"bar"} = $bar; }
+            if ($bar ne "") { $PlotDefs{"bar"} = $bar; }
 
-            #     if ($barset     ne "") { @PlotDefs {"barset"}    = $barset ; }
-            if ($color     ne "") { @PlotDefs{"color"}     = $color; }
-            if ($bgcolor   ne "") { @PlotDefs{"bgcolor"}   = $bgcolor; }
-            if ($textcolor ne "") { @PlotDefs{"textcolor"} = $textcolor; }
-            if ($fontsize  ne "") { @PlotDefs{"fontsize"}  = $fontsize; }
-            if ($width     ne "") { @PlotDefs{"width"}     = $width; }
-            if ($anchor    ne "") { @PlotDefs{"anchor"}    = $anchor; }
-            if ($align     ne "") { @PlotDefs{"align"}     = $align; }
-            if ($shiftx    ne "") { @PlotDefs{"shiftx"}    = $shiftx; }
-            if ($shifty    ne "") { @PlotDefs{"shifty"}    = $shifty; }
-            if ($mark      ne "") { @PlotDefs{"mark"}      = $mark; }
-            if ($markcolor ne "") { @PlotDefs{"markcolor"} = $markcolor; }
+            #     if ($barset     ne "") { $PlotDefs{"barset"}    = $barset ; }
+            if ($color     ne "") { $PlotDefs{"color"}     = $color; }
+            if ($bgcolor   ne "") { $PlotDefs{"bgcolor"}   = $bgcolor; }
+            if ($textcolor ne "") { $PlotDefs{"textcolor"} = $textcolor; }
+            if ($fontsize  ne "") { $PlotDefs{"fontsize"}  = $fontsize; }
+            if ($width     ne "") { $PlotDefs{"width"}     = $width; }
+            if ($anchor    ne "") { $PlotDefs{"anchor"}    = $anchor; }
+            if ($align     ne "") { $PlotDefs{"align"}     = $align; }
+            if ($shiftx    ne "") { $PlotDefs{"shiftx"}    = $shiftx; }
+            if ($shifty    ne "") { $PlotDefs{"shifty"}    = $shifty; }
+            if ($mark      ne "") { $PlotDefs{"mark"}      = $mark; }
+            if ($markcolor ne "") { $PlotDefs{"markcolor"} = $markcolor; }
 
-            #     if ($link       ne "") { @PlotDefs {"link"}      = $link ; }
-            #     if ($hint       ne "") { @PlotDefs {"hint"}      = $hint ; }
+            #     if ($link       ne "") { $PlotDefs{"link"}      = $link ; }
+            #     if ($hint       ne "") { $PlotDefs{"hint"}      = $hint ; }
             &GetData;
             next PlotData;
         }
@@ -2040,27 +2157,15 @@ sub ParsePlotData {
                     next PlotData;
                 }
                 elsif ($#Bars == 0) {
-                    $bar = @Bars[0];
-                    &Info($data,
+                    $bar = $Bars[0];
+                    # warn "data: $data";
+                    &Info(q(), # $data,
                         "PlotData incomplete. Attribute 'bar' missing, value '"
-                            . @Bars[0]
+                            . $Bars[0]
                             . "' assumed.");
                 }
                 else { $bar = "1"; }
 
-                #        }
-                #        else
-                #        {
-                #          if ($#Bars > 0)
-                #          { &Error ("PlotData invalid. Attribute 'bar' missing.") ;
-                #            &GetData ; next PlotData ; }
-                #          elsif ($#Bars == 0)
-                #          {
-                #            $bar = @Bars [0] ;
-                #            &Info ($data, "PlotData incomplete. Attribute 'bar' missing, value '" . @Bars [0] . "' assumed.") ;
-                #          }
-                #          else { $bar = "1" ; }
-                #        }
                 $prevbar = $bar;
             }
         }
@@ -2144,7 +2249,7 @@ sub ParsePlotData {
             push @PlotBars,
                 sprintf("%6.3f,%s,%s,%s,%s,%s,%s,\n",
                 $width, $bar, $from, $till, lc($color), $link, $hint);
-            if ($width > @BarWidths{$bar}) { @BarWidths{$bar} = $width; }
+            if ($width > $BarWidths{$bar}) { $BarWidths{$bar} = $width; }
 
             if ($text ne "") {
                 if    ($anchor eq "from") { $at = $from; }
@@ -2187,7 +2292,8 @@ sub ParsePlotData {
                 if ($align    eq "") { $align    = "center"; }
                 if ($color    eq "") { $color    = "black"; }
                 if ($fontsize eq "") { $fontsize = "S"; }
-                if ($adjust   eq "") { $adjust   = "0,0"; }
+                # $adjust Doesn't seem to be used anywhere
+                # if ($adjust   eq "") { $adjust   = "0,0"; }
 
                 #        $textdetails = "  textdetails: align=$align size=$size"  ;
                 #        if ($textcolor eq "")
@@ -2199,11 +2305,11 @@ sub ParsePlotData {
                 #        my $barcnt = 0 ;
                 #        for ($b = 0 ; $b <= $#Bars ; $b++)
                 #        {
-                #          if (lc(@Bars [$b]) eq lc($bar))
+                #          if (lc($Bars[$b]) eq lc($bar))
                 #          { $barcnt = ($b + 1) ; last ; }
                 #        }
 
-                #        if (@Axis {"time"} eq "x")
+                #        if ($Axis{"time"} eq "x")
                 #        { $xpos = "$at(s)" ; $ypos = "[$barcnt](s)" ; }
                 #        else
                 #        { $ypos = "$at(s)" ; $xpos = "[$barcnt](s)" ; }
@@ -2246,18 +2352,19 @@ sub ParsePlotData {
     }
 
     $maxwidth = 0;
+    my $key;
     foreach $key (keys %BarWidths) {
-        if (@BarWidths{$key} == 0) {
+        if ($BarWidths{$key} == 0) {
             &Warning(
                 "PlotData incomplete. No bar width defined for bar '$key', assume width from widest bar (used for line marks)."
             );
         }
-        elsif (@BarWidths{$key} > $maxwidth) {
-            $maxwidth = @BarWidths{$key};
+        elsif ($BarWidths{$key} > $maxwidth) {
+            $maxwidth = $BarWidths{$key};
         }
     }
     foreach $key (keys %BarWidths) {
-        if (@BarWidths{$key} == 0) { @BarWidths{$key} = $maxwidth; }
+        if ($BarWidths{$key} == 0) { $BarWidths{$key} = $maxwidth; }
     }
 }
 
@@ -2269,7 +2376,7 @@ sub ParsePreset {
         return;
     }
 
-    $preset = @Attributes{"single"};
+    my $preset = $Attributes{"single"};
     if ($preset !~
         /^(?:TimeVertical_OneBar_UnitYear|TimeHorizontal_AutoPlaceBars_UnitYear)$/i
         )
@@ -2286,20 +2393,20 @@ sub ParsePreset {
     if ($Preset =~ /^TimeVertical_OneBar_UnitYear/i) {
         $DateFormat         = "yyyy";
         $AlignBars          = "early";
-        @Axis{"format"}     = "yyyy";
-        @Axis{"time"}       = "y";
-        @PlotArea{"left"}   = 45;
-        @PlotArea{"right"}  = 10;
-        @PlotArea{"top"}    = 10;
-        @PlotArea{"bottom"} = 10;
-        push @PresetList, "PlotArea|+|left|" . @PlotArea{"left"};
-        push @PresetList, "PlotArea|+|right|" . @PlotArea{"right"};
-        push @PresetList, "PlotArea|+|top|" . @PlotArea{"top"};
-        push @PresetList, "PlotArea|+|bottom|" . @PlotArea{"bottom"};
+        $Axis{"format"}     = "yyyy";
+        $Axis{"time"}       = "y";
+        $PlotArea{"left"}   = 45;
+        $PlotArea{"right"}  = 10;
+        $PlotArea{"top"}    = 10;
+        $PlotArea{"bottom"} = 10;
+        push @PresetList, "PlotArea|+|left|" . $PlotArea{"left"};
+        push @PresetList, "PlotArea|+|right|" . $PlotArea{"right"};
+        push @PresetList, "PlotArea|+|top|" . $PlotArea{"top"};
+        push @PresetList, "PlotArea|+|bottom|" . $PlotArea{"bottom"};
         push @PresetList, "PlotArea|-|width";
         push @PresetList, "PlotArea|-|height";
         push @PresetList, "Dateformat|-||yyyy";
-        push @PresetList, "TimeAxis|=|format|" . @Axis{"format"};
+        push @PresetList, "TimeAxis|=|format|" . $Axis{"format"};
         push @PresetList, "TimeAxis|=|orientation|vertical";
         push @PresetList, "ScaleMajor|=|unit|year";
         push @PresetList, "ScaleMinor|=|unit|year";
@@ -2313,39 +2420,39 @@ sub ParsePreset {
     elsif ($Preset =~ /TimeHorizontal_AutoPlaceBars_UnitYear/i) {
         $DateFormat                 = "yyyy";
         $AlignBars                  = "justify";
-        @Axis{"format"}             = "yyyy";
-        @Axis{"time"}               = "x";
-        @PlotArea{"left"}           = 25;
-        @PlotArea{"right"}          = 25;
-        @PlotArea{"top"}            = 15;
-        @PlotArea{"bottom"}         = 30;
-        @Image{"height"}            = "auto";
-        @Image{"barinc"}            = 20;
-        @BackgroundColors{"canvas"} = "gray(0.7)";
-        @Legend{"orientation"}      = "ver";
-        @Legend{"left"}             = @PlotArea{"left"} + 10;
-        @Legend{"top"}              = @PlotArea{"bottom"} + 100;
+        $Axis{"format"}             = "yyyy";
+        $Axis{"time"}               = "x";
+        $PlotArea{"left"}           = 25;
+        $PlotArea{"right"}          = 25;
+        $PlotArea{"top"}            = 15;
+        $PlotArea{"bottom"}         = 30;
+        $Image{"height"}            = "auto";
+        $Image{"barinc"}            = 20;
+        $BackgroundColors{"canvas"} = "gray(0.7)";
+        $Legend{"orientation"}      = "ver";
+        $Legend{"left"}             = $PlotArea{"left"} + 10;
+        $Legend{"top"}              = $PlotArea{"bottom"} + 100;
         &StoreColor("canvas", &EncodeInput("gray(0.7)"), "");
         &StoreColor("grid1",  &EncodeInput("gray(0.4)"), "");
         &StoreColor("grid2",  &EncodeInput("gray(0.2)"), "");
         push @PresetList, "ImageSize|=|height|auto";
         push @PresetList, "ImageSize|+|barincrement|20";
-        push @PresetList, "PlotArea|+|left|" . @PlotArea{"left"};
-        push @PresetList, "PlotArea|+|right|" . @PlotArea{"right"};
-        push @PresetList, "PlotArea|+|top|" . @PlotArea{"top"};
-        push @PresetList, "PlotArea|+|bottom|" . @PlotArea{"bottom"};
+        push @PresetList, "PlotArea|+|left|" . $PlotArea{"left"};
+        push @PresetList, "PlotArea|+|right|" . $PlotArea{"right"};
+        push @PresetList, "PlotArea|+|top|" . $PlotArea{"top"};
+        push @PresetList, "PlotArea|+|bottom|" . $PlotArea{"bottom"};
         push @PresetList, "PlotArea|-|width";
         push @PresetList, "PlotArea|-|height";
         push @PresetList, "Dateformat|-||yyyy";
-        push @PresetList, "TimeAxis|=|format|" . @Axis{"format"};
+        push @PresetList, "TimeAxis|=|format|" . $Axis{"format"};
         push @PresetList, "TimeAxis|=|orientation|horizontal";
         push @PresetList, "ScaleMajor|=|unit|year";
         push @PresetList, "ScaleMajor|+|grid|grid1";
         push @PresetList, "ScaleMinor|=|unit|year";
         push @PresetList, "AlignBars|=||justify";
-        push @PresetList, "Legend|+|orientation|" . @Legend{"orientation"};
-        push @PresetList, "Legend|+|left|" . @Legend{"left"};
-        push @PresetList, "Legend|+|top|" . @Legend{"top"};
+        push @PresetList, "Legend|+|orientation|" . $Legend{"orientation"};
+        push @PresetList, "Legend|+|left|" . $Legend{"left"};
+        push @PresetList, "Legend|+|top|" . $Legend{"top"};
         push @PresetList, "PlotData|+|align|left";
         push @PresetList, "PlotData|+|anchor|from";
         push @PresetList, "PlotData|+|fontsize|M";
@@ -2365,30 +2472,30 @@ sub ParseScale {
 
     &CheckPreset(Scale . $scale);
 
-    @Scales{$scale} = $true;
+    $Scales{$scale} = $true;
 
-    foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Grid/i
             ) # preferred gridcolor instead of grid, grid allowed for compatability
         {
             if (   (!&ColorPredefined($attrvalue))
-                && (!defined(@Colors{ lc($attrvalue) })))
+                && (!defined($Colors{ lc($attrvalue) })))
             {
                 &Error(
                     "Scale attribute '$attribute' invalid. Unknown color '$attrvalue'.\n"
                         . "  Specify command 'Color' before this command.");
                 return;
             }
-            @Attributes{ $scale . " grid" } = $attrvalue;
-            delete(@Attributes{"grid"});
+            $Attributes{ $scale . " grid" } = $attrvalue;
+            delete($Attributes{"grid"});
         }
         elsif ($attribute =~ /Text/i) {
             $attrvalue =~ s/\~/\\n/g;
             $attrvalue =~ s/^\"//g;
             $attrvalue =~ s/\"$//g;
-            @Attributes{ $scale . " stubs" } = $attrvalue;
+            $Attributes{ $scale . " stubs" } = $attrvalue;
         }
         elsif ($attribute =~ /Unit/i) {
             if ($DateFormat eq "yyyy") {
@@ -2408,8 +2515,8 @@ sub ParseScale {
                 }
             }
             $attrvalue =~ s/s$//;
-            @Attributes{ $scale . " unit" } = $attrvalue;
-            delete(@Attributes{"unit"});
+            $Attributes{ $scale . " unit" } = $attrvalue;
+            delete($Attributes{"unit"});
         }
         elsif ($attribute =~ /Increment/i) {
             if ((!($attrvalue =~ /^\d+$/i)) || ($attrvalue == 0)) {
@@ -2418,8 +2525,8 @@ sub ParseScale {
                 );
                 return;
             }
-            @Attributes{ $scale . " inc" } = $attrvalue;
-            delete(@Attributes{"increment"});
+            $Attributes{ $scale . " inc" } = $attrvalue;
+            delete($Attributes{"increment"});
         }
         elsif ($attribute =~ /Start/i) {
             if (!(defined($DateFormat))) {
@@ -2462,20 +2569,21 @@ sub ParseScale {
                 return;
             }
 
-            @Attributes{ $scale . " start" } = $attrvalue;
-            delete(@Attributes{"start"});
+            $Attributes{ $scale . " start" } = $attrvalue;
+            delete($Attributes{"start"});
         }
         if ($DateFormat eq "yyyy") {
-            @Attributes{ $scale . " unit" } = "year";
+            $Attributes{ $scale . " unit" } = "year";
         }
     }
 
-    foreach $attribute (keys %Attributes) {
-        @Scales{$attribute} = @Attributes{$attribute};
+    foreach my $attribute (keys %Attributes) {
+        $Scales{$attribute} = $Attributes{$attribute};
     }
 }
 
 sub ParseTextData {
+    my ($posx, $posy);
     &GetData;
     if ($NoData) {
         &Error(
@@ -2500,23 +2608,24 @@ sub ParseTextData {
         $link       = "";
         $hint       = "";
 
-        if (defined(@TextDefs{"tabs"})) { $tabs = @TextDefs{"tabs"}; }
-        if (defined(@TextDefs{"fontsize"})) {
-            $fontsize = @TextDefs{"fontsize"};
+        if (defined($TextDefs{"tabs"})) { $tabs = $TextDefs{"tabs"}; }
+        if (defined($TextDefs{"fontsize"})) {
+            $fontsize = $TextDefs{"fontsize"};
         }
-        if (defined(@TextDefs{"lineheight"})) {
-            $lineheight = @TextDefs{"lineheight"};
+        if (defined($TextDefs{"lineheight"})) {
+            $lineheight = $TextDefs{"lineheight"};
         }
-        if (defined(@TextDefs{"textcolor"})) {
-            $textcolor = @TextDefs{"textcolor"};
+        if (defined($TextDefs{"textcolor"})) {
+            $textcolor = $TextDefs{"textcolor"};
         }
 
+        warn "data: $data";
         my $data2 = $data;
         ($data2, $text) = &ExtractText($data2);
         @Attributes = split(" ", $data2);
 
-        foreach $attribute (keys %Attributes) {
-            my $attrvalue = @Attributes{$attribute};
+        foreach my $attribute (keys %Attributes) {
+            my $attrvalue = $Attributes{$attribute};
 
             if ($attribute =~ /^FontSize$/i) {
                 if (   ($attrvalue !~ /\d+(?:\.\d)?/)
@@ -2569,7 +2678,7 @@ sub ParseTextData {
             }
             elsif ($attribute =~ /^(?:Color|TextColor)$/i) {
                 if (!&ColorPredefined($attrvalue)) {
-                    if (!defined(@Colors{ lc($attrvalue) })) {
+                    if (!defined($Colors{ lc($attrvalue) })) {
                         &Error(
                             "TextData invalid. Attribute '$attribute' contains unknown color '$attrvalue'.\n"
                                 . "  Specify command 'Color' before this command."
@@ -2578,8 +2687,8 @@ sub ParseTextData {
                         next TextData;
                     }
                 }
-                if (defined(@Colors{ lc($attrvalue) })) {
-                    $textcolor = @Colors{ lc($attrvalue) };
+                if (defined($Colors{ lc($attrvalue) })) {
+                    $textcolor = $Colors{ lc($attrvalue) };
                 }
                 else { $textcolor = lc($attrvalue); }
             }
@@ -2620,12 +2729,12 @@ sub ParseTextData {
         if ($textcolor eq "") { $textcolor = "black"; }
 
         if ($pos eq "") {
-            $pos = @TextDefs{"pos"};
+            $pos = $TextDefs{"pos"};
             ($posx, $posy) = split(",", $pos);
             $posy -= $lineheight;
             if ($posy < 0) { $posy = 0; }
             $pos = "$posx,$posy";
-            @TextDefs{"pos"} = $pos;
+            $TextDefs{"pos"} = $pos;
         }
 
         #    if ($link ne "")
@@ -2633,11 +2742,11 @@ sub ParseTextData {
 
         if ($text eq "")    # upd defaults
         {
-            if ($pos        ne "") { @TextDefs{"pos"}        = $pos; }
-            if ($tabs       ne "") { @TextDefs{"tabs"}       = $tabs; }
-            if ($fontsize   ne "") { @TextDefs{"fontsize"}   = $fontsize; }
-            if ($textcolor  ne "") { @TextDefs{"textcolor"}  = $textcolor; }
-            if ($lineheight ne "") { @TextDefs{"lineheight"} = $lineheight; }
+            if ($pos        ne "") { $TextDefs{"pos"}        = $pos; }
+            if ($tabs       ne "") { $TextDefs{"tabs"}       = $tabs; }
+            if ($fontsize   ne "") { $TextDefs{"fontsize"}   = $fontsize; }
+            if ($textcolor  ne "") { $TextDefs{"textcolor"}  = $textcolor; }
+            if ($lineheight ne "") { $TextDefs{"lineheight"} = $lineheight; }
             &GetData;
             next TextData;
         }
@@ -2663,7 +2772,7 @@ sub ParseTextData {
 
         if (defined($tabs) && ($tabs ne "")) {
             $tabs =~ s/^\s*$hBrO (.*) $hBrC\s*$/$1/x;
-            @Tabs = split(",", $tabs);
+            my @Tabs = split(",", $tabs);
             foreach $tab (@Tabs) {
                 $tab =~ s/\s* (.*) \s*$/$1/x;
                 if (!($tab =~ /\d+\-(?:center|left|right)$/)) {
@@ -2703,7 +2812,7 @@ sub ParseTimeAxis {
     &CheckPreset("TimeAxis");
 
     foreach $attribute (keys %Attributes) {
-        my $attrvalue = @Attributes{$attribute};
+        my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Format/i) {
             if ($attrvalue =~ /^yy$/i) {
@@ -2741,32 +2850,32 @@ sub ParseTimeAxis {
                 return;
             }
 
-            @Attributes{"order"} = lc($attrvalue);
+            $Attributes{"order"} = lc($attrvalue);
         }
 
         elsif ($attribute =~ /Orientation/i) {
             if ($attrvalue =~ /^hor(?:izontal)?$/i) {
-                @Attributes{"time"} = "x";
+                $Attributes{"time"} = "x";
             }
             elsif ($attrvalue =~ /^ver(?:tical)?$/i) {
-                @Attributes{"time"} = "y";
+                $Attributes{"time"} = "y";
             }
             else {
                 &Error(   "TimeAxis attribute '$attribute' invalid.\n"
                         . "Specify hor[izontal] or ver[tical]");
                 return;
             }
-            delete(@Attributes{"orientation"});
+            delete($Attributes{"orientation"});
         }
     }
 
-    if (!defined(@Attributes{"format"})) { @Attributes{"format"} = "yyyy"; }
+    if (!defined($Attributes{"format"})) { $Attributes{"format"} = "yyyy"; }
 
     %Axis = %Attributes;
 }
 
 sub ParseUnknownCommand {
-    $name = $Command;
+    my $name = $Command;
     $name =~ s/[^a-zA-Z].*$//;
     &Error("Command '$name' unknown.");
 }
@@ -2778,25 +2887,25 @@ sub RemoveSpaces {
 }
 
 sub DetectMissingCommands {
-    if (!defined(%Image)) {
+    if (!%Image) {
         &Error2("Command ImageSize missing or invalid");
     }
-    if (!defined(%PlotArea)) {
+    if (!%PlotArea) {
         &Error2("Command PlotArea missing or invalid");
     }
-    if (!defined($DateFormat)) {
+    if (!$DateFormat) {
         &Error2("Command DateFormat missing or invalid");
     }
-    if (!defined(@Axis{"time"})) {
+    if (!$Axis{"time"}) {
         &Error2("Command TimeAxis missing or invalid");
     }
 
-    if ((@Image{"width"} =~ /auto/i) && (@Axis{"time"} =~ /x/i)) {
+    if (($Image{"width"} =~ /auto/i) && ($Axis{"time"} =~ /x/i)) {
         &Error2(
             "ImageSize value 'width:auto' only allowed with TimeAxis value 'orientation:vertical'"
         );
     }
-    if ((@Image{"height"} =~ /auto/i) && (@Axis{"time"} =~ /y/i)) {
+    if (($Image{"height"} =~ /auto/i) && ($Axis{"time"} =~ /y/i)) {
         &Error2(
             "ImageSize value 'height:auto' only allowed with TimeAxis value 'orientation:horizontal'"
         );
@@ -2824,9 +2933,9 @@ sub Normalize {
 sub ValidateAndNormalizeDimensions {
     my ($val, $dim);
 
-    if (@Image{"width"} =~ /auto/i) {
+    if ($Image{"width"} =~ /auto/i) {
         foreach $attribute ("width", "left", "right") {
-            if (@PlotArea{$attribute} =~ /\%/) {
+            if ($PlotArea{$attribute} =~ /\%/) {
                 &Error2(  "You specified 'ImageSize = width:auto'.\n"
                         . "  This implies absolute values in PlotArea attributes 'left', 'right' and/or 'width' (no \%).\n"
                 );
@@ -2834,9 +2943,9 @@ sub ValidateAndNormalizeDimensions {
             }
         }
 
-        if (   (@PlotArea{"width"} ne "")
-            || (@PlotArea{"left"}  eq "")
-            || (@PlotArea{"right"} eq ""))
+        if (   ($PlotArea{"width"} ne "")
+            || ($PlotArea{"left"}  eq "")
+            || ($PlotArea{"right"} eq ""))
         {
             &Error2(  "You specified 'ImageSize = width:auto'.\n"
                     . "  This implies  'PlotArea  = width:auto'.\n"
@@ -2846,9 +2955,9 @@ sub ValidateAndNormalizeDimensions {
         }
     }
 
-    if (@Image{"height"} =~ /auto/i) {
+    if ($Image{"height"} =~ /auto/i) {
         foreach $attribute ("height", "top", "bottom") {
-            if (@PlotArea{$attribute} =~ /\%/) {
+            if ($PlotArea{$attribute} =~ /\%/) {
                 &Error2(  "You specified 'ImageSize = height:auto'.\n"
                         . "  This implies absolute values in PlotArea attributes 'top', 'bottom' and/or 'height' (no \%).\n"
                 );
@@ -2856,9 +2965,9 @@ sub ValidateAndNormalizeDimensions {
             }
         }
 
-        if (   (@PlotArea{"height"} ne "")
-            || (@PlotArea{"top"} eq "")
-            || (@PlotArea{"bottom"} eq ""))
+        if (   ($PlotArea{"height"} ne "")
+            || ($PlotArea{"top"} eq "")
+            || ($PlotArea{"bottom"} eq ""))
         {
             &Error2(  "You specified 'ImageSize = height:auto'.\n"
                     . "  This implies  'PlotArea  = height:auto'.\n"
@@ -2868,39 +2977,39 @@ sub ValidateAndNormalizeDimensions {
         }
     }
 
-    @Image{"width"}     = &Normalize(@Image{"width"});
-    @Image{"height"}    = &Normalize(@Image{"height"});
-    @Image{"barinc"}    = &Normalize(@Image{"barinc"});
-    @PlotArea{"width"}  = &Normalize(@PlotArea{"width"}, @Image{"width"});
-    @PlotArea{"height"} = &Normalize(@PlotArea{"height"}, @Image{"height"});
-    @PlotArea{"left"}   = &Normalize(@PlotArea{"left"}, @Image{"width"});
-    @PlotArea{"right"}  = &Normalize(@PlotArea{"right"}, @Image{"width"});
-    @PlotArea{"bottom"} = &Normalize(@PlotArea{"bottom"}, @Image{"height"});
-    @PlotArea{"top"}    = &Normalize(@PlotArea{"top"}, @Image{"height"});
+    $Image{"width"}     = &Normalize($Image{"width"});
+    $Image{"height"}    = &Normalize($Image{"height"});
+    $Image{"barinc"}    = &Normalize($Image{"barinc"});
+    $PlotArea{"width"}  = &Normalize($PlotArea{"width"}, $Image{"width"});
+    $PlotArea{"height"} = &Normalize($PlotArea{"height"}, $Image{"height"});
+    $PlotArea{"left"}   = &Normalize($PlotArea{"left"}, $Image{"width"});
+    $PlotArea{"right"}  = &Normalize($PlotArea{"right"}, $Image{"width"});
+    $PlotArea{"bottom"} = &Normalize($PlotArea{"bottom"}, $Image{"height"});
+    $PlotArea{"top"}    = &Normalize($PlotArea{"top"}, $Image{"height"});
 
-    if (@Image{"width"} =~ /auto/i) {
-        @PlotArea{"width"} = $#Bars * @Image{"barinc"};
-        @Image{"width"} =
-            @PlotArea{"left"} + @PlotArea{"width"} + @PlotArea{"right"};
+    if ($Image{"width"} =~ /auto/i) {
+        $PlotArea{"width"} = $#Bars * $Image{"barinc"};
+        $Image{"width"} =
+            $PlotArea{"left"} + $PlotArea{"width"} + $PlotArea{"right"};
     }
 
-    elsif (@Image{"height"} =~ /auto/i) {
-        @PlotArea{"height"} = $#Bars * @Image{"barinc"};
-        @Image{"height"} =
-            @PlotArea{"top"} + @PlotArea{"height"} + @PlotArea{"bottom"};
+    elsif ($Image{"height"} =~ /auto/i) {
+        $PlotArea{"height"} = $#Bars * $Image{"barinc"};
+        $Image{"height"} =
+            $PlotArea{"top"} + $PlotArea{"height"} + $PlotArea{"bottom"};
     }
 
-    if (@PlotArea{"right"} ne "") {
-        @PlotArea{"width"} =
-            @Image{"width"} - @PlotArea{"left"} - @PlotArea{"right"};
+    if ($PlotArea{"right"} ne "") {
+        $PlotArea{"width"} =
+            $Image{"width"} - $PlotArea{"left"} - $PlotArea{"right"};
     }
 
-    if (@PlotArea{"top"} ne "") {
-        @PlotArea{"height"} =
-            @Image{"height"} - @PlotArea{"top"} - @PlotArea{"bottom"};
+    if ($PlotArea{"top"} ne "") {
+        $PlotArea{"height"} =
+            $Image{"height"} - $PlotArea{"top"} - $PlotArea{"bottom"};
     }
 
-    if ((@Image{"width"} > 16) || (@Image{"height"} > 20)) {
+    if (($Image{"width"} > 16) || ($Image{"height"} > 20)) {
         if (!$bypass) {
             &Error2(  "Maximum image size is 1600x2000 pixels = 16x20 inch\n"
                     . "  Run with option -b (bypass checks) when this is correct.\n"
@@ -2909,62 +3018,62 @@ sub ValidateAndNormalizeDimensions {
         }
     }
 
-    if ((@Image{"width"} < 0.25) || (@Image{"height"} < 0.25)) {
+    if (($Image{"width"} < 0.25) || ($Image{"height"} < 0.25)) {
         &Error2("Minimum image size is 25x25 pixels = 0.25x0.25 inch\n");
         return;
     }
 
-    if (@PlotArea{"width"} > @Image{"width"}) {
+    if ($PlotArea{"width"} > $Image{"width"}) {
         &Error2("Plot width larger than image width. Please adjust.\n");
         return;
     }
 
-    if (@PlotArea{"width"} < 0.2) {
+    if ($PlotArea{"width"} < 0.2) {
         &Error2(
             "Plot width less than 20 pixels = 0.2 inch. Please adjust.\n");
         return;
     }
 
-    if (@PlotArea{"height"} > @Image{"height"}) {
+    if ($PlotArea{"height"} > $Image{"height"}) {
         &Error2("Plot height larger than image height. Please adjust.\n");
         return;
     }
 
-    if (@PlotArea{"height"} < 0.2) {
+    if ($PlotArea{"height"} < 0.2) {
         &Error2(
             "Plot height less than 20 pixels = 0.2 inch. Please adjust.\n");
         return;
     }
 
-    if (@PlotArea{"left"} + @PlotArea{"width"} > @Image{"width"}) {
+    if ($PlotArea{"left"} + $PlotArea{"width"} > $Image{"width"}) {
         &Error2(
             "Plot width + margins larger than image width. Please adjust.\n");
         return;
     }
 
-    #   @PlotArea {"left"} = @Image {"width"} - @PlotArea {"width"} ; }
+    #   $PlotArea{"left"} = $Image{"width"} - $PlotArea{"width"} ; }
 
-    if (@PlotArea{"left"} < 0) { @PlotArea{"left"} = 0; }
+    if ($PlotArea{"left"} < 0) { $PlotArea{"left"} = 0; }
 
-    if (@PlotArea{"bottom"} + @PlotArea{"height"} > @Image{"height"}) {
+    if ($PlotArea{"bottom"} + $PlotArea{"height"} > $Image{"height"}) {
         &Error2(
             "Plot height + margins larger than image height. Please adjust.\n"
         );
         return;
     }
 
-    #   @PlotArea {"bottom"} = @Image {"height"} - @PlotArea {"height"} ; }
+    #   $PlotArea{"bottom"} = $Image{"height"} - $PlotArea{"height"} ; }
 
-    if (@PlotArea{"bottom"} < 0) { @PlotArea{"bottom"} = 0; }
+    if ($PlotArea{"bottom"} < 0) { $PlotArea{"bottom"} = 0; }
 
-    if (   (defined(@Scales{"Major"}))
-        || (defined(@Scales{"Minor"})))
+    if (   (defined($Scales{"Major"}))
+        || (defined($Scales{"Minor"})))
     {
-        if   (defined(@Scales{"Major"})) { $margin = 0.2; }
+        if   (defined($Scales{"Major"})) { $margin = 0.2; }
         else                             { $margin = 0.05; }
 
-        if (@Axis{"time"} eq "x") {
-            if (@PlotArea{"bottom"} < $margin) {
+        if ($Axis{"time"} eq "x") {
+            if ($PlotArea{"bottom"} < $margin) {
                 &Error2(
                     "Not enough space below plot area for plotting time axis\n"
                         . " Specify 'PlotArea = bottom:x', where x is at least "
@@ -2974,7 +3083,7 @@ sub ValidateAndNormalizeDimensions {
             }
         }
         else {
-            if (@PlotArea{"left"} < $margin) {
+            if ($PlotArea{"left"} < $margin) {
                 &Error2(
                     "Not enough space outside plot area for plotting time axis\n"
                         . " Specify 'PlotArea = left:x', where x is at least "
@@ -2985,31 +3094,31 @@ sub ValidateAndNormalizeDimensions {
         }
     }
 
-    if (defined(@Legend{"orientation"})) {
-        if (defined(@Legend{"left"})) {
-            @Legend{"left"} = &Normalize(@Legend{"left"}, @Image{"width"});
+    if (defined($Legend{"orientation"})) {
+        if (defined($Legend{"left"})) {
+            $Legend{"left"} = &Normalize($Legend{"left"}, $Image{"width"});
         }
-        if (defined(@Legend{"top"})) {
-            @Legend{"top"} = &Normalize(@Legend{"top"}, @Image{"height"});
+        if (defined($Legend{"top"})) {
+            $Legend{"top"} = &Normalize($Legend{"top"}, $Image{"height"});
         }
-        if (defined(@Legend{"columnwidth"})) {
-            @Legend{"columnwidth"} =
-                &Normalize(@Legend{"columnwidth"}, @Image{"width"});
+        if (defined($Legend{"columnwidth"})) {
+            $Legend{"columnwidth"} =
+                &Normalize($Legend{"columnwidth"}, $Image{"width"});
         }
 
-        if (!defined(@Legend{"columns"})) {
-            @Legend{"columns"} = 1;
-            if (   (@Legend{"orientation"} =~ /ver/i)
-                && (@Legend{"position"} =~ /^(?:top|bottom)$/i))
+        if (!defined($Legend{"columns"})) {
+            $Legend{"columns"} = 1;
+            if (   ($Legend{"orientation"} =~ /ver/i)
+                && ($Legend{"position"} =~ /^(?:top|bottom)$/i))
             {
                 if ($#LegendData > 10) {
-                    @Legend{"columns"} = 3;
+                    $Legend{"columns"} = 3;
                     &Info2(
                         "Legend attribute 'columns' not defined. 3 columns assumed."
                     );
                 }
                 elsif ($#LegendData > 5) {
-                    @Legend{"columns"} = 2;
+                    $Legend{"columns"} = 2;
                     &Info2(
                         "Legend attribute 'columns' not defined. 2 columns assumed."
                     );
@@ -3017,57 +3126,57 @@ sub ValidateAndNormalizeDimensions {
             }
         }
 
-        if (@Legend{"position"} =~ /top/i) {
-            if (!defined(@Legend{"left"})) {
-                @Legend{"left"} = @PlotArea{"left"};
+        if ($Legend{"position"} =~ /top/i) {
+            if (!defined($Legend{"left"})) {
+                $Legend{"left"} = $PlotArea{"left"};
             }
-            if (!defined(@Legend{"top"})) {
-                @Legend{"top"} = (@Image{"height"} - 0.2);
+            if (!defined($Legend{"top"})) {
+                $Legend{"top"} = ($Image{"height"} - 0.2);
             }
-            if (   (!defined(@Legend{"columnwidth"}))
-                && (@Legend{"columns"} > 1))
+            if (   (!defined($Legend{"columnwidth"}))
+                && ($Legend{"columns"} > 1))
             {
-                @Legend{"columnwidth"} = sprintf(
+                $Legend{"columnwidth"} = sprintf(
                     "%02f",
                     (
-                        (@PlotArea{"left"} + @PlotArea{"width"} - 0.2) /
-                            @Legend{"columns"}
+                        ($PlotArea{"left"} + $PlotArea{"width"} - 0.2) /
+                            $Legend{"columns"}
                     )
                 );
             }
         }
-        elsif (@Legend{"position"} =~ /bottom/i) {
-            if (!defined(@Legend{"left"})) {
-                @Legend{"left"} = @PlotArea{"left"};
+        elsif ($Legend{"position"} =~ /bottom/i) {
+            if (!defined($Legend{"left"})) {
+                $Legend{"left"} = $PlotArea{"left"};
             }
-            if (!defined(@Legend{"top"})) {
-                @Legend{"top"} = (@PlotArea{"bottom"} - 0.4);
+            if (!defined($Legend{"top"})) {
+                $Legend{"top"} = ($PlotArea{"bottom"} - 0.4);
             }
-            if (   (!defined(@Legend{"columnwidth"}))
-                && (@Legend{"columns"} > 1))
+            if (   (!defined($Legend{"columnwidth"}))
+                && ($Legend{"columns"} > 1))
             {
-                @Legend{"columnwidth"} = sprintf(
+                $Legend{"columnwidth"} = sprintf(
                     "%02f",
                     (
-                        (@PlotArea{"left"} + @PlotArea{"width"} - 0.2) /
-                            @Legend{"columns"}
+                        ($PlotArea{"left"} + $PlotArea{"width"} - 0.2) /
+                            $Legend{"columns"}
                     )
                 );
             }
         }
-        elsif (@Legend{"position"} =~ /right/i) {
-            if (!defined(@Legend{"left"})) {
-                @Legend{"left"} =
-                    (@PlotArea{"left"} + @PlotArea{"width"} + 0.2);
+        elsif ($Legend{"position"} =~ /right/i) {
+            if (!defined($Legend{"left"})) {
+                $Legend{"left"} =
+                    ($PlotArea{"left"} + $PlotArea{"width"} + 0.2);
             }
-            if (!defined(@Legend{"top"})) {
-                @Legend{"top"} =
-                    (@PlotArea{"bottom"} + @PlotArea{"height"} - 0.2);
+            if (!defined($Legend{"top"})) {
+                $Legend{"top"} =
+                    ($PlotArea{"bottom"} + $PlotArea{"height"} - 0.2);
             }
         }
     }
 
-    if (!defined(@Axis{"order"})) { @Axis{"order"} = "normal"; }
+    if (!defined($Axis{"order"})) { $Axis{"order"} = "normal"; }
 }
 
 sub WriteProcAnnotate {
@@ -3110,8 +3219,12 @@ sub WriteProcAnnotate {
     $text2 = $text;
     $text2 =~ s/\[\[//g;
     $text2 =~ s/\]\]//g;
-    if   ($text2 =~ /^\s/) { push @PlotTextsPng, "  text: \n\\$text2\n\n"; }
-    else                   { push @PlotTextsPng, "  text: $text2\n\n"; }
+    if   ($text2 =~ /^\s/) {
+        push @PlotTextsPng, "  text: \n\\$text2\n\n";
+    }
+    else {
+        push @PlotTextsPng, "  text: $text2\n\n";
+    }
 
     $text2 = $text;
     if ($link ne "") {
@@ -3138,8 +3251,12 @@ sub WriteProcAnnotate {
         while (length($text3) < length($text2)) { $text3 .= "x"; }
     }
 
-    if   ($text3 =~ /^\s/) { push @PlotTextsSvg, "  text: \n\\$text3\n\n"; }
-    else                   { push @PlotTextsSvg, "  text: $text3\n\n"; }
+    if   ($text3 =~ /^\s/) {
+        push @PlotTextsSvg, "  text: \n\\$text3\n\n";
+    }
+    else {
+        push @PlotTextsSvg, "  text: $text3\n\n";
+    }
 
     if ($link ne "") {
         $MapPNG = $true;
@@ -3219,21 +3336,21 @@ sub WriteText {
     my ($link2, $hint2, $tab);
     my $outside = $false;
 
-    if (@Axis{"order"} =~ /reverse/i) {
-        if   (@Axis{"time"} eq "y") { $posy =~ s/(.*)(\(s\))/(-$1).$2/xe; }
+    if ($Axis{"order"} =~ /reverse/i) {
+        if   ($Axis{"time"} eq "y") { $posy =~ s/(.*)(\(s\))/(-$1).$2/xe; }
         else                        { $posx =~ s/(.*)(\(s\))/(-$1).$2/xe; }
     }
 
     if ($posx !~ /\(s\)/) {
         if ($posx < 0) { $outside = $true; }
-        if (@Image{"width"} !~ /auto/i) {
-            if ($posx > @Image{"width"} / 100) { $outside = $true; }
+        if ($Image{"width"} !~ /auto/i) {
+            if ($posx > $Image{"width"} / 100) { $outside = $true; }
         }
     }
     if ($posy !~ /\(s\)/) {
         if ($posy < 0) { $outside = $true; }
-        if (@Image{"height"} !~ /auto/i) {
-            if ($posy > @Image{"height"} / 100) { $outside = $true; }
+        if ($Image{"height"} !~ /auto/i) {
+            if ($posy > $Image{"height"} / 100) { $outside = $true; }
         }
     }
     if ($outside) {
@@ -3247,7 +3364,9 @@ sub WriteText {
     }
 
     my @Tabs = split(",", $tabs);
-    foreach $tab (@Tabs) { $tab =~ s/\s* (.*) \s*$/$1/x; }
+    foreach (@Tabs) {
+        s/\s* (.*) \s*$/$1/x;
+    }
 
     $posx0 = $posx;
     my @Text;
@@ -3258,8 +3377,9 @@ sub WriteText {
         $hint = "";
     }
 
-    my @Text;
-    if ($mode eq "^") { @Text = split('\^', $text); }
+    if ($mode eq "^") {
+        @Text = split('\^', $text);
+    }
     elsif ($mode eq "~") {
         @Text = split('\n', $text);
 
@@ -3277,9 +3397,11 @@ sub WriteText {
             }
         }
     }
-    else { push @Text, $text; }
+    else {
+        push @Text, $text;
+    }
 
-    foreach $text (@Text) {
+    foreach $text (@Text) { # XXX $text should be renamed here
         if ($text !~ /^[\n\s]*$/) {
             $link2 = "";
             $hint2 = "";
@@ -3358,10 +3480,10 @@ sub WritePlotFile {
 
     $script = "";
     my ($color);
-    if   (@Axis{"time"} eq "x") { $AxisBars = "y"; }
+    if   ($Axis{"time"} eq "x") { $AxisBars = "y"; }
     else                        { $AxisBars = "x"; }
 
-    #  if ((@Axis {"time"} eq "y") && ($#Bars > 0))
+    #  if (($Axis{"time"} eq "y") && ($#Bars > 0))
     #  {
     #    undef @BarsTmp ;
     #    while ($#Bars >= 0)
@@ -3372,11 +3494,13 @@ sub WritePlotFile {
     if ($tmpdir ne "") {
         $file_script = $tmpdir . $pathseparator . "EasyTimeline.txt.$$";
     }
-    else { $file_script = "EasyTimeline.txt"; }
+    else {
+        $file_script = "EasyTimeline.txt";
+    }
 
     print "Ploticus input file = " . $file_script . "\n";
 
-    # $fmt = "gif" ;
+    # $image_file_fmt = "gif" ;
     open "FILE_OUT", ">", $file_script;
 
     #proc settings
@@ -3388,9 +3512,9 @@ sub WritePlotFile {
     $script .= "#proc page\n";
     $script .= "  dopagebox: no\n";
     $script .=
-        "  pagesize: " . @Image{"width"} . " " . @Image{"height"} . "\n";
-    if (defined(@BackgroundColors{"canvas"})) {
-        $script .= "  backgroundcolor: " . @BackgroundColors{"canvas"} . "\n";
+        "  pagesize: " . $Image{"width"} . " " . $Image{"height"} . "\n";
+    if (defined($BackgroundColors{"canvas"})) {
+        $script .= "  backgroundcolor: " . $BackgroundColors{"canvas"} . "\n";
     }
     $script .= "\n";
 
@@ -3418,7 +3542,7 @@ sub WritePlotFile {
     #             -> 2BU   = PU - PC
     #             -> U (2B-P) = -PC
     #             -> U = -PC/(2B-P)
-    # P = @PlotArea {$extent}
+    # P = $PlotArea{$extent}
     # C = c - 1 = $#Bars
     # 2B = $MaxBarWidth
     if (!defined($AlignBars)) {
@@ -3426,17 +3550,17 @@ sub WritePlotFile {
         $AlignBars = "early";
     }
 
-    if   (@Axis{"time"} eq "x") { $extent = "height"; }
+    if   ($Axis{"time"} eq "x") { $extent = "height"; }
     else                        { $extent = "width"; }
 
-    if ($MaxBarWidth > @PlotArea{$extent}) {
+    if ($MaxBarWidth > $PlotArea{$extent}) {
         &Error2("Maximum bar width exceeds plotarea " . $extent . ".");
         return;
     }
 
-    if ($MaxBarWidth == @PlotArea{$extent}) { @PlotArea{$extent} += 0.01; }
+    if ($MaxBarWidth == $PlotArea{$extent}) { $PlotArea{$extent} += 0.01; }
 
-    if ($MaxBarWidth == @PlotArea{$extent}) {
+    if ($MaxBarWidth == $PlotArea{$extent}) {
         $till = 1;
         $from = 1;
     }
@@ -3444,8 +3568,8 @@ sub WritePlotFile {
         if ($AlignBars eq "justify") {
             if ($#Bars > 0) {
                 $U =
-                    -(@PlotArea{$extent} * $#Bars) /
-                    ($MaxBarWidth - @PlotArea{$extent});
+                    -($PlotArea{$extent} * $#Bars) /
+                    ($MaxBarWidth - $PlotArea{$extent});
                 $x    = ($U - $#Bars) / 2;
                 $from = 1 - $x;
                 $till = 1 + $#Bars + $x;
@@ -3453,7 +3577,7 @@ sub WritePlotFile {
             else    # one bar-> "justify" is misnomer here, treat as "center"
             {
 
-                # $x = ($MaxBarWidth /2) / @PlotArea {$extent} ;
+                # $x = ($MaxBarWidth /2) / $PlotArea{$extent} ;
                 # $from = 0.5 - $x ;
                 # $till = $from + 1 ;
                 $from = 0.5;
@@ -3463,13 +3587,13 @@ sub WritePlotFile {
         elsif ($AlignBars eq "early") {
             $U = $#Bars + 1;
             if ($U == 0) { $U = 1; }
-            $x    = (($MaxBarWidth / 2) * $U) / @PlotArea{$extent};
+            $x    = (($MaxBarWidth / 2) * $U) / $PlotArea{$extent};
             $from = 1 - $x;
             $till = $from + $U;
         }
         elsif ($AlignBars eq "late") {
             $U    = $#Bars + 1;
-            $x    = (($MaxBarWidth / 2) * $U) / @PlotArea{$extent};
+            $x    = (($MaxBarWidth / 2) * $U) / $PlotArea{$extent};
             $till = $U + $x;
             $from = $till - $U;
         }
@@ -3486,30 +3610,30 @@ sub WritePlotFile {
     $script .= "#proc areadef\n";
     $script .=
           "  rectangle: "
-        . @PlotArea{"left"} . " "
-        . @PlotArea{"bottom"} . " "
-        . sprintf("%.2f", @PlotArea{"left"} + @PlotArea{"width"}) . " "
-        . sprintf("%.2f", @PlotArea{"bottom"} + @PlotArea{"height"}) . "\n";
+        . $PlotArea{"left"} . " "
+        . $PlotArea{"bottom"} . " "
+        . sprintf("%.2f", $PlotArea{"left"} + $PlotArea{"width"}) . " "
+        . sprintf("%.2f", $PlotArea{"bottom"} + $PlotArea{"height"}) . "\n";
     if (($DateFormat eq "yyyy") || ($DateFormat eq "x.y")) {
-        $script .= "  " . @Axis{"time"} . "scaletype: linear\n";
+        $script .= "  " . $Axis{"time"} . "scaletype: linear\n";
     }    # date yyyy
     else {
-        $script .= "  " . @Axis{"time"} . "scaletype: date $DateFormat\n";
+        $script .= "  " . $Axis{"time"} . "scaletype: date $DateFormat\n";
     }
 
-    if (@Axis{"order"} !~ /reverse/i) {
+    if ($Axis{"order"} !~ /reverse/i) {
         $script .= "  "
-            . @Axis{"time"}
+            . $Axis{"time"}
             . "range: "
-            . @Period{"from"} . " "
-            . @Period{"till"} . "\n";
+            . $Period{"from"} . " "
+            . $Period{"till"} . "\n";
     }
     else {
         $script .= "  "
-            . @Axis{"time"}
+            . $Axis{"time"}
             . "range: "
-            . (-@Period{"till"}) . " "
-            . (-@Period{"from"}) . "\n";
+            . (-$Period{"till"}) . " "
+            . (-$Period{"from"}) . "\n";
     }
 
     $script .= "  " . $AxisBars . "scaletype: linear\n";
@@ -3533,15 +3657,15 @@ sub WritePlotFile {
         $script .= "#proc legendentry\n";
         $script .= "  sampletype: color\n";
 
-        if ((defined(@ColorLabels{$color})) && (@ColorLabels{$color} ne "")) {
-            $script .= "  label: " . @ColorLabels{$color} . "\n";
+        if ((defined($ColorLabels{$color})) && ($ColorLabels{$color} ne "")) {
+            $script .= "  label: " . $ColorLabels{$color} . "\n";
         }
-        $script .= "  details: " . @Colors{$color} . "\n";
+        $script .= "  details: " . $Colors{$color} . "\n";
         $script .= "  tag: $color\n";
         $script .= "\n";
     }
 
-    if (defined(@BackgroundColors{"bars"})) {
+    if (defined($BackgroundColors{"bars"})) {
 
         #proc getdata / #proc bars
         $script .= "#proc getdata\n";
@@ -3557,18 +3681,18 @@ sub WritePlotFile {
         for ($b = 0; $b <= $#Bars; $b++) {
             $script .=
                   ($b + 1) . ","
-                . @Period{"from"} . ","
-                . @Period{"till"} . ","
-                . @BackgroundColors{"bars"} . "\n";
+                . $Period{"from"} . ","
+                . $Period{"till"} . ","
+                . $BackgroundColors{"bars"} . "\n";
         }
         $script .= "\n";
 
         #proc bars
         $script .= "#proc bars\n";
-        $script .= "  axis: " . @Axis{"time"} . "\n";
+        $script .= "  axis: " . $Axis{"time"} . "\n";
         $script .= "  barwidth: $maxwidth\n";
         $script .= "  outline: no\n";
-        if (@Axis{"time"} eq "x") { $script .= "  horizontalbars: yes\n"; }
+        if ($Axis{"time"} eq "x") { $script .= "  horizontalbars: yes\n"; }
         $script .= "  locfield: 1\n";
         $script .= "  segmentfields: 2 3\n";
         $script .= "  colorfield: 4\n";
@@ -3580,8 +3704,8 @@ sub WritePlotFile {
     }
 
     #proc axis
-    if (defined(@Scales{"Minor grid"})) { &PlotScale("Minor", $true); }
-    if (defined(@Scales{"Major grid"})) { &PlotScale("Major", $true); }
+    if (defined($Scales{"Minor grid"})) { &PlotScale("Minor", $true); }
+    if (defined($Scales{"Major grid"})) { &PlotScale("Major", $true); }
 
     &PlotLines("back");
 
@@ -3594,7 +3718,7 @@ sub WritePlotFile {
     foreach $entry (@PlotLines) {
         ($bar) = split(",", $entry);
         $bar =~ s/\#.*//;
-        $width = @BarWidths{$bar};
+        $width = $BarWidths{$bar};
         $entry = sprintf("%6.3f", $width) . "," . $entry;
     }
 
@@ -3626,7 +3750,10 @@ sub WritePlotFile {
         $scriptPng2 .= "  stubs: text\n";
         $scriptSvg2 .= "  stubs: text\n";
 
-        my ($text, $link, $hint);
+        # XXX huh? Yields a warning.
+        my $text;
+        my $link;
+        my $hint;
 
         undef(@Bars2);
         foreach $bar (@Bars) {
@@ -3636,10 +3763,10 @@ sub WritePlotFile {
 
         foreach $bar (@Bars2) {
             $hint = "";
-            $text = @BarLegend{ lc($bar) };
+            $text = $BarLegend{ lc($bar) };
             if ($text =~ /^\s*$/) { $text = "\\"; }
 
-            $link = @BarLink{ lc($bar) };
+            $link = $BarLink{ lc($bar) };
             if (!defined($link)) {
                 if ($text =~ /\[.*\]/) {
                     ($text, $link, $hint) =
@@ -3678,10 +3805,10 @@ sub WritePlotFile {
         $barcnt = $#Bars + 1;
         foreach $bar (@Bars2) {
             $hint = "";
-            $text = @BarLegend{ lc($bar) };
+            $text = $BarLegend{ lc($bar) };
             if ($text =~ /^\s*$/) { $text = "\\"; }
 
-            $link = @BarLink{ lc($bar) };
+            $link = $BarLink{ lc($bar) };
             if (!defined($link)) {
                 if ($text =~ /\[.*\]/) {
                     ($text, $link, $hint) =
@@ -3693,10 +3820,10 @@ sub WritePlotFile {
                 $scriptPng3 .= "#proc rect\n";
                 $scriptPng3 .=
                       "  rectangle: 0 $barcnt(s)+0.05 "
-                    . @PlotArea{"left"}
+                    . $PlotArea{"left"}
                     . " $barcnt(s)-0.05\n";
                 $scriptPng3 .=
-                    "  color: " . @BackgroundColors{"canvas"} . "\n";
+                    "  color: " . $BackgroundColors{"canvas"} . "\n";
                 $scriptPng3 .= "  clickmapurl: " . $link . "\n";
                 if ((defined($hint)) && ($hint ne "")) {
                     $scriptPng3 .= "  clickmaplabel: " . $hint . "\n";
@@ -3746,8 +3873,8 @@ sub WritePlotFile {
     #proc axis
     # repeat without grid to get axis on top of bar
     # needed because axis may overlap bar slightly
-    if (defined(@Scales{"Minor"})) { &PlotScale("Minor", $false); }
-    if (defined(@Scales{"Major"})) { &PlotScale("Major", $false); }
+    if (defined($Scales{"Minor"})) { &PlotScale("Minor", $false); }
+    if (defined($Scales{"Major"})) { &PlotScale("Major", $false); }
 
     #proc drawcommands
     if ($#TextData >= 0) {
@@ -3758,7 +3885,7 @@ sub WritePlotFile {
     }
 
     #proc legend
-    if (defined(@Legend{"orientation"})) {
+    if (defined($Legend{"orientation"})) {
         if (($#LegendData < 0) && ($Preset eq "")) {
             &Error2(
                 "Command 'Legend' found, but no entries for the legend were specified.\n"
@@ -3769,19 +3896,19 @@ sub WritePlotFile {
         }
 
         $perColumn = 999;
-        if (@Legend{"orientation"} =~ /ver/i) {
-            if (@Legend{"columns"} > 1) {
+        if ($Legend{"orientation"} =~ /ver/i) {
+            if ($Legend{"columns"} > 1) {
                 $perColumn = 0;
-                while ((@Legend{"columns"} * $perColumn) < $#LegendData + 1) {
+                while (($Legend{"columns"} * $perColumn) < $#LegendData + 1) {
                     $perColumn++;
                 }
             }
         }
 
-        for ($l = 1; $l <= @Legend{"columns"}; $l++) {
+        for ($l = 1; $l <= $Legend{"columns"}; $l++) {
             $script .= "#proc legend\n";
             $script .= "  noclear: yes\n";
-            if (@Legend{"orientation"} =~ /ver/i) {
+            if ($Legend{"orientation"} =~ /ver/i) {
                 $script .= "  format: multiline\n";
             }
             else { $script .= "  format: singleline\n"; }
@@ -3790,28 +3917,32 @@ sub WritePlotFile {
             $script .= "  textdetails: size=S\n";
             $script .=
                   "  location: "
-                . (@Legend{"left"} + 0.2) . " "
-                . @Legend{"top"} . "\n";
+                . ($Legend{"left"} + 0.2) . " "
+                . $Legend{"top"} . "\n";
             $script .= "  specifyorder:\n";
             for ($l2 = 1; $l2 <= $perColumn; $l2++) {
                 $category = shift(@LegendData);
                 if (defined($category)) { $script .= "$category\n"; }
             }
             $script .= "\n";
-            @Legend{"left"} += @Legend{"columnwidth"};
+            $Legend{"left"} += $Legend{"columnwidth"};
         }
     }
 
     $script .= "#endproc\n";
 
     print "\nGenerating output:\n";
-    if ($plcommand ne "") { $pl = $plcommand; }
+    if ($ploticus_command ne "") {
+        $pl = $ploticus_command;
+    }
     else {
         $pl = "pl.exe";
         if ($env eq "Linux") { $pl = "pl"; }
     }
 
-    print "Using ploticus command \"" . $pl . "\" (" . $plcommand . ")\n";
+    print "Using ploticus command \"" 
+        . $pl . "\" ("
+        . $ploticus_command . ")\n";
 
     $script_save = $script;
 
@@ -3884,15 +4015,15 @@ sub WritePlotFile {
         $map = '';
     }
 
-    # $crop = "-crop 0,0," + @ImageSize {"width"} . "," . @ImageSize {"height"} ;
+    # $crop = "-crop 0,0," + $ImageSize{"width"} . "," . $ImageSize{"height"} ;
     print "Running Ploticus to generate bitmap\n";
 
-    # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop" ; # -v $file_bitmap" ;
-    # $cmd = "$pl $map -" . $fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
+    # $cmd = "$pl $map -" . $image_file_fmt . " -o $file_bitmap $file_script -tightcrop" ; # -v $file_bitmap" ;
+    # $cmd = "$pl $map -" . $image_file_fmt . " -o $file_bitmap $file_script -tightcrop -diagfile $file_pl_info -errfile $file_pl_err" ;
     $cmd =
           EscapeShellArg($pl)
         . " $map -"
-        . $fmt . " -o "
+        . $image_file_fmt . " -o "
         . EscapeShellArg($file_bitmap) . " "
         . EscapeShellArg($file_script)
         . " -tightcrop -font "
@@ -3908,7 +4039,7 @@ sub WritePlotFile {
     }
 
     # not for Wikipedia, only for offline use:
-    if ((-e $file_bitmap) && ($fmt eq "gif")) {
+    if ((-e $file_bitmap) && ($image_file_fmt eq "gif")) {
         print "Running nconvert to convert gif image to png format\n\n";
         print
             "---------------------------------------------------------------------------\n";
@@ -3938,9 +4069,9 @@ sub WritePlotFile {
                 $shift  =~ s/^.*\&\&([^\"]*)\".*$/$1/;
                 $line   =~ s/\&\&[^\"]*//;
                 (@updcoords) = split(",", $coords);
-                $maplength = @updcoords[2] - @updcoords[0];
-                @updcoords[0] = @updcoords[0] - 2 * ($maplength - 25);
-                @updcoords[2] = @updcoords[0] + $maplength;
+                $maplength = $updcoords[2] - $updcoords[0];
+                $updcoords[0] = $updcoords[0] - 2 * ($maplength - 25);
+                $updcoords[2] = $updcoords[0] + $maplength;
                 $coordsnew = join(",", @updcoords);
                 $line =~ s/$coords/$coordsnew/;
                 push @map2, $line . "\n";
@@ -3959,9 +4090,9 @@ sub WritePlotFile {
         close "FILE_IN";
 
         foreach $line (@svg) {
-            $line =~ s/\{\{(\d+)\}\}x+/@textsSVG[$1]/gxe;
+            $line =~ s/\{\{(\d+)\}\}x+/$textsSVG[$1]/gxe;
             $line =~
-                s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . @linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
+                s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
         }
 
         open "FILE_OUT", ">", $file_vector;
@@ -3978,8 +4109,8 @@ sub WritePlotFile {
             close "FILE_IN";
         }
         print "Generating html test file\n";
-        $width  = sprintf("%.0f", @Image{"width"} * 100);
-        $height = sprintf("%.0f", @Image{"height"} * 100);
+        $width  = sprintf("%.0f", $Image{"width"} * 100);
+        $height = sprintf("%.0f", $Image{"height"} * 100);
         $html   = <<__HTML__ ;
 
 <html>
@@ -4051,10 +4182,10 @@ sub WriteTexts {
 
         my $barcnt = 0;
         for ($b = 0; $b <= $#Bars; $b++) {
-            if (lc(@Bars[$b]) eq lc($bar)) { $barcnt = ($b + 1); last; }
+            if (lc($Bars[$b]) eq lc($bar)) { $barcnt = ($b + 1); last; }
         }
 
-        if (@Axis{"time"} eq "x") {
+        if ($Axis{"time"} eq "x") {
             $xpos = "$at(s)";
             $ypos = "[$barcnt](s)";
         }
@@ -4100,12 +4231,12 @@ sub PlotBars {
                 next;
             }
             for ($b = 0; $b <= $#Bars; $b++) {
-                if (lc(@Bars[$b]) eq lc($bar)) {
+                if (lc($Bars[$b]) eq lc($bar)) {
                     $bar = ($#Bars - ($b - 1));
                     last;
                 }
             }
-            if (@Axis{"order"} !~ /reverse/i) {
+            if ($Axis{"order"} !~ /reverse/i) {
                 $entry = "$bar,$from,$till,$color,$link,$hint,\n";
             }
             else {
@@ -4121,21 +4252,21 @@ sub PlotBars {
 
         #proc bars
         $script .= "#proc bars\n";
-        $script .= "  axis: " . @Axis{"time"} . "\n";
+        $script .= "  axis: " . $Axis{"time"} . "\n";
         $script .= "  barwidth: $maxwidth\n";
         $script .= "  outline: no\n";
 
         #   $script .= "  thinbarline: width=5\n" ;
-        if (@Axis{"time"} eq "x") { $script .= "  horizontalbars: yes\n"; }
+        if ($Axis{"time"} eq "x") { $script .= "  horizontalbars: yes\n"; }
         $script .= "  locfield: 1\n";
         $script .= "  segmentfields: 2 3\n";
         $script .= "  colorfield: 4\n";
 
         #   $script .= "  outline: width=1\n" ;
         #   $script .= "  barwidthfield: 5\n" ;
-        #    if (@fields [4] ne "")
+        #    if ($fields[4] ne "")
         #    { $script .= "  clickmapurl: " . &LinkToUrl ($text) . "\n" ; }
-        #    if (@fields [5] ne "")
+        #    if ($fields[5] ne "")
         #    { $script .= "  clickmaplabel: $text\n" ; }
         $script .= "  clickmapurl: \@\@5\n";
         $script .= "  clickmaplabel: \@\@6\n";
@@ -4161,24 +4292,24 @@ sub PlotScale {
 
     #  if (! $grid) # redefine area, scale linear for time axis, showl whole years always, Ploticus bug
     #  {
-    # $from = @Period {"from"} ;
-    # $till = @Period {"till"} ;
-    $from = &DateToFloat(@Period{"from"});
-    $till = &DateToFloat(@Period{"till"});
+    # $from = $Period{"from"} ;
+    # $till = $Period{"till"} ;
+    $from = &DateToFloat($Period{"from"});
+    $till = &DateToFloat($Period{"till"});
 
     # $from =~ s/.*\///g ; # delete dd mm if present
     # $till =~ s/.*\///g ;
     #proc areadef
     $script .= "#proc areadef\n";
     $script .= "  #clone: A\n";
-    $script .= "  " . @Axis{"time"} . "scaletype: linear\n";    # date yyyy
+    $script .= "  " . $Axis{"time"} . "scaletype: linear\n";    # date yyyy
 
-    if (@Axis{"order"} !~ /reverse/i) {
-        $script .= "  " . @Axis{"time"} . "range: $from $till\n";
+    if ($Axis{"order"} !~ /reverse/i) {
+        $script .= "  " . $Axis{"time"} . "range: $from $till\n";
     }
     else {
         $script .= "  "
-            . @Axis{"time"}
+            . $Axis{"time"}
             . "range: "
             . (-$till) . " "
             . (-$from) . "\n";
@@ -4188,45 +4319,45 @@ sub PlotScale {
 
     #  }
 
-    $script .= "#proc " . @Axis{"time"} . "axis\n";
+    $script .= "#proc " . $Axis{"time"} . "axis\n";
 
     if (($scale eq "Major") && (!$grid)) {
 
-        #   $script .= "  stubs: incremental " . @Scales {"Major inc"} . " " . @Scales {"Major unit"} . "\n" ;
+        #   $script .= "  stubs: incremental " . $Scales{"Major inc"} . " " . $Scales{"Major unit"} . "\n" ;
         #   if ($DateFormat =~ /\//)
-        #   { $script .= "  stubformat: " . @Axis {"format"} . "\n" ; }
+        #   { $script .= "  stubformat: " . $Axis{"format"} . "\n" ; }
         # temp always show whole years (Ploticus autorange bug)
-        if (@Scales{"Major stubs"} eq "")    # ($DateFormat !~ /\//)
+        if ($Scales{"Major stubs"} eq "")    # ($DateFormat !~ /\//)
         {
-            $script .= "  stubs: incremental " . @Scales{"Major inc"} . "\n";
+            $script .= "  stubs: incremental " . $Scales{"Major inc"} . "\n";
         }
-        else { $script .= "  stubs: list " . @Scales{"Major stubs"} . "\n"; }
+        else { $script .= "  stubs: list " . $Scales{"Major stubs"} . "\n"; }
     }
     else { $script .= "  stubs: none\n"; }
 
     if ($DateFormat !~ /\//)
 
-        # { $script .= "  ticincrement: " . @Scales {"$scale inc"} . " " . @Scales {"$scale unit"} . "\n" ; }
+        # { $script .= "  ticincrement: " . $Scales{"$scale inc"} . " " . $Scales{"$scale unit"} . "\n" ; }
     {
-        $script .= "  ticincrement: " . @Scales{"$scale inc"} . "\n";
+        $script .= "  ticincrement: " . $Scales{"$scale inc"} . "\n";
     }
     else {
         my $unit = 1;
-        if (@Scales{"$scale unit"} =~ /month/i) { $unit = 1 / 12; }
-        if (@Scales{"$scale unit"} =~ /day/i)   { $unit = 1 / 365; }
-        $script .= "  ticincrement: " . @Scales{"$scale inc"} . " $unit\n";
+        if ($Scales{"$scale unit"} =~ /month/i) { $unit = 1 / 12; }
+        if ($Scales{"$scale unit"} =~ /day/i)   { $unit = 1 / 365; }
+        $script .= "  ticincrement: " . $Scales{"$scale inc"} . " $unit\n";
     }
 
-    if (defined(@Scales{"$scale start"})) {
-        $start = @Scales{"$scale start"};
+    if (defined($Scales{"$scale start"})) {
+        $start = $Scales{"$scale start"};
 
         # $start =~ s/.*\///g ; # delete dd mm if present
         $start = &DateToFloat($start);
-        if (@Axis{"order"} =~ /reverse/i) {
+        if ($Axis{"order"} =~ /reverse/i) {
             $loop  = 0;
             $start = -$start;
-            while ($start - @Scales{"$scale inc"} >= -@Period{"till"}) {
-                $start -= @Scales{"$scale inc"};
+            while ($start - $Scales{"$scale inc"} >= -$Period{"till"}) {
+                $start -= $Scales{"$scale inc"};
                 if (++$loop > 1000) { last; }    # precaution
             }
         }
@@ -4235,10 +4366,10 @@ sub PlotScale {
 
     if ($scale eq "Major") {
         $script .= "  ticlen: 0.05\n";
-        if (@Axis{"time"} eq "y") {
+        if ($Axis{"time"} eq "y") {
             $script .= "  stubdetails: adjust=0.05,0\n";
         }
-        if (@Axis{"order"} =~ /reverse/i) {
+        if ($Axis{"order"} =~ /reverse/i) {
             $script .= "  signreverse: yes\n";
         }
     }
@@ -4246,9 +4377,9 @@ sub PlotScale {
 
     # $script .= "  location: 4\n" ; test
 
-    $color .= @Scales{"$scale grid"};
+    $color .= $Scales{"$scale grid"};
 
-    if (defined(@Colors{$color})) { $color = @Colors{$color}; }
+    if (defined($Colors{$color})) { $color = $Colors{$color}; }
 
     if ($grid) { $script .= "  grid: color=$color\n"; }
 
@@ -4291,50 +4422,50 @@ sub PlotLines {
 
         if ($mode == 1)    # draw perpendicular to time axis
         {
-            if (@Axis{"order"} =~ /reverse/i) { $at = -$at; }
+            if ($Axis{"order"} =~ /reverse/i) { $at = -$at; }
 
-            if (@Axis{"time"} eq "x") {
-                if ($from eq "") { $from = @PlotArea{"bottom"} }
+            if ($Axis{"time"} eq "x") {
+                if ($from eq "") { $from = $PlotArea{"bottom"} }
                 if ($till eq "") {
-                    $till = @PlotArea{"bottom"} + @PlotArea{"height"};
+                    $till = $PlotArea{"bottom"} + $PlotArea{"height"};
                 }
                 $from += ($width / 200)
                     ;      # compensate for overstrechting of thick lines
                 $till -= ($width / 200);
-                if ($from > @Image{"height"}) { $from = @Image{"height"}; }
-                if ($till > @Image{"height"}) { $till = @Image{"height"}; }
+                if ($from > $Image{"height"}) { $from = $Image{"height"}; }
+                if ($till > $Image{"height"}) { $till = $Image{"height"}; }
                 $script .= "  points: $at(s) $from $at(s) $till\n";
             }
             else {
-                if ($from eq "") { $from = @PlotArea{"left"} }
+                if ($from eq "") { $from = $PlotArea{"left"} }
                 if ($till eq "") {
-                    $till = @PlotArea{"left"} + @PlotArea{"width"};
+                    $till = $PlotArea{"left"} + $PlotArea{"width"};
                 }
                 $from += ($width / 200);
                 $till -= ($width / 200);
-                if ($from > @Image{"width"}) { $from = @Image{"width"}; }
-                if ($till > @Image{"width"}) { $till = @Image{"width"}; }
+                if ($from > $Image{"width"}) { $from = $Image{"width"}; }
+                if ($till > $Image{"width"}) { $till = $Image{"width"}; }
                 $script .= "  points: $from $at(s) $till $at(s)\n";
             }
         }
 
         if ($mode == 2)    # draw parralel to time axis
         {
-            if (@Axis{"order"} =~ /reverse/i) {
+            if ($Axis{"order"} =~ /reverse/i) {
                 $from = -$from;
                 $till = -$till;
             }
 
             $from .= "(s)+" . ($width / 200);
             $till .= "(s)-" . ($width / 200);
-            if (@Axis{"time"} eq "x") {
-                if ($at eq "") { $at = @PlotArea{"bottom"}; }
-                if ($at > @Image{"height"}) { $at = @Image{"height"}; }
+            if ($Axis{"time"} eq "x") {
+                if ($at eq "") { $at = $PlotArea{"bottom"}; }
+                if ($at > $Image{"height"}) { $at = $Image{"height"}; }
                 $script .= "  points: $from $at $till $at\n";
             }
             else {
-                if ($at eq "") { $at = @PlotArea{"left"}; }
-                if ($at > @Image{"width"}) { $at = @Image{"width"}; }
+                if ($at eq "") { $at = $PlotArea{"left"}; }
+                if ($at > $Image{"width"}) { $at = $Image{"width"}; }
                 $script .= "  points: $at $from $at $till\n";
             }
         }
@@ -4343,24 +4474,24 @@ sub PlotLines {
         {
             @Points = split(",", $points);
             foreach $point (@Points) { $point = &Normalize($point); }
-            if (   (@Points[0] > @Image{"width"})
-                || (@Points[1] > @Image{"height"})
-                || (@Points[2] > @Image{"width"})
-                || (@Points[3] > @Image{"height"}))
+            if (   ($Points[0] > $Image{"width"})
+                || ($Points[1] > $Image{"height"})
+                || ($Points[2] > $Image{"width"})
+                || ($Points[3] > $Image{"height"}))
             {
                 &Error2(
                     "Linedata attribute 'points' invalid.\n"
                         . sprintf("(%d,%d)(%d,%d)",
-                        @Points[0] * 100,
-                        @Points[1] * 100,
-                        @Points[2] * 100,
-                        @Points[3] * 100)
+                        $Points[0] * 100,
+                        $Points[1] * 100,
+                        $Points[2] * 100,
+                        $Points[3] * 100)
                         . " does not fit in image\n"
                 );
                 return;
             }
             $script .=
-                "  points: @Points[0] @Points[1] @Points[2] @Points[3]\n";
+                "  points: $Points[0] $Points[1] $Points[2] $Points[3]\n";
         }
     }
 
@@ -4378,7 +4509,7 @@ sub ColorPredefined {
                       purple|lavender|lightpurple|powderblue|powderblue2)$/xi
         )
     {
-        if (!defined(@Colors{ lc($color) })) {
+        if (!defined($Colors{ lc($color) })) {
             &StoreColor($color, $color, "", $command);
         }
         return ($true);
@@ -4386,18 +4517,26 @@ sub ColorPredefined {
     else { return ($false); }
 }
 
+# Can be much simpler
 sub ValidAbs {
-    $value = shift;
-    if   ($value =~ /^ \d+ \.? \d* (?:px|in|cm)? $/xi) { return ($true); }
-    else                                               { return ($false); }
+    my $value = shift;
+    if ($value =~ /^ \d+ \.? \d* (?:px|in|cm)? $/xi) {
+        return ($true);
+    }
+    else {
+        return ($false);
+    }
 }
 
+# Can be much simpler
 sub ValidAbsRel {
-    $value = shift;
+    my $value = shift;
     if ($value =~ /^ \d+ \.? \d* (?:px|in|cm|$hPerc)? $/xi) {
         return ($true);
     }
-    else { return ($false); }
+    else {
+        return ($false);
+    }
 }
 
 sub ValidDateFormat {
@@ -4452,8 +4591,8 @@ sub ValidDateRange {
     my $date = shift;
     my ($day, $month, $year, $dayf, $monthf, $yearf, $dayt, $montht, $yeart);
 
-    my $from = @Period{"from"};
-    my $till = @Period{"till"};
+    my $from = $Period{"from"};
+    my $till = $Period{"till"};
 
     if (($DateFormat eq "yyyy") || ($DateFormat eq "x.y")) {
         if (($date < $from) || ($date > $till)) { return ($false); }
@@ -4547,7 +4686,7 @@ sub DaysFrom1800 {
     $days -= int(($year - 1 - 1800) / 100);
     if ($month > 1) {
         for ($m = $month - 2; $m >= 0; $m--) {
-            $days += @mmm[$m];
+            $days += $mmm[$m];
             if ($m == 1) {
                 if ((($year % 4) == 0) && (($year % 100) != 0)) { $days++; }
             }
@@ -4581,8 +4720,8 @@ sub DateFrom1800 {
     }
 
     $month = 0;
-    while ($days > @mmm[$month]) {
-        $days -= @mmm[$month];
+    while ($days > $mmm[$month]) {
+        $days -= $mmm[$month];
         if ($month == 1) {
             if ((($year % 4) == 0) && (($year % 100) != 0)) { $days--; }
         }
@@ -4600,8 +4739,8 @@ sub DateFrom1800 {
 }
 
 sub ExtractText {
-    my $data  = shift;
-    my $data2 = $data;
+    # my $data  = shift;
+    my $data2 = shift;
     my $text  = "";
 
     # special case: allow embedded spaces when 'text' is last attribute
@@ -4670,13 +4809,13 @@ sub BarDefined {
     $barcnt--;
     $a = $#Bars;
     for (my $b = 0; $b <= $#Bars; $b++) {
-        if (lc(@Bars[$b]) eq lc($barid . $barcnt)) {
+        if (lc($Bars[$b]) eq lc($barid . $barcnt)) {
             $b++;
             for (my $b2 = $#Bars + 1; $b2 > $b; $b2--) {
-                @Bars[$b2] = @Bars[ $b2 - 1 ];
+                $Bars[$b2] = $Bars[ $b2 - 1 ];
             }
-            @Bars[$b] = lc($bar);
-            @BarLegend{ lc($bar) } = " ";
+            $Bars[$b] = lc($bar);
+            $BarLegend{ lc($bar) } = " ";
             return ($true);
         }
     }
@@ -4784,27 +4923,27 @@ sub CheckAttributes {
     $hint .= "'";
 
     foreach $attribute (@Required) {
-        if (   (!defined(@Attributes{$attribute}))
-            || (@Attributes{$attribute} eq ""))
+        if (   (!defined($Attributes{$attribute}))
+            || ($Attributes{$attribute} eq ""))
         {
             &Error("$name definition incomplete. $hint");
             undef(@Attributes);
             return ($false);
         }
-        delete(@Attributes2{$attribute});
+        delete($Attributes2{$attribute});
     }
-    foreach $attribute (@Allowed) { delete(@Attributes2{$attribute}); }
+    foreach $attribute (@Allowed) { delete($Attributes2{$attribute}); }
 
     @AttrKeys = keys %Attributes2;
     if ($#AttrKeys >= 0) {
-        if (@AttrKeys[0] eq "single") {
+        if ($AttrKeys[0] eq "single") {
             &Error(
                 "$name definition invalid. Specify all attributes as name:value pairs."
             );
         }
         else {
             &Error(   "$name definition invalid. Invalid attribute '"
-                    . @AttrKeys[0]
+                    . $AttrKeys[0]
                     . "' found. $hint");
         }
         undef(@Attributes);
@@ -4833,7 +4972,7 @@ sub CheckPreset {
                 split('\|', $preset);
             if ($attrname eq "") { $attrname = "single"; }
 
-            $attrvalue = @Attributes{$attrname};
+            $attrvalue = $Attributes{$attrname};
 
             if (($action eq "-") && ($attrvalue ne "")) {
                 if ($attrname eq "single") {
@@ -4844,15 +4983,15 @@ sub CheckPreset {
                     &Error("Chosen preset conflicts with '$attrname:...'.\n"
                             . "  Please remove this attribute.");
                 }
-                @Attributes{$attrname} = "";
+                $Attributes{$attrname} = "";
             }
 
             if (($action eq "+") && ($attrvalue eq "")) {
-                if ($addvalue) { @Attributes{$attrname} = $attrpreset; }
+                if ($addvalue) { $Attributes{$attrname} = $attrpreset; }
             }
 
             if (($action eq "=") && ($attrvalue eq "")) {
-                @Attributes{$attrname} = $attrpreset;
+                $Attributes{$attrname} = $attrpreset;
             }
 
             if (   ($action eq "=")
@@ -4869,7 +5008,7 @@ sub CheckPreset {
                         "Conflicting settings.\nPreset defines '$attrname:$attrpreset'."
                     );
                 }
-                @Attributes{$attrname} = $attrpreset;
+                $Attributes{$attrname} = $attrpreset;
             }
         }
     }
@@ -5161,7 +5300,7 @@ sub Abort {
 
     open "FILE_OUT", ">", $file_errors;
     print FILE_OUT
-        "<p>EasyTimeline $version</p><p><b>Timeline generation failed: "
+        "<p>EasyTimeline $VERSION</p><p><b>Timeline generation failed: "
         . &EncodeHtml($msg)
         . "</b></p>\n";
     foreach $line (@Errors) { print FILE_OUT &EncodeHtml($line) . "\n"; }
@@ -5203,6 +5342,7 @@ sub UnicodeToAscii {
     my $unicode = shift;
     my $char    = substr($unicode, 0, 1);
     my $ord     = ord($char);
+    my $value;
 
     if ($ord < 128)    # plain ascii character
     {
@@ -5222,8 +5362,11 @@ sub UnicodeToAscii {
 
         #   $html = "\&\#" . $value . ";" ; any unicode can be specified as html char
 
-        if   (($value >= 128) && ($value <= 255)) { return (chr($value)); }
-        else                                      { return "?"; }
+        if   (($value >= 128) && ($value <= 255)) {
+            return (chr($value));
+        }
+        else {
+            return "?";
+        }
     }
 }
-
