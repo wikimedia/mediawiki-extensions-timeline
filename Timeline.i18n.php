@@ -647,14 +647,14 @@ $messages['sq'] = array(
 	'timeline-invalidmap' => 'Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline',
 );
 
-/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
  * @author Millosh
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса.',
 );
 
-/** Serbian Latin ekavian (‪Srpski (latinica)‬)
+/** Serbian (Latin script) (‪Srpski (latinica)‬)
  * @author Michaello
  */
 $messages['sr-el'] = array(
@@ -692,14 +692,14 @@ $messages['te'] = array(
 	'timeline-desc' => 'కాలరేఖలని సృష్టించడానికై <code>&lt;timeline&gt;</code> అనే టాగుని చేరుస్తుంది',
 );
 
-/** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
+/** Tajik (Cyrillic script) (Тоҷикӣ)
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <code>&lt;timeline&gt;</code>-ро баро намоиши хати замоне илова мекунад',
 );
 
-/** Tajik (Latin) (Тоҷикӣ (Latin))
+/** Tajik (Latin script) (tojikī)
  * @author Liangent
  */
 $messages['tg-latn'] = array(
