@@ -145,7 +145,7 @@ $messages['da'] = array(
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'timeline-desc' => 'Ergänzt das <code>&lt;timeline&gt;</code>-Tag zur Erstellung von Zeitleisten',
+	'timeline-desc' => 'Ergänzt das Tag <code>&lt;timeline&gt;</code> zur Erstellung von Zeitleisten',
 	'timeline-invalidmap' => 'EasyTimeline hat eine ungültige Grafik generiert',
 );
 
