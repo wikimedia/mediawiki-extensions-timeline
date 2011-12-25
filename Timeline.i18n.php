@@ -496,7 +496,7 @@ $messages['nn'] = array(
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Jon Harald Søby
  */
-$messages['no'] = array(
+$messages['nb'] = array(
 	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
 	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
 );
