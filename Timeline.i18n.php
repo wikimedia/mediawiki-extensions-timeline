@@ -339,6 +339,14 @@ $messages['id'] = array(
 	'timeline-invalidmap' => 'Peta gambar tidak sah dibuat oleh EasyTimeline',
 );
 
+/** Iloko (Ilokano)
+ * @author Lam-ang
+ */
+$messages['ilo'] = array(
+	'timeline-desc' => 'Agnayon ti <code>&lt;timeline&gt;</code> nga etiketa tapno agaramid kadagiti panawen pagsurotan',
+	'timeline-invalidmap' => 'Imbalido nga imahen ti mapa a napataud ti EasyTimeline',
+);
+
 /** Italian (Italiano)
  * @author Beta16
  * @author BrokenArrow
@@ -469,6 +477,14 @@ $messages['ms'] = array(
 	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
+/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Jon Harald Søby
+ */
+$messages['nb'] = array(
+	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
+	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
+);
+
 /** Low German (Plattdüütsch)
  * @author Slomox
  */
@@ -491,14 +507,6 @@ $messages['nl'] = array(
 $messages['nn'] = array(
 	'timeline-desc' => 'Legg til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
 	'timeline-invalidmap' => 'Ugyldig biletkart oppretta av EasyTimeline',
-);
-
-/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
- * @author Jon Harald Søby
- */
-$messages['nb'] = array(
-	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
-	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
 );
 
 /** Occitan (Occitan)
