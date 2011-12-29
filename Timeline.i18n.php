@@ -693,6 +693,13 @@ $messages['sv'] = array(
 	'timeline-invalidmap' => 'EasyTimeline har skapat en ogiltig bildkarta',
 );
 
+/** Tamil (தமிழ்)
+ * @author Shanmugamp7
+ */
+$messages['ta'] = array(
+	'timeline-desc' => 'காலவரிசைகள் உருவாக்க குறிச்சொல்<code>&lt;timeline&gt;</code>சேர்க்கிறது',
+);
+
 /** Telugu (తెలుగు)
  * @author Veeven
  */
