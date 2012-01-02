@@ -283,10 +283,12 @@ $messages['he'] = array(
 );
 
 /** Hindi (हिन्दी)
+ * @author Ansumang
  * @author Kaustubh
  */
 $messages['hi'] = array(
 	'timeline-desc' => 'टाईमलाईन तैयार करने के लिये <code>&lt;timeline&gt;</code> टैग देता हैं',
+	'timeline-invalidmap' => 'अमान्य छबि नक्शा ईज़ी टाइमलाइन द्वारा बनाया गया है',
 );
 
 /** Hiligaynon (Ilonggo)
@@ -337,6 +339,14 @@ $messages['ia'] = array(
 $messages['id'] = array(
 	'timeline-desc' => 'Menambahkan tag <code>&lt;timeline&gt;</code> untuk membuat garis waktu',
 	'timeline-invalidmap' => 'Peta gambar tidak sah dibuat oleh EasyTimeline',
+);
+
+/** Interlingue (Interlingue)
+ * @author Renan
+ */
+$messages['ie'] = array(
+	'timeline-desc' => 'Adjunter puntale <code><timeline></code> por crear lineas de témpor',
+	'timeline-invalidmap' => 'Carte geografic de figura ínvalid productet per EasyTimeline',
 );
 
 /** Iloko (Ilokano)
