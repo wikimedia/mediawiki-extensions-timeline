@@ -24,9 +24,11 @@ $messages['qqq'] = array(
 
 /** Afrikaans (Afrikaans)
  * @author Naudefj
+ * @author පසිඳු කාවින්ද
  */
 $messages['af'] = array(
 	'timeline-desc' => 'Maak die <code>&lt;timeline&gt;</code> etiket beskikbaar om tydslyne te maak',
+	'timeline-invalidmap' => 'Ongeldige beeld kaart gegenereer deur EasyTimeline',
 );
 
 /** Aragonese (Aragonés)
