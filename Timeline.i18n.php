@@ -36,6 +36,7 @@ $messages['af'] = array(
  */
 $messages['an'] = array(
 	'timeline-desc' => "Adibe a etiqueta <code>&lt;timeline&gt;</code> ta creyar linias d'o tiempo",
+	'timeline-invalidmap' => "Mapa d'imachen invalida chenerada por EasyTimeline",
 );
 
 /** Arabic (العربية)
