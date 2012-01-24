@@ -11,6 +11,14 @@
  * @link http://www.mediawiki.org/wiki/Extension:EasyTimeline Documentation
  */
 
+$wgExtensionCredits['parserhook'][] = array(
+	'path' => __FILE__,
+	'name' => 'EasyTimeline',
+	'author' => 'Erik Zachte',
+	'url' => 'https://www.mediawiki.org/wiki/Extension:EasyTimeline',
+	'descriptionmsg' => 'timeline-desc',
+);
+
 class TimelineSettings {
 	var $ploticusCommand, $perlCommand;
 	
@@ -27,6 +35,9 @@ class TimelineSettings {
 	//an external font file. Default to FreeSans for backwards compatability.
 	//Note: according to ploticus docs, filename should not have any space in it or issues may occur.
 	var $fontFile = 'FreeSans.ttf';
+
+	// The name of the FileBackend to use for timeline (see $wgFileBackends)
+	var $fileBackend = '';
 };
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
@@ -34,61 +45,89 @@ $wgTimelineSettings->perlCommand = "/usr/bin/perl";
 $wgTimelineSettings->timelineFile = dirname(__FILE__)."/EasyTimeline.pl";
 
 $wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
-$wgExtensionCredits['parserhook'][] = array(
-	'path' => __FILE__,
-	'name' => 'EasyTimeline',
-	'author' => 'Erik Zachte',
-	'url' => 'https://www.mediawiki.org/wiki/Extension:EasyTimeline',
-	'descriptionmsg' => 'timeline-desc',
-);
 $wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
 
 function wfTimelineExtension( &$parser ) {
-	$parser->setHook( 'timeline', 'renderTimeline' );
+	$parser->setHook( 'timeline', 'wfRenderTimeline' );
 	return true;
 }
 
-function renderTimeline( $timelinesrc ){
-	global $wgUploadDirectory, $wgUploadPath, $IP, $wgTimelineSettings, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
+function wfRenderTimeline( $timelinesrc ) {
+	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
+	global $wgTimelineSettings;
+
+	// Get the backend to store plot data and pngs
+	if ( $wgTimelineSettings->fileBackend != '' ) {
+		$backend = FileBackendGroup::singleton()->get( $wgTimelineSettings->fileBackend );
+	} else {
+		$backend = new FSFileBackend( array(
+			'name'           => 'timeline-backend',
+			'lockManager'    => 'nullLockManager',
+			'containerPaths' => array( 'timeline-render' => "{$wgUploadDirectory}/timeline" ),
+			'fileMode'       => 777
+		) );
+	}
+
+	// Get a hash of the plot data
 	$hash = md5( $timelinesrc );
-	if ($wgRenderHashAppend != "")
+	if ( $wgRenderHashAppend != '' ) {
 		$hash = md5( $hash . $wgRenderHashAppend );
-	$dest = $wgUploadDirectory."/timeline/";
-	if ( ! is_dir( $dest ) ) { mkdir( $dest, 0777 ); }
-	if ( ! is_dir( $wgTmpDirectory ) ) { mkdir( $wgTmpDirectory, 0777 ); }
+	}
 
-	$fname = $dest . $hash;
+	// Storage destination path (excluding file extension)
+	$fname = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
 
-	$previouslyFailed = file_exists( $fname.".err" );
-	$previouslyRendered = file_exists( $fname.".png" );
-	$expired = $previouslyRendered &&
-		( filemtime( $fname.".png" ) <
-			wfTimestamp( TS_UNIX, $wgTimelineSettings->epochTimestamp ) );
+	$previouslyFailed = $backend->fileExists( array( 'src' => "{$fname}.err" ) );
+	$previouslyRendered = $backend->fileExists( array( 'src' => "{$fname}.png" ) );
+	if ( $previouslyRendered ) {
+		$timestamp = $backend->getFileTimestamp( array( 'src' => "{$fname}.png" ) );
+		$expired = ( $timestamp < $wgTimelineSettings->epochTimestamp );
+	} else {
+		$expired = false;
+	}
 
-	if ( $expired || ( !$previouslyRendered && !$previouslyFailed ) ){
-		$handle = fopen($fname, "w");
-		fwrite($handle, $timelinesrc);
-		fclose($handle);
+	// Create a new .map, .png (or .gif), and .err file as needed...
+	if ( $expired || ( !$previouslyRendered && !$previouslyFailed ) ) {
+		if ( !is_dir( $wgTmpDirectory ) ) {
+			mkdir( $wgTmpDirectory, 0777 );
+		}
+		$tmpFile = TempFSFile::factory( 'timeline_' );
+		if ( $tmpFile ) {
+			$tmpPath = $tmpFile->getPath();
+			file_put_contents( $tmpPath, $timelinesrc ); // store plot data to file
 
-		$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
-		  " -i " . wfEscapeShellArg( $fname ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
-		  " -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
-		  " -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
+			// Get command for ploticus to read the user input and output an error, 
+			// map, and rendering (png or gif) file under the same dir as the temp file.
+			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
+			" -i " . wfEscapeShellArg( $tmpPath ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
+			" -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
+			" -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
 
-		wfDebug( "Timeline cmd: $cmdline\n" );
-		$ret = `{$cmdline}`;
+			// Actually run the command...
+			wfDebug( "Timeline cmd: $cmdline\n" );
+			$retVal = null;
+			$ret = wfShellExec( $cmdline, $retVal );
 
-		unlink($fname);
+			// Copy the output files into storage...
+			// @TODO: store error files in another container or not at all?
+			$opt = array( 'force' => 1, 'nonLocking' => 1, 'allowStale' => 1 ); // performance
+			$backend->prepare( array( 'dir' => dirname( $fname ) ) );
+			$backend->store( array( 'src' => "{$tmpPath}.map", 'dst' => "{$fname}.map" ), $opt );
+			$backend->store( array( 'src' => "{$tmpPath}.png", 'dst' => "{$fname}.png" ), $opt );
+			$backend->store( array( 'src' => "{$tmpPath}.err", 'dst' => "{$fname}.err" ), $opt );
+		} else {
+			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
+				"Could not create temp file</tt></div>"; // ugh
+		}
 
-		if ( $ret == "" ) {
+		if ( $ret == "" || $retVal > 0 ) {
 			// Message not localized, only relevant during install
 			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
 				"Command line was: " . htmlspecialchars( $cmdline ) . "</tt></div>";
 		}
-
 	}
 
-	@$err = file_get_contents( $fname.".err" );
+	$err = $backend->getFileContents( array( 'src' => "{$fname}.err" ) );
 
 	if ( $err != "" ) {
 		// Convert the error from poorly-sanitized HTML to plain text
@@ -105,18 +144,13 @@ function renderTimeline( $timelinesrc ){
 		$encErr = nl2br( htmlspecialchars( $err ) );
 		$txt = "<div id=\"toc\" dir=\"ltr\"><tt>$encErr</tt></div>";
 	} else {
-		@$map = file_get_contents( $fname.".map" );
+		$map = $backend->getFileContents( array( 'src' => "{$fname}.map" ) );
+
 		$map = str_replace( ' >', ' />', $map );
 		$map = "<map name=\"timeline_" . htmlspecialchars( $hash ) . "\">{$map}</map>";
 		$map = easyTimelineFixMap( $map );
 
-		if (wfIsWindows()) {
-			$ext = "gif";
-		} else {
-			$ext = "png";
-		}
-
-		$url = "{$wgUploadPath}/timeline/{$hash}.{$ext}";
+		$url = "{$wgUploadPath}/timeline/{$hash}.png";
 		$txt = $map .
 			"<img usemap=\"#timeline_" . htmlspecialchars( $hash ) . "\" " . 
 			"src=\"" . htmlspecialchars( $url ) . "\">";
@@ -130,6 +164,7 @@ function renderTimeline( $timelinesrc ){
 			}
 		}
 	}
+
 	return $txt;
 }
 
