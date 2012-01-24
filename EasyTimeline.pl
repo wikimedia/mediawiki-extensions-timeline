@@ -70,7 +70,10 @@
 # - change svg encoding from iso-8859-1 -> UTF-8
 # - allow font to be specified using -f option as opposed to hardcoded FreeSans.
 
-our $VERSION = "1.13";
+use strict;
+use warnings;
+
+our $VERSION = '1.90';
 
 use Time::Local;
 use Getopt::Std;
@@ -81,6 +84,7 @@ use English '-no_match_vars';
 # Many of these should be refactored.
 my @PlotLines;
 my $CntErrors = 0;
+my @Errors;
 my @Info;
 my @Warnings;
 
@@ -137,8 +141,8 @@ my $DateFormat;
 my $Line;
 my $NoData;
 
-my %Consts; # see sub GetDefine
-my %Colors; # see sub StoreColor
+my %Consts;    # see sub GetDefine
+my %Colors;    # see sub StoreColor
 my %BackgroundColors;
 my %Axis;
 my @Bars;
@@ -158,7 +162,7 @@ my @PlotBars;
 my @PlotText;
 my $MaxBarWidth;
 my %BarWidths;
-my $maxwidth; # XXX problematic
+
 my $Preset;
 my @PresetList;
 my %Scales;
@@ -170,8 +174,22 @@ my @Attributes;
 
 my $firstcmd;
 
+my @PlotTextsPng;
+my @PlotTextsSvg;
+my @linksSVG;
+my @textsSVG;
+
+my @TextData;
+
+my ($sign, $posy1, $posy2);
+
+my $script;
+my @PlotBarsNow;
+
+my $command;
+
 # BEGIN
-$| = 1;    # flush screen output
+local $| = 1;    # flush screen output
 
 print "EasyTimeline version $VERSION\n"
     . "Copyright (C) 2004 Erik Zachte\n"
@@ -196,10 +214,10 @@ if ($CntErrors == 0) {
     &WritePlotFile;
 }
 
-if    ($CntErrors == 1) {
+if ($CntErrors == 1) {
     &Abort("1 error found");
 }
-elsif ($CntErrors > 1)  {
+elsif ($CntErrors > 1) {
     &Abort("$CntErrors errors found");
 }
 else {
@@ -231,7 +249,6 @@ else {
 exit;
 
 sub ParseArguments {
-    my $options;
     getopt("iTAPef", \%options);
 
     &Abort("Specify input file as: -i filename") if (!defined($options{"i"}));
@@ -763,7 +780,7 @@ sub ParseBarData {
         $barset = "";                           # $barcount = "" ;
 
         # warn "data: $data";
-        my $data2; # = $data;
+        my $data2;                              # = $data;
         ($data2, $text) = &ExtractText($data2);
         @Attributes = split(" ", $data2);
 
@@ -1120,7 +1137,7 @@ sub ParseLineData {
     $width = 2.0;
 
     # warn "data: $data";
-    my $data2; # = $data;
+    my $data2;    # = $data;
 
     LineData:
     while ((!$InputParsed) && (!$NoData)) {
@@ -1690,7 +1707,7 @@ sub ParsePlotArea {
 sub ParsePlotData {
     my $attrvalue2;
     my $BarsCommandFound = @Bars;
-    my $prevbar = "";
+    my $prevbar          = "";
     my $barndx;
 
     if (   (!(defined($DateFormat)))
@@ -2158,11 +2175,14 @@ sub ParsePlotData {
                 }
                 elsif ($#Bars == 0) {
                     $bar = $Bars[0];
+
                     # warn "data: $data";
-                    &Info(q(), # $data,
+                    &Info(
+                        q(),    # $data,
                         "PlotData incomplete. Attribute 'bar' missing, value '"
                             . $Bars[0]
-                            . "' assumed.");
+                            . "' assumed."
+                    );
                 }
                 else { $bar = "1"; }
 
@@ -2292,40 +2312,6 @@ sub ParsePlotData {
                 if ($align    eq "") { $align    = "center"; }
                 if ($color    eq "") { $color    = "black"; }
                 if ($fontsize eq "") { $fontsize = "S"; }
-                # $adjust Doesn't seem to be used anywhere
-                # if ($adjust   eq "") { $adjust   = "0,0"; }
-
-                #        $textdetails = "  textdetails: align=$align size=$size"  ;
-                #        if ($textcolor eq "")
-                #        { $textcolor = "black" ; }
-                #        if ($color ne "")
-                #        { $textdetails .= " color=$textcolor" ; }
-
-                #        my ($xpos, $ypos) ;
-                #        my $barcnt = 0 ;
-                #        for ($b = 0 ; $b <= $#Bars ; $b++)
-                #        {
-                #          if (lc($Bars[$b]) eq lc($bar))
-                #          { $barcnt = ($b + 1) ; last ; }
-                #        }
-
-                #        if ($Axis{"time"} eq "x")
-                #        { $xpos = "$at(s)" ; $ypos = "[$barcnt](s)" ; }
-                #        else
-                #        { $ypos = "$at(s)" ; $xpos = "[$barcnt](s)" ; }
-
-                #        if ($shift ne "")
-                #        {
-                #          my ($shiftx, $shifty) = split (",", $shift) ;
-                #          if ($shiftx > 0)
-                #          { $xpos .= "+$shiftx" ; }
-                #          if ($shiftx < 0)
-                #          { $xpos .= "$shiftx" ; }
-                #          if ($shifty > 0)
-                #          { $ypos .= "+$shifty" ; }
-                #          if ($shifty < 0)
-                #          { $ypos .= "$shifty" ; }
-                #        }
 
                 $text      =~ s/\,/\#\%\$/g;
                 $link      =~ s/\,/\#\%\$/g;
@@ -2351,20 +2337,21 @@ sub ParsePlotData {
         );
     }
 
-    $maxwidth = 0;
-    my $key;
-    foreach $key (keys %BarWidths) {
-        if ($BarWidths{$key} == 0) {
+    my $maxwidth = 0;
+    foreach my $bar_width (keys %BarWidths) {
+        if ($BarWidths{$bar_width} == 0) {
             &Warning(
-                "PlotData incomplete. No bar width defined for bar '$key', assume width from widest bar (used for line marks)."
+                "PlotData incomplete. No bar width defined for bar '$bar_width', assume width from widest bar (used for line marks)."
             );
         }
-        elsif ($BarWidths{$key} > $maxwidth) {
-            $maxwidth = $BarWidths{$key};
+        elsif ($BarWidths{$bar_width} > $maxwidth) {
+            $maxwidth = $BarWidths{$bar_width};
         }
     }
-    foreach $key (keys %BarWidths) {
-        if ($BarWidths{$key} == 0) { $BarWidths{$key} = $maxwidth; }
+    foreach my $bar_width (keys %BarWidths) {
+        if ($BarWidths{$bar_width} == 0) {
+            $BarWidths{$bar_width} = $maxwidth;
+        }
     }
 }
 
@@ -2470,7 +2457,7 @@ sub ParseScale {
 
     if (!ValidAttributes("Scale" . $scale)) { return; }
 
-    &CheckPreset(Scale . $scale);
+    &CheckPreset('Scale' . $scale);
 
     $Scales{$scale} = $true;
 
@@ -2619,8 +2606,8 @@ sub ParseTextData {
             $textcolor = $TextDefs{"textcolor"};
         }
 
-        warn "data: $data";
-        my $data2 = $data;
+        # warn "data: $data"; # XXX $data is probably not really used
+        my $data2;    # = $data; # XXX see above
         ($data2, $text) = &ExtractText($data2);
         @Attributes = split(" ", $data2);
 
@@ -2773,7 +2760,7 @@ sub ParseTextData {
         if (defined($tabs) && ($tabs ne "")) {
             $tabs =~ s/^\s*$hBrO (.*) $hBrC\s*$/$1/x;
             my @Tabs = split(",", $tabs);
-            foreach $tab (@Tabs) {
+            foreach my $tab (@Tabs) {
                 $tab =~ s/\s* (.*) \s*$/$1/x;
                 if (!($tab =~ /\d+\-(?:center|left|right)$/)) {
                     &Error(
@@ -2784,7 +2771,7 @@ sub ParseTextData {
                 }
             }
 
-            @Text = split('\^', $text);
+            my @Text = split('\^', $text);
             if ($#Text > $#Tabs + 1) {
                 &Error(   "TextData invalid. " 
                         . $#Text
@@ -2811,7 +2798,7 @@ sub ParseTimeAxis {
 
     &CheckPreset("TimeAxis");
 
-    foreach $attribute (keys %Attributes) {
+    foreach my $attribute (keys %Attributes) {
         my $attrvalue = $Attributes{$attribute};
 
         if ($attribute =~ /Format/i) {
@@ -2934,7 +2921,7 @@ sub ValidateAndNormalizeDimensions {
     my ($val, $dim);
 
     if ($Image{"width"} =~ /auto/i) {
-        foreach $attribute ("width", "left", "right") {
+        foreach my $attribute ("width", "left", "right") {
             if ($PlotArea{$attribute} =~ /\%/) {
                 &Error2(  "You specified 'ImageSize = width:auto'.\n"
                         . "  This implies absolute values in PlotArea attributes 'left', 'right' and/or 'width' (no \%).\n"
@@ -2956,7 +2943,7 @@ sub ValidateAndNormalizeDimensions {
     }
 
     if ($Image{"height"} =~ /auto/i) {
-        foreach $attribute ("height", "top", "bottom") {
+        foreach my $attribute ("height", "top", "bottom") {
             if ($PlotArea{$attribute} =~ /\%/) {
                 &Error2(  "You specified 'ImageSize = height:auto'.\n"
                         . "  This implies absolute values in PlotArea attributes 'top', 'bottom' and/or 'height' (no \%).\n"
@@ -3069,6 +3056,7 @@ sub ValidateAndNormalizeDimensions {
     if (   (defined($Scales{"Major"}))
         || (defined($Scales{"Minor"})))
     {
+        my $margin;
         if   (defined($Scales{"Major"})) { $margin = 0.2; }
         else                             { $margin = 0.05; }
 
@@ -3216,10 +3204,10 @@ sub WriteProcAnnotate {
     push @PlotTextsPng, $textdetails . "\n";
     push @PlotTextsSvg, $textdetails . "\n";
 
-    $text2 = $text;
+    my $text2 = $text;
     $text2 =~ s/\[\[//g;
     $text2 =~ s/\]\]//g;
-    if   ($text2 =~ /^\s/) {
+    if ($text2 =~ /^\s/) {
         push @PlotTextsPng, "  text: \n\\$text2\n\n";
     }
     else {
@@ -3239,7 +3227,7 @@ sub WriteProcAnnotate {
         $text2 =~ s/^ ([^\[]+) \]\]/\[$lcnt\[$1\]$lcnt\]/x;
     }
 
-    $text3 = &EncodeHtml($text2);
+    my $text3 = &EncodeHtml($text2);
     if ($text2 ne $text3) {
 
         # put placeholder in Ploticus input file
@@ -3251,7 +3239,7 @@ sub WriteProcAnnotate {
         while (length($text3) < length($text2)) { $text3 .= "x"; }
     }
 
-    if   ($text3 =~ /^\s/) {
+    if ($text3 =~ /^\s/) {
         push @PlotTextsSvg, "  text: \n\\$text3\n\n";
     }
     else {
@@ -3299,7 +3287,7 @@ sub WriteProcAnnotate {
         my $pos2 = index($text, "]]") + 1;
         if (($pos1 > -1) && ($pos2 > -1)) {
             for (my $i = 0; $i < length($text); $i++) {
-                $c = substr($text, $i, 1);
+                my $c = substr($text, $i, 1);
                 if ($c ne "\n") {
                     if (($i < $pos1) || ($i > $pos2)) {
                         substr($text, $i, 1) = " ";
@@ -3368,7 +3356,7 @@ sub WriteText {
         s/\s* (.*) \s*$/$1/x;
     }
 
-    $posx0 = $posx;
+    my $posx0 = $posx;
     my @Text;
     my $dy = 0;
 
@@ -3401,32 +3389,37 @@ sub WriteText {
         push @Text, $text;
     }
 
-    foreach $text (@Text) { # XXX $text should be renamed here
-        if ($text !~ /^[\n\s]*$/) {
+    foreach my $text_item (@Text) {
+        if ($text_item !~ /^[\n\s]*$/) {
             $link2 = "";
             $hint2 = "";
-            ($text, $link2, $hint2) = &ProcessWikiLink($text, $link2, $hint2);
+            ($text_item, $link2, $hint2) =
+                &ProcessWikiLink($text_item, $link2, $hint2);
 
             if ($link2 eq "") {
                 $link2 = $link;
-                if (($link ne "") && ($text !~ /\[\[.*\]\]/)) {
-                    $text = "[[" . $text . "]]";
+                if (($link ne "") && ($text_item !~ /\[\[.*\]\]/)) {
+                    $text_item = "[[" . $text_item . "]]";
                 }
             }
             if ($hint2 eq "") { $hint2 = $hint; }
 
             &WriteProcAnnotate(
-                $bar,       $shiftx,   $posx,  $posy,  $text,
+                $bar,       $shiftx,   $posx,  $posy,  $text_item,
                 $textcolor, $fontsize, $align, $link2, $hint2
             );
         }
 
         if ($#Tabs >= 0) {
             $tab = shift(@Tabs);
+            my $dx;
             ($dx, $align) = split("\-", $tab);
             $posx = $posx0 + &Normalize($dx);
         }
-        if ($posy =~ /\+/) { ($posy1, $posy2) = split('\+', $posy); }
+
+        if ($posy =~ /\+/) {
+            ($posy1, $posy2) = split('\+', $posy);
+        }
         elsif ($posy =~ /.+\-/) {
             if ($posy =~ /^\-/) {
                 ($sign, $posy1, $posy2) = split('\-', $posy);
@@ -3438,7 +3431,10 @@ sub WriteText {
                 $posy2 = -$posy2;
             }
         }
-        else { $posy1 = $posy; $posy2 = 0; }
+        else {
+            $posy1 = $posy;
+            $posy2 = 0;
+        }
 
         $posy2 -= $dy;
 
@@ -3448,38 +3444,12 @@ sub WriteText {
     }
 }
 
-sub WriteProcDrawCommandsOld {
-    my $posx      = shift;
-    my $posy      = shift;
-    my $text      = shift;
-    my $textcolor = shift;
-    my $fontsize  = shift;
-    my $link      = shift;
-    my $hint      = shift;
-
-    $posx0 = $posx;
-    my @Text = split('\^', $text);
-    my $align = "text";
-    foreach $text (@Text) {
-        push @TextData, "  mov $posx $posy\n";
-        push @TextData, "  textsize $fontsize\n";
-        push @TextData, "  color $textcolor\n";
-        push @TextData, "  $align $text\n";
-
-        $tab = shift(@Tabs);
-        ($dx, $align) = split("\-", $tab);
-        $posx = $posx0 + &Normalize($dx);
-        if    ($align =~ /left/i)  { $align = "text"; }
-        elsif ($align =~ /right/i) { $align = "rightjust"; }
-        else                       { $align = "centext"; }
-    }
-}
-
 sub WritePlotFile {
     &WriteTexts;
 
     $script = "";
-    my ($color);
+
+    my $AxisBars;
     if   ($Axis{"time"} eq "x") { $AxisBars = "y"; }
     else                        { $AxisBars = "x"; }
 
@@ -3491,6 +3461,7 @@ sub WritePlotFile {
     #    @Bars = @BarsTmp ;
     #  }
 
+    my $file_script;
     if ($tmpdir ne "") {
         $file_script = $tmpdir . $pathseparator . "EasyTimeline.txt.$$";
     }
@@ -3518,7 +3489,9 @@ sub WritePlotFile {
     }
     $script .= "\n";
 
-    $barcnt = $#Bars + 1;
+    my $barcnt = $#Bars + 1;
+
+    my ($U, $x);
 
     # if ($AlignBars eq "justify") && ($#Bars > 0)
     #
@@ -3550,6 +3523,7 @@ sub WritePlotFile {
         $AlignBars = "early";
     }
 
+    my $extent;
     if   ($Axis{"time"} eq "x") { $extent = "height"; }
     else                        { $extent = "width"; }
 
@@ -3560,6 +3534,7 @@ sub WritePlotFile {
 
     if ($MaxBarWidth == $PlotArea{$extent}) { $PlotArea{$extent} += 0.01; }
 
+    my ($till, $from);
     if ($MaxBarWidth == $PlotArea{$extent}) {
         $till = 1;
         $from = 1;
@@ -3653,7 +3628,7 @@ sub WritePlotFile {
     #  $script .= "  clickmapurl: http://www.wikipedia.org/wiki/Vladimir_Lenin\n" ;
 
     #proc legendentry
-    foreach $color (sort keys %Colors) {
+    foreach my $color (sort keys %Colors) {
         $script .= "#proc legendentry\n";
         $script .= "  sampletype: color\n";
 
@@ -3672,9 +3647,9 @@ sub WritePlotFile {
         $script .= "  delim: comma\n";
         $script .= "  data:\n";
 
-        $maxwidth = 0;
-        foreach $entry (@PlotBars) {
-            ($width) = split(",", $entry);
+        my $maxwidth = 0;
+        foreach my $entry (@PlotBars) {
+            my ($width) = split(",", $entry);
             if ($width > $maxwidth) { $maxwidth = $width; }
         }
 
@@ -3714,8 +3689,9 @@ sub WritePlotFile {
 
     $script .= "\n([inc3])\n\n";    # will be replace by rects
 
-    %x = %BarWidths;
-    foreach $entry (@PlotLines) {
+    # %x = %BarWidths; # XXX doesn't seem to be used
+    my ($bar, $width);
+    foreach my $entry (@PlotLines) {
         ($bar) = split(",", $entry);
         $bar =~ s/\#.*//;
         $width = $BarWidths{$bar};
@@ -3724,6 +3700,9 @@ sub WritePlotFile {
 
     @PlotBarsNow = @PlotLines;
     &PlotBars;
+
+    my ($scriptPng1, $scriptPng2, $scriptPng3);
+    my ($scriptSvg1, $scriptSvg2);
 
     #proc axis
     if ($#Bars > 0) {
@@ -3750,23 +3729,28 @@ sub WritePlotFile {
         $scriptPng2 .= "  stubs: text\n";
         $scriptSvg2 .= "  stubs: text\n";
 
-        # XXX huh? Yields a warning.
         my $text;
         my $link;
         my $hint;
 
+        my @Bars2;
+
         undef(@Bars2);
-        foreach $bar (@Bars) {
-            if ($AxisBars eq "y") { push @Bars2, $bar; }
-            else                  { unshift @Bars2, $bar; }
+        foreach my $bar_iter (@Bars) {
+            if ($AxisBars eq "y") {
+                push @Bars2, $bar_iter;
+            }
+            else {
+                unshift @Bars2, $bar_iter;
+            }
         }
 
-        foreach $bar (@Bars2) {
+        foreach my $bar2_iter (@Bars2) {
             $hint = "";
-            $text = $BarLegend{ lc($bar) };
+            $text = $BarLegend{ lc($bar2_iter) };
             if ($text =~ /^\s*$/) { $text = "\\"; }
 
-            $link = $BarLink{ lc($bar) };
+            $link = $BarLink{ lc($bar2_iter) };
             if (!defined($link)) {
                 if ($text =~ /\[.*\]/) {
                     ($text, $link, $hint) =
@@ -3782,7 +3766,9 @@ sub WritePlotFile {
                 $scriptSvg2 .=
                     "[" . $lcnt . "[" . $text . "]" . $lcnt . "]\n";
             }
-            else { $scriptSvg2 .= "$text\n"; }
+            else {
+                $scriptSvg2 .= "$text\n";
+            }
         }
         $scriptPng2 .= "\n";
         $scriptSvg2 .= "\n";
@@ -3803,12 +3789,12 @@ sub WritePlotFile {
         $scriptPng2 .= "  stubs: text\n";
 
         $barcnt = $#Bars + 1;
-        foreach $bar (@Bars2) {
+        foreach my $bars2_iter (@Bars2) {
             $hint = "";
-            $text = $BarLegend{ lc($bar) };
+            $text = $BarLegend{ lc($bars2_iter) };
             if ($text =~ /^\s*$/) { $text = "\\"; }
 
-            $link = $BarLink{ lc($bar) };
+            $link = $BarLink{ lc($bars2_iter) };
             if (!defined($link)) {
                 if ($text =~ /\[.*\]/) {
                     ($text, $link, $hint) =
@@ -3844,23 +3830,25 @@ sub WritePlotFile {
     $script .= "\n([inc2])\n\n";
 
     if ($#PlotTextsPng >= 0) {
-        foreach $command (@PlotTextsPng) {
-            if ($command =~ /^\s*location/) {
-                $command =~ s/(.*)\[(.*)\](.*)/$1 . ($#Bars - $2 + 2) . $3/xe;
+        foreach my $plot_texts_png_command (@PlotTextsPng) {
+            if ($plot_texts_png_command =~ /^\s*location/) {
+                $plot_texts_png_command =~
+                    s/(.*)\[(.*)\](.*)/$1 . ($#Bars - $2 + 2) . $3/xe;
             }
 
-            $scriptPng1 .= $command;
+            $scriptPng1 .= $plot_texts_png_command;
         }
         $scriptPng1 .= "\n";
     }
 
     if ($#PlotTextsSvg >= 0) {
-        foreach $command (@PlotTextsSvg) {
-            if ($command =~ /^\s*location/) {
-                $command =~ s/(.*)\[(.*)\](.*)/$1 . ($#Bars - $2 + 2) . $3/xe;
+        foreach my $plot_texts_svg_command (@PlotTextsSvg) {
+            if ($plot_texts_svg_command =~ /^\s*location/) {
+                $plot_texts_svg_command =~
+                    s/(.*)\[(.*)\](.*)/$1 . ($#Bars - $2 + 2) . $3/xe;
             }
 
-            $scriptSvg1 .= $command;
+            $scriptSvg1 .= $plot_texts_svg_command;
         }
         $scriptSvg1 .= "\n";
     }
@@ -3880,7 +3868,7 @@ sub WritePlotFile {
     if ($#TextData >= 0) {
         $script .= "#proc drawcommands\n";
         $script .= "  commands:\n";
-        foreach $entry (@TextData) { $script .= $entry; }
+        foreach my $entry (@TextData) { $script .= $entry; }
         $script .= "\n";
     }
 
@@ -3895,7 +3883,7 @@ sub WritePlotFile {
             return;
         }
 
-        $perColumn = 999;
+        my $perColumn = 999;
         if ($Legend{"orientation"} =~ /ver/i) {
             if ($Legend{"columns"} > 1) {
                 $perColumn = 0;
@@ -3905,7 +3893,7 @@ sub WritePlotFile {
             }
         }
 
-        for ($l = 1; $l <= $Legend{"columns"}; $l++) {
+        for (1 .. $Legend{"columns"}) {
             $script .= "#proc legend\n";
             $script .= "  noclear: yes\n";
             if ($Legend{"orientation"} =~ /ver/i) {
@@ -3920,8 +3908,8 @@ sub WritePlotFile {
                 . ($Legend{"left"} + 0.2) . " "
                 . $Legend{"top"} . "\n";
             $script .= "  specifyorder:\n";
-            for ($l2 = 1; $l2 <= $perColumn; $l2++) {
-                $category = shift(@LegendData);
+            for (1 .. $perColumn) {
+                my $category = shift(@LegendData);
                 if (defined($category)) { $script .= "$category\n"; }
             }
             $script .= "\n";
@@ -3931,6 +3919,7 @@ sub WritePlotFile {
 
     $script .= "#endproc\n";
 
+    my $pl;
     print "\nGenerating output:\n";
     if ($ploticus_command ne "") {
         $pl = $ploticus_command;
@@ -3944,7 +3933,7 @@ sub WritePlotFile {
         . $pl . "\" ("
         . $ploticus_command . ")\n";
 
-    $script_save = $script;
+    my $script_save = $script;
 
     $script =~ s/\(\[inc1\]\)/$scriptSvg1/;
     $script =~ s/\(\[inc2\]\)/$scriptSvg2/;
@@ -3968,7 +3957,7 @@ sub WritePlotFile {
     print FILE_OUT &DecodeInput($script);
     close "FILE_OUT";
 
-    $map = ($MapSVG) ? "-map" : "";
+    my $map = ($MapSVG) ? "-map" : "";
 
     print "Running Ploticus to generate svg file\n";
 
@@ -4053,30 +4042,32 @@ sub WritePlotFile {
         }
     }
 
-    if (-e $file_htmlmap
-        )    # correct click coordinates of right aligned texts (Ploticus bug)
-    {
+    # correct click coordinates of right aligned texts (Ploticus bug)
+    if (-e $file_htmlmap) {
         open "FILE_IN", "<", $file_htmlmap;
-        @map = <FILE_IN>;
+        my @map = <FILE_IN>;
         close "FILE_IN";
 
-        foreach $line (@map) {
+        my @map2;
+        foreach my $line (@map) {
             chomp $line;
             if ($line =~ /\&\&/) {
-                $coords = $line;
-                $shift  = $line;
+                my $coords = $line;
+                my $shift  = $line;
                 $coords =~ s/^.*coords\=\"([^\"]*)\".*$/$1/;
-                $shift  =~ s/^.*\&\&([^\"]*)\".*$/$1/;
+                $shift  =~ s/^.*\&\&([^\"]*)\".*$/$1/;         # XXX?
                 $line   =~ s/\&\&[^\"]*//;
-                (@updcoords) = split(",", $coords);
-                $maplength = $updcoords[2] - $updcoords[0];
+                my (@updcoords) = split(",", $coords);
+                my $maplength = $updcoords[2] - $updcoords[0];
                 $updcoords[0] = $updcoords[0] - 2 * ($maplength - 25);
                 $updcoords[2] = $updcoords[0] + $maplength;
-                $coordsnew = join(",", @updcoords);
+                my $coordsnew = join(",", @updcoords);
                 $line =~ s/$coords/$coordsnew/;
                 push @map2, $line . "\n";
             }
-            else { push @map2, $line . "\n"; }
+            else {
+                push @map2, $line . "\n";
+            }
         }
 
         open "FILE_OUT", ">", $file_htmlmap;
@@ -4086,13 +4077,12 @@ sub WritePlotFile {
 
     if (-e $file_vector) {
         open "FILE_IN", "<", $file_vector;
-        @svg = <FILE_IN>;
+        my @svg = <FILE_IN>;
         close "FILE_IN";
 
-        foreach $line (@svg) {
-            $line =~ s/\{\{(\d+)\}\}x+/$textsSVG[$1]/gxe;
-            $line =~
-                s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
+        foreach (@svg) {
+            s/\{\{(\d+)\}\}x+/$textsSVG[$1]/gxe;
+            s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
         }
 
         open "FILE_OUT", ">", $file_vector;
@@ -4105,13 +4095,15 @@ sub WritePlotFile {
         $map = "";
         if ($linkmap) {
             open "FILE_IN", "<", $file_htmlmap;
-            while ($line = <FILE_IN>) { $map .= $line; }
+            while (my $line = <FILE_IN>) {
+                $map .= $line;
+            }
             close "FILE_IN";
         }
         print "Generating html test file\n";
-        $width  = sprintf("%.0f", $Image{"width"} * 100);
-        $height = sprintf("%.0f", $Image{"height"} * 100);
-        $html   = <<__HTML__ ;
+        $width = sprintf("%.0f", $Image{"width"} * 100);
+        my $height = sprintf("%.0f", $Image{"height"} * 100);
+        my $html = <<__HTML__ ;
 
 <html>
 <head>
@@ -4168,8 +4160,9 @@ __HTML__
 }
 
 sub WriteTexts {
-    my ($line, $xpos, $ypos);
-    foreach $line (@PlotText) {
+    my ($xpos, $ypos);
+
+    foreach my $line (@PlotText) {
         my (
             $at,    $bar,   $text, $textcolor, $fontsize,
             $align, $shift, $link, $hint
@@ -4191,8 +4184,10 @@ sub WriteTexts {
         }
         else { $ypos = "$at(s)"; $xpos = "[$barcnt](s)"; }
 
+        # XXX - $shiftx was defined inside the if block.
+        my ($shiftx, $shifty);
         if ($shift ne "") {
-            my ($shiftx, $shifty) = split(",", $shift);
+            ($shiftx, $shifty) = split(",", $shift);
             if ($shiftx > 0) { $xpos .= "+$shiftx"; }
             if ($shiftx < 0) { $xpos .= "$shiftx"; }
             if ($shifty > 0) { $ypos .= "+$shifty"; }
@@ -4208,14 +4203,15 @@ sub WriteTexts {
 }
 
 sub PlotBars {
+    my @PlotBarsLater;
 
     #proc getdata / #proc bars
     while ($#PlotBarsNow >= 0) {
         undef @PlotBarsLater;
 
-        $maxwidth = 0;
-        foreach $entry (@PlotBarsNow) {
-            ($width) = split(",", $entry);
+        my $maxwidth = 0;
+        foreach my $entry (@PlotBarsNow) {
+            my ($width) = split(",", $entry);
             if ($width > $maxwidth) { $maxwidth = $width; }
         }
 
@@ -4223,7 +4219,7 @@ sub PlotBars {
         $script .= "  delim: comma\n";
         $script .= "  data:\n";
 
-        foreach $entry (@PlotBarsNow) {
+        foreach my $entry (@PlotBarsNow) {
             my ($width, $bar, $from, $till, $color, $link, $hint) =
                 split(",", $entry);
             if ($width < $maxwidth) {
@@ -4250,24 +4246,17 @@ sub PlotBars {
         }
         $script .= "\n";
 
-        #proc bars
+        # proc bars
         $script .= "#proc bars\n";
         $script .= "  axis: " . $Axis{"time"} . "\n";
         $script .= "  barwidth: $maxwidth\n";
         $script .= "  outline: no\n";
 
-        #   $script .= "  thinbarline: width=5\n" ;
         if ($Axis{"time"} eq "x") { $script .= "  horizontalbars: yes\n"; }
         $script .= "  locfield: 1\n";
         $script .= "  segmentfields: 2 3\n";
         $script .= "  colorfield: 4\n";
 
-        #   $script .= "  outline: width=1\n" ;
-        #   $script .= "  barwidthfield: 5\n" ;
-        #    if ($fields[4] ne "")
-        #    { $script .= "  clickmapurl: " . &LinkToUrl ($text) . "\n" ; }
-        #    if ($fields[5] ne "")
-        #    { $script .= "  clickmaplabel: $text\n" ; }
         $script .= "  clickmapurl: \@\@5\n";
         $script .= "  clickmaplabel: \@\@6\n";
         $script .= "\n";
@@ -4281,7 +4270,7 @@ sub PlotScale {
     my $grid  = shift;
     my ($color, $from, $till, $start);
 
-    %x = %Period;
+    # %x = %Period; # XXX doesn't seem to be used
 
     #  if (($DateFormat =~ /\//) && ($grid))
     #  { return ; }
@@ -4354,7 +4343,7 @@ sub PlotScale {
         # $start =~ s/.*\///g ; # delete dd mm if present
         $start = &DateToFloat($start);
         if ($Axis{"order"} =~ /reverse/i) {
-            $loop  = 0;
+            my $loop = 0;
             $start = -$start;
             while ($start - $Scales{"$scale inc"} >= -$Period{"till"}) {
                 $start -= $Scales{"$scale inc"};
@@ -4400,23 +4389,30 @@ sub PlotLines {
 
     if ($#DrawLines < 0) { return; }
 
+    my @DrawLinesNow;
     undef(@DrawLinesNow);
 
-    foreach $line (@DrawLines) {
-        if ($line =~ /\|$layer\n/) { push @DrawLinesNow, $line; }
+    foreach my $line (@DrawLines) {
+        if ($line =~ /\|$layer\n/) {
+            push @DrawLinesNow, $line;
+        }
     }
 
     if ($#DrawLinesNow < 0) { return; }
 
-    foreach $entry (@DrawLinesNow) {
+    foreach my $entry (@DrawLinesNow) {
         chomp($entry);
         $script .= "#proc line\n";
+
+        my ($mode, $at, $from, $till, $color, $width, $points);
 
         #    $script .= "  notation: scaled\n" ;
         if ($entry =~ /^[12]/) {
             ($mode, $at, $from, $till, $color, $width) = split('\|', $entry);
         }
-        else { ($mode, $points, $color, $width) = split('\|', $entry); }
+        else {
+            ($mode, $points, $color, $width) = split('\|', $entry);
+        }
 
         $script .= "  linedetails: width=$width color=$color style=0\n";
 
@@ -4470,10 +4466,14 @@ sub PlotLines {
             }
         }
 
-        if ($mode == 3)    # draw free line
-        {
-            @Points = split(",", $points);
-            foreach $point (@Points) { $point = &Normalize($point); }
+        # draw free line
+        if ($mode == 3) {
+            my @Points = split(",", $points);
+
+            foreach my $point (@Points) {
+                $point = &Normalize($point);
+            }
+
             if (   ($Points[0] > $Image{"width"})
                 || ($Points[1] > $Image{"height"})
                 || ($Points[2] > $Image{"width"})
@@ -4514,7 +4514,9 @@ sub ColorPredefined {
         }
         return ($true);
     }
-    else { return ($false); }
+    else {
+        return ($false);
+    }
 }
 
 # Can be much simpler
@@ -4657,14 +4659,15 @@ sub DateMedium {
         return (sprintf("%.3f", ($from + $till) / 2));
     }
 
-    $from2 = &DaysFrom1800($from);
-    $till2 = &DaysFrom1800($till);
-    my $date = &DateFrom1800(int(($from2 + $till2) / 2));
+    my $from2 = &DaysFrom1800($from);
+    my $till2 = &DaysFrom1800($till);
+    my $date  = &DateFrom1800(int(($from2 + $till2) / 2));
     return ($date);
 }
 
 sub DaysFrom1800 {
-    @mmm = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    my @mmm = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    my ($day, $month, $year);
     my $date = shift;
     if ($DateFormat eq "dd/mm/yyyy") {
         $day   = substr($date, 0, 2);
@@ -4681,11 +4684,11 @@ sub DaysFrom1800 {
         return;
     }
 
-    $days = ($year - 1800) * 365;
+    my $days = ($year - 1800) * 365;
     $days += int(($year - 1 - 1800) / 4);
     $days -= int(($year - 1 - 1800) / 100);
     if ($month > 1) {
-        for ($m = $month - 2; $m >= 0; $m--) {
+        for (my $m = $month - 2; $m >= 0; $m--) {
             $days += $mmm[$m];
             if ($m == 1) {
                 if ((($year % 4) == 0) && (($year % 100) != 0)) { $days++; }
@@ -4710,16 +4713,16 @@ sub DateToFloat {
 sub DateFrom1800 {
     my $days = shift;
 
-    @mmm = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    my @mmm = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
-    $year = 1800;
+    my $year = 1800;
     while ($days > 365 + (($year % 4) == 0)) {
         if   ((($year % 4) == 0) && (($year % 100) != 0)) { $days -= 366; }
         else                                              { $days -= 365; }
         $year++;
     }
 
-    $month = 0;
+    my $month = 0;
     while ($days > $mmm[$month]) {
         $days -= $mmm[$month];
         if ($month == 1) {
@@ -4727,9 +4730,10 @@ sub DateFrom1800 {
         }
         $month++;
     }
-    $day = $days;
+    my $day = $days;
 
     $month++;
+    my $date;
     if ($DateFormat eq "dd/mm/yyyy") {
         $date = sprintf("%02d/%02d/%04d", $day, $month, $year);
     }
@@ -4739,6 +4743,7 @@ sub DateFrom1800 {
 }
 
 sub ExtractText {
+
     # my $data  = shift;
     my $data2 = shift;
     my $text  = "";
@@ -4794,7 +4799,7 @@ sub ParseText {
 
 sub BarDefined {
     my $bar = shift;
-    foreach $bar2 (@Bars) {
+    foreach my $bar2 (@Bars) {
         if (lc($bar2) eq lc($bar)) { return ($true); }
     }
 
@@ -4914,27 +4919,32 @@ sub CheckAttributes {
     my @Required = split(",", shift);
     my @Allowed  = split(",", shift);
 
-    my $attribute;
     my %Attributes2 = %Attributes;
 
-    $hint = "\nSyntax: '$name =";
-    foreach $attribute (@Required) { $hint .= " $attribute:.."; }
-    foreach $attribute (@Allowed)  { $hint .= " [$attribute:..]"; }
+    my $hint = "\nSyntax: '$name =";
+    foreach my $required_attribute (@Required) {
+        $hint .= " $required_attribute:..";
+    }
+    foreach my $allowed_attribute (@Allowed) {
+        $hint .= " [$allowed_attribute:..]";
+    }
     $hint .= "'";
 
-    foreach $attribute (@Required) {
-        if (   (!defined($Attributes{$attribute}))
-            || ($Attributes{$attribute} eq ""))
+    foreach my $required_attribute (@Required) {
+        if (   (!defined($Attributes{$required_attribute}))
+            || ($Attributes{$required_attribute} eq ""))
         {
             &Error("$name definition incomplete. $hint");
             undef(@Attributes);
             return ($false);
         }
-        delete($Attributes2{$attribute});
+        delete($Attributes2{$required_attribute});
     }
-    foreach $attribute (@Allowed) { delete($Attributes2{$attribute}); }
+    foreach my $allowed_attribute (@Allowed) {
+        delete($Attributes2{$allowed_attribute});
+    }
 
-    @AttrKeys = keys %Attributes2;
+    my @AttrKeys = keys %Attributes2;
     if ($#AttrKeys >= 0) {
         if ($AttrKeys[0] eq "single") {
             &Error(
@@ -4955,10 +4965,11 @@ sub CheckAttributes {
 
 sub CheckPreset {
     my $command = shift;
-    my ($preset, $action, $attrname, $attrvalue);
+    my ($action, $attrname, $attrvalue);
 
     my $newcommand = $true;
     my $addvalue   = $true;
+    my $prevcommand;
     if ($command =~ /^$prevcommand$/i) { $newcommand = $false; }
     if ((!$newcommand) && ($command =~ /^(?:DrawLines|PlotData|TextData)$/i))
     {
@@ -4966,8 +4977,9 @@ sub CheckPreset {
     }
     $prevcommand = $command;
 
-    foreach $preset (@PresetList) {
+    foreach my $preset (@PresetList) {
         if ($preset =~ /^$command\|/i) {
+            my $attrpreset;
             ($command, $action, $attrname, $attrpreset) =
                 split('\|', $preset);
             if ($attrname eq "") { $attrname = "single"; }
@@ -5066,7 +5078,7 @@ sub NormalizeWikiLink {
 
     my @Show = split("\n", $show);
     $text = "";
-    foreach $part (@Show) {
+    foreach my $part (@Show) {
         if   ($brdouble) { $part = "[[" . $hide . "|" . $part . "]]"; }
         else             { $part = "[" . $hide . "|" . $part . "]"; }
     }
@@ -5122,40 +5134,6 @@ sub ProcessWikiLink {
             $text =~ s/\[+ ([^\]]+) \]+/$1/gx;
             $text =~ s/\{\{\{ ([^\}]*) \}\}\}/[[$1]]/x;
         }
-
-        #    if ($text =~ /\[\[.+\]\]/)
-        #    {
-        #      $wikilink = $true ;
-        #      $link = $text ;
-        #      $link =~ s/\n//g ;
-        #      $link =~ s/^.*?\[\[/[[/x ;
-        #      $link =~ s/\| .*? \]\].*$/]]/x ;
-        #      $link =~ s/\]\].*$/]]/x ;
-        #      $text =~ s/\[\[ [^\|\]]+ \| (.*?) \]\]/[[$1]]/x ;
-        #      $text =~ s/\[\[ [^\:\]]+ \: (.*?) \]\]/[[$1]]/x ;
-
-        #      # remove remaining links
-        #      $text =~ s/\[\[ ([^\]]+) \]\]/^%#$1#%^/x ;
-        #      $text =~ s/\[+ ([^\]]+) \]+/$1/gx ;
-        #      $text =~ s/\^$hPerc\# (.*?) \#$hPerc\^/[[$1]]/x ;
-        #    }
-        #    elsif ($text =~ /\[.+\]/)
-        #    {
-        #      $link = $text ;
-        #      $link =~ s/\n//g ;
-        #      $link =~ s/^.*?\[/[/x ;
-        #      $link =~ s/\| .*? \].*$/]/x ;
-        #      $link =~ s/\].*$/]/x ;
-        #      $link =~ s/\[ ([^\]]+) \]/$1/x ;
-        #      $text =~ s/\[ [^\|\]]+ \| (.*?) \]/[[$1]]/x ;
-
-        #      # remove remaining links
-        #      $text =~ s/\[\[ ([^\]]+) \]\]/^%#$1#%^/x ;
-        #      $text =~ s/\[+ ([^\]]+) \]+/$1/gx ;
-        #      $text =~ s/\^$hPerc\# (.*?) \#$hPerc\^/[[$1]]/x ;
-##     $text =~ s/\[\[ (.*) \]\]/$1/gx ;
-        #    }
-
     }
 
     if ($wikilink) {
@@ -5176,14 +5154,12 @@ sub ProcessWikiLink {
             $link = &EncodeURL($title);
             if (($hint eq "") && ($title ne "")) { $hint = "$wiki: $title"; }
         }
-        else {
-
-            # $wiki = "en" ;
+        else {    # $wiki = "en" ;
             $title = $link;
             $title =~ s/^\[\[(.*)\]\]$/$1/x;
             $title =~ s/ /_/g;
-            $link    = $articlepath;
-            $urlpart = &EncodeURL($title);
+            $link = $articlepath;
+            my $urlpart = &EncodeURL($title);
             $link =~ s/\$1/$urlpart/;
             if (($hint eq "") && ($title ne "")) { $hint = "$title"; }
         }
@@ -5303,12 +5279,13 @@ sub Abort {
         "<p>EasyTimeline $VERSION</p><p><b>Timeline generation failed: "
         . &EncodeHtml($msg)
         . "</b></p>\n";
-    foreach $line (@Errors) { print FILE_OUT &EncodeHtml($line) . "\n"; }
+    foreach my $line (@Errors) {
+        print FILE_OUT &EncodeHtml($line) . "\n";
+    }
     close "FILE_OUT";
 
-    if ($makehtml
-        ) # generate html test file, which would normally contain png + svg (+ image map)
-    {
+    # generate html test file, which would normally contain png + svg (+ image map)
+    if ($makehtml) {
         open "FILE_IN",  "<", $file_errors;
         open "FILE_OUT", ">", $file_html;
         print FILE_OUT
@@ -5356,13 +5333,13 @@ sub UnicodeToAscii {
         elsif ($ord >= 240) { $value = $ord - 240; }
         elsif ($ord >= 224) { $value = $ord - 224; }
         else                { $value = $ord - 192; }
-        for ($c = 1; $c < length($unicode); $c++) {
+        for (my $c = 1; $c < length($unicode); $c++) {
             $value = $value * 64 + ord(substr($unicode, $c, 1)) - 128;
         }
 
         #   $html = "\&\#" . $value . ";" ; any unicode can be specified as html char
 
-        if   (($value >= 128) && ($value <= 255)) {
+        if (($value >= 128) && ($value <= 255)) {
             return (chr($value));
         }
         else {
