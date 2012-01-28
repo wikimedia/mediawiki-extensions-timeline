@@ -20,25 +20,25 @@ $wgExtensionCredits['parserhook'][] = array(
 );
 
 class TimelineSettings {
-	var $ploticusCommand, $perlCommand;
-	
+	public $ploticusCommand, $perlCommand;
+
 	// Update this timestamp to force older rendered timelines
 	// to be generated when the page next gets rendered.
 	// Can help to resolve old image-generation bugs.
-	var $epochTimestamp = '20010115000000';
+	public $epochTimestamp = '20010115000000';
 
 	// Path to the EasyTimeline.pl perl file, which is used to actually generate the timelines.
-	var $timelineFile;
-	
+	public $timelineFile;
+
 	//Font file. Must in path specified by environment variable $GDFONTPATH
 	//use the fontname 'ascii' to use the internal ploticus font that does not require
 	//an external font file. Default to FreeSans for backwards compatability.
 	//Note: according to ploticus docs, filename should not have any space in it or issues may occur.
-	var $fontFile = 'FreeSans.ttf';
+	public $fontFile = 'FreeSans.ttf';
 
 	// The name of the FileBackend to use for timeline (see $wgFileBackends)
-	var $fileBackend = '';
-};
+	public $fileBackend = '';
+}
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
@@ -47,11 +47,19 @@ $wgTimelineSettings->timelineFile = dirname(__FILE__)."/EasyTimeline.pl";
 $wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
 $wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
 
+/**
+ * @param $parser Parser
+ * @return bool
+ */
 function wfTimelineExtension( &$parser ) {
 	$parser->setHook( 'timeline', 'wfRenderTimeline' );
 	return true;
 }
 
+/**
+ * @param $timelinesrc string
+ * @return string
+ */
 function wfRenderTimeline( $timelinesrc ) {
 	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 	global $wgTimelineSettings;
@@ -170,6 +178,8 @@ function wfRenderTimeline( $timelinesrc ) {
 
 /**
  * Do a security check on the image map HTML
+ * @param $html string
+ * @return string
  */
 function easyTimelineFixMap( $html ) {
 	global $wgUrlProtocols;
