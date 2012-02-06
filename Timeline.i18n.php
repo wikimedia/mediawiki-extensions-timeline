@@ -276,6 +276,13 @@ $messages['gsw'] = array(
 	'timeline-invalidmap' => 'EasyTimeline het e nit giltigi Abbildig generiert',
 );
 
+/** Gujarati (ગુજરાતી)
+ * @author Sushant savla
+ */
+$messages['gu'] = array(
+	'timeline-invalidmap' => 'સરળ સમયરેખા દ્વારા રચાયેલ અવિધ ચિત્ર નક્શો',
+);
+
 /** Hebrew (עברית)
  * @author Amire80
  * @author Rotem Liss
