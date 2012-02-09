@@ -280,6 +280,7 @@ $messages['gsw'] = array(
  * @author Sushant savla
  */
 $messages['gu'] = array(
+	'timeline-desc' => 'સમય સારિણી બનાવવા માટે <code>&lt;timeline&gt;</code> ઉમેરે છે',
 	'timeline-invalidmap' => 'સરળ સમયરેખા દ્વારા રચાયેલ અવિધ ચિત્ર નક્શો',
 );
 
