@@ -38,6 +38,9 @@ class TimelineSettings {
 
 	// The name of the FileBackend to use for timeline (see $wgFileBackends)
 	public $fileBackend = '';
+
+	// Whether to generate only an SVG file using ploticus
+	public $svgOnly = false;
 }
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
@@ -107,6 +110,7 @@ function wfRenderTimeline( $timelinesrc ) {
 			// Get command for ploticus to read the user input and output an error, 
 			// map, and rendering (png or gif) file under the same dir as the temp file.
 			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
+			($wgTimelineSettings->svgOnly ? " -s " : "") .
 			" -i " . wfEscapeShellArg( $tmpPath ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
 			" -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
 			" -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
@@ -115,6 +119,34 @@ function wfRenderTimeline( $timelinesrc ) {
 			wfDebug( "Timeline cmd: $cmdline\n" );
 			$retVal = null;
 			$ret = wfShellExec( $cmdline, $retVal );
+
+			// If running in svgOnly mode, create the PNG file from the SVG
+			if ( $wgTimelineSettings->svgOnly ) {
+				// Read the default timeline image size from the DVG file
+				$svgFilename = "{$tmpPath}.svg";
+				wfSuppressWarnings();
+				$svgHandle = fopen( $svgFilename, "r" );
+				wfRestoreWarnings();
+				if ( !$svgHandle ) {
+					throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
+				}
+				while ( !feof( $svgHandle ) ) {
+					$line = fgets( $svgHandle );
+					if ( preg_match( '/viewBox="0 0 ([0-9.]+) ([0-9.]+)"/', $line, $matches ) ) {
+						$svgWidth = $matches[1];
+						$svgHeight = $matches[2];
+						break;
+					}
+				}
+				fclose( $svgHandle );
+
+				$svgHandler = new SvgHandler();
+				wfDebug( "Rasterizing PNG timeline from SVG $svgFilename, size $svgWidth x $svgHeight\n" );
+				$rasterizeResult = $svgHandler->rasterize( $svgFilename, "{$tmpPath}.png", $svgWidth, $svgHeight );
+				if ( $rasterizeResult !== true ) {
+					return "<div dir=\"ltr\">FAIL: " . $rasterizeResult->toText() . "</div>";
+				}
+			}
 
 			// Copy the output files into storage...
 			// @TODO: store error files in another container or not at all?
