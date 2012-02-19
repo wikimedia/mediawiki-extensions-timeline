@@ -38,9 +38,6 @@ class TimelineSettings {
 
 	// The name of the FileBackend to use for timeline (see $wgFileBackends)
 	public $fileBackend = '';
-
-	// Whether to generate only an SVG file using ploticus
-	public $svgOnly = false;
 }
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
@@ -63,9 +60,11 @@ function wfTimelineExtension( &$parser ) {
  * @param $timelinesrc string
  * @return string
  */
-function wfRenderTimeline( $timelinesrc ) {
+function wfRenderTimeline( $timelinesrc, array $args ) {
 	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 	global $wgTimelineSettings;
+
+	$svg2png = ( $args['method'] == 'svg2png' );
 
 	// Get the backend to store plot data and pngs
 	if ( $wgTimelineSettings->fileBackend != '' ) {
@@ -79,8 +78,10 @@ function wfRenderTimeline( $timelinesrc ) {
 		) );
 	}
 
-	// Get a hash of the plot data
-	$hash = md5( $timelinesrc );
+	// Get a hash of the plot data.
+	// $args must be checked, because the same source text may be used with
+	// with different args.
+	$hash = md5( $timelinesrc . join( $args ) );
 	if ( $wgRenderHashAppend != '' ) {
 		$hash = md5( $hash . $wgRenderHashAppend );
 	}
@@ -110,7 +111,7 @@ function wfRenderTimeline( $timelinesrc ) {
 			// Get command for ploticus to read the user input and output an error, 
 			// map, and rendering (png or gif) file under the same dir as the temp file.
 			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
-			($wgTimelineSettings->svgOnly ? " -s " : "") .
+			($svg2png ? " -s " : "") .
 			" -i " . wfEscapeShellArg( $tmpPath ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
 			" -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
 			" -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
@@ -120,8 +121,8 @@ function wfRenderTimeline( $timelinesrc ) {
 			$retVal = null;
 			$ret = wfShellExec( $cmdline, $retVal );
 
-			// If running in svgOnly mode, create the PNG file from the SVG
-			if ( $wgTimelineSettings->svgOnly ) {
+			// If running in svg2png mode, create the PNG file from the SVG
+			if ( $svg2png ) {
 				// Read the default timeline image size from the DVG file
 				$svgFilename = "{$tmpPath}.svg";
 				wfSuppressWarnings();

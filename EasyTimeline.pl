@@ -83,6 +83,9 @@ use English '-no_match_vars';
 
 # Global variables.
 # Many of these should be refactored.
+
+# Whether to generate only an SVG file and have it converted to PNG later.
+# To enable it in the MediaWiki extension, use <timeline method="svg2png">
 my $SVG_ONLY = 0;
 
 my @PlotLines;
