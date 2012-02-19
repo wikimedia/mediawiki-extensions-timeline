@@ -64,7 +64,8 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 	global $wgTimelineSettings;
 
-	$svg2png = ( $args['method'] == 'svg2png' );
+	$method = isset( $args['method'] ) ? $args['method'] : 'ploticusOnly';
+	$svg2png = ( $method == 'svg2png' );
 
 	// Get the backend to store plot data and pngs
 	if ( $wgTimelineSettings->fileBackend != '' ) {
@@ -112,8 +113,10 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 			// map, and rendering (png or gif) file under the same dir as the temp file.
 			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
 			($svg2png ? " -s " : "") .
-			" -i " . wfEscapeShellArg( $tmpPath ) . " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
-			" -T " . wfEscapeShellArg( $wgTmpDirectory ) . " -A " . wfEscapeShellArg( $wgArticlePath ) .
+			" -i " . wfEscapeShellArg( $tmpPath ) .
+			" -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand ) .
+			" -T " . wfEscapeShellArg( $wgTmpDirectory ) .
+			" -A " . wfEscapeShellArg( $wgArticlePath ) .
 			" -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile );
 
 			// Actually run the command...
