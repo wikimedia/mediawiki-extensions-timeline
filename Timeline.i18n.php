@@ -199,6 +199,7 @@ $messages['es'] = array(
  */
 $messages['et'] = array(
 	'timeline-desc' => 'Lisab <code>&lt;timeline&gt;</code>-märgendi ajatelgede loomiseks.',
+	'timeline-invalidmap' => 'EasyTimeline genereeris vigase kujutise',
 );
 
 /** Basque (Euskara)
