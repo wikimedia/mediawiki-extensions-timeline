@@ -369,6 +369,14 @@ $messages['ilo'] = array(
 	'timeline-invalidmap' => 'Imbalido nga imahen ti mapa a napataud ti EasyTimeline',
 );
 
+/** Icelandic (Íslenska)
+ * @author Snævar
+ */
+$messages['is'] = array(
+	'timeline-desc' => 'Bætir við <code>&lt;timeline&gt;</code> tagi til að búa til tímalínur',
+	'timeline-invalidmap' => 'Ógild tímalína búin til af EasyTimeline',
+);
+
 /** Italian (Italiano)
  * @author Beta16
  * @author BrokenArrow
