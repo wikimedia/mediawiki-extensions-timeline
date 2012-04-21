@@ -389,9 +389,10 @@ $messages['it'] = array(
 /** Japanese (日本語)
  * @author Fryed-peach
  * @author JtFuruhata
+ * @author Shirayuki
  */
 $messages['ja'] = array(
-	'timeline-desc' => '年表を作成するための <code>&lt;timeline&gt;</code> タグを追加する',
+	'timeline-desc' => '年表を作成するための <code>&lt;timeline&gt;</code> タグを追加します',
 	'timeline-invalidmap' => 'EasyTimeline によって生成された不正なイメージマップ',
 );
 
