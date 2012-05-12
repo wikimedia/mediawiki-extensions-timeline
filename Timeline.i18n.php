@@ -745,7 +745,7 @@ $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <code>&lt;timeline&gt;</code>-ро баро намоиши хати замоне илова мекунад',
 );
 
-/** Tajik (Latin script) (tojikī)
+/** Tajik (Latin script) (Tojikī)
  * @author Liangent
  */
 $messages['tg-latn'] = array(
