@@ -392,7 +392,7 @@ $messages['it'] = array(
  * @author Shirayuki
  */
 $messages['ja'] = array(
-	'timeline-desc' => '年表を作成するための <code>&lt;timeline&gt;</code> タグを追加します',
+	'timeline-desc' => '年表を作成するための <code>&lt;timeline&gt;</code> タグを追加する',
 	'timeline-invalidmap' => 'EasyTimeline によって生成された不正なイメージマップ',
 );
 
