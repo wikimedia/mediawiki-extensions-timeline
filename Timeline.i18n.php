@@ -54,7 +54,7 @@ $messages['arz'] = array(
 	'timeline-desc' => 'بيضيف تاج ال <code>&lt;timeline&gt;</code> علشان ينشيء خطوط الزمن',
 );
 
-/** Asturian (Asturianu)
+/** Asturian (asturianu)
  * @author Esbardu
  * @author Xuacu
  */
@@ -86,7 +86,7 @@ $messages['be-tarask'] = array(
 	'timeline-invalidmap' => 'Няслушная выява мапы створаная праз EasyTimeline',
 );
 
-/** Bulgarian (Български)
+/** Bulgarian (български)
  * @author DCLXVI
  */
 $messages['bg'] = array(
@@ -101,7 +101,7 @@ $messages['bn'] = array(
 সময়সীমা নির্ধারণ ট্যাগ ব্যবহার করতে যুক্ত করুন: <code>&lt;timeline&gt;</code>',
 );
 
-/** Breton (Brezhoneg)
+/** Breton (brezhoneg)
  * @author Fulup
  */
 $messages['br'] = array(
@@ -109,7 +109,7 @@ $messages['br'] = array(
 	'timeline-invalidmap' => 'Kartenn direizh ganet dre EasyTimeline',
 );
 
-/** Bosnian (Bosanski)
+/** Bosnian (bosanski)
  * @author CERminator
  */
 $messages['bs'] = array(
@@ -117,7 +117,7 @@ $messages['bs'] = array(
 	'timeline-invalidmap' => 'Nevaljana mapa slika generisana putem EasyTimeline',
 );
 
-/** Catalan (Català)
+/** Catalan (català)
  * @author El libre
  * @author Paucabot
  */
@@ -126,7 +126,7 @@ $messages['ca'] = array(
 	'timeline-invalidmap' => "Mapa d'imatge invàlid generat per EasyTimeline",
 );
 
-/** Czech (Česky)
+/** Czech (česky)
  * @author Li-sung
  * @author Mormegil
  */
@@ -135,7 +135,7 @@ $messages['cs'] = array(
 	'timeline-invalidmap' => 'Neplatná mapa k obrázku vytvořená pomocí EasyTimeline',
 );
 
-/** Danish (Dansk)
+/** Danish (dansk)
  * @author Peter Alberti
  */
 $messages['da'] = array(
@@ -185,7 +185,7 @@ $messages['eo'] = array(
 	'timeline-invalidmap' => 'Malvalida bildomapo generita de EasyTimeline',
 );
 
-/** Spanish (Español)
+/** Spanish (español)
  * @author Crazymadlover
  * @author Remember the dot
  */
@@ -194,7 +194,7 @@ $messages['es'] = array(
 	'timeline-invalidmap' => 'Mapa de imagen inválida generada por EasyTimeline',
 );
 
-/** Estonian (Eesti)
+/** Estonian (eesti)
  * @author Pikne
  */
 $messages['et'] = array(
@@ -202,7 +202,7 @@ $messages['et'] = array(
 	'timeline-invalidmap' => 'EasyTimeline genereeris vigase kujutise',
 );
 
-/** Basque (Euskara)
+/** Basque (euskara)
  * @author An13sa
  * @author Theklan
  */
@@ -220,7 +220,7 @@ $messages['fa'] = array(
 	'timeline-invalidmap' => 'تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline',
 );
 
-/** Finnish (Suomi)
+/** Finnish (suomi)
  * @author Crt
  * @author ZeiP
  */
@@ -229,7 +229,7 @@ $messages['fi'] = array(
 	'timeline-invalidmap' => 'EasyTimeline loi virheellisen kuvakartan',
 );
 
-/** French (Français)
+/** French (français)
  * @author Crochet.david
  * @author Grondin
  * @author Urhixidur
@@ -239,7 +239,7 @@ $messages['fr'] = array(
 	'timeline-invalidmap' => 'Carte de l’image générée par EasyTimeline invalide',
 );
 
-/** Franco-Provençal (Arpetan)
+/** Franco-Provençal (arpetan)
  * @author ChrisPtDe
  */
 $messages['frp'] = array(
@@ -247,7 +247,7 @@ $messages['frp'] = array(
 	'timeline-invalidmap' => 'Mapa envalida de l’émâge fêta per EasyTimeline',
 );
 
-/** Friulian (Furlan)
+/** Friulian (furlan)
  * @author Klenje
  */
 $messages['fur'] = array(
@@ -310,7 +310,7 @@ $messages['hil'] = array(
 	'timeline-desc' => 'Nagadugang <code>&lt;timeline&gt;</code> tag para mahimo ang mga timeline',
 );
 
-/** Croatian (Hrvatski)
+/** Croatian (hrvatski)
  * @author Dalibor Bosits
  * @author Mnalis
  */
@@ -327,7 +327,7 @@ $messages['hsb'] = array(
 	'timeline-invalidmap' => 'Njepłaćiwa wobrazowa karta spłodźena přez EasyTimeline',
 );
 
-/** Hungarian (Magyar)
+/** Hungarian (magyar)
  * @author Dani
  * @author Glanthor Reviol
  */
@@ -336,7 +336,7 @@ $messages['hu'] = array(
 	'timeline-invalidmap' => 'Az EasyTimeline érvénytelen image mapet generált',
 );
 
-/** Interlingua (Interlingua)
+/** Interlingua (interlingua)
  * @author McDutchie
  */
 $messages['ia'] = array(
@@ -369,7 +369,7 @@ $messages['ilo'] = array(
 	'timeline-invalidmap' => 'Imbalido nga imahen ti mapa a napataud ti EasyTimeline',
 );
 
-/** Icelandic (Íslenska)
+/** Icelandic (íslenska)
  * @author Snævar
  */
 $messages['is'] = array(
@@ -377,7 +377,7 @@ $messages['is'] = array(
 	'timeline-invalidmap' => 'Ógild tímalína búin til af EasyTimeline',
 );
 
-/** Italian (Italiano)
+/** Italian (italiano)
  * @author Beta16
  * @author BrokenArrow
  */
@@ -396,7 +396,7 @@ $messages['ja'] = array(
 	'timeline-invalidmap' => 'EasyTimeline によって生成された不正なイメージマップ',
 );
 
-/** Jutish (Jysk)
+/** Jutish (jysk)
  * @author Huslåke
  */
 $messages['jut'] = array(
@@ -460,7 +460,7 @@ $messages['li'] = array(
 	'timeline-invalidmap' => 'Óngeljig gegenereerd EasyTimelineaafbeilding',
 );
 
-/** Lithuanian (Lietuvių)
+/** Lithuanian (lietuvių)
  * @author Garas
  * @author Vpovilaitis
  */
@@ -468,7 +468,7 @@ $messages['lt'] = array(
 	'timeline-desc' => 'Sukuria laiko grafikus naudojant gairę <code>&lt;timeline&gt;</code>',
 );
 
-/** Latvian (Latviešu)
+/** Latvian (latviešu)
  * @author Xil
  */
 $messages['lv'] = array(
@@ -476,7 +476,7 @@ $messages['lv'] = array(
 	'timeline-invalidmap' => 'EasyTimeline',
 );
 
-/** Macedonian (Македонски)
+/** Macedonian (македонски)
  * @author Bjankuloski06
  */
 $messages['mk'] = array(
@@ -531,7 +531,7 @@ $messages['nl'] = array(
 	'timeline-invalidmap' => 'EasyTimeline heeft een ongeldige afbeelding gegenereerd',
 );
 
-/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
+/** Norwegian Nynorsk (‪norsk (nynorsk)‬)
  * @author Frokor
  * @author Gunnernett
  */
@@ -540,7 +540,7 @@ $messages['nn'] = array(
 	'timeline-invalidmap' => 'Ugyldig biletkart oppretta av EasyTimeline',
 );
 
-/** Occitan (Occitan)
+/** Occitan (occitan)
  * @author Cedric31
  */
 $messages['oc'] = array(
@@ -564,7 +564,7 @@ $messages['pdc'] = array(
 	'timeline-invalidmap' => "'S Pikder wu EasyTimeline gmacht hot iss letz.",
 );
 
-/** Polish (Polski)
+/** Polish (polski)
  * @author Sp5uhe
  */
 $messages['pl'] = array(
@@ -588,7 +588,7 @@ $messages['pnb'] = array(
 	'timeline-invalidmap' => 'ناں منیا جان والا مورت نقشہ ایزیٹائملائن تے بنیا',
 );
 
-/** Portuguese (Português)
+/** Portuguese (português)
  * @author Giro720
  * @author Hamilton Abreu
  * @author Malafaya
@@ -598,7 +598,7 @@ $messages['pt'] = array(
 	'timeline-invalidmap' => 'Image map inválido gerado pelo EasyTimeline',
 );
 
-/** Brazilian Portuguese (Português do Brasil)
+/** Brazilian Portuguese (português do Brasil)
  * @author Daemorris
  * @author Eduardo.mps
  */
@@ -607,7 +607,7 @@ $messages['pt-br'] = array(
 	'timeline-invalidmap' => 'O mapa de imagem gerado pelo EasyTimeline é inválido',
 );
 
-/** Romanian (Română)
+/** Romanian (română)
  * @author AdiJapan
  */
 $messages['ro'] = array(
@@ -615,7 +615,7 @@ $messages['ro'] = array(
 	'timeline-invalidmap' => 'Imagine invalidă creată de EasyTimeline',
 );
 
-/** Tarandíne (Tarandíne)
+/** tarandíne (tarandíne)
  * @author Joetaras
  */
 $messages['roa-tara'] = array(
@@ -623,7 +623,7 @@ $messages['roa-tara'] = array(
 	'timeline-invalidmap' => "Immaggine d'a mappe invalide generate da EasyTimeline",
 );
 
-/** Russian (Русский)
+/** Russian (русский)
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
@@ -639,7 +639,7 @@ $messages['rue'] = array(
 	'timeline-invalidmap' => 'Неправилна мапа про образок створена EasyTimeline',
 );
 
-/** Sakha (Саха тыла)
+/** Sakha (саха тыла)
  * @author HalanTul
  */
 $messages['sah'] = array(
@@ -647,7 +647,7 @@ $messages['sah'] = array(
 	'timeline-invalidmap' => 'Алҕастаах ойуу каартата, EasyTimeline көмөтүнэн оҥоһуллубут',
 );
 
-/** Sicilian (Sicilianu)
+/** Sicilian (sicilianu)
  * @author Santu
  */
 $messages['scn'] = array(
@@ -662,7 +662,7 @@ $messages['si'] = array(
 	'timeline-invalidmap' => 'EasyTimeline මගින් සදොස් image map යක් ජනිතය',
 );
 
-/** Slovak (Slovenčina)
+/** Slovak (slovenčina)
  * @author Helix84
  */
 $messages['sk'] = array(
@@ -670,7 +670,7 @@ $messages['sk'] = array(
 	'timeline-invalidmap' => 'Neplatná obrazová mapa, ktorú vytvoril EasyTimeline',
 );
 
-/** Slovenian (Slovenščina)
+/** Slovenian (slovenščina)
  * @author Dbc334
  */
 $messages['sl'] = array(
@@ -678,7 +678,7 @@ $messages['sl'] = array(
 	'timeline-invalidmap' => 'Neveljavna slika zemljevida generirana z EasyTimeline',
 );
 
-/** Albanian (Shqip)
+/** Albanian (shqip)
  * @author Olsi
  */
 $messages['sq'] = array(
@@ -686,14 +686,14 @@ $messages['sq'] = array(
 	'timeline-invalidmap' => 'Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline',
 );
 
-/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪српски (ћирилица)‬)
  * @author Millosh
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса.',
 );
 
-/** Serbian (Latin script) (‪Srpski (latinica)‬)
+/** Serbian (Latin script) (‪srpski (latinica)‬)
  * @author Michaello
  */
 $messages['sr-el'] = array(
@@ -715,7 +715,7 @@ $messages['su'] = array(
 	'timeline-invalidmap' => 'Peta gambar nu dihasilkeun ku EasyTimeline teu bener',
 );
 
-/** Swedish (Svenska)
+/** Swedish (svenska)
  * @author Lejonel
  * @author Per
  */
@@ -738,14 +738,14 @@ $messages['te'] = array(
 	'timeline-desc' => 'కాలరేఖలని సృష్టించడానికై <code>&lt;timeline&gt;</code> అనే టాగుని చేరుస్తుంది',
 );
 
-/** Tajik (Cyrillic script) (Тоҷикӣ)
+/** Tajik (Cyrillic script) (тоҷикӣ)
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
 	'timeline-desc' => 'Барчасби <code>&lt;timeline&gt;</code>-ро баро намоиши хати замоне илова мекунад',
 );
 
-/** Tajik (Latin script) (Tojikī)
+/** Tajik (Latin script) (tojikī)
  * @author Liangent
  */
 $messages['tg-latn'] = array(
@@ -768,7 +768,7 @@ $messages['tr'] = array(
 	'timeline-invalidmap' => 'EasyTimeline tarafından geçersiz resim haritası oluşturuldu',
 );
 
-/** Ukrainian (Українська)
+/** Ukrainian (українська)
  * @author AS
  * @author Ahonc
  */
@@ -777,7 +777,7 @@ $messages['uk'] = array(
 	'timeline-invalidmap' => 'Неправильна карта зображення, створена EasyTimeline',
 );
 
-/** Vèneto (Vèneto)
+/** vèneto (vèneto)
  * @author Candalua
  */
 $messages['vec'] = array(
@@ -804,7 +804,7 @@ $messages['yue'] = array(
 	'timeline-invalidmap' => '錯誤的圖像地圖 (由EasyTimeline產生)',
 );
 
-/** Simplified Chinese (‪中文(简体)‬)
+/** Simplified Chinese (‪中文（简体）‬)
  * @author Bencmq
  * @author Chenxiaoqino
  * @author Shinjiman
@@ -815,7 +815,7 @@ $messages['zh-hans'] = array(
 	'timeline-invalidmap' => 'EasyTimeline生成的无效图片地图',
 );
 
-/** Traditional Chinese (‪中文(繁體)‬)
+/** Traditional Chinese (‪中文（繁體）‬)
  * @author Gaoxuewei
  * @author Mark85296341
  * @author Shinjiman
