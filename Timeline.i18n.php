@@ -54,6 +54,14 @@ $messages['arz'] = array(
 	'timeline-desc' => 'بيضيف تاج ال <code>&lt;timeline&gt;</code> علشان ينشيء خطوط الزمن',
 );
 
+/** Assamese (অসমীয়া)
+ * @author Gitartha.bordoloi
+ */
+$messages['as'] = array(
+	'timeline-desc' => 'সময়সীমা সৃষ্টি কৰিবলৈ <code>&lt;timeline&gt;</code> টেগ্‌ যোগ দিয়ে',
+	'timeline-invalidmap' => 'EasyTimelineৰ দ্বাৰা সৃষ্ট অবৈধ ইমেজ মেপ',
+);
+
 /** Asturian (asturianu)
  * @author Esbardu
  * @author Xuacu
