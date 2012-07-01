@@ -31,7 +31,7 @@ $messages['af'] = array(
 	'timeline-invalidmap' => 'Ongeldige beeld kaart gegenereer deur EasyTimeline',
 );
 
-/** Aragonese (Aragonés)
+/** Aragonese (aragonés)
  * @author Juanpabl
  */
 $messages['an'] = array(
@@ -87,7 +87,7 @@ $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <code>&lt;timeline&gt;</code>برچسپء په شرکتن خط زمان',
 );
 
-/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
  * @author Jim-by
  */
 $messages['be-tarask'] = array(
@@ -169,7 +169,7 @@ $messages['diq'] = array(
 	'timeline-invalidmap' => 'hetê easyTimeline ra yew xeritaya resmi ya  nemeqbul vıraziya.',
 );
 
-/** Lower Sorbian (Dolnoserbski)
+/** Lower Sorbian (dolnoserbski)
  * @author Michawiki
  */
 $messages['dsb'] = array(
@@ -263,7 +263,7 @@ $messages['fur'] = array(
 	'timeline-desc' => 'Zonte il tag <code>&lt;timeline&gt;</code> par creâ grafics temporâi',
 );
 
-/** Galician (Galego)
+/** Galician (galego)
  * @author Toliño
  */
 $messages['gl'] = array(
@@ -328,7 +328,7 @@ $messages['hr'] = array(
 	'timeline-invalidmap' => 'EasyTimeline je generirao neispravnu slikovnu mapu',
 );
 
-/** Upper Sorbian (Hornjoserbsce)
+/** Upper Sorbian (hornjoserbsce)
  * @author Michawiki
  */
 $messages['hsb'] = array(
@@ -640,7 +640,7 @@ $messages['ru'] = array(
 	'timeline-invalidmap' => 'Ошибочная карта изображения, созданная EasyTimeline',
 );
 
-/** Rusyn (Русиньскый)
+/** Rusyn (русиньскый)
  * @author Gazeb
  */
 $messages['rue'] = array(
