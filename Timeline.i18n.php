@@ -72,7 +72,7 @@ $messages['ast'] = array(
 	'timeline-invalidmap' => "Mapa d'imaxe inválidu xeneráu por EasyTimeline",
 );
 
-/** Bashkir (Башҡортса)
+/** Bashkir (башҡортса)
  * @author Assele
  */
 $messages['ba'] = array(
@@ -517,9 +517,7 @@ $messages['ms'] = array(
 	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
-/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
- * @author Jon Harald Søby
- */
+/** Norwegian Bokmål (‪norsk (bokmål)‬) */
 $messages['nb'] = array(
 	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
 	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
