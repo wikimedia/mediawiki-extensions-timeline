@@ -207,7 +207,7 @@ $messages['es'] = array(
  * @author Pikne
  */
 $messages['et'] = array(
-	'timeline-desc' => 'Lisab <code>&lt;timeline&gt;</code>-märgendi ajatelgede loomiseks.',
+	'timeline-desc' => 'Lisab <code>&lt;timeline&gt;</code>-sildi ajatelgede loomiseks.',
 	'timeline-invalidmap' => 'EasyTimeline genereeris vigase kujutise',
 );
 
