@@ -646,6 +646,13 @@ $messages['rue'] = array(
 	'timeline-invalidmap' => 'Неправилна мапа про образок створена EasyTimeline',
 );
 
+/** Sanskrit (संस्कृतम्)
+ * @author Shubha
+ */
+$messages['sa'] = array(
+	'timeline-invalidmap' => 'ईझिटैम्लैन्-द्वारा निर्मितः निरर्थकः चित्रपटः',
+);
+
 /** Sakha (саха тыла)
  * @author HalanTul
  */
