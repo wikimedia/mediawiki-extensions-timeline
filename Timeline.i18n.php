@@ -104,10 +104,12 @@ $messages['bg'] = array(
 
 /** Bengali (বাংলা)
  * @author Abdullah Harun Jewel
+ * @author Nasir8891
  */
 $messages['bn'] = array(
 	'timeline-desc' => 'সময়সীমা নির্ধারণ
 সময়সীমা নির্ধারণ ট্যাগ ব্যবহার করতে যুক্ত করুন: <code>&lt;timeline&gt;</code>',
+	'timeline-invalidmap' => 'EasyTimeline ভুল ছবি মানচিত্র তৈরী করেছে',
 );
 
 /** Breton (brezhoneg)
