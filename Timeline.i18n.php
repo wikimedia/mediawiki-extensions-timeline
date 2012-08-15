@@ -416,9 +416,11 @@ $messages['jut'] = array(
 
 /** Javanese (Basa Jawa)
  * @author Meursault2004
+ * @author NoiX180
  */
 $messages['jv'] = array(
 	'timeline-desc' => 'Nambahaké tag <code>&lt;timeline&gt;</code> kanggo nggawé garis wektu',
+	'timeline-invalidmap' => 'Péta gambar ora sah gawéané EasyTimeline',
 );
 
 /** Georgian (ქართული)
@@ -652,6 +654,7 @@ $messages['rue'] = array(
  * @author Shubha
  */
 $messages['sa'] = array(
+	'timeline-desc' => 'कालनिर्देशस्य निर्माणाय <code>&lt;timeline&gt;</code> प्रणाली योज्यते',
 	'timeline-invalidmap' => 'ईझिटैम्लैन्-द्वारा निर्मितः निरर्थकः चित्रपटः',
 );
 
