@@ -58,7 +58,9 @@ function wfTimelineExtension( &$parser ) {
 
 /**
  * @param $timelinesrc string
- * @return string
+ * @param $args array
+ * @throws Exception
+ * @return string HTML
  */
 function wfRenderTimeline( $timelinesrc, array $args ) {
 	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
@@ -215,7 +217,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 /**
  * Do a security check on the image map HTML
  * @param $html string
- * @return string
+ * @return string HTML
  */
 function easyTimelineFixMap( $html ) {
 	global $wgUrlProtocols;
@@ -225,13 +227,13 @@ function easyTimelineFixMap( $html ) {
 	wfRestoreWarnings();
 	if ( !$status ) {
 		 // Load messages only if error occurs
-		return '<strong class="error">' . wfMsg( 'timeline-invalidmap' ) . '</strong>';
+		return '<strong class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</strong>';
 	}
 
 	$map = $doc->firstChild;
 	if ( strtolower( $map->nodeName ) !== 'map' ) {
 		 // Load messages only if error occurs
-		return '<strong class="error">' . wfMsg( 'timeline-invalidmap' ) . '</strong>';
+		return '<strong class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</strong>';
 	}
 	$name = $map->attributes->getNamedItem( 'name' )->value;
 	$html = Xml::openElement( 'map', array( 'name' => $name ) );
