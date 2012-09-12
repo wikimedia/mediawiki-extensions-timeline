@@ -156,11 +156,10 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 
 			// Copy the output files into storage...
 			// @TODO: store error files in another container or not at all?
-			$opt = array( 'force' => 1, 'nonLocking' => 1, 'allowStale' => 1 ); // performance
 			$backend->prepare( array( 'dir' => dirname( $fname ) ) );
-			$backend->store( array( 'src' => "{$tmpPath}.map", 'dst' => "{$fname}.map" ), $opt );
-			$backend->store( array( 'src' => "{$tmpPath}.png", 'dst' => "{$fname}.png" ), $opt );
-			$backend->store( array( 'src' => "{$tmpPath}.err", 'dst' => "{$fname}.err" ), $opt );
+			$backend->quickStore( array( 'src' => "{$tmpPath}.map", 'dst' => "{$fname}.map" ) );
+			$backend->quickStore( array( 'src' => "{$tmpPath}.png", 'dst' => "{$fname}.png" ) );
+			$backend->quickStore( array( 'src' => "{$tmpPath}.err", 'dst' => "{$fname}.err" ) );
 		} else {
 			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
 				"Could not create temp file</tt></div>"; // ugh
