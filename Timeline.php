@@ -84,7 +84,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 	// Get a hash of the plot data.
 	// $args must be checked, because the same source text may be used with
 	// with different args.
-	$hash = md5( $timelinesrc . join( $args ) );
+	$hash = md5( $timelinesrc . implode( '', $args ) );
 	if ( $wgRenderHashAppend != '' ) {
 		$hash = md5( $hash . $wgRenderHashAppend );
 	}
