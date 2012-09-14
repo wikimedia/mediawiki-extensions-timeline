@@ -111,7 +111,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 			$tmpPath = $tmpFile->getPath();
 			file_put_contents( $tmpPath, $timelinesrc ); // store plot data to file
 
-			// Get command for ploticus to read the user input and output an error, 
+			// Get command for ploticus to read the user input and output an error,
 			// map, and rendering (png or gif) file under the same dir as the temp file.
 			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
 			($svg2png ? " -s " : "") .
@@ -156,10 +156,18 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 
 			// Copy the output files into storage...
 			// @TODO: store error files in another container or not at all?
+			$ops = array();
 			$backend->prepare( array( 'dir' => dirname( $fname ) ) );
-			$backend->quickStore( array( 'src' => "{$tmpPath}.map", 'dst' => "{$fname}.map" ) );
-			$backend->quickStore( array( 'src' => "{$tmpPath}.png", 'dst' => "{$fname}.png" ) );
-			$backend->quickStore( array( 'src' => "{$tmpPath}.err", 'dst' => "{$fname}.err" ) );
+			foreach ( array( 'map', 'png', 'err' ) as $ext ) {
+				if ( file_exists( "{$tmpPath}.{$ext}" ) ) {
+					$ops[] = array( 'op' => 'store',
+						'src' => "{$tmpPath}.{$ext}", 'dst' => "{$fname}.{$ext}" );
+				}
+			}
+			if ( !$backend->doQuickOperations( $ops )->isOK() ) {
+				return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
+					"Could not store output files</tt></div>"; // ugh
+			}
 		} else {
 			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
 				"Could not create temp file</tt></div>"; // ugh
@@ -197,7 +205,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 
 		$url = "{$wgUploadPath}/timeline/{$hash}.png";
 		$txt = $map .
-			"<img usemap=\"#timeline_" . htmlspecialchars( $hash ) . "\" " . 
+			"<img usemap=\"#timeline_" . htmlspecialchars( $hash ) . "\" " .
 			"src=\"" . htmlspecialchars( $url ) . "\">";
 
 		if( $expired ) {
@@ -237,7 +245,7 @@ function easyTimelineFixMap( $html ) {
 	$name = $map->attributes->getNamedItem( 'name' )->value;
 	$html = Xml::openElement( 'map', array( 'name' => $name ) );
 
-	$allowedAttribs = array( 'shape', 'coords', 'href', 'nohref', 'alt', 
+	$allowedAttribs = array( 'shape', 'coords', 'href', 'nohref', 'alt',
 		'tabindex', 'title' );
 	foreach ( $map->childNodes as $node ) {
 		if ( strtolower( $node->nodeName ) !== 'area' ) {
