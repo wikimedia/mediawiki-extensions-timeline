@@ -87,7 +87,7 @@ $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <code>&lt;timeline&gt;</code>برچسپء په شرکتن خط زمان',
 );
 
-/** Belarusian (Taraškievica orthography) (‪беларуская (тарашкевіца)‬)
+/** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author Jim-by
  */
 $messages['be-tarask'] = array(
@@ -521,7 +521,7 @@ $messages['ms'] = array(
 	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
-/** Norwegian Bokmål (‪norsk (bokmål)‬) */
+/** Norwegian Bokmål (norsk (bokmål)‎) */
 $messages['nb'] = array(
 	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
 	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
@@ -542,7 +542,7 @@ $messages['nl'] = array(
 	'timeline-invalidmap' => 'EasyTimeline heeft een ongeldige afbeelding gegenereerd',
 );
 
-/** Norwegian Nynorsk (‪norsk (nynorsk)‬)
+/** Norwegian Nynorsk (norsk (nynorsk)‎)
  * @author Frokor
  * @author Gunnernett
  */
@@ -705,14 +705,14 @@ $messages['sq'] = array(
 	'timeline-invalidmap' => 'Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline',
 );
 
-/** Serbian (Cyrillic script) (‪српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (српски (ћирилица)‎)
  * @author Millosh
  */
 $messages['sr-ec'] = array(
 	'timeline-desc' => 'Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса.',
 );
 
-/** Serbian (Latin script) (‪srpski (latinica)‬)
+/** Serbian (Latin script) (srpski (latinica)‎)
  * @author Michaello
  */
 $messages['sr-el'] = array(
@@ -823,7 +823,7 @@ $messages['yue'] = array(
 	'timeline-invalidmap' => '錯誤的圖像地圖 (由EasyTimeline產生)',
 );
 
-/** Simplified Chinese (‪中文（简体）‬)
+/** Simplified Chinese (中文（简体）‎)
  * @author Bencmq
  * @author Chenxiaoqino
  * @author Shinjiman
@@ -834,7 +834,7 @@ $messages['zh-hans'] = array(
 	'timeline-invalidmap' => 'EasyTimeline生成的无效图片地图',
 );
 
-/** Traditional Chinese (‪中文（繁體）‬)
+/** Traditional Chinese (中文（繁體）‎)
  * @author Gaoxuewei
  * @author Mark85296341
  * @author Shinjiman
