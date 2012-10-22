@@ -521,7 +521,8 @@ $messages['ms'] = array(
 	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
-/** Norwegian Bokmål (norsk (bokmål)‎) */
+/** Norwegian Bokmål (norsk (bokmål)‎)
+ */
 $messages['nb'] = array(
 	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
 	'timeline-invalidmap' => 'Ugyldig bildekart opprettet av EasyTimeline',
@@ -850,4 +851,3 @@ $messages['zh-hant'] = array(
 $messages['zh-tw'] = array(
 	'timeline-desc' => '新增<code>&lt;timeline&gt;</code> 標記以建立時間線',
 );
-
