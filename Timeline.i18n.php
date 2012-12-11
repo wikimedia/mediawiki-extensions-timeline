@@ -814,6 +814,13 @@ $messages['vi'] = array(
 	'timeline-invalidmap' => 'EasyTimeline tạo ra bản đồ hình không hợp lệ',
 );
 
+/** Yiddish (ייִדיש)
+ * @author פוילישער
+ */
+$messages['yi'] = array(
+	'timeline-desc' => 'לייגט צו <code>&lt;timeline&gt;</code> טאַג צו שאפן צײַטליניעס',
+);
+
 /** Cantonese (粵語)
  * @author Horacewai2
  * @author Shinjiman
