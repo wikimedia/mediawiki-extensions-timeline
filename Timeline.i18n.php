@@ -819,6 +819,7 @@ $messages['vi'] = array(
  */
 $messages['yi'] = array(
 	'timeline-desc' => 'לייגט צו <code>&lt;timeline&gt;</code> טאַג צו שאפן צײַטליניעס',
+	'timeline-invalidmap' => 'אומגילטיקע בילד מאפע גענערירט דורך EasyTimeline',
 );
 
 /** Cantonese (粵語)
