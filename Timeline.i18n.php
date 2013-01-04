@@ -147,10 +147,12 @@ $messages['cs'] = array(
 );
 
 /** Danish (dansk)
+ * @author Christian List
  * @author Peter Alberti
  */
 $messages['da'] = array(
 	'timeline-desc' => 'Tilføjer tagget <code>&lt;timeline&gt;</code> til at oprette tidslinjer',
+	'timeline-invalidmap' => 'Ugyldigt klikbart grafikobjekt genereret af EasyTimeline',
 );
 
 /** German (Deutsch)
