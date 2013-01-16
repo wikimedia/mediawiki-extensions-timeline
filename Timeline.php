@@ -150,7 +150,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 				wfDebug( "Rasterizing PNG timeline from SVG $svgFilename, size $svgWidth x $svgHeight\n" );
 				$rasterizeResult = $svgHandler->rasterize( $svgFilename, "{$tmpPath}.png", $svgWidth, $svgHeight );
 				if ( $rasterizeResult !== true ) {
-					return "<div dir=\"ltr\">FAIL: " . $rasterizeResult->toText() . "</div>";
+					return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->toText() . "</div>";
 				}
 			}
 
@@ -165,17 +165,17 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 				}
 			}
 			if ( !$backend->doQuickOperations( $ops )->isOK() ) {
-				return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
+				return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. " .
 					"Could not store output files</tt></div>"; // ugh
 			}
 		} else {
-			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
+			return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. " .
 				"Could not create temp file</tt></div>"; // ugh
 		}
 
 		if ( $ret == "" || $retVal > 0 ) {
 			// Message not localized, only relevant during install
-			return "<div id=\"toc\" dir=\"ltr\"><tt>Timeline error. " .
+			return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. " .
 				"Command line was: " . htmlspecialchars( $cmdline ) . "</tt></div>";
 		}
 	}
@@ -195,7 +195,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 
 		// Now convert back to HTML again
 		$encErr = nl2br( htmlspecialchars( $err ) );
-		$txt = "<div id=\"toc\" dir=\"ltr\"><tt>$encErr</tt></div>";
+		$txt = "<div class=\"error\" dir=\"ltr\"><tt>$encErr</tt></div>";
 	} else {
 		$map = $backend->getFileContents( array( 'src' => "{$fname}.map" ) );
 
@@ -234,13 +234,13 @@ function easyTimelineFixMap( $html ) {
 	wfRestoreWarnings();
 	if ( !$status ) {
 		 // Load messages only if error occurs
-		return '<strong class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</strong>';
+		return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</div>';
 	}
 
 	$map = $doc->firstChild;
 	if ( strtolower( $map->nodeName ) !== 'map' ) {
 		 // Load messages only if error occurs
-		return '<strong class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</strong>';
+		return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</div>';
 	}
 	$name = $map->attributes->getNamedItem( 'name' )->value;
 	$html = Xml::openElement( 'map', array( 'name' => $name ) );
