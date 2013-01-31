@@ -1,11 +1,12 @@
 #!/bin/sh
-## This script dowloads, builds and installs a local binary of ploticus
-## into this extension folder, with settings suitable for most UNIX servers.
+## This script downloads, builds and installs a local binary of ploticus
+## into this extension's folder, with settings suitable for most UNIX servers.
 ##
 ## If ploticus is provided as a package by your distribution and you can get
 ## it installed, you should instead use that procedure to install ploticus.
 ##
 
+cd "$(dirname $0)"
 mkdir -m 700 ploticus
 set -e
 
@@ -15,7 +16,7 @@ tar -xzf pl*src.tar.*
 cd pl*src
 cd src
 
-# Using setting 1 (default), appropiate for UNIX servers: Only pl executable with no X11
+# Using setting 1 (default), appropriate for UNIX servers: Only pl executable with no X11
 
 # Choose GD with FreeType2
 
@@ -31,6 +32,8 @@ make INSTALLBIN=../../.. install
 cd ../../..
 rm -r ploticus
 
-# Make MediaWiki know where is this binary located
-echo '$wgTimelineSettings->ploticusCommand = dirname( __FILE__ ) . "/pl";' >> Timeline.php
+echo ''
+echo 'Done. Please add the following line to your LocalSettings.php'
+echo 'to let MediaWiki know where the binary is located:'
 
+echo "  \$wgTimelineSettings->ploticusCommand = \"$(pwd)/pl\";"
