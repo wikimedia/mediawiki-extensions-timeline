@@ -30,11 +30,18 @@ class TimelineSettings {
 	// Path to the EasyTimeline.pl perl file, which is used to actually generate the timelines.
 	public $timelineFile;
 
-	//Font file. Must in path specified by environment variable $GDFONTPATH
-	//use the fontname 'ascii' to use the internal ploticus font that does not require
-	//an external font file. Default to FreeSans for backwards compatability.
-	//Note: according to ploticus docs, filename should not have any space in it or issues may occur.
-	public $fontFile = 'FreeSans.ttf';
+	// Font name.
+	// Documentation on how Ploticus handles fonts is available at
+	// http://ploticus.sourceforge.net/doc/fonts.html section "What fonts are available?"
+	// and below. If using a TrueType font, the file with .ttf extension
+	// must be available in path specified by environment variable $GDFONTPATH;
+	// some other font types are available (see the docs linked above).
+	//
+	// Use the fontname 'ascii' to use the internal Ploticus font that does not require
+	// an external font file. Defaults to FreeSans for backwards compatibility.
+	//
+	// Note: according to Ploticus docs, font names with a space may be problematic.
+	public $fontFile = 'FreeSans';
 
 	// The name of the FileBackend to use for timeline (see $wgFileBackends)
 	public $fileBackend = '';
