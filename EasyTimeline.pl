@@ -4055,34 +4055,47 @@ sub WritePlotFile {
     if (-e $file_vector) {
         open my $file_vector_handle, '<', $file_vector
             or Abort("Can't open $file_vector for reading: $OS_ERROR");
-        my @svg = <$file_vector_handle>;
+        my $svg = join("", <$file_vector_handle>);
         close $file_vector_handle
             or Abort("Can't open $file_vector after reading: $OS_ERROR");
 
-        foreach (@svg) {
-            s/\{\{(\d+)\}\}x+/$textsSVG[$1]/gxe;
+        # Ploticus only specifies the viewBox of a SVG image,
+        # we need with and height as well to ensure it scales properly.
+        # Check if the attributes are present already, just in case,
+        # so we don't produce invalid XML if this ever changes.
+        if ( $svg !~ /<svg[^>]+?(width|height)/ ) {
+            $svg =~ /<svg[^>]+?viewBox="0 0 ([\d.]+) ([\d.]+)"/;
 
-            if ($SVG_ONLY) {
-                s{
-                    (
-                        <text
-                        .*?
-                    )
-                    >
-                    \[(\d+)\[
-                    (.*?)
-                    \]\d+\]
-                }
-                {$1 style="fill:blue;">$3}gx;
+            # This unfortunate transformation is necessary to compensate for
+            # the differing default resolutions of Ploticus svg and png images.
+            # Without this adjustment, the htmlmap will not align with the png.
+            my $width = $1 * 100 / 72;
+            my $height = $2 * 100 / 72;
+            $svg =~ s/<svg[^>]+/$& width="$width" height="$height"/;
+        }
+
+        $svg =~ s/\{\{(\d+)\}\}x+/$textsSVG[$1]/gxe;
+
+        if ($SVG_ONLY) {
+            $svg =~ s{
+                (
+                    <text
+                    .*?
+                )
+                >
+                \[(\d+)\[
+                (.*?)
+                \]\d+\]
             }
-            else {
-                s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
-            }
+            {$1 style="fill:blue;">$3}gx;
+        }
+        else {
+            $svg =~ s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
         }
 
         open $file_vector_handle, '>', $file_vector
             or Abort("Can't open $file_vector for writing: $OS_ERROR");
-        print {$file_vector_handle} @svg;
+        print {$file_vector_handle} $svg;
         close $file_vector_handle
             or Abort("Can't open $file_vector after writing: $OS_ERROR");
     }

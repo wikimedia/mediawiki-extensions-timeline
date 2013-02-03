@@ -145,7 +145,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 				}
 				while ( !feof( $svgHandle ) ) {
 					$line = fgets( $svgHandle );
-					if ( preg_match( '/viewBox="0 0 ([0-9.]+) ([0-9.]+)"/', $line, $matches ) ) {
+					if ( preg_match( '/width="([0-9.]+)" height="([0-9.]+)"/', $line, $matches ) ) {
 						$svgWidth = $matches[1];
 						$svgHeight = $matches[2];
 						break;
