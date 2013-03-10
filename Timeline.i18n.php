@@ -72,6 +72,14 @@ $messages['ast'] = array(
 	'timeline-invalidmap' => "Mapa d'imaxe inválidu xeneráu por EasyTimeline",
 );
 
+/** Azerbaijani (azərbaycanca)
+ * @author Khan27
+ */
+$messages['az'] = array(
+	'timeline-desc' => 'Zaman xətti yaratmaq üçün <code>&lt;timeline&gt;</code> etiketini edir',
+	'timeline-invalidmap' => 'EasyTimeline tərəfindən etibarsız şəkil xəritəsi yaradıldı',
+);
+
 /** Bashkir (башҡортса)
  * @author Assele
  */
