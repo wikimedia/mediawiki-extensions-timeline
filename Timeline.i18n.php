@@ -17,9 +17,11 @@ $messages['en'] = array(
 /** Message documentation (Message documentation)
  * @author Raimond Spekking
  * @author Raymond
+ * @author Shirayuki
  */
 $messages['qqq'] = array(
 	'timeline-desc' => 'Extension description displayed on [[Special:Version]]',
+	'timeline-invalidmap' => 'Used as error message if failed to load XML or the first node in XML is not "map".',
 );
 
 /** Afrikaans (Afrikaans)
