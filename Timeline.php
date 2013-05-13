@@ -25,7 +25,7 @@ class TimelineSettings {
 	// Update this timestamp to force older rendered timelines
 	// to be generated when the page next gets rendered.
 	// Can help to resolve old image-generation bugs.
-	public $epochTimestamp = '20010115000000';
+	public $epochTimestamp = '20120101000000';
 
 	// Path to the EasyTimeline.pl perl file, which is used to actually generate the timelines.
 	public $timelineFile;
