@@ -56,7 +56,7 @@ $messages['arz'] = array(
 	'timeline-desc' => 'بيضيف تاج ال <code>&lt;timeline&gt;</code> علشان ينشيء خطوط الزمن',
 );
 
-/** Assamese (অসমীয়া)
+/** Assamese (অসমীয়া)
  * @author Bishnu Saikia
  * @author Gitartha.bordoloi
  */
@@ -533,7 +533,7 @@ $messages['ms'] = array(
 	'timeline-invalidmap' => 'Peta imej yang dijana oleh EasyTimeline tidak sah',
 );
 
-/** Norwegian Bokmål (norsk (bokmål)‎)
+/** Norwegian Bokmål (norsk bokmål)
  */
 $messages['nb'] = array(
 	'timeline-desc' => 'Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer',
@@ -555,7 +555,7 @@ $messages['nl'] = array(
 	'timeline-invalidmap' => 'EasyTimeline heeft een ongeldige afbeelding gegenereerd',
 );
 
-/** Norwegian Nynorsk (norsk (nynorsk)‎)
+/** Norwegian Nynorsk (norsk nynorsk)
  * @author Frokor
  * @author Gunnernett
  */
@@ -572,7 +572,7 @@ $messages['oc'] = array(
 	'timeline-invalidmap' => "Carta invalida de l'imatge generit per EasyTimeline",
 );
 
-/** Oriya (ଓଡ଼ିଆ)
+/** Oriya (ଓଡ଼ିଆ)
  * @author Psubhashish
  */
 $messages['or'] = array(
