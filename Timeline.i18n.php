@@ -97,6 +97,14 @@ $messages['bcc'] = array(
 	'timeline-desc' => 'هورکنت <code>&lt;timeline&gt;</code>برچسپء په شرکتن خط زمان',
 );
 
+/** Bikol Central (Bikol Central)
+ * @author Geopoet
+ */
+$messages['bcl'] = array(
+	'timeline-desc' => 'Minadugang nin <code>&lt;timeline&gt;</code> tatak tanganing makapagmukna nin mga linyang pampanahon',
+	'timeline-invalidmap' => 'Imbalidong mapa kan imahe pinagpuyos sa paagi kan EasyTimeline',
+);
+
 /** Belarusian (Taraškievica orthography) (беларуская (тарашкевіца)‎)
  * @author Jim-by
  */
