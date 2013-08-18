@@ -462,10 +462,11 @@ $messages['km'] = array(
 /** Korean (한국어)
  * @author Kwj2772
  * @author ToePeu
+ * @author 아라
  */
 $messages['ko'] = array(
-	'timeline-desc' => '시간표를 만들기 위해 <code>&lt;timeline&gt;</code> 태그를 추가합니다.',
-	'timeline-invalidmap' => 'EasyTimeline이 잘못된 이미지 맵을 생성하였습니다.',
+	'timeline-desc' => '시간표를 만들기 위해 <code>&lt;timeline&gt;</code> 태그를 추가합니다',
+	'timeline-invalidmap' => 'EasyTimeline이 잘못된 이미지 맵을 생성했습니다',
 );
 
 /** Colognian (Ripoarisch)
