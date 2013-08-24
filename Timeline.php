@@ -84,7 +84,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 			'name'           => 'timeline-backend',
 			'lockManager'    => 'nullLockManager',
 			'containerPaths' => array( 'timeline-render' => "{$wgUploadDirectory}/timeline" ),
-			'fileMode'       => 777
+			'fileMode'       => 0777
 		) );
 	}
 
