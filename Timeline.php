@@ -118,6 +118,13 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 			$tmpPath = $tmpFile->getPath();
 			file_put_contents( $tmpPath, $timelinesrc ); // store plot data to file
 
+			$filesCollect = array(); // temp files to clean up
+			foreach ( array( 'map', 'png', 'svg', 'err' ) as $ext ) {
+				$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
+				$fileCollect->autocollect(); // clean this up
+				$filesCollect[] = $fileCollect;
+			}
+
 			// Get command for ploticus to read the user input and output an error,
 			// map, and rendering (png or gif) file under the same dir as the temp file.
 			$cmdline = wfEscapeShellArg( $wgTimelineSettings->perlCommand, $wgTimelineSettings->timelineFile ) .
