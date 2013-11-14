@@ -396,8 +396,8 @@ $messages['ie'] = array(
  * @author Lam-ang
  */
 $messages['ilo'] = array(
-	'timeline-desc' => 'Agnayon ti <code>&lt;timeline&gt;</code> nga etiketa tapno agaramid kadagiti panawen pagsurotan',
-	'timeline-invalidmap' => 'Imbalido nga imahen ti mapa a napataud ti EasyTimeline',
+	'timeline-desc' => 'Aginayon ti etiketa ti <code>&lt;timeline&gt;</code>  tapno aggpartuat kadagiti pagsurotan ti panawen',
+	'timeline-invalidmap' => 'Imbalido a mapa ti ladawan a pinataud babaen ti EasyTimeline',
 );
 
 /** Icelandic (íslenska)
