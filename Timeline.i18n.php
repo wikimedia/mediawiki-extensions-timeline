@@ -155,7 +155,7 @@ $messages['ca'] = array(
 	'timeline-invalidmap' => "Mapa d'imatge invàlid generat per EasyTimeline",
 );
 
-/** Czech (česky)
+/** Czech (čeština)
  * @author Li-sung
  * @author Mormegil
  */
