@@ -82,7 +82,8 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 	} else {
 		$backend = new FSFileBackend( array(
 			'name'           => 'timeline-backend',
-			'lockManager'    => 'nullLockManager',
+			'wikiId'	 => wfWikiId(),
+			'lockManager'    => new NullLockManager( array() ),
 			'containerPaths' => array( 'timeline-render' => "{$wgUploadDirectory}/timeline" ),
 			'fileMode'       => 0777
 		) );
