@@ -155,6 +155,13 @@ $messages['ca'] = array(
 	'timeline-invalidmap' => "Mapa d'imatge invàlid generat per EasyTimeline",
 );
 
+/** Chechen (нохчийн)
+ * @author Умар
+ */
+$messages['ce'] = array(
+	'timeline-desc' => '<code>&lt;timeline&gt;</code> тег тӀетуху цхьана хана шкал кхолла',
+);
+
 /** Czech (čeština)
  * @author Li-sung
  * @author Mormegil
