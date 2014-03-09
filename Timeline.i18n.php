@@ -171,6 +171,14 @@ $messages['cs'] = array(
 	'timeline-invalidmap' => 'Neplatná mapa k obrázku vytvořená pomocí EasyTimeline',
 );
 
+/** Welsh (Cymraeg)
+ * @author Lloffiwr
+ */
+$messages['cy'] = array(
+	'timeline-desc' => "Yn ychwanegu'r tag <code>&lt;timeline&gt;</code> er mwyn cynhyrchu llinellau amser",
+	'timeline-invalidmap' => "Mae'r map delweddau a gynhyrchir gan EasyTimeline yn annilys",
+);
+
 /** Danish (dansk)
  * @author Christian List
  * @author Peter Alberti
