@@ -343,10 +343,11 @@ $messages['he'] = array(
 /** Hindi (हिन्दी)
  * @author Ansumang
  * @author Kaustubh
+ * @author Siddhartha Ghai
  */
 $messages['hi'] = array(
-	'timeline-desc' => 'टाईमलाईन तैयार करने के लिये <code>&lt;timeline&gt;</code> टैग देता हैं',
-	'timeline-invalidmap' => 'अमान्य छबि नक्शा ईज़ी टाइमलाइन द्वारा बनाया गया है',
+	'timeline-desc' => 'टाइमलाइन बनाने के लिये <code>&lt;timeline&gt;</code> टैग जोड़ता है',
+	'timeline-invalidmap' => 'ईज़ी टाइमलाइन द्वारा अमान्य छवि नक्शा बनाया गया है',
 );
 
 /** Hiligaynon (Ilonggo)
