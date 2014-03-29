@@ -1,0 +1,11 @@
+{
+    "@metadata": {
+        "authors": [
+            "Giro720",
+            "Hamilton Abreu",
+            "Malafaya"
+        ]
+    },
+    "timeline-desc": "Adiciona o elemento <code>&lt;timeline&gt;</code> para criar linhas temporais",
+    "timeline-invalidmap": "Image map inválido gerado pelo EasyTimeline"
+}

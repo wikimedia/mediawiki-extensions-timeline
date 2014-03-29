@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Dani",
+            "Glanthor Reviol"
+        ]
+    },
+    "timeline-desc": "Idővonal készítése a <code>&lt;timeline&gt;</code> tag segítségével",
+    "timeline-invalidmap": "Az EasyTimeline érvénytelen image mapet generált"
+}

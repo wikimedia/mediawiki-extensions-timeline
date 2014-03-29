@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Amire80",
+            "Rotem Liss"
+        ]
+    },
+    "timeline-desc": "הוספת תג <code>&lt;timeline&gt;</code> ליצירת צירי זמן",
+    "timeline-invalidmap": "נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline"
+}

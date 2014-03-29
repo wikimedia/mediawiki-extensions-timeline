@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Christian List",
+            "Peter Alberti"
+        ]
+    },
+    "timeline-desc": "Tilføjer tagget <code>&lt;timeline&gt;</code> til at oprette tidslinjer",
+    "timeline-invalidmap": "Ugyldigt klikbart grafikobjekt genereret af EasyTimeline"
+}

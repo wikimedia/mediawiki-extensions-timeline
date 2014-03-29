@@ -1,0 +1,11 @@
+{
+    "@metadata": {
+        "authors": [
+            "Horacewai2",
+            "Shinjiman",
+            "Waihorace"
+        ]
+    },
+    "timeline-desc": "加 <code>&lt;timeline&gt;</code> 標籤去建立時間綫",
+    "timeline-invalidmap": "錯誤的圖像地圖 (由EasyTimeline產生)"
+}

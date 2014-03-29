@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Crt",
+            "ZeiP"
+        ]
+    },
+    "timeline-desc": "Lisää <code>&lt;timeline&gt;</code>-elementin aikajanan luomiseksi.",
+    "timeline-invalidmap": "EasyTimeline loi virheellisen kuvakartan"
+}

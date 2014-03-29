@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "CERminator"
+        ]
+    },
+    "timeline-desc": "Dodaje oznaku <code>&lt;timeline&gt;</code> za pravljenje vremenskih linija",
+    "timeline-invalidmap": "Nevaljana mapa slika generisana putem EasyTimeline"
+}

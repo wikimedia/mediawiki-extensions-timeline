@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Dawid Deutschland",
+            "გიორგიმელა"
+        ]
+    },
+    "timeline-desc": "ჩაამატეთ თეგი <code>&lt;timeline&gt;</code> დროის სკალის შესაქმნელად",
+    "timeline-invalidmap": "EasyTimeline-მა არასწორი გრაფიკა გამოიმუშავა"
+}

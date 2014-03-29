@@ -49,10 +49,11 @@ class TimelineSettings {
 $wgTimelineSettings = new TimelineSettings;
 $wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
 $wgTimelineSettings->perlCommand = "/usr/bin/perl";
-$wgTimelineSettings->timelineFile = dirname(__FILE__)."/EasyTimeline.pl";
+$wgTimelineSettings->timelineFile = __DIR__ . "/EasyTimeline.pl";
 
 $wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
-$wgExtensionMessagesFiles['Timeline'] = dirname(__FILE__) . '/Timeline.i18n.php';
+$wgMessagesDirs['Timeline'] = __DIR__ . '/i18n';
+$wgExtensionMessagesFiles['Timeline'] = __DIR__ . '/Timeline.i18n.php';
 
 /**
  * @param $parser Parser

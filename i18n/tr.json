@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "Joseph"
+        ]
+    },
+    "timeline-desc": "Zaman çizelgesi oluşturmak için <code>&lt;timeline&gt;</code> etiketini ekler",
+    "timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu"
+}

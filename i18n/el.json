@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Dead3y3",
+            "Omnipaedista"
+        ]
+    },
+    "timeline-desc": "Προσθέτει την ετικέτα <code>&lt;timeline&gt;</code> για την δημιουργία χρονολογιών",
+    "timeline-invalidmap": "Μή έγκυρος χάρτης εικόνας παρηγμένης από το EasyTimeline"
+}

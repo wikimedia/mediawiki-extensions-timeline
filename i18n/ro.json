@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "AdiJapan"
+        ]
+    },
+    "timeline-desc": "Adaugă baliza <code>&lt;timeline&gt;</code> pentru a crea grafice temporale.",
+    "timeline-invalidmap": "Imagine invalidă creată de EasyTimeline"
+}

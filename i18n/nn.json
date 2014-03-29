@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Frokor",
+            "Gunnernett"
+        ]
+    },
+    "timeline-desc": "Legg til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer",
+    "timeline-invalidmap": "Ugyldig biletkart oppretta av EasyTimeline"
+}

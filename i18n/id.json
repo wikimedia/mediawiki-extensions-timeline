@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Bennylin",
+            "IvanLanin"
+        ]
+    },
+    "timeline-desc": "Menambahkan tag <code>&lt;timeline&gt;</code> untuk membuat garis waktu",
+    "timeline-invalidmap": "Peta gambar tidak sah dibuat oleh EasyTimeline"
+}

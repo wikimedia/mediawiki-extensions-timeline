@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "McDutchie"
+        ]
+    },
+    "timeline-desc": "Adde le etiquetta <code>&lt;timeline&gt;</code> pro crear lineas temporal",
+    "timeline-invalidmap": "Mappa de imagine invalide generate per EasyTimeline"
+}

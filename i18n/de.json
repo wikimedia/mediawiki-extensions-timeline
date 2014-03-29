@@ -1,0 +1,11 @@
+{
+    "@metadata": {
+        "authors": [
+            "Kghbln",
+            "Raimond Spekking",
+            "Umherirrender"
+        ]
+    },
+    "timeline-desc": "Ergänzt das Tag <code>&lt;timeline&gt;</code> zur Erstellung von Zeitleisten",
+    "timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert"
+}
