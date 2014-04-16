@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Kaustubh"
-        ]
-    },
-    "timeline-desc": "टाईमलाईन तयार करण्यासाठी <code>&lt;timeline&gt;</code> टॅग वाढवितो"
+	"@metadata": {
+		"authors": [
+			"Kaustubh"
+		]
+	},
+	"timeline-desc": "टाईमलाईन तयार करण्यासाठी <code>&lt;timeline&gt;</code> टॅग वाढवितो"
 }

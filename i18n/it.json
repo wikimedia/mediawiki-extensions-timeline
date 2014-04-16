@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Beta16",
-            "BrokenArrow"
-        ]
-    },
-    "timeline-desc": "Aggiunge il tag <code>&lt;timeline&gt;</code> per creare grafici temporali",
-    "timeline-invalidmap": "Mappa immagine invalida generata da EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Beta16",
+			"BrokenArrow"
+		]
+	},
+	"timeline-desc": "Aggiunge il tag <code>&lt;timeline&gt;</code> per creare grafici temporali",
+	"timeline-invalidmap": "Mappa immagine invalida generata da EasyTimeline"
 }

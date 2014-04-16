@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Psubhashish"
-        ]
-    },
-    "timeline-desc": "ସମୟକାଳ ତିଆରି କରିବା ନିମନ୍ତେ <code>&lt;timeline&gt;</code> ଚିହ୍ନ ଯୋଡ଼ିଥାଏ",
-    "timeline-invalidmap": "EasyTimeline ଦେଇ ତିଆରି ଅଚଳ ଛବି ମାନଚିତ୍ର"
+	"@metadata": {
+		"authors": [
+			"Psubhashish"
+		]
+	},
+	"timeline-desc": "ସମୟକାଳ ତିଆରି କରିବା ନିମନ୍ତେ <code>&lt;timeline&gt;</code> ଚିହ୍ନ ଯୋଡ଼ିଥାଏ",
+	"timeline-invalidmap": "EasyTimeline ଦେଇ ତିଆରି ଅଚଳ ଛବି ମାନଚିତ୍ର"
 }

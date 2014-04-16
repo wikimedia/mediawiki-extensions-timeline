@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Michawiki"
-        ]
-    },
-    "timeline-desc": "Přidawa tafličku <code>&lt;timeline&gt;</code> za wutworjenje časowych lajstow",
-    "timeline-invalidmap": "Njepłaćiwa wobrazowa karta spłodźena přez EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Michawiki"
+		]
+	},
+	"timeline-desc": "Přidawa tafličku <code>&lt;timeline&gt;</code> za wutworjenje časowych lajstow",
+	"timeline-invalidmap": "Njepłaćiwa wobrazowa karta spłodźena přez EasyTimeline"
 }

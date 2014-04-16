@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Garas",
-            "Vpovilaitis"
-        ]
-    },
-    "timeline-desc": "Sukuria laiko grafikus naudojant gairę <code>&lt;timeline&gt;</code>"
+	"@metadata": {
+		"authors": [
+			"Garas",
+			"Vpovilaitis"
+		]
+	},
+	"timeline-desc": "Sukuria laiko grafikus naudojant gairę <code>&lt;timeline&gt;</code>"
 }

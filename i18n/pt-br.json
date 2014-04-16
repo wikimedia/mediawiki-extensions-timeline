@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Daemorris",
-            "Eduardo.mps"
-        ]
-    },
-    "timeline-desc": "Adiciona a marca <code>&lt;timeline&gt;</code> para criar linhas de tempo",
-    "timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido"
+	"@metadata": {
+		"authors": [
+			"Daemorris",
+			"Eduardo.mps"
+		]
+	},
+	"timeline-desc": "Adiciona a marca <code>&lt;timeline&gt;</code> para criar linhas de tempo",
+	"timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido"
 }

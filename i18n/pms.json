@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Dragonòt"
-        ]
-    },
-    "timeline-desc": "A gionta ël tag <code>&lt;timeline&gt;</code> për creé dle \"timeline\"",
-    "timeline-invalidmap": "Mapa pa bon-a generà da EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Dragonòt"
+		]
+	},
+	"timeline-desc": "A gionta ël tag <code>&lt;timeline&gt;</code> për creé dle \"timeline\"",
+	"timeline-invalidmap": "Mapa pa bon-a generà da EasyTimeline"
 }

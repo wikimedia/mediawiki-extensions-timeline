@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Olsi"
-        ]
-    },
-    "timeline-desc": "Shton etiketën <code>&lt;timeline&gt;</code> për të krijuar afate",
-    "timeline-invalidmap": "Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Olsi"
+		]
+	},
+	"timeline-desc": "Shton etiketën <code>&lt;timeline&gt;</code> për të krijuar afate",
+	"timeline-invalidmap": "Figurë hartë e pavlefshme e gjeneruar nga EasyTimeline"
 }

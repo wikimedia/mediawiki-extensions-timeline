@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Bjankuloski06"
-        ]
-    },
-    "timeline-desc": "Додава ознака <code>&lt;timeline&gt;</code> за да прави хронологии",
-    "timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"timeline-desc": "Додава ознака <code>&lt;timeline&gt;</code> за да прави хронологии",
+	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline"
 }

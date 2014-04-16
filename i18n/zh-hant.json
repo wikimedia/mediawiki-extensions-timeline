@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Gaoxuewei",
-            "Mark85296341",
-            "Shinjiman"
-        ]
-    },
-    "timeline-desc": "加入 <code>&lt;timeline&gt;</code> 標籤以建立時間線",
-    "timeline-invalidmap": "EasyTimeline 產生的無效地圖"
+	"@metadata": {
+		"authors": [
+			"Gaoxuewei",
+			"Mark85296341",
+			"Shinjiman"
+		]
+	},
+	"timeline-desc": "加入 <code>&lt;timeline&gt;</code> 標籤以建立時間線",
+	"timeline-invalidmap": "EasyTimeline 產生的無效地圖"
 }

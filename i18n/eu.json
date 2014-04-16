@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "An13sa",
-            "Theklan"
-        ]
-    },
-    "timeline-desc": "<code>&lt;timeline&gt;</code> etiketa gehitzeko du denbora-lerroak sortzeko",
-    "timeline-invalidmap": "EasyTimeline-k sortutako mapa irudi okerra"
+	"@metadata": {
+		"authors": [
+			"An13sa",
+			"Theklan"
+		]
+	},
+	"timeline-desc": "<code>&lt;timeline&gt;</code> etiketa gehitzeko du denbora-lerroak sortzeko",
+	"timeline-invalidmap": "EasyTimeline-k sortutako mapa irudi okerra"
 }

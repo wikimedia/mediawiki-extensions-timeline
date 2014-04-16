@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Fryed-peach",
-            "JtFuruhata",
-            "Shirayuki"
-        ]
-    },
-    "timeline-desc": "年表を作成するための <code>&lt;timeline&gt;</code> タグを追加する",
-    "timeline-invalidmap": "EasyTimeline が生成した無効なイメージマップ"
+	"@metadata": {
+		"authors": [
+			"Fryed-peach",
+			"JtFuruhata",
+			"Shirayuki"
+		]
+	},
+	"timeline-desc": "年表を作成するための <code>&lt;timeline&gt;</code> タグを追加する",
+	"timeline-invalidmap": "EasyTimeline が生成した無効なイメージマップ"
 }

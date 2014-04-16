@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "DCLXVI"
-        ]
-    },
-    "timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии"
+	"@metadata": {
+		"authors": [
+			"DCLXVI"
+		]
+	},
+	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии"
 }

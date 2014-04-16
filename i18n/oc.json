@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Cedric31"
-        ]
-    },
-    "timeline-desc": "Apond la balisa <code>&lt;timeline&gt;</code> per crear de frisas cronologicas",
-    "timeline-invalidmap": "Carta invalida de l'imatge generit per EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Cedric31"
+		]
+	},
+	"timeline-desc": "Apond la balisa <code>&lt;timeline&gt;</code> per crear de frisas cronologicas",
+	"timeline-invalidmap": "Carta invalida de l'imatge generit per EasyTimeline"
 }

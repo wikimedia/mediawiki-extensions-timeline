@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Naudefj",
-            "පසිඳු කාවින්ද"
-        ]
-    },
-    "timeline-desc": "Maak die <code>&lt;timeline&gt;</code> etiket beskikbaar om tydslyne te maak",
-    "timeline-invalidmap": "Ongeldige beeld kaart gegenereer deur EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Naudefj",
+			"පසිඳු කාවින්ද"
+		]
+	},
+	"timeline-desc": "Maak die <code>&lt;timeline&gt;</code> etiket beskikbaar om tydslyne te maak",
+	"timeline-invalidmap": "Ongeldige beeld kaart gegenereer deur EasyTimeline"
 }

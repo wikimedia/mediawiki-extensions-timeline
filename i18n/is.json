@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Snævar"
-        ]
-    },
-    "timeline-desc": "Bætir við <code>&lt;timeline&gt;</code> tagi til að búa til tímalínur",
-    "timeline-invalidmap": "Ógild tímalína búin til af EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Snævar"
+		]
+	},
+	"timeline-desc": "Bætir við <code>&lt;timeline&gt;</code> tagi til að búa til tímalínur",
+	"timeline-invalidmap": "Ógild tímalína búin til af EasyTimeline"
 }

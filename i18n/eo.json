@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Yekrats"
-        ]
-    },
-    "timeline-desc": "Aldonas etikedon <code>&lt;timeline&gt;</code> por krei tempoaksojn",
-    "timeline-invalidmap": "Malvalida bildomapo generita de EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Yekrats"
+		]
+	},
+	"timeline-desc": "Aldonas etikedon <code>&lt;timeline&gt;</code> por krei tempoaksojn",
+	"timeline-invalidmap": "Malvalida bildomapo generita de EasyTimeline"
 }

@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Budhajeewa"
-        ]
-    },
-    "timeline-desc": "කාලරේඛා තැනුමට <code>&lt;timeline&gt;</code> ටැගය එක් කරයි",
-    "timeline-invalidmap": "EasyTimeline මගින් සදොස් image map යක් ජනිතය"
+	"@metadata": {
+		"authors": [
+			"Budhajeewa"
+		]
+	},
+	"timeline-desc": "කාලරේඛා තැනුමට <code>&lt;timeline&gt;</code> ටැගය එක් කරයි",
+	"timeline-invalidmap": "EasyTimeline මගින් සදොස් image map යක් ජනිතය"
 }

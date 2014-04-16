@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Assele"
-        ]
-    },
-    "timeline-desc": "Ваҡыт һыҙыҡтарын булдырыу өсөн <code>&lt;timeline&gt;</code> билдәһен өҫтәй",
-    "timeline-invalidmap": "EasyTimeline тарафынан булдырылған рәсем картаһы дөрөҫ түгел"
+	"@metadata": {
+		"authors": [
+			"Assele"
+		]
+	},
+	"timeline-desc": "Ваҡыт һыҙыҡтарын булдырыу өсөн <code>&lt;timeline&gt;</code> билдәһен өҫтәй",
+	"timeline-invalidmap": "EasyTimeline тарафынан булдырылған рәсем картаһы дөрөҫ түгел"
 }

@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Sp5uhe"
-        ]
-    },
-    "timeline-desc": "Dodaje znacznik <code>&lt;timeline&gt;</code> umożliwiający tworzenie spisu na osi czasu",
-    "timeline-invalidmap": "Nieprawidłowa mapa obrazka wygenerowana przez EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Sp5uhe"
+		]
+	},
+	"timeline-desc": "Dodaje znacznik <code>&lt;timeline&gt;</code> umożliwiający tworzenie spisu na osi czasu",
+	"timeline-invalidmap": "Nieprawidłowa mapa obrazka wygenerowana przez EasyTimeline"
 }

@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Veeven"
-        ]
-    },
-    "timeline-desc": "కాలరేఖలని సృష్టించడానికై <code>&lt;timeline&gt;</code> అనే టాగుని చేరుస్తుంది"
+	"@metadata": {
+		"authors": [
+			"Veeven"
+		]
+	},
+	"timeline-desc": "కాలరేఖలని సృష్టించడానికై <code>&lt;timeline&gt;</code> అనే టాగుని చేరుస్తుంది"
 }

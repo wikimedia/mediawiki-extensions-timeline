@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Helix84"
-        ]
-    },
-    "timeline-desc": "Pridáva značku <code>&lt;timeline&gt;</code> pre tvorbu časových línií",
-    "timeline-invalidmap": "Neplatná obrazová mapa, ktorú vytvoril EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Helix84"
+		]
+	},
+	"timeline-desc": "Pridáva značku <code>&lt;timeline&gt;</code> pre tvorbu časových línií",
+	"timeline-invalidmap": "Neplatná obrazová mapa, ktorú vytvoril EasyTimeline"
 }

@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Dalibor Bosits",
-            "Mnalis"
-        ]
-    },
-    "timeline-desc": "Dodaje <code>&lt;timeline&gt;</code> oznaku za stvaranje vremenskih linija",
-    "timeline-invalidmap": "EasyTimeline je generirao neispravnu slikovnu mapu"
+	"@metadata": {
+		"authors": [
+			"Dalibor Bosits",
+			"Mnalis"
+		]
+	},
+	"timeline-desc": "Dodaje <code>&lt;timeline&gt;</code> oznaku za stvaranje vremenskih linija",
+	"timeline-invalidmap": "EasyTimeline je generirao neispravnu slikovnu mapu"
 }

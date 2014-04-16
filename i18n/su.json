@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Kandar"
-        ]
-    },
-    "timeline-desc": "Nambahkeun tag <code>&lt;timeline&gt;</code> pikeun nyieun gurat waktu",
-    "timeline-invalidmap": "Peta gambar nu dihasilkeun ku EasyTimeline teu bener"
+	"@metadata": {
+		"authors": [
+			"Kandar"
+		]
+	},
+	"timeline-desc": "Nambahkeun tag <code>&lt;timeline&gt;</code> pikeun nyieun gurat waktu",
+	"timeline-invalidmap": "Peta gambar nu dihasilkeun ku EasyTimeline teu bener"
 }

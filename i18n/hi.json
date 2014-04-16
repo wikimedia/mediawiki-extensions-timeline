@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Ansumang",
-            "Kaustubh",
-            "Siddhartha Ghai"
-        ]
-    },
-    "timeline-desc": "टाइमलाइन बनाने के लिये <code>&lt;timeline&gt;</code> टैग जोड़ता है",
-    "timeline-invalidmap": "ईज़ी टाइमलाइन द्वारा अमान्य छवि नक्शा बनाया गया है"
+	"@metadata": {
+		"authors": [
+			"Ansumang",
+			"Kaustubh",
+			"Siddhartha Ghai"
+		]
+	},
+	"timeline-desc": "टाइमलाइन बनाने के लिये <code>&lt;timeline&gt;</code> टैग जोड़ता है",
+	"timeline-invalidmap": "ईज़ी टाइमलाइन द्वारा अमान्य छवि नक्शा बनाया गया है"
 }

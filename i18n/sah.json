@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "HalanTul"
-        ]
-    },
-    "timeline-desc": "Кэм шкалаатын оҥорорго анаан <code>&lt;timeline&gt;</code> тиэги эбэр",
-    "timeline-invalidmap": "Алҕастаах ойуу каартата, EasyTimeline көмөтүнэн оҥоһуллубут"
+	"@metadata": {
+		"authors": [
+			"HalanTul"
+		]
+	},
+	"timeline-desc": "Кэм шкалаатын оҥорорго анаан <code>&lt;timeline&gt;</code> тиэги эбэр",
+	"timeline-invalidmap": "Алҕастаах ойуу каартата, EasyTimeline көмөтүнэн оҥоһуллубут"
 }

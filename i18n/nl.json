@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Siebrand"
-        ]
-    },
-    "timeline-desc": "Voegt de tag <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
-    "timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd"
+	"@metadata": {
+		"authors": [
+			"Siebrand"
+		]
+	},
+	"timeline-desc": "Voegt de tag <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
+	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd"
 }

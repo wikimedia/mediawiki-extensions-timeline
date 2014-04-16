@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Gazeb"
-        ]
-    },
-    "timeline-desc": "Придасть значку <code>&lt;timeline&gt;</code> про створїня часовых шкал",
-    "timeline-invalidmap": "Неправилна мапа про образок створена EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Gazeb"
+		]
+	},
+	"timeline-desc": "Придасть значку <code>&lt;timeline&gt;</code> про створїня часовых шкал",
+	"timeline-invalidmap": "Неправилна мапа про образок створена EasyTimeline"
 }

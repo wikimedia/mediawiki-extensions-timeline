@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "Bishnu Saikia",
-            "Gitartha.bordoloi"
-        ]
-    },
-    "timeline-desc": "সময়সীমা সৃষ্টি কৰিবলৈ <code>&lt;timeline&gt;</code> টেগ্‌ যোগ দিয়ে",
-    "timeline-invalidmap": "সহজ সময়সীমাৰ দ্বাৰা সৃষ্ট অবৈধ ইমেজ মেপ"
+	"@metadata": {
+		"authors": [
+			"Bishnu Saikia",
+			"Gitartha.bordoloi"
+		]
+	},
+	"timeline-desc": "সময়সীমা সৃষ্টি কৰিবলৈ <code>&lt;timeline&gt;</code> টেগ্‌ যোগ দিয়ে",
+	"timeline-invalidmap": "সহজ সময়সীমাৰ দ্বাৰা সৃষ্ট অবৈধ ইমেজ মেপ"
 }

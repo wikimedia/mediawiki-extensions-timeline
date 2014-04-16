@@ -1,11 +1,11 @@
 {
-    "@metadata": {
-        "authors": [
-            "Raimond Spekking",
-            "Raymond",
-            "Shirayuki"
-        ]
-    },
-    "timeline-desc": "Extension description displayed on [[Special:Version]]",
-    "timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\"."
+	"@metadata": {
+		"authors": [
+			"Raimond Spekking",
+			"Raymond",
+			"Shirayuki"
+		]
+	},
+	"timeline-desc": "Extension description displayed on [[Special:Version]]",
+	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\"."
 }

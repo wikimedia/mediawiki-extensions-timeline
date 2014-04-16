@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Александр Сигачёв"
-        ]
-    },
-    "timeline-desc": "Добавляет тег <code>&lt;timeline&gt;</code> для создания временных шкал",
-    "timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Александр Сигачёв"
+		]
+	},
+	"timeline-desc": "Добавляет тег <code>&lt;timeline&gt;</code> для создания временных шкал",
+	"timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline"
 }

@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Meno25"
-        ]
-    },
-    "timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
-    "timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Meno25"
+		]
+	},
+	"timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
+	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline"
 }

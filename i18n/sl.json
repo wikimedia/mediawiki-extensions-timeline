@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Dbc334"
-        ]
-    },
-    "timeline-desc": "Doda etiketo <code>&lt;timeline&gt;</code> za ustvarjanje časovnih potekov",
-    "timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Dbc334"
+		]
+	},
+	"timeline-desc": "Doda etiketo <code>&lt;timeline&gt;</code> za ustvarjanje časovnih potekov",
+	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline"
 }

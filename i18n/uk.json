@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "AS",
-            "Ahonc"
-        ]
-    },
-    "timeline-desc": "Додає тег <code>&lt;timeline&gt;</code> для створення часових шкал",
-    "timeline-invalidmap": "Неправильна карта зображення, створена EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"AS",
+			"Ahonc"
+		]
+	},
+	"timeline-desc": "Додає тег <code>&lt;timeline&gt;</code> для створення часових шкал",
+	"timeline-invalidmap": "Неправильна карта зображення, створена EasyTimeline"
 }

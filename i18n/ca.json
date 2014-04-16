@@ -1,10 +1,10 @@
 {
-    "@metadata": {
-        "authors": [
-            "El libre",
-            "Paucabot"
-        ]
-    },
-    "timeline-desc": "Afegeix l'etiqueta <code>&lt;timeline&gt;</code> per crear cronologies",
-    "timeline-invalidmap": "Mapa d'imatge invàlid generat per EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"El libre",
+			"Paucabot"
+		]
+	},
+	"timeline-desc": "Afegeix l'etiqueta <code>&lt;timeline&gt;</code> per crear cronologies",
+	"timeline-invalidmap": "Mapa d'imatge invàlid generat per EasyTimeline"
 }

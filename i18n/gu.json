@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Sushant savla"
-        ]
-    },
-    "timeline-desc": "સમય સારિણી બનાવવા માટે <code>&lt;timeline&gt;</code> ઉમેરે છે",
-    "timeline-invalidmap": "સરળ સમયરેખા દ્વારા રચાયેલ અવિધ ચિત્ર નક્શો"
+	"@metadata": {
+		"authors": [
+			"Sushant savla"
+		]
+	},
+	"timeline-desc": "સમય સારિણી બનાવવા માટે <code>&lt;timeline&gt;</code> ઉમેરે છે",
+	"timeline-invalidmap": "સરળ સમયરેખા દ્વારા રચાયેલ અવિધ ચિત્ર નક્શો"
 }

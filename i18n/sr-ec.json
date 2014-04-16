@@ -1,8 +1,8 @@
 {
-    "@metadata": {
-        "authors": [
-            "Millosh"
-        ]
-    },
-    "timeline-desc": "Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса."
+	"@metadata": {
+		"authors": [
+			"Millosh"
+		]
+	},
+	"timeline-desc": "Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса."
 }

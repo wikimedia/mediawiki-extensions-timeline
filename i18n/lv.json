@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Xil"
-        ]
-    },
-    "timeline-desc": "Pievieno <code>&lt;timeline&gt;</code> tagu, lai varētu izveidot hronoloģijas",
-    "timeline-invalidmap": "EasyTimeline"
+	"@metadata": {
+		"authors": [
+			"Xil"
+		]
+	},
+	"timeline-desc": "Pievieno <code>&lt;timeline&gt;</code> tagu, lai varētu izveidot hronoloģijas",
+	"timeline-invalidmap": "EasyTimeline"
 }

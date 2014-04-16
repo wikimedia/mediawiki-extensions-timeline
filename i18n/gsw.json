@@ -1,9 +1,9 @@
 {
-    "@metadata": {
-        "authors": [
-            "Als-Holder"
-        ]
-    },
-    "timeline-desc": "Fiegt s <code>&lt;timeline&gt;</code>-Tag fir s Aalege vu Zytleischte yy",
-    "timeline-invalidmap": "EasyTimeline het e nit giltigi Abbildig generiert"
+	"@metadata": {
+		"authors": [
+			"Als-Holder"
+		]
+	},
+	"timeline-desc": "Fiegt s <code>&lt;timeline&gt;</code>-Tag fir s Aalege vu Zytleischte yy",
+	"timeline-invalidmap": "EasyTimeline het e nit giltigi Abbildig generiert"
 }
