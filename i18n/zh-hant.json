@@ -3,9 +3,10 @@
 		"authors": [
 			"Gaoxuewei",
 			"Mark85296341",
-			"Shinjiman"
+			"Shinjiman",
+			"Cwlin0416"
 		]
 	},
-	"timeline-desc": "加入 <code>&lt;timeline&gt;</code> 標籤以建立時間線",
-	"timeline-invalidmap": "EasyTimeline 產生的無效地圖"
+	"timeline-desc": "提供 <code>&lt;timeline&gt;</code> 標籤以建立時間軸",
+	"timeline-invalidmap": "EasyTimeline 產生的影像地圖無效"
 }
