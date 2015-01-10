@@ -67,7 +67,7 @@ function wfTimelineExtension( &$parser ) {
 /**
  * @param $timelinesrc string
  * @param $args array
- * @throws MWException
+ * @throws Exception
  * @return string HTML
  */
 function wfRenderTimeline( $timelinesrc, array $args ) {
@@ -150,7 +150,7 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 				$svgHandle = fopen( $svgFilename, "r" );
 				wfRestoreWarnings();
 				if ( !$svgHandle ) {
-					throw new MWException( "Unable to open file $svgFilename for reading the timeline size" );
+					throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
 				}
 				while ( !feof( $svgHandle ) ) {
 					$line = fgets( $svgHandle );
