@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Crazymadlover",
-			"Remember the dot"
+			"Remember the dot",
+			"Macofe"
 		]
 	},
-	"timeline-desc": "Añade elemento <code>&lt;timeline&gt;</code> para mostrar cronogramas",
+	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> para crear cronogramas",
 	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline"
 }
