@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Huslåke"
+			"Huslåke",
+			"Jyllanj"
 		]
 	},
-	"timeline-desc": "Tilføje <code>&lt;timeline&gt;</code> tag til kreåsje der tiidlejner"
+	"timeline-desc": "Tilfye tagge <code>&lt;timeline&gt;</code> te å oprett tidslinje"
 }
