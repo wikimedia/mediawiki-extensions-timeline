@@ -55,6 +55,16 @@ $wgHooks['ParserFirstCallInit'][] = 'wfTimelineExtension';
 $wgMessagesDirs['Timeline'] = __DIR__ . '/i18n';
 $wgExtensionMessagesFiles['Timeline'] = __DIR__ . '/Timeline.i18n.php';
 
+$wgResourceModules['ext.timeline.styles'] = array(
+	'localBasePath' => __DIR__,
+	'remoteExtPath' => 'timeline',
+	'styles' => array(
+		'resources/ext.timeline.styles/timeline.css',
+	),
+	'position' => 'top',
+	'targets' => array( 'mobile', 'desktop' ),
+);
+
 /**
  * @param $parser Parser
  * @return bool
@@ -67,12 +77,16 @@ function wfTimelineExtension( &$parser ) {
 /**
  * @param $timelinesrc string
  * @param $args array
+ * @param Parser $parser
+ * @param PPFrame $frame
  * @throws Exception
  * @return string HTML
  */
-function wfRenderTimeline( $timelinesrc, array $args ) {
+function wfRenderTimeline( $timelinesrc, array $args, $parser, $frame ) {
 	global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 	global $wgTimelineSettings;
+
+	$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
 
 	$method = isset( $args['method'] ) ? $args['method'] : 'ploticusOnly';
 	$svg2png = ( $method == 'svg2png' );
@@ -220,9 +234,11 @@ function wfRenderTimeline( $timelinesrc, array $args ) {
 		$map = easyTimelineFixMap( $map );
 
 		$url = "{$wgUploadPath}/timeline/{$hash}.png";
-		$txt = $map .
+		$txt = "<div class=\"timeline-wrapper\">" .
+			$map .
 			"<img usemap=\"#timeline_" . htmlspecialchars( $hash ) . "\" " .
-			"src=\"" . htmlspecialchars( $url ) . "\">";
+			"src=\"" . htmlspecialchars( $url ) . "\">" .
+			"</div>";
 
 		if( $expired ) {
 			// Replacing an older file, we may need to purge the old one.
