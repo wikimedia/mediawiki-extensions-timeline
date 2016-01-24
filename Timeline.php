@@ -17,6 +17,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'author' => 'Erik Zachte',
 	'url' => 'https://www.mediawiki.org/wiki/Extension:EasyTimeline',
 	'descriptionmsg' => 'timeline-desc',
+	'license-name' => 'GPL-2.0',
 );
 
 class TimelineSettings {
