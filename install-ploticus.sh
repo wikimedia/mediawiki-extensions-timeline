@@ -36,4 +36,4 @@ echo ''
 echo 'Done. Please add the following line to your LocalSettings.php'
 echo 'to let MediaWiki know where the binary is located:'
 
-echo "  \$wgTimelineSettings->ploticusCommand = \"$(pwd)/pl\";"
+echo "  \$wgTimelinePloticusCommand = \"$(pwd)/pl\";"

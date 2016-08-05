@@ -5,15 +5,13 @@
 	"descriptionmsg": "timeline-desc",
 	"license-name": "GPL-2.0",
 	"type": "parserhook",
-	"callback": "Timeline::registerExtension",
 	"MessagesDirs": {
 		"Timeline": [
 			"i18n"
 		]
 	},
 	"AutoloadClasses": {
-		"Timeline": "Timeline.body.php",
-		"TimelineSettings": "TimelineSettings.php"
+		"Timeline": "Timeline.body.php"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {
@@ -37,6 +35,25 @@
 	"config": {
 		"TimelineSettings": {
 			"value": null
+		},
+		"TimelinePloticusCommand": {
+			"value": "/usr/bin/ploticus"
+		},
+		"TimelinePerlCommand": {
+			"value": "/usr/bin/perl"
+		},
+		"TimelineFile": {
+			"value": "EasyTimeline.pl",
+			"path": true
+		},
+		"TimelineEpochTimestamp": {
+			"value": "20120101000000"
+		},
+		"TimelineFontFile": {
+			"value": "FreeSans"
+		},
+		"TimelineFileBackend": {
+			"value": ""
 		}
 	},
 	"manifest_version": 2

@@ -31,7 +31,8 @@ class Timeline {
 	 */
 	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
 		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
-		global $wgTimelineSettings;
+		global $wgTimelineFileBackend, $wgTimelineEpochTimestamp, $wgTimelinePerlCommand, $wgTimelineFile;
+		global $wgtimelineFontFile;
 
 		$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
 
@@ -39,8 +40,8 @@ class Timeline {
 		$svg2png = ( $method == 'svg2png' );
 
 		// Get the backend to store plot data and pngs
-		if ( $wgTimelineSettings->fileBackend != '' ) {
-			$backend = FileBackendGroup::singleton()->get( $wgTimelineSettings->fileBackend );
+		if ( $wgTimelineFileBackend != '' ) {
+			$backend = FileBackendGroup::singleton()->get( $wgTimelineFileBackend );
 		} else {
 			$backend = new FSFileBackend(
 				[
@@ -67,7 +68,7 @@ class Timeline {
 		$previouslyRendered = $backend->fileExists( [ 'src' => "{$fname}.png" ] );
 		if ( $previouslyRendered ) {
 			$timestamp = $backend->getFileTimestamp( [ 'src' => "{$fname}.png" ] );
-			$expired = ( $timestamp < $wgTimelineSettings->epochTimestamp );
+			$expired = ( $timestamp < $wgTimelineEpochTimestamp );
 		} else {
 			$expired = false;
 		}
@@ -91,16 +92,13 @@ class Timeline {
 
 				// Get command for ploticus to read the user input and output an error,
 				// map, and rendering (png or gif) file under the same dir as the temp file.
-				$cmdline = wfEscapeShellArg(
-					$wgTimelineSettings->perlCommand,
-						$wgTimelineSettings->timelineFile
-					)
+				$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineTimelineFile )
 					. ( $svg2png ? " -s " : "" )
 					. " -i " . wfEscapeShellArg( $tmpPath )
-					. " -m -P " . wfEscapeShellArg( $wgTimelineSettings->ploticusCommand )
+					. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
 					. " -T " . wfEscapeShellArg( $wgTmpDirectory )
 					. " -A " . wfEscapeShellArg( $wgArticlePath )
-					. " -f " . wfEscapeShellArg( $wgTimelineSettings->fontFile )
+					. " -f " . wfEscapeShellArg( $wgTimelineFontFile )
 				;
 
 				// Actually run the command...
