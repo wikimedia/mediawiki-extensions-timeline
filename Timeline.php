@@ -55,7 +55,7 @@ $wgTimelineSettings->timelineFile = __DIR__ . "/EasyTimeline.pl";
 $wgHooks['ParserFirstCallInit'][] = 'Timeline::onParserFirstCallInit';
 $wgMessagesDirs['Timeline'] = __DIR__ . '/i18n';
 $wgExtensionMessagesFiles['Timeline'] = __DIR__ . '/Timeline.i18n.php';
-$wgAutoloadClassp['Timeline'] = __DIR__ . '/Timeline.body.php';
+$wgAutoloadClasses['Timeline'] = __DIR__ . '/Timeline.body.php';
 
 $wgResourceModules['ext.timeline.styles'] = array(
 	'localBasePath' => __DIR__,
