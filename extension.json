@@ -1,0 +1,43 @@
+{
+	"name": "EasyTimeline",
+	"author": "Erik Zachte",
+	"url": "https://www.mediawiki.org/wiki/Extension:EasyTimeline",
+	"descriptionmsg": "timeline-desc",
+	"license-name": "GPL-2.0",
+	"type": "parserhook",
+	"callback": "Timeline::registerExtension",
+	"MessagesDirs": {
+		"Timeline": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"Timeline": "Timeline.body.php",
+		"TimelineSettings": "TimelineSettings.php"
+	},
+	"ResourceModules": {
+		"ext.timeline.styles": {
+			"styles": [
+				"resources/ext.timeline.styles/timeline.css"
+			],
+			"position": "top",
+			"targets": [
+				"mobile",
+				"desktop"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "timeline"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "Timeline::onParserFirstCallInit"
+	},
+	"config": {
+		"TimelineSettings": {
+			"value": null
+		}
+	},
+	"manifest_version": 2
+}

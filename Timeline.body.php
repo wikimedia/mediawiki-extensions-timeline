@@ -3,6 +3,14 @@
 
 class Timeline {
 
+	public static function registerExtension() {
+		global $wgTimelineSettings;
+		$wgTimelineSettings = new TimelineSettings;
+		$wgTimelineSettings->ploticusCommand = "/usr/bin/ploticus";
+		$wgTimelineSettings->perlCommand = "/usr/bin/perl";
+		$wgTimelineSettings->timelineFile = __DIR__ . "/EasyTimeline.pl";
+	}
+
 	/**
 	 * @param $parser Parser
 	 * @return bool
