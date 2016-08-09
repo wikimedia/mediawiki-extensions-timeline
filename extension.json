@@ -33,9 +33,6 @@
 		"ParserFirstCallInit": "Timeline::onParserFirstCallInit"
 	},
 	"config": {
-		"TimelineSettings": {
-			"value": null
-		},
 		"TimelinePloticusCommand": {
 			"value": "/usr/bin/ploticus"
 		},
