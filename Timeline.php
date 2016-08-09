@@ -1,7 +1,7 @@
 <?php
 
 if ( function_exists( 'wfLoadExtension' ) ) {
-	wfLoadExtension( 'timeline' );
+	wfLoadExtension( 'Timeline' );
 	// Keep i18n globals so mergeMessageFileList.php doesn't break
 	$wgMessagesDirs['Timeline'] = __DIR__ . '/i18n';
 /*	wfWarn(
