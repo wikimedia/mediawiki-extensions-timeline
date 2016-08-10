@@ -24,7 +24,7 @@ class Timeline {
 	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
 		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
 		global $wgTimelineFileBackend, $wgTimelineEpochTimestamp, $wgTimelinePerlCommand, $wgTimelineFile;
-		global $wgtimelineFontFile;
+		global $wgTimelineFontFile;
 
 		$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
 
@@ -84,7 +84,7 @@ class Timeline {
 
 				// Get command for ploticus to read the user input and output an error,
 				// map, and rendering (png or gif) file under the same dir as the temp file.
-				$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineTimelineFile )
+				$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineFile )
 					. ( $svg2png ? " -s " : "" )
 					. " -i " . wfEscapeShellArg( $tmpPath )
 					. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
