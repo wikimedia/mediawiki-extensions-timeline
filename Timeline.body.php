@@ -41,7 +41,10 @@ class Timeline {
 					'wikiId' => wfWikiID(),
 					'lockManager' => new NullLockManager( [] ),
 					'containerPaths' => [ 'timeline-render' => "{$wgUploadDirectory}/timeline" ],
-					'fileMode' => 0777 ]
+					'fileMode' => 0777,
+					'obResetFunc' => 'wfResetOutputBuffers',
+					'streamMimeFunc' => [ 'StreamFile', 'contentTypeFromPath' ]
+				]
 			);
 		}
 
