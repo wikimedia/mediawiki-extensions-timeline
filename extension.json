@@ -5,6 +5,7 @@
 	"descriptionmsg": "timeline-desc",
 	"license-name": "GPL-2.0",
 	"type": "parserhook",
+	"callback": "Timeline::onRegistration",
 	"MessagesDirs": {
 		"Timeline": [
 			"i18n"
@@ -33,25 +34,12 @@
 		"ParserFirstCallInit": "Timeline::onParserFirstCallInit"
 	},
 	"config": {
-		"TimelinePloticusCommand": {
-			"value": "/usr/bin/ploticus"
-		},
-		"TimelinePerlCommand": {
-			"value": "/usr/bin/perl"
-		},
-		"TimelineFile": {
-			"value": "EasyTimeline.pl",
-			"path": true
-		},
-		"TimelineEpochTimestamp": {
-			"value": "20120101000000"
-		},
-		"TimelineFontFile": {
-			"value": "FreeSans"
-		},
-		"TimelineFileBackend": {
-			"value": ""
-		}
+		"TimelinePloticusCommand": "/usr/bin/ploticus",
+		"TimelinePerlCommand": "/usr/bin/perl",
+		"TimelineFile": null,
+		"TimelineEpochTimestamp": "20120101000000",
+		"TimelineFontFile": "FreeSans",
+		"TimelineFileBackend": ""
 	},
-	"manifest_version": 2
+	"manifest_version": 1
 }

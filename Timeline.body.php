@@ -3,6 +3,13 @@
 
 class Timeline {
 
+	public static function onRegistration() {
+		global $wgTimelineFile;
+		if ( $wgTimelineFile === null ) {
+			$wgTimelineFile = __DIR__ . '/EasyTimeline.pl';
+		}
+	}
+
 	/**
 	 * @param $parser Parser
 	 * @return bool
