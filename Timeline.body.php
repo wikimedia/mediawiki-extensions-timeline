@@ -93,8 +93,7 @@ class Timeline {
 					. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
 					. " -T " . wfEscapeShellArg( $wgTmpDirectory )
 					. " -A " . wfEscapeShellArg( $wgArticlePath )
-					. " -f " . wfEscapeShellArg( $wgTimelineFontFile )
-				;
+					. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
 
 				// Actually run the command...
 				wfDebug( "Timeline cmd: $cmdline\n" );
