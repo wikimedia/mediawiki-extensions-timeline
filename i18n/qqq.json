@@ -3,9 +3,10 @@
 		"authors": [
 			"Raimond Spekking",
 			"Raymond",
-			"Shirayuki"
+			"Shirayuki",
+			"Umherirrender"
 		]
 	},
-	"timeline-desc": "Extension description displayed on [[Special:Version]]",
+	"timeline-desc": "{{desc|name=Timeline|url=https://www.mediawiki.org/wiki/Extension:EasyTimeline}}",
 	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\"."
 }
