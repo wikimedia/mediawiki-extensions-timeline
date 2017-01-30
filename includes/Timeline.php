@@ -86,6 +86,15 @@ class Timeline {
 		$options += [
 			'pathPrefix' => $pathPrefix,
 		];
+		// If a page was given to the parser, add its title for error display purpose
+		if ( $parser->getPage() !== null ) {
+			$titleFormatter = MediaWikiServices::getInstance()->getTitleFormatter();
+			$options += [
+				// We already checked for null above
+				// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
+				'pageTitle' => $titleFormatter->getPrefixedDBkey( $parser->getPage() ),
+			];
+		}
 
 		$exists = $backend->fileExists( [ 'src' => "{$pathPrefix}.png" ] );
 		if ( !$exists ) {
@@ -161,6 +170,13 @@ class Timeline {
 		// Set font directory if configured
 		if ( $options['font']['dir'] !== false ) {
 			$env['GDFONTPATH'] = $options['font']['dir'];
+		}
+
+		// The parser might not have been given a page
+		if ( $options['pageTitle'] !== null ) {
+			$env += [
+				'ET_PAGETITLE' => $options['pageTitle'],
+			];
 		}
 
 		$command = self::boxedCommand()
