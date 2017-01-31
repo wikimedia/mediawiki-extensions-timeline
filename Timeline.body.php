@@ -14,6 +14,15 @@ class Timeline {
 	}
 
 	/**
+	 * Render timeline and save to file backend
+	 *
+	 * Files are saved to the file backend $wgTimelineFileBackend if set. Else
+	 * default to FSFileBackend named 'timeline-backend'.
+	 *
+	 * The rendered timeline is saved in the file backend using @see hash() and
+	 * will be reused if the hash match. You can invalidate the cache by
+	 * setting the global variable $wgRenderHashAppend (default: '').
+	 *
 	 * @param $timelinesrc string
 	 * @param $args array
 	 * @param Parser $parser
@@ -22,7 +31,7 @@ class Timeline {
 	 * @return string HTML
 	 */
 	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
-		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory, $wgRenderHashAppend;
+		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory;
 		global $wgTimelineFileBackend, $wgTimelineEpochTimestamp, $wgTimelinePerlCommand, $wgTimelineFile;
 		global $wgTimelineFontFile, $wgTimelinePloticusCommand;
 
@@ -48,13 +57,7 @@ class Timeline {
 			);
 		}
 
-		// Get a hash of the plot data.
-		// $args must be checked, because the same source text may be used with
-		// with different args.
-		$hash = md5( $timelinesrc . implode( '', $args ) );
-		if ( $wgRenderHashAppend != '' ) {
-			$hash = md5( $hash . $wgRenderHashAppend );
-		}
+		$hash = self::hash( $timelinesrc, $args );
 
 		// Storage destination path (excluding file extension)
 		$fname = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
@@ -200,6 +203,31 @@ class Timeline {
 		}
 
 		return $txt;
+	}
+
+	/**
+	 * Generate a hash of the plot data
+	 *
+	 * $args must be checked, because the same source text may be used with
+	 * different arguments.
+	 *
+	 * Uses global $wgRenderHashAppend to salt / vary the hash. Will invalidate
+	 * the cache as a side effect though old files will be left in the file
+	 * backend.
+	 *
+	 * @param $timelinesrc string
+	 * @param $args array
+	 * @return string hash
+	 */
+	public static function hash( $timelinesrc, array $args ) {
+		global $wgRenderHashAppend;
+
+		$hash = md5( $timelinesrc . implode( '', $args ) );
+		if ( $wgRenderHashAppend != '' ) {
+			$hash = md5( $hash . $wgRenderHashAppend );
+		}
+
+		return $hash;
 	}
 
 	/**
