@@ -79,12 +79,15 @@ class Timeline {
 			$tmpFile = TempFSFile::factory( 'timeline_' );
 			if ( $tmpFile ) {
 				$tmpPath = $tmpFile->getPath();
-				file_put_contents( $tmpPath, $timelinesrc ); // store plot data to file
+				// store plot data to file
+				file_put_contents( $tmpPath, $timelinesrc );
 
-				$filesCollect = []; // temp files to clean up
+				// temp files to clean up
+				$filesCollect = [];
 				foreach ( [ 'map', 'png', 'svg', 'err' ] as $ext ) {
 					$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
-					$fileCollect->autocollect(); // clean this up
+					// clean this up
+					$fileCollect->autocollect();
 					$filesCollect[] = $fileCollect;
 				}
 
@@ -148,12 +151,14 @@ class Timeline {
 					}
 				}
 				if ( !$backend->doQuickOperations( $ops )->isOK() ) {
+					// FIXME Hard coded english text
 					return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. "
-						. "Could not store output files</tt></div>"; // ugh
+						. "Could not store output files</tt></div>";
 				}
 			} else {
+				// FIXME Hard coded english text
 				return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. "
-					. "Could not create temp file</tt></div>"; // ugh
+					. "Could not create temp file</tt></div>";
 			}
 
 			if ( $ret == "" || $retVal > 0 ) {
