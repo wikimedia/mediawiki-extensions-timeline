@@ -4,7 +4,7 @@
 class Timeline {
 
 	/**
-	 * @param $parser Parser
+	 * @param Parser &$parser
 	 * @return bool
 	 */
 	public static function onParserFirstCallInit( &$parser ) {
@@ -23,8 +23,8 @@ class Timeline {
 	 * will be reused if the hash match. You can invalidate the cache by
 	 * setting the global variable $wgRenderHashAppend (default: '').
 	 *
-	 * @param $timelinesrc string
-	 * @param $args array
+	 * @param string $timelinesrc
+	 * @param array $args
 	 * @param Parser $parser
 	 * @param PPFrame $frame
 	 * @throws Exception
@@ -220,8 +220,8 @@ class Timeline {
 	 * the cache as a side effect though old files will be left in the file
 	 * backend.
 	 *
-	 * @param $timelinesrc string
-	 * @param $args array
+	 * @param string $timelinesrc
+	 * @param array $args
 	 * @return string hash
 	 */
 	public static function hash( $timelinesrc, array $args ) {
@@ -237,7 +237,7 @@ class Timeline {
 
 	/**
 	 * Do a security check on the image map HTML
-	 * @param $html string
+	 * @param string $html
 	 * @return string HTML
 	 */
 	private static function fixMap( $html ) {
