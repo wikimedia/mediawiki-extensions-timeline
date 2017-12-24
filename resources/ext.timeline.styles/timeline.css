@@ -3,3 +3,9 @@
 	max-width: 100%;
 	overflow: auto;
 }
+
+/* Custom styling for error output to match the deprecated <tt> tag */
+.timeline-error {
+	font-family: monospace;
+	font-size: 17px;
+}

@@ -152,19 +152,19 @@ class Timeline {
 				}
 				if ( !$backend->doQuickOperations( $ops )->isOK() ) {
 					// FIXME Hard coded english text
-					return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. "
-						. "Could not store output files</tt></div>";
+					return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
+						. "Could not store output files</div>";
 				}
 			} else {
 				// FIXME Hard coded english text
-				return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. "
-					. "Could not create temp file</tt></div>";
+				return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
+					. "Could not create temp file</div>";
 			}
 
 			if ( $ret == "" || $retVal > 0 ) {
 				// Message not localized, only relevant during install
-				return "<div class=\"error\" dir=\"ltr\"><tt>Timeline error. "
-					. "Command line was: " . htmlspecialchars( $cmdline ) . "</tt></div>";
+				return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
+					. "Command line was: " . htmlspecialchars( $cmdline ) . "</div>";
 			}
 		}
 
@@ -184,7 +184,7 @@ class Timeline {
 
 			// Now convert back to HTML again
 			$encErr = nl2br( htmlspecialchars( $err ) );
-			$txt = "<div class=\"error\" dir=\"ltr\"><tt>$encErr</tt></div>";
+			$txt = "<div class=\"error timeline-error\" dir=\"ltr\">$encErr</div>";
 		} else {
 			$map = $backend->getFileContents( [ 'src' => "{$fname}.map" ] );
 
