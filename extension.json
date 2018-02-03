@@ -18,7 +18,6 @@
 			"styles": [
 				"resources/ext.timeline.styles/timeline.css"
 			],
-			"position": "top",
 			"targets": [
 				"mobile",
 				"desktop"
