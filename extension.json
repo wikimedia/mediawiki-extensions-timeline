@@ -3,7 +3,7 @@
 	"author": "Erik Zachte",
 	"url": "https://www.mediawiki.org/wiki/Extension:EasyTimeline",
 	"descriptionmsg": "timeline-desc",
-	"license-name": "GPL-2.0",
+	"license-name": "GPL-2.0-only",
 	"type": "parserhook",
 	"requires": {
 		"MediaWiki": ">= 1.29.0"
