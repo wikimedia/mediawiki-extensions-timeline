@@ -3,9 +3,10 @@
 		"authors": [
 			"Kwj2772",
 			"ToePeu",
-			"아라"
+			"아라",
+			"Garam"
 		]
 	},
 	"timeline-desc": "시간표를 만들기 위해 <code>&lt;timeline&gt;</code> 태그를 추가합니다",
-	"timeline-invalidmap": "EasyTimeline이 잘못된 이미지 맵을 생성했습니다"
+	"timeline-invalidmap": "EasyTimeline이 잘못된 영상 지도를 생성했습니다"
 }
