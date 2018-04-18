@@ -110,9 +110,9 @@ class Timeline {
 				if ( $svg2png ) {
 					// Read the default timeline image size from the DVG file
 					$svgFilename = "{$tmpPath}.svg";
-					MediaWiki\suppressWarnings();
+					Wikimedia\suppressWarnings();
 					$svgHandle = fopen( $svgFilename, "r" );
-					MediaWiki\restoreWarnings();
+					Wikimedia\restoreWarnings();
 					if ( !$svgHandle ) {
 						throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
 					}
@@ -243,9 +243,9 @@ class Timeline {
 	private static function fixMap( $html ) {
 		global $wgUrlProtocols;
 		$doc = new DOMDocument( '1.0', 'UTF-8' );
-		MediaWiki\suppressWarnings();
+		Wikimedia\suppressWarnings();
 		$status = $doc->loadXML( $html );
-		MediaWiki\restoreWarnings();
+		Wikimedia\restoreWarnings();
 		if ( !$status ) {
 			// Load messages only if error occurs
 			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</div>';
