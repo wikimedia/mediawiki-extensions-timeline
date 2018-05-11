@@ -37,6 +37,8 @@ class Timeline {
 
 		$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
 
+		$parser->addTrackingCategory( 'timeline-tracking-category' );
+
 		$method = isset( $args['method'] ) ? $args['method'] : 'ploticusOnly';
 		$svg2png = ( $method == 'svg2png' );
 

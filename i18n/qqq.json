@@ -8,5 +8,6 @@
 		]
 	},
 	"timeline-desc": "{{desc|name=Timeline|url=https://www.mediawiki.org/wiki/Extension:EasyTimeline}}",
-	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\"."
+	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\".",
+	"timeline-tracking-category": "Name of the tracking category for pages using this extension"
 }
