@@ -34,6 +34,9 @@
 	"Hooks": {
 		"ParserFirstCallInit": "Timeline::onParserFirstCallInit"
 	},
+	"TrackingCategories": [
+		"timeline-tracking-category"
+	],
 	"config": {
 		"TimelinePloticusCommand": {
 			"value": "/usr/bin/ploticus"
