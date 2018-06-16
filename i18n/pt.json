@@ -6,6 +6,7 @@
 			"Malafaya"
 		]
 	},
-	"timeline-desc": "Adiciona o elemento <code>&lt;timeline&gt;</code> para criar linhas temporais",
-	"timeline-invalidmap": "Image map inválido gerado pelo EasyTimeline"
+	"timeline-desc": "Adiciona o elemento <code>&lt;timeline&gt;</code> para criar cronologias",
+	"timeline-invalidmap": "Foi gerado um mapa de imagem inválido pelo EasyTimeline",
+	"timeline-tracking-category": "Páginas que usam Timeline"
 }

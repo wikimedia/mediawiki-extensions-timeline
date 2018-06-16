@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Daemorris",
-			"Eduardo.mps"
+			"Eduardo.mps",
+			"Eduardo Addad de Oliveira"
 		]
 	},
 	"timeline-desc": "Adiciona a marca <code>&lt;timeline&gt;</code> para criar linhas de tempo",
-	"timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido"
+	"timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido",
+	"timeline-tracking-category": "Páginas usando a Linha do tempo"
 }

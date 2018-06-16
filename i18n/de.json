@@ -3,9 +3,11 @@
 		"authors": [
 			"Kghbln",
 			"Raimond Spekking",
-			"Umherirrender"
+			"Umherirrender",
+			"Metalhead64"
 		]
 	},
 	"timeline-desc": "Ergänzt das Tag <code>&lt;timeline&gt;</code> zur Erstellung von Zeitleisten",
-	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert"
+	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert",
+	"timeline-tracking-category": "Seiten, die Timeline verwenden"
 }

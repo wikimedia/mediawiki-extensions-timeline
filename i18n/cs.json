@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Li-sung",
-			"Mormegil"
+			"Mormegil",
+			"Matěj Suchánek"
 		]
 	},
 	"timeline-desc": "Přidává značku <code>&lt;timeline&gt;</code> na vytváření časových os",
-	"timeline-invalidmap": "Neplatná mapa k obrázku vytvořená pomocí EasyTimeline"
+	"timeline-invalidmap": "Neplatná mapa k obrázku vytvořená pomocí EasyTimeline",
+	"timeline-tracking-category": "Stránky s časovou osou"
 }
