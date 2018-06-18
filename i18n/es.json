@@ -3,9 +3,11 @@
 		"authors": [
 			"Crazymadlover",
 			"Remember the dot",
-			"Macofe"
+			"Macofe",
+			"MarcoAurelio"
 		]
 	},
 	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> para crear cronogramas",
-	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline"
+	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline",
+	"timeline-tracking-category": "Páginas que usan Timeline"
 }
