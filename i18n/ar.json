@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Meno25"
+			"Meno25",
+			"ديفيد"
 		]
 	},
 	"timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
-	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline"
+	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
+	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا"
 }
