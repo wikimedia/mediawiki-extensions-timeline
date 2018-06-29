@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Frokor",
-			"Gunnernett"
+			"Gunnernett",
+			"Njardarlogar"
 		]
 	},
 	"timeline-desc": "Legg til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer",
-	"timeline-invalidmap": "Ugyldig biletkart oppretta av EasyTimeline"
+	"timeline-invalidmap": "Ugyldig biletkart oppretta av EasyTimeline",
+	"timeline-tracking-category": "Sider som nyttar Timeline"
 }

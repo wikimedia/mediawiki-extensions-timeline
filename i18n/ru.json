@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Александр Сигачёв"
+			"Александр Сигачёв",
+			"IKhitron"
 		]
 	},
 	"timeline-desc": "Добавляет тег <code>&lt;timeline&gt;</code> для создания временных шкал",
-	"timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline"
+	"timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline",
+	"timeline-tracking-category": "Страницы, использующие временные диаграммы"
 }
