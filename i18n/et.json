@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pikne"
+			"Pikne",
+			"Cumbril"
 		]
 	},
 	"timeline-desc": "Lisab sildi <code>&lt;timeline&gt;</code> ajatelgede loomiseks.",
-	"timeline-invalidmap": "EasyTimeline genereeris vigase kujutise"
+	"timeline-invalidmap": "EasyTimeline genereeris vigase kujutise",
+	"timeline-tracking-category": "Timeline'i kasutavad leheküljed"
 }
