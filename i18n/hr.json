@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Dalibor Bosits",
-			"Mnalis"
+			"Mnalis",
+			"MaGa"
 		]
 	},
 	"timeline-desc": "Dodaje <code>&lt;timeline&gt;</code> oznaku za stvaranje vremenskih linija",
-	"timeline-invalidmap": "EasyTimeline je generirao neispravnu slikovnu mapu"
+	"timeline-invalidmap": "EasyTimeline je generirao neispravnu slikovnu mapu",
+	"timeline-tracking-category": "Stranice koje koriste vremensku traku (Timeline)"
 }
