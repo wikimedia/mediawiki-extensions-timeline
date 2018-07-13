@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Khan27"
+			"Khan27",
+			"Serkanland"
 		]
 	},
 	"timeline-desc": "Zaman xətti yaratmaq üçün <code>&lt;timeline&gt;</code> etiketini edir",
-	"timeline-invalidmap": "EasyTimeline tərəfindən etibarsız şəkil xəritəsi yaradıldı"
+	"timeline-invalidmap": "EasyTimeline tərəfindən etibarsız şəkil xəritəsi yaradıldı",
+	"timeline-tracking-category": "Zaman diaqramının istifadə olunduğu səhifələr"
 }

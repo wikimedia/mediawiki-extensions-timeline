@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Dani",
-			"Glanthor Reviol"
+			"Glanthor Reviol",
+			"Tacsipacsi"
 		]
 	},
 	"timeline-desc": "Idővonal készítése a <code>&lt;timeline&gt;</code> tag segítségével",
-	"timeline-invalidmap": "Az EasyTimeline érvénytelen image mapet generált"
+	"timeline-invalidmap": "Az EasyTimeline érvénytelen image mapet generált",
+	"timeline-tracking-category": "Idővonalat használó lapok"
 }
