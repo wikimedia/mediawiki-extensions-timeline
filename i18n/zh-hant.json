@@ -4,9 +4,11 @@
 			"Gaoxuewei",
 			"Mark85296341",
 			"Shinjiman",
-			"Cwlin0416"
+			"Cwlin0416",
+			"Kly"
 		]
 	},
 	"timeline-desc": "提供 <code>&lt;timeline&gt;</code> 標籤以建立時間軸",
-	"timeline-invalidmap": "EasyTimeline 產生的影像地圖無效"
+	"timeline-invalidmap": "EasyTimeline 產生的影像地圖無效",
+	"timeline-tracking-category": "使用時間軸的頁面"
 }
