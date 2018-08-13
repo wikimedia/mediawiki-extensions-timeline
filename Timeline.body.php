@@ -139,7 +139,7 @@ class Timeline {
 						$svgHeight
 					);
 					if ( $rasterizeResult !== true ) {
-						return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->toText() . "</div>";
+						return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->getHtmlMsg() . "</div>";
 					}
 				}
 
@@ -250,13 +250,13 @@ class Timeline {
 		Wikimedia\restoreWarnings();
 		if ( !$status ) {
 			// Load messages only if error occurs
-			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</div>';
+			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
 		}
 
 		$map = $doc->firstChild;
 		if ( strtolower( $map->nodeName ) !== 'map' ) {
 			// Load messages only if error occurs
-			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->text() . '</div>';
+			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
 		}
 		$name = $map->attributes->getNamedItem( 'name' )->value;
 		$html = Xml::openElement( 'map', [ 'name' => $name ] );
