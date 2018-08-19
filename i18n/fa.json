@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Huji",
-			"Wayiran"
+			"Wayiran",
+			"Ladsgroup"
 		]
 	},
 	"timeline-desc": "برچسب <code>&lt;timeline&gt;</code> را برای نمایش خطوط زمانی می‌افزاید",
-	"timeline-invalidmap": "تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline"
+	"timeline-invalidmap": "تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline",
+	"timeline-tracking-category": "صفحاتی که از گاه‌شمار استفاده می‌کنند"
 }
