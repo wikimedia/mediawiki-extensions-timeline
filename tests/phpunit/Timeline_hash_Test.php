@@ -3,6 +3,7 @@ class TimelineHashTest extends MediaWikiTestCase {
 
 	/**
 	 * @dataProvider provideHashCases
+	 * @covers Timeline::hash
 	 */
 	public function testHash( $expected, $timelinesrc, $args = [], $hashAppend ) {
 		$this->setMwGlobals( 'wgRenderHashAppend', $hashAppend );
