@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Obaid Raza"
+			"Obaid Raza",
+			"BukhariSaeed"
 		]
 	},
 	"timeline-desc": "<code>&lt;timeline&gt;</code> شامل کریں: خط زمانی تخلیق کر نے کے لیے ٹیگ شامل کریں",
-	"timeline-invalidmap": "آسان خط زمانی سے غیر معتبر نقشہ تصویر تخلیق پیدا کی گئی"
+	"timeline-invalidmap": "آسان خط زمانی سے غیر معتبر نقشہ تصویر تخلیق پیدا کی گئی",
+	"timeline-tracking-category": "صفحات جن میں خط زمانی مستعمل ہے"
 }
