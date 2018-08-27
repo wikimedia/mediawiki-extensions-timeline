@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Millosh"
+			"Millosh",
+			"BadDog"
 		]
 	},
-	"timeline-desc": "Додаје <code>&lt;timeline&gt;</code> ознаку за стварање временских оса."
+	"timeline-desc": "Додаје таг <code>&lt;timeline&gt;</code> за прављење хронологија",
+	"timeline-invalidmap": "EasyTimeline је генерисао неважећу мапу слика",
+	"timeline-tracking-category": "Странице које користе хронологију"
 }
