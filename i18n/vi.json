@@ -6,5 +6,6 @@
 		]
 	},
 	"timeline-desc": "Thêm thẻ <code>&lt;timeline&gt;</code> để xây dựng các thời biểu",
-	"timeline-invalidmap": "EasyTimeline tạo ra bản đồ hình không hợp lệ"
+	"timeline-invalidmap": "EasyTimeline tạo ra bản đồ hình không hợp lệ",
+	"timeline-tracking-category": "Trang có thời biểu"
 }
