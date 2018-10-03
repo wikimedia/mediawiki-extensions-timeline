@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Christian List",
-			"Peter Alberti"
+			"Peter Alberti",
+			"Saederup92"
 		]
 	},
 	"timeline-desc": "Tilføjer tagget <code>&lt;timeline&gt;</code> til at oprette tidslinjer",
-	"timeline-invalidmap": "Ugyldigt klikbart grafikobjekt genereret af EasyTimeline"
+	"timeline-invalidmap": "Ugyldigt klikbart grafikobjekt genereret af EasyTimeline",
+	"timeline-tracking-category": "Sider som bruger Timeline"
 }
