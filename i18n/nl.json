@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Siebrand"
+			"Siebrand",
+			"Bdijkstra"
 		]
 	},
 	"timeline-desc": "Voegt het label <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
-	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd"
+	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd",
+	"timeline-tracking-category": "Pagina's die Timeline gebruiken"
 }
