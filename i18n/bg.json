@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"DCLXVI"
+			"DCLXVI",
+			"Ted Masters"
 		]
 	},
-	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии"
+	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии",
+	"timeline-tracking-category": "Страници, използващи Времева диаграма"
 }
