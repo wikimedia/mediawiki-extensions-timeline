@@ -39,7 +39,7 @@ class Timeline {
 
 		$parser->addTrackingCategory( 'timeline-tracking-category' );
 
-		$method = isset( $args['method'] ) ? $args['method'] : 'ploticusOnly';
+		$method = $args['method'] ?? 'ploticusOnly';
 		$svg2png = ( $method == 'svg2png' );
 
 		// Get the backend to store plot data and pngs
