@@ -14,7 +14,7 @@
 		]
 	},
 	"AutoloadClasses": {
-		"Timeline": "Timeline.body.php"
+		"Timeline": "includes/Timeline.php"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {
