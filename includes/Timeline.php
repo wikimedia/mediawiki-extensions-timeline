@@ -258,6 +258,7 @@ class Timeline {
 			// Load messages only if error occurs
 			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
 		}
+		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		$name = $map->attributes->getNamedItem( 'name' )->value;
 		$html = Xml::openElement( 'map', [ 'name' => $name ] );
 
