@@ -201,8 +201,8 @@ class Timeline {
 
 			if ( $expired ) {
 				// Replacing an older file, we may need to purge the old one.
-				global $wgUseSquid;
-				if ( $wgUseSquid ) {
+				global $wgUseCdn;
+				if ( $wgUseCdn ) {
 					$u = new CdnCacheUpdate( [ $url ] );
 					$u->doUpdate();
 				}
