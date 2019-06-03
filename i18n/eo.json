@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Yekrats"
+			"Yekrats",
+			"Mirin"
 		]
 	},
 	"timeline-desc": "Aldonas etikedon <code>&lt;timeline&gt;</code> por krei tempoaksojn",
-	"timeline-invalidmap": "Malvalida bildomapo generita de EasyTimeline"
+	"timeline-invalidmap": "Malvalida bildomapo generita de EasyTimeline",
+	"timeline-tracking-category": "Paĝoj uzantaj Timeline"
 }
