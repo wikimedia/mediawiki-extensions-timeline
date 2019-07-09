@@ -260,7 +260,7 @@ class Timeline {
 		}
 		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		$name = $map->attributes->getNamedItem( 'name' )->value;
-		$html = Xml::openElement( 'map', [ 'name' => $name ] );
+		$res = Xml::openElement( 'map', [ 'name' => $name ] );
 
 		$allowedAttribs = [ 'shape', 'coords', 'href', 'nohref', 'alt', 'tabindex', 'title' ];
 		foreach ( $map->childNodes as $node ) {
@@ -291,14 +291,14 @@ class Timeline {
 				$attributes[$name] = $value;
 			}
 			if ( !$ok ) {
-				$html .= "<!-- illegal element removed -->\n";
+				$res .= "<!-- illegal element removed -->\n";
 				continue;
 			}
 
-			$html .= Xml::element( 'area', $attributes );
+			$res .= Xml::element( 'area', $attributes );
 		}
-		$html .= '</map>';
+		$res .= '</map>';
 
-		return $html;
+		return $res;
 	}
 }
