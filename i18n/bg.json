@@ -2,9 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"DCLXVI",
-			"Ted Masters"
+			"Ted Masters",
+			"StanProg"
 		]
 	},
 	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии",
-	"timeline-tracking-category": "Страници, използващи Времева диаграма"
+	"timeline-tracking-category": "Страници, използващи Timeline"
 }
