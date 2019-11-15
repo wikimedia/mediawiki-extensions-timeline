@@ -4,10 +4,10 @@
 class Timeline {
 
 	/**
-	 * @param Parser &$parser
+	 * @param Parser $parser
 	 * @return bool
 	 */
-	public static function onParserFirstCallInit( &$parser ) {
+	public static function onParserFirstCallInit( $parser ) {
 		$parser->setHook( 'timeline', 'Timeline::renderTimeline' );
 
 		return true;
