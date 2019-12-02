@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Joseph"
+			"Joseph",
+			"BaRaN6161 TURK"
 		]
 	},
 	"timeline-desc": "Zaman çizelgesi oluşturmak için <code>&lt;timeline&gt;</code> etiketini ekler",
-	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu"
+	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu",
+	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar"
 }
