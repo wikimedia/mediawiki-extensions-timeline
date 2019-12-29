@@ -8,5 +8,6 @@
 	},
 	"timeline-desc": "הוספת תג <code>&lt;timeline&gt;</code> ליצירת צירי זמן",
 	"timeline-invalidmap": "נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline",
-	"timeline-tracking-category": "דפים המשתמשים בציר זמן"
+	"timeline-tracking-category": "דפים המשתמשים בציר זמן",
+	"timeline-tracking-category-desc": "הדף הזה מכיל תג <code><nowiki><timeline></nowiki></code>."
 }

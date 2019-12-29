@@ -7,5 +7,6 @@
 	},
 	"timeline-desc": "Zaman çizelgesi oluşturmak için <code>&lt;timeline&gt;</code> etiketini ekler",
 	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu",
-	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar"
+	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar",
+	"timeline-tracking-category-desc": "Sayfa bir <code><nowiki><timeline></nowiki></code> etiketi içeriyor"
 }

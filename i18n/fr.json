@@ -6,10 +6,12 @@
 			"Urhixidur",
 			"Gomoko",
 			"Orlodrim",
-			"Wladek92"
+			"Wladek92",
+			"Pamputt"
 		]
 	},
 	"timeline-desc": "Ajoute la balise <code>&lt;timeline&gt;</code> pour créer des frises chronologiques",
 	"timeline-invalidmap": "Carte de l’image générée par EasyTimeline invalide",
-	"timeline-tracking-category": "Pages utilisant une frise chronologique"
+	"timeline-tracking-category": "Pages utilisant une frise chronologique",
+	"timeline-tracking-category-desc": "La page contient une balise <code><nowiki><timeline></nowiki></code>."
 }
