@@ -6,5 +6,6 @@
 	},
 	"timeline-desc": "Додава ознака <code>&lt;timeline&gt;</code> за да прави времеследи",
 	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline",
-	"timeline-tracking-category": "Страници што користат Времеслед"
+	"timeline-tracking-category": "Страници што користат Времеслед",
+	"timeline-tracking-category-desc": "Страницава содржи ознака <code><nowiki><timeline></nowiki></code>"
 }

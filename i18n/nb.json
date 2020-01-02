@@ -6,5 +6,6 @@
 	},
 	"timeline-desc": "Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer",
 	"timeline-invalidmap": "Ugyldig bildekart opprettet av EasyTimeline",
-	"timeline-tracking-category": "Sider som bruker Timeline"
+	"timeline-tracking-category": "Sider som bruker Timeline",
+	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg"
 }

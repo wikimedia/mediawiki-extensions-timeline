@@ -9,5 +9,6 @@
 	},
 	"timeline-desc": "Ergänzt das Tag <code>&lt;timeline&gt;</code> zur Erstellung von Zeitleisten",
 	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert",
-	"timeline-tracking-category": "Seiten, die Timeline verwenden"
+	"timeline-tracking-category": "Seiten, die Timeline verwenden",
+	"timeline-tracking-category-desc": "Diese Seite enthält ein <code><nowiki><timeline></nowiki></code>-Tag"
 }

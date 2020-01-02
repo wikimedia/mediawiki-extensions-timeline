@@ -7,5 +7,6 @@
 	},
 	"timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
 	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
-	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا"
+	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا",
+	"timeline-tracking-category-desc": "تتضمن هذه الصفحة وسم <code><nowiki><timeline></nowiki></code>."
 }
