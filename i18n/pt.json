@@ -8,5 +8,6 @@
 	},
 	"timeline-desc": "Adiciona o elemento <code>&lt;timeline&gt;</code> para criar cronologias",
 	"timeline-invalidmap": "Foi gerado um mapa de imagem inválido pelo EasyTimeline",
-	"timeline-tracking-category": "Páginas que usam Timeline"
+	"timeline-tracking-category": "Páginas que usam Timeline",
+	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code><nowiki><timeline></nowiki></code>"
 }
