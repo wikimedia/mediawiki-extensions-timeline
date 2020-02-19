@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Yekrats",
-			"Mirin"
+			"Mirin",
+			"Robin van der Vliet"
 		]
 	},
 	"timeline-desc": "Aldonas etikedon <code>&lt;timeline&gt;</code> por krei tempoaksojn",
-	"timeline-invalidmap": "Malvalida bildomapo generita de EasyTimeline",
+	"timeline-invalidmap": "Nevalida bildomapo generita de EasyTimeline",
 	"timeline-tracking-category": "Paĝoj uzantaj Timeline"
 }
