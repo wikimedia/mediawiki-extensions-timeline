@@ -3,10 +3,12 @@
 		"authors": [
 			"AS",
 			"Ahonc",
-			"Ата"
+			"Ата",
+			"Piramidion"
 		]
 	},
 	"timeline-desc": "Додає тег <code>&lt;timeline&gt;</code> для створення часових шкал",
 	"timeline-invalidmap": "Неправильна карта зображення, створена EasyTimeline",
-	"timeline-tracking-category": "Сторінки із включенням Timeline"
+	"timeline-tracking-category": "Сторінки із включенням Timeline",
+	"timeline-tracking-category-desc": "Сторінка містить тег <code><nowiki><timeline></nowiki></code>"
 }
