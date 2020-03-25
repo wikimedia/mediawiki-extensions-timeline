@@ -7,5 +7,6 @@
 	},
 	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> pa crear llinies de tiempu",
 	"timeline-invalidmap": "Mapa d'imaxe inválidu xeneráu por EasyTimeline",
-	"timeline-tracking-category": "Páxines qu'usen Timeline"
+	"timeline-tracking-category": "Páxines qu'usen Timeline",
+	"timeline-tracking-category-desc": "La páxina incluye una etiqueta <code><nowiki><timeline></nowiki></code>."
 }
