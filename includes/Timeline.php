@@ -27,8 +27,8 @@ class Timeline {
 	 * @param array $args
 	 * @param Parser $parser
 	 * @param PPFrame $frame
-	 * @throws Exception
 	 * @return string HTML
+	 * @throws Exception
 	 */
 	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
 		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory;
