@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 
 class Timeline {
 
@@ -44,7 +45,8 @@ class Timeline {
 
 		// Get the backend to store plot data and pngs
 		if ( $wgTimelineFileBackend != '' ) {
-			$backend = FileBackendGroup::singleton()->get( $wgTimelineFileBackend );
+			$backend = MediaWikiServices::getInstance()->getFileBackendGroup()
+				->get( $wgTimelineFileBackend );
 		} else {
 			$backend = new FSFileBackend(
 				[
