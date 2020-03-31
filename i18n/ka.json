@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Dawid Deutschland",
-			"გიორგიმელა"
+			"გიორგიმელა",
+			"David1010"
 		]
 	},
 	"timeline-desc": "ჩაამატეთ თეგი <code>&lt;timeline&gt;</code> დროის სკალის შესაქმნელად",
-	"timeline-invalidmap": "EasyTimeline-მა არასწორი გრაფიკა გამოიმუშავა"
+	"timeline-invalidmap": "EasyTimeline-მა არასწორი გრაფიკა გამოიმუშავა",
+	"timeline-tracking-category": "დიაგრამების მქონე გვერდები"
 }
