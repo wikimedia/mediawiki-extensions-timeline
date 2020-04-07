@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Siebrand",
 			"Bdijkstra",
-			"Mainframe98"
+			"Mainframe98",
+			"Siebrand"
 		]
 	},
 	"timeline-desc": "Voegt het label <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",

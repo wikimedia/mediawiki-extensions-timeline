@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Garam",
 			"Kwj2772",
 			"ToePeu",
-			"아라",
-			"Garam",
-			"Ykhwong"
+			"Ykhwong",
+			"아라"
 		]
 	},
 	"timeline-desc": "시간표를 만들기 위해 <code>&lt;timeline&gt;</code> 태그를 추가합니다",

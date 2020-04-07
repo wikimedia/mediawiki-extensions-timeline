@@ -2,12 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Crochet.david",
-			"Grondin",
-			"Urhixidur",
 			"Gomoko",
+			"Grondin",
 			"Orlodrim",
-			"Wladek92",
-			"Pamputt"
+			"Pamputt",
+			"Urhixidur",
+			"Wladek92"
 		]
 	},
 	"timeline-desc": "Ajoute la balise <code>&lt;timeline&gt;</code> pour créer des frises chronologiques",

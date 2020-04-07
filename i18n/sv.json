@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Larske",
 			"Lejonel",
-			"Per",
-			"Larske"
+			"Per"
 		]
 	},
 	"timeline-desc": "Lägger till taggen <code>&lt;timeline&gt;</code> för att skapa tidslinjer",

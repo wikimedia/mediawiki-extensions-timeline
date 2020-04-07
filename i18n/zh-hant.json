@@ -1,11 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gaoxuewei",
-			"Mark85296341",
-			"Shinjiman",
 			"Cwlin0416",
-			"Kly"
+			"Gaoxuewei",
+			"Kly",
+			"Mark85296341",
+			"Shinjiman"
 		]
 	},
 	"timeline-desc": "提供 <code>&lt;timeline&gt;</code> 標籤以建立時間軸",

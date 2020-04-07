@@ -3,8 +3,8 @@
 		"authors": [
 			"AS",
 			"Ahonc",
-			"Ата",
-			"Piramidion"
+			"Piramidion",
+			"Ата"
 		]
 	},
 	"timeline-desc": "Додає тег <code>&lt;timeline&gt;</code> для створення часових шкал",

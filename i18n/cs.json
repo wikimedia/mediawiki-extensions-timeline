@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Li-sung",
-			"Mormegil",
-			"Matěj Suchánek"
+			"Matěj Suchánek",
+			"Mormegil"
 		]
 	},
 	"timeline-desc": "Přidává značku <code>&lt;timeline&gt;</code> na vytváření časových os",

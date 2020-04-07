@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Daemorris",
-			"Eduardo.mps",
-			"Eduardo Addad de Oliveira"
+			"Eduardo Addad de Oliveira",
+			"Eduardo.mps"
 		]
 	},
 	"timeline-desc": "Adiciona a marca <code>&lt;timeline&gt;</code> para criar linhas de tempo",

@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sp5uhe",
-			"Matma Rex"
+			"Matma Rex",
+			"Sp5uhe"
 		]
 	},
 	"timeline-desc": "Dodaje znacznik <code>&lt;timeline&gt;</code> umożliwiający tworzenie spisu na osi czasu",

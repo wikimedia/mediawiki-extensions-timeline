@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Huji",
-			"Wayiran",
-			"Ladsgroup"
+			"Ladsgroup",
+			"Wayiran"
 		]
 	},
 	"timeline-desc": "برچسب <code>&lt;timeline&gt;</code> را برای نمایش خطوط زمانی می‌افزاید",

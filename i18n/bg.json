@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DCLXVI",
-			"Ted Masters",
-			"StanProg"
+			"StanProg",
+			"Ted Masters"
 		]
 	},
 	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии",

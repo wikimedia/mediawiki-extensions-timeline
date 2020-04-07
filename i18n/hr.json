@@ -2,8 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Dalibor Bosits",
-			"Mnalis",
-			"MaGa"
+			"MaGa",
+			"Mnalis"
 		]
 	},
 	"timeline-desc": "Dodaje <code>&lt;timeline&gt;</code> oznaku za stvaranje vremenskih linija",

@@ -2,9 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Crazymadlover",
-			"Remember the dot",
 			"Macofe",
-			"MarcoAurelio"
+			"MarcoAurelio",
+			"Remember the dot"
 		]
 	},
 	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> para crear cronogramas",

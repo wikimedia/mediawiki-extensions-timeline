@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Millosh",
-			"BadDog"
+			"BadDog",
+			"Millosh"
 		]
 	},
 	"timeline-desc": "Додаје ознаку <code>&lt;timeline&gt;</code> за прављење хронологија",
