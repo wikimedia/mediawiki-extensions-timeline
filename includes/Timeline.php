@@ -87,12 +87,10 @@ class Timeline {
 				file_put_contents( $tmpPath, $timelinesrc );
 
 				// temp files to clean up
-				$filesCollect = [];
 				foreach ( [ 'map', 'png', 'svg', 'err' ] as $ext ) {
 					$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
 					// clean this up
 					$fileCollect->autocollect();
-					$filesCollect[] = $fileCollect;
 				}
 
 				// Get command for ploticus to read the user input and output an error,
