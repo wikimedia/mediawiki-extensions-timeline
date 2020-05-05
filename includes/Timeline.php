@@ -81,85 +81,84 @@ class Timeline {
 				mkdir( $wgTmpDirectory, 0777 );
 			}
 			$tmpFile = TempFSFile::factory( 'timeline_' );
-			if ( $tmpFile ) {
-				$tmpPath = $tmpFile->getPath();
-				// store plot data to file
-				file_put_contents( $tmpPath, $timelinesrc );
-
-				// temp files to clean up
-				foreach ( [ 'map', 'png', 'svg', 'err' ] as $ext ) {
-					$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
-					// clean this up
-					$fileCollect->autocollect();
-				}
-
-				// Get command for ploticus to read the user input and output an error,
-				// map, and rendering (png or gif) file under the same dir as the temp file.
-				$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineFile )
-					. ( $svg2png ? " -s " : "" )
-					. " -i " . wfEscapeShellArg( $tmpPath )
-					. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
-					. " -T " . wfEscapeShellArg( $wgTmpDirectory )
-					. " -A " . wfEscapeShellArg( $wgArticlePath )
-					. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
-
-				// Actually run the command...
-				wfDebug( "Timeline cmd: $cmdline\n" );
-				$retVal = null;
-				$ret = wfShellExec( $cmdline, $retVal );
-
-				// If running in svg2png mode, create the PNG file from the SVG
-				if ( $svg2png ) {
-					// Read the default timeline image size from the DVG file
-					$svgFilename = "{$tmpPath}.svg";
-					Wikimedia\suppressWarnings();
-					$svgHandle = fopen( $svgFilename, "r" );
-					Wikimedia\restoreWarnings();
-					if ( !$svgHandle ) {
-						throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
-					}
-					$svgWidth = '';
-					$svgHeight = '';
-					while ( !feof( $svgHandle ) ) {
-						$line = fgets( $svgHandle );
-						if ( preg_match( '/width="([0-9.]+)" height="([0-9.]+)"/', $line, $matches ) ) {
-							$svgWidth = $matches[1];
-							$svgHeight = $matches[2];
-							break;
-						}
-					}
-					fclose( $svgHandle );
-
-					$svgHandler = new SvgHandler();
-					wfDebug( "Rasterizing PNG timeline from SVG $svgFilename, size $svgWidth x $svgHeight\n" );
-					$rasterizeResult = $svgHandler->rasterize(
-						$svgFilename,
-						"{$tmpPath}.png",
-						$svgWidth,
-						$svgHeight
-					);
-					if ( $rasterizeResult !== true ) {
-						return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->getHtmlMsg() . "</div>";
-					}
-				}
-
-				// Copy the output files into storage...
-				// @TODO: store error files in another container or not at all?
-				$ops = [];
-				$backend->prepare( [ 'dir' => dirname( $fname ) ] );
-				foreach ( [ 'map', 'png', 'err' ] as $ext ) {
-					if ( file_exists( "{$tmpPath}.{$ext}" ) ) {
-						$ops[] = [ 'op' => 'store', 'src' => "{$tmpPath}.{$ext}", 'dst' => "{$fname}.{$ext}" ];
-					}
-				}
-				if ( !$backend->doQuickOperations( $ops )->isOK() ) {
-					return "<div class=\"error timeline-error\">"
-						. wfMessage( 'timeline-error-storage' )->escaped()
-						. "</div>";
-				}
-			} else {
+			if ( !$tmpFile ) {
 				return "<div class=\"error timeline-error\">"
 					. wfMessage( 'timeline-error-temp' )->escaped()
+					. "</div>";
+			}
+			$tmpPath = $tmpFile->getPath();
+			// store plot data to file
+			file_put_contents( $tmpPath, $timelinesrc );
+
+			// temp files to clean up
+			foreach ( [ 'map', 'png', 'svg', 'err' ] as $ext ) {
+				$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
+				// clean this up
+				$fileCollect->autocollect();
+			}
+
+			// Get command for ploticus to read the user input and output an error,
+			// map, and rendering (png or gif) file under the same dir as the temp file.
+			$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineFile )
+				. ( $svg2png ? " -s " : "" )
+				. " -i " . wfEscapeShellArg( $tmpPath )
+				. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
+				. " -T " . wfEscapeShellArg( $wgTmpDirectory )
+				. " -A " . wfEscapeShellArg( $wgArticlePath )
+				. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
+
+			// Actually run the command...
+			wfDebug( "Timeline cmd: $cmdline\n" );
+			$retVal = null;
+			$ret = wfShellExec( $cmdline, $retVal );
+
+			// If running in svg2png mode, create the PNG file from the SVG
+			if ( $svg2png ) {
+				// Read the default timeline image size from the DVG file
+				$svgFilename = "{$tmpPath}.svg";
+				Wikimedia\suppressWarnings();
+				$svgHandle = fopen( $svgFilename, "r" );
+				Wikimedia\restoreWarnings();
+				if ( !$svgHandle ) {
+					throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
+				}
+				$svgWidth = '';
+				$svgHeight = '';
+				while ( !feof( $svgHandle ) ) {
+					$line = fgets( $svgHandle );
+					if ( preg_match( '/width="([0-9.]+)" height="([0-9.]+)"/', $line, $matches ) ) {
+						$svgWidth = $matches[1];
+						$svgHeight = $matches[2];
+						break;
+					}
+				}
+				fclose( $svgHandle );
+
+				$svgHandler = new SvgHandler();
+				wfDebug( "Rasterizing PNG timeline from SVG $svgFilename, size $svgWidth x $svgHeight\n" );
+				$rasterizeResult = $svgHandler->rasterize(
+					$svgFilename,
+					"{$tmpPath}.png",
+					$svgWidth,
+					$svgHeight
+				);
+				if ( $rasterizeResult !== true ) {
+					return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->getHtmlMsg() . "</div>";
+				}
+			}
+
+			// Copy the output files into storage...
+			// @TODO: store error files in another container or not at all?
+			$ops = [];
+			$backend->prepare( [ 'dir' => dirname( $fname ) ] );
+			foreach ( [ 'map', 'png', 'err' ] as $ext ) {
+				if ( file_exists( "{$tmpPath}.{$ext}" ) ) {
+					$ops[] = [ 'op' => 'store', 'src' => "{$tmpPath}.{$ext}", 'dst' => "{$fname}.{$ext}" ];
+				}
+			}
+			if ( !$backend->doQuickOperations( $ops )->isOK() ) {
+				return "<div class=\"error timeline-error\">"
+					. wfMessage( 'timeline-error-storage' )->escaped()
 					. "</div>";
 			}
 
