@@ -153,20 +153,20 @@ class Timeline {
 					}
 				}
 				if ( !$backend->doQuickOperations( $ops )->isOK() ) {
-					// FIXME Hard coded english text
-					return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
-						. "Could not store output files</div>";
+					return "<div class=\"error timeline-error\">"
+						. wfMessage( 'timeline-error-storage' )->escaped()
+						. "</div>";
 				}
 			} else {
-				// FIXME Hard coded english text
-				return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
-					. "Could not create temp file</div>";
+				return "<div class=\"error timeline-error\">"
+					. wfMessage( 'timeline-error-temp' )->escaped()
+					. "</div>";
 			}
 
 			if ( $ret == "" || $retVal > 0 ) {
-				// Message not localized, only relevant during install
-				return "<div class=\"error timeline-error\" dir=\"ltr\">Timeline error. "
-					. "Command line was: " . htmlspecialchars( $cmdline ) . "</div>";
+				return "<div class=\"error timeline-error\">"
+					. wfMessage( 'timeline-error-command' )->rawParams( htmlspecialchars( $cmdline ) )->escaped()
+					. "</div>";
 			}
 		}
 
@@ -249,13 +249,11 @@ class Timeline {
 		$status = $doc->loadXML( $html );
 		Wikimedia\restoreWarnings();
 		if ( !$status ) {
-			// Load messages only if error occurs
 			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
 		}
 
 		$map = $doc->firstChild;
 		if ( strtolower( $map->nodeName ) !== 'map' ) {
-			// Load messages only if error occurs
 			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
 		}
 		/** @phan-suppress-next-line PhanUndeclaredProperty */

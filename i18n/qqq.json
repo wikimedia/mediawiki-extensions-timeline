@@ -8,6 +8,9 @@
 		]
 	},
 	"timeline-desc": "{{desc|name=Timeline|url=https://www.mediawiki.org/wiki/Extension:EasyTimeline}}",
+	"timeline-error-storage": "Used as error message when the outputted files cannot be stored",
+	"timeline-error-temp": "Used as error message when temporary files cannot be created",
+	"timeline-error-command": "Used as error message when executing a command failed. $1 is the command that was run.",
 	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\".",
 	"timeline-tracking-category": "Name of the tracking category for pages using this extension",
 	"timeline-tracking-category-desc": "Description on [[Special:TrackingCategories]] for the {{msg-mw|timeline-tracking-category}} tracking category."
