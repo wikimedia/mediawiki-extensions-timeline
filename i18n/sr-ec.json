@@ -6,6 +6,9 @@
 		]
 	},
 	"timeline-desc": "Додаје ознаку <code>&lt;timeline&gt;</code> за прављење хронологија",
+	"timeline-error-storage": "Грешка у хронологији: Није могуће ускладиштити излазне датотеке.",
+	"timeline-error-temp": "Грешка у хронологији: Није могуће створити привремене датотеке.",
+	"timeline-error-command": "Грешка у хронологији. Команда је била: $1",
 	"timeline-invalidmap": "EasyTimeline је генерисао неважећу мапу слика",
 	"timeline-tracking-category": "Странице које користе хронологију"
 }

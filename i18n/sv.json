@@ -3,10 +3,14 @@
 		"authors": [
 			"Larske",
 			"Lejonel",
-			"Per"
+			"Per",
+			"WikiPhoenix"
 		]
 	},
 	"timeline-desc": "Lägger till taggen <code>&lt;timeline&gt;</code> för att skapa tidslinjer",
+	"timeline-error-storage": "Fel i tidslinje. Kunde inte lagra utmatningsfiler",
+	"timeline-error-temp": "Fel i tidslinje. Kan inte skapa temporära filer",
+	"timeline-error-command": "Fel i tidslinje. Kommandot var: $1",
 	"timeline-invalidmap": "EasyTimeline har skapat en ogiltig bildkarta",
 	"timeline-tracking-category": "Sidor som använder Timeline"
 }

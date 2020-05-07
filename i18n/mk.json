@@ -5,6 +5,9 @@
 		]
 	},
 	"timeline-desc": "Додава ознака <code>&lt;timeline&gt;</code> за да прави времеследи",
+	"timeline-error-storage": "Грешка во времеследот. Не можев да складирам изводни податотеки",
+	"timeline-error-temp": "Грешка во времеследот. Не можев да создадам привремени податотеки",
+	"timeline-error-command": "Грешка во времеследот. Наредбата гласеше: $1",
 	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline",
 	"timeline-tracking-category": "Страници што користат Времеслед",
 	"timeline-tracking-category-desc": "Страницава содржи ознака <code><nowiki><timeline></nowiki></code>"

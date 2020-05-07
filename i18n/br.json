@@ -6,6 +6,9 @@
 		]
 	},
 	"timeline-desc": "Ouzhpennañ a ra an dikedenn <code>&lt;timeline&gt;</code> da grouiñ frizennoù kronologel",
+	"timeline-error-storage": "Fazi kronologiezh. Ne c'haller ket stokañ ar restroù ezvoned",
+	"timeline-error-temp": "Fazi kronologiezh. Ne c'haller ket krouiñ ar restroù padennek",
+	"timeline-error-command": "Fazi kronologiezh. $1 a oa an urzhiad.",
 	"timeline-invalidmap": "Kartenn direizh ganet dre EasyTimeline",
 	"timeline-tracking-category": "Pajennoù a implij Timeline"
 }

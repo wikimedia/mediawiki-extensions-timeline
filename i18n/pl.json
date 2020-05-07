@@ -2,10 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Matma Rex",
+			"Rail",
 			"Sp5uhe"
 		]
 	},
 	"timeline-desc": "Dodaje znacznik <code>&lt;timeline&gt;</code> umożliwiający tworzenie spisu na osi czasu",
+	"timeline-error-storage": "Błąd osi czasu. Nie można przechowywać plików wyjściowych",
+	"timeline-error-temp": "Błąd osi czasu. Nie można stworzyć plików tymczasowych",
+	"timeline-error-command": "Błąd osi czasu. Komendą było: $1",
 	"timeline-invalidmap": "Nieprawidłowa mapa obrazka wygenerowana przez EasyTimeline",
-	"timeline-tracking-category": "Strony używające Timeline"
+	"timeline-tracking-category": "Strony używające Timeline",
+	"timeline-tracking-category-desc": "Strona zawiera znacznik <code><nowiki><timeline></nowiki></code>"
 }

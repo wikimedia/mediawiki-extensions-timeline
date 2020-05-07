@@ -7,6 +7,9 @@
 		]
 	},
 	"timeline-desc": "Adiciona a marca <code>&lt;timeline&gt;</code> para criar linhas de tempo",
+	"timeline-error-storage": "Erro na linha do tempo. Não foi possível armazenar os arquivos de saída",
+	"timeline-error-temp": "Erro na linha do tempo. Não foi possível criar arquivos temporários",
+	"timeline-error-command": "Erro na linha do tempo. O comando foi: $1",
 	"timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido",
 	"timeline-tracking-category": "Páginas usando a Linha do tempo",
 	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code><nowiki><timeline></nowiki></code>"
