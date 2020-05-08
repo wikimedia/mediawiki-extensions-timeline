@@ -9,6 +9,9 @@
 		]
 	},
 	"timeline-desc": "提供 <code>&lt;timeline&gt;</code> 標籤以建立時間軸",
+	"timeline-error-storage": "時間軸錯誤。無法儲存輸出檔案",
+	"timeline-error-temp": "時間軸錯誤。無法建立臨時檔案",
+	"timeline-error-command": "時間軸錯誤。執行失敗的命令：$1",
 	"timeline-invalidmap": "EasyTimeline 產生的影像地圖無效",
 	"timeline-tracking-category": "使用時間軸的頁面",
 	"timeline-tracking-category-desc": "含有 <code><nowiki><timeline></nowiki></code> 標籤的頁面。"
