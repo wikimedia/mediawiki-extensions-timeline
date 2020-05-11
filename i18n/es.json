@@ -2,12 +2,16 @@
 	"@metadata": {
 		"authors": [
 			"Crazymadlover",
+			"Geryescalier",
 			"Macofe",
 			"MarcoAurelio",
 			"Remember the dot"
 		]
 	},
 	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> para crear cronogramas",
+	"timeline-error-storage": "Error de línea de tiempo. No se pudieron almacenar archivos de salida",
+	"timeline-error-temp": "Error de línea de tiempo. No se pudieron crear archivos temporales",
+	"timeline-error-command": "Error de línea de tiempo. El comando fue: $1",
 	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline",
 	"timeline-tracking-category": "Páginas que usan Timeline"
 }

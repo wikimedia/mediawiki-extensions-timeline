@@ -5,6 +5,9 @@
 		]
 	},
 	"timeline-desc": "A l'azonze l'etichetta <code>&lt;timeline&gt;</code> pe creâ di cronogrammi",
+	"timeline-error-storage": "Aro cronologgico. Imposcibbile inmagazinâ i file de sciortia",
+	"timeline-error-temp": "Aro cronologgico. Imposcibbile inmagazinâ i file tempoannei",
+	"timeline-error-command": "Aro cronologgico. O comando o l'ea: $1",
 	"timeline-invalidmap": "Mappa inmaggine invallida generâ da EasyTimeline",
 	"timeline-tracking-category": "Paggine ch'adoeuvian Timeline",
 	"timeline-tracking-category-desc": "A paggina a conten l'etichetta <code><nowiki><timeline></nowiki></code>"
