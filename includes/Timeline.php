@@ -64,12 +64,12 @@ class Timeline {
 		$hash = self::hash( $timelinesrc, $args );
 
 		// Storage destination path (excluding file extension)
-		$fname = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
+		$pathPrefix = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
 
-		$previouslyFailed = $backend->fileExists( [ 'src' => "{$fname}.err" ] );
-		$previouslyRendered = $backend->fileExists( [ 'src' => "{$fname}.png" ] );
+		$previouslyFailed = $backend->fileExists( [ 'src' => "{$pathPrefix}.err" ] );
+		$previouslyRendered = $backend->fileExists( [ 'src' => "{$pathPrefix}.png" ] );
 		if ( $previouslyRendered ) {
-			$timestamp = $backend->getFileTimestamp( [ 'src' => "{$fname}.png" ] );
+			$timestamp = $backend->getFileTimestamp( [ 'src' => "{$pathPrefix}.png" ] );
 			$expired = ( $timestamp < $wgTimelineEpochTimestamp );
 		} else {
 			$expired = false;
@@ -150,10 +150,10 @@ class Timeline {
 			// Copy the output files into storage...
 			// @TODO: store error files in another container or not at all?
 			$ops = [];
-			$backend->prepare( [ 'dir' => dirname( $fname ) ] );
+			$backend->prepare( [ 'dir' => dirname( $pathPrefix ) ] );
 			foreach ( [ 'map', 'png', 'err' ] as $ext ) {
 				if ( file_exists( "{$tmpPath}.{$ext}" ) ) {
-					$ops[] = [ 'op' => 'store', 'src' => "{$tmpPath}.{$ext}", 'dst' => "{$fname}.{$ext}" ];
+					$ops[] = [ 'op' => 'store', 'src' => "{$tmpPath}.{$ext}", 'dst' => "{$pathPrefix}.{$ext}" ];
 				}
 			}
 			if ( !$backend->doQuickOperations( $ops )->isOK() ) {
@@ -169,7 +169,7 @@ class Timeline {
 			}
 		}
 
-		$err = $backend->getFileContents( [ 'src' => "{$fname}.err" ] );
+		$err = $backend->getFileContents( [ 'src' => "{$pathPrefix}.err" ] );
 
 		if ( $err != "" ) {
 			// Convert the error from poorly-sanitized HTML to plain text
@@ -187,7 +187,7 @@ class Timeline {
 			$encErr = nl2br( htmlspecialchars( $err ) );
 			$txt = "<div class=\"error timeline-error\" dir=\"ltr\">$encErr</div>";
 		} else {
-			$map = $backend->getFileContents( [ 'src' => "{$fname}.map" ] );
+			$map = $backend->getFileContents( [ 'src' => "{$pathPrefix}.map" ] );
 
 			$map = str_replace( ' >', ' />', $map );
 			$map = "<map name=\"timeline_" . htmlspecialchars( $hash ) . "\">{$map}</map>";
