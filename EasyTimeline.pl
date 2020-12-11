@@ -13,7 +13,7 @@
 # history:
 # 1.5 May 27 2004 :
 # - when a chart contains only one bar this bar was always centered in the image
-#     now AlignBars works well in this case aslo ("justify" treated as "center")
+#     now AlignBars works well in this case also ("justify" treated as "center")
 # - interwiki links reinstalled e.g. [[de:Gorbachev]]
 # - error msgs corrected
 # - minimum image size fixed
@@ -284,7 +284,7 @@ sub ParseArguments {
     # For MediaWiki: Path of an article, relative to this servers root
     $articlepath = $options{"A"};
 
-    # font to use. Must be in environemnt variable
+    # font to use. Must be in environment variable
     # GDFONTPATH unless builtin "ascii" font
     $font_file = $options{"f"};
 
