@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"El libre",
+			"Mguix",
 			"Paucabot"
 		]
 	},
 	"timeline-desc": "Afegeix l'etiqueta <code>&lt;timeline&gt;</code> per crear cronologies",
-	"timeline-invalidmap": "Mapa d'imatge invàlid generat per EasyTimeline",
+	"timeline-invalidmap": "Mapa d'imatge no vàlid generat per EasyTimeline",
 	"timeline-tracking-category": "Pàgines que usen Timeline"
 }
