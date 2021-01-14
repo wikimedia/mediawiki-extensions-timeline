@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Dbc334"
+			"Dbc334",
+			"Eleassar"
 		]
 	},
-	"timeline-desc": "Doda etiketo <code>&lt;timeline&gt;</code> za ustvarjanje časovnih potekov",
+	"timeline-desc": "Doda značko <code>&lt;timeline&gt;</code> za ustvarjanje časovnic",
 	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline"
 }
