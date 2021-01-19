@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Salvemm el lombard"
+		]
+	},
+	"timeline-desc": "El sgionta l'eticheta <code>&lt;timeline&gt;</code> per creà di cronograma",
+	"timeline-error-storage": "Eror cronologich. Impossibil archivià i fail de sortida",
+	"timeline-error-temp": "Eror cronologich. Impossibil creà i fail temporani",
+	"timeline-error-command": "Eror cronologich. El comand l'era: $1",
+	"timeline-invalidmap": "Mappa d'imagin minga valida ingenerada da EasyTimeline",
+	"timeline-tracking-category": "Pagine che droven Timeline",
+	"timeline-tracking-category-desc": "La pagina la conten l'eticheta <code><nowiki><timeline></nowiki></code>"
+}
