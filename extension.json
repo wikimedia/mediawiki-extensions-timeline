@@ -54,6 +54,9 @@
 		"TimelineFontFile": {
 			"value": "FreeSans"
 		},
+		"TimelineFontDirectory": {
+			"value": false
+		},
 		"TimelineFileBackend": {
 			"value": ""
 		}

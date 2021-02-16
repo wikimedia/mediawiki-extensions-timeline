@@ -34,7 +34,7 @@ class Timeline {
 	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
 		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory;
 		global $wgTimelineFileBackend, $wgTimelineEpochTimestamp, $wgTimelinePerlCommand, $wgTimelineFile;
-		global $wgTimelineFontFile, $wgTimelinePloticusCommand;
+		global $wgTimelineFontFile, $wgTimelineFontDirectory, $wgTimelinePloticusCommand;
 
 		$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
 
@@ -107,10 +107,15 @@ class Timeline {
 				. " -A " . wfEscapeShellArg( $wgArticlePath )
 				. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
 
+			$env = [];
+			if ( $wgTimelineFontDirectory !== false ) {
+				$env['GDFONTPATH'] = $wgTimelineFontDirectory;
+			}
+
 			// Actually run the command...
 			wfDebug( "Timeline cmd: $cmdline\n" );
 			$retVal = null;
-			$ret = wfShellExec( $cmdline, $retVal );
+			$ret = wfShellExec( $cmdline, $retVal, $env );
 
 			// If running in svg2png mode, create the PNG file from the SVG
 			if ( $svg2png ) {
