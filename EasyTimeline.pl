@@ -4478,9 +4478,8 @@ sub PlotLines {
             $script .=
                 "  points: $Points[0] $Points[1] $Points[2] $Points[3]\n";
         }
+        $script .= "\n";
     }
-
-    $script .= "\n";
 }
 
 sub ColorPredefined {
