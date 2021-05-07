@@ -80,6 +80,7 @@ class Timeline {
 			if ( !is_dir( $wgTmpDirectory ) ) {
 				mkdir( $wgTmpDirectory, 0777 );
 			}
+			$tmpFiles = [];
 			$tmpFile = TempFSFile::factory( 'timeline_' );
 			if ( !$tmpFile ) {
 				return "<div class=\"error timeline-error\">"
@@ -95,6 +96,7 @@ class Timeline {
 				$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
 				// clean this up
 				$fileCollect->autocollect();
+				$tmpFiles[] = $fileCollect;
 			}
 
 			// Get command for ploticus to read the user input and output an error,

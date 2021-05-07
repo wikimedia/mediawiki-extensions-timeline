@@ -4165,6 +4165,8 @@ __HTML__
         close "FILE_OUT";
     }
 
+    unlink $file_script;
+
     #  my $cmd = "\"c:\\\\Program Files\\\\XnView\\\\xnview.exe\"" ;
     #  system ("\"c:\\\\Program Files\\\\XnView\\\\xnview.exe\"", "d:\\\\Wikipedia\\Perl\\\\Wo2\\\\Test.png") ;
 }
