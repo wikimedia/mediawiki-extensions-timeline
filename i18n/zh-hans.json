@@ -5,6 +5,7 @@
 			"Chenxiaoqino",
 			"Liuxinyu970226",
 			"Shinjiman",
+			"Shizhao",
 			"SomeyaMako",
 			"Xiaomingyan"
 		]
@@ -14,5 +15,6 @@
 	"timeline-error-temp": "时间线错误。无法创建临时文件",
 	"timeline-error-command": "时间线错误。命令为：$1",
 	"timeline-invalidmap": "EasyTimeline生成的无效图片地图",
-	"timeline-tracking-category": "使用时间线的页面"
+	"timeline-tracking-category": "使用时间线的页面",
+	"timeline-tracking-category-desc": "页面包含<code><nowiki><timeline></nowiki></code>标签"
 }
