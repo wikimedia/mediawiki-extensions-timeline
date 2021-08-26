@@ -1,54 +1,311 @@
 <?php
 
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use Shellbox\Command\BoxedCommand;
+use Wikimedia\ScopedCallback;
 
 class Timeline {
+
+	/**
+	 * Bump when some change requires re-rendering all timelines
+	 */
+	private const CACHE_VERSION = 1;
+
+	/** @var FileBackend|null instance cache */
+	private static $backend;
 
 	/**
 	 * @param Parser $parser
 	 * @return bool
 	 */
 	public static function onParserFirstCallInit( $parser ) {
-		$parser->setHook( 'timeline', 'Timeline::renderTimeline' );
+		$parser->setHook( 'timeline', 'Timeline::onTagHook' );
 
 		return true;
 	}
 
 	/**
-	 * Render timeline and save to file backend
+	 * Render timeline if necessary and display to users
 	 *
-	 * Files are saved to the file backend $wgTimelineFileBackend if set. Else
-	 * default to FSFileBackend named 'timeline-backend'.
+	 * Based on the user's input, calculate a unique hash for the requested
+	 * timeline. If it already exists in the FileBackend, serve it to the
+	 * user. Otherwise call renderTimeline().
 	 *
-	 * The rendered timeline is saved in the file backend using @see hash() and
-	 * will be reused if the hash match. You can invalidate the cache by
-	 * setting the global variable $wgRenderHashAppend (default: '').
+	 * Specially catch any TimelineExceptions and display a nice error for
+	 * users and record it in stats.
 	 *
 	 * @param string $timelinesrc
 	 * @param array $args
 	 * @param Parser $parser
-	 * @param PPFrame $frame
 	 * @return string HTML
-	 * @throws Exception
 	 */
-	public static function renderTimeline( $timelinesrc, array $args, $parser, $frame ) {
-		global $wgUploadDirectory, $wgUploadPath, $wgArticlePath, $wgTmpDirectory;
-		global $wgTimelineFileBackend, $wgTimelineEpochTimestamp, $wgTimelinePerlCommand, $wgTimelineFile;
-		global $wgTimelineFontFile, $wgTimelineFontDirectory, $wgTimelinePloticusCommand;
+	public static function onTagHook( $timelinesrc, array $args, Parser $parser ) {
+		global $wgUploadPath;
 
-		$parser->getOutput()->addModuleStyles( 'ext.timeline.styles' );
+		$pOutput = $parser->getOutput();
+		$pOutput->addModuleStyles( 'ext.timeline.styles' );
 
 		$parser->addTrackingCategory( 'timeline-tracking-category' );
 
-		$method = $args['method'] ?? 'ploticusOnly';
-		$svg2png = ( $method == 'svg2png' );
+		$createSvg = ( $args['method'] ?? null ) === 'svg2png';
+		$options = [
+			'createSvg' => $createSvg,
+			'font' => self::determineFont( $args['font'] ?? null ),
+		];
 
-		// Get the backend to store plot data and pngs
-		if ( $wgTimelineFileBackend != '' ) {
-			$backend = MediaWikiServices::getInstance()->getFileBackendGroup()
+		// Input for cache key
+		$cacheOptions = [
+			'code' => $timelinesrc,
+			'options' => $options,
+			'ExtVersion' => self::CACHE_VERSION,
+			// TODO: ploticus version? Given that it's
+			// dead upstream, unlikely to ever change.
+		];
+		$hash = Wikimedia\base_convert( sha1( serialize( $cacheOptions ) ), 16, 36, 31 );
+		$backend = self::getBackend();
+		// Storage destination path (excluding file extension)
+		// TODO: Implement $wgHashedUploadDirectory layout
+		$pathPrefix = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
+
+		$options += [
+			'pathPrefix' => $pathPrefix,
+		];
+
+		$exists = $backend->fileExists( [ 'src' => "{$pathPrefix}.png" ] );
+		if ( !$exists ) {
+			try {
+				self::renderTimeline( $timelinesrc, $options );
+			} catch ( TimelineException $e ) {
+				// TODO: add error tracking category
+				self::recordError( $e );
+				return $e->getHtml();
+			}
+		}
+
+		$map = $backend->getFileContents( [ 'src' => "{$pathPrefix}.map" ] );
+
+		$map = str_replace( ' >', ' />', $map );
+		$map = Html::rawElement(
+			'map',
+			[ 'name' => "timeline_{$hash}" ],
+			$map
+		);
+		$map = self::fixMap( $map );
+
+		$img = Html::element(
+			'img',
+			[
+				'usemap' => "#timeline_{$hash}",
+				'src' => "{$wgUploadPath}/timeline/{$hash}.png",
+			]
+		);
+		return Html::rawElement(
+			'div',
+			[ 'class' => 'timeline-wrapper' ],
+			$map . $img
+		);
+	}
+
+	/**
+	 * Render timeline and save to file backend
+	 *
+	 * A temporary factory directory is created to store things while they're
+	 * being made. The renderTimeline.sh script is invoked via BoxedCommand
+	 * which calls EasyTimeline.pl which calls ploticus.
+	 *
+	 * The rendered timeline is saved in the file backend using the provided
+	 * 'pathPrefix'.
+	 *
+	 * @param string $timelinesrc
+	 * @param array $options
+	 * @throws TimelineException
+	 */
+	private static function renderTimeline( $timelinesrc, array $options ) {
+		global $wgArticlePath, $wgTmpDirectory, $wgTimelinePerlCommand,
+			$wgTimelinePloticusCommand, $wgTimelineShell, $wgTimelineRsvgCommand,
+			$wgPhpCli;
+
+		/* temporary working directory to use */
+		$fuzz = md5( (string)mt_rand() );
+		// @phan-suppress-next-line PhanTypeSuspiciousStringExpression
+		$factoryDirectory = $wgTmpDirectory . "/ET.$fuzz";
+		self::createDirectory( $factoryDirectory, 0700 );
+		// Make sure we clean up the directory at the end of this function
+		$teardown = new ScopedCallback( function () use ( $factoryDirectory ) {
+			self::eraseDirectory( $factoryDirectory );
+		} );
+
+		$env = [];
+		// Set font directory if configured
+		if ( $options['font']['dir'] !== false ) {
+			$env['GDFONTPATH'] = $options['font']['dir'];
+		}
+
+		$command = self::boxedCommand()
+			->routeName( 'easytimeline' )
+			->params(
+				$wgTimelineShell,
+				'scripts/renderTimeline.sh'
+			)
+			->inputFileFromString( 'file', $timelinesrc )
+			// Save these as files
+			->outputFileToFile( 'file.png', "$factoryDirectory/file.png" )
+			->outputFileToFile( 'file.svg', "$factoryDirectory/file.svg" )
+			->outputFileToFile( 'file.map', "$factoryDirectory/file.map" )
+			// Save error text in memory
+			->outputFileToString( 'file.err' )
+			->includeStderr()
+			->environment( [
+				'ET_ARTICLEPATH' => $wgArticlePath,
+				'ET_FONTFILE' => $options['font']['file'],
+				'ET_PERL' => $wgTimelinePerlCommand,
+				'ET_PLOTICUS' => $wgTimelinePloticusCommand,
+				'ET_PHP' => $wgPhpCli,
+				'ET_RSVG' => $wgTimelineRsvgCommand,
+				'ET_SVG' => $options['createSvg'] ? 'yes' : 'no',
+			] + $env );
+		self::addScript( $command, 'renderTimeline.sh' );
+		self::addScript( $command, 'EasyTimeline.pl' );
+		self::addScript( $command, 'extractSVGSize.php' );
+
+		$result = $command->execute();
+		self::recordShellout( 'render_timeline' );
+
+		if ( $result->wasReceived( 'file.err' ) ) {
+			$error = $result->getFileContents( 'file.err' );
+			self::throwRawException( $error );
+		}
+
+		$stdout = $result->getStdout();
+		if ( $result->getExitCode() != 0 || !strlen( $stdout ) ) {
+			self::throwCompileException( $stdout, $options );
+		}
+
+		// Copy the output files into storage...
+		$pathPrefix = $options['pathPrefix'];
+		$ops = [];
+		$backend = self::getBackend();
+		$backend->prepare( [ 'dir' => dirname( $pathPrefix ) ] );
+		// Save .map, .png, .svg files
+		foreach ( [ 'map', 'png', 'svg' ] as $ext ) {
+			if ( $result->wasReceived( "file.$ext" ) ) {
+				$ops[] = [
+					'op' => 'store',
+					'src' => "{$factoryDirectory}/file.{$ext}",
+					'dst' => "{$pathPrefix}.{$ext}"
+				];
+			}
+		}
+		if ( !$backend->doQuickOperations( $ops )->isOK() ) {
+			throw new TimelineException( 'timeline-error-storage' );
+		}
+	}
+
+	/**
+	 * Return a BoxedCommand object
+	 *
+	 * @return BoxedCommand
+	 */
+	private static function boxedCommand() {
+		return MediaWikiServices::getInstance()->getShellCommandFactory()
+			->createBoxed()
+			->disableNetwork()
+			->firejailDefaultSeccomp();
+	}
+
+	/**
+	 * Add an input file from the scripts directory
+	 *
+	 * @param BoxedCommand $command
+	 * @param string $script
+	 */
+	private static function addScript( BoxedCommand $command, string $script ) {
+		$command->inputFileFromFile( "scripts/$script",
+			__DIR__ . "/../scripts/$script" );
+	}
+
+	/**
+	 * Creates the specified local directory if it does not exist yet.
+	 * Otherwise does nothing.
+	 *
+	 * @param string $path Local path to directory to be created.
+	 * @param int|null $mode Chmod value of the new directory.
+	 *
+	 * @throws TimelineException if the directory does not exist and could not
+	 * 	be created.
+	 */
+	private static function createDirectory( $path, $mode = null ) {
+		if ( !is_dir( $path ) ) {
+			$rc = wfMkdirParents( $path, $mode, __METHOD__ );
+			if ( !$rc ) {
+				throw new TimelineException( 'timeline-error-temp', [ $path ] );
+			}
+		}
+	}
+
+	/**
+	 * Deletes a local directory with no subdirectories with all files in it.
+	 *
+	 * @param string $dir Local path to the directory that is to be deleted.
+	 *
+	 * @return bool true on success, false on error
+	 */
+	private static function eraseDirectory( $dir ) {
+		if ( file_exists( $dir ) ) {
+			// @phan-suppress-next-line PhanPluginUseReturnValueInternalKnown
+			array_map( 'unlink', glob( "$dir/*", GLOB_NOSORT ) );
+			$rc = rmdir( $dir );
+			if ( !$rc ) {
+				wfDebug( __METHOD__ . ": Unable to remove directory $dir\n." );
+			}
+			return $rc;
+		}
+
+		/* Nothing to do */
+		return true;
+	}
+
+	/**
+	 * Given a user's input of font, identify the font
+	 * directory and font path that should be set
+	 *
+	 * @param ?string $input
+	 * @return array with 'dir', 'file' keys. Note that 'dir' might be false.
+	 */
+	private static function determineFont( $input ) {
+		global $wgTimelineFonts, $wgTimelineFontFile, $wgTimelineFontDirectory;
+		// Try the user-specified font, if invalid, use "default"
+		$fullPath = $wgTimelineFonts[$input] ?? $wgTimelineFonts['default'] ?? false;
+		if ( $fullPath !== false ) {
+			return [
+				'dir' => dirname( $fullPath ),
+				'file' => basename( $fullPath ),
+			];
+		}
+		// Try using deprecated globals
+		return [
+			'dir' => $wgTimelineFontDirectory,
+			'file' => $wgTimelineFontFile,
+		];
+	}
+
+	/**
+	 * Files are saved to the file backend $wgTimelineFileBackend if set. Else
+	 * default to FSFileBackend named 'timeline-backend'.
+	 *
+	 * @return FileBackend
+	 */
+	private static function getBackend(): FileBackend {
+		global $wgTimelineFileBackend, $wgUploadDirectory;
+
+		if ( $wgTimelineFileBackend ) {
+			return MediaWikiServices::getInstance()->getFileBackendGroup()
 				->get( $wgTimelineFileBackend );
-		} else {
-			$backend = new FSFileBackend(
+		}
+
+		if ( !self::$backend ) {
+			self::$backend = new FSFileBackend(
 				[
 					'name' => 'timeline-backend',
 					'wikiId' => wfWikiID(),
@@ -56,194 +313,112 @@ class Timeline {
 					'containerPaths' => [ 'timeline-render' => "{$wgUploadDirectory}/timeline" ],
 					'fileMode' => 0777,
 					'obResetFunc' => 'wfResetOutputBuffers',
-					'streamMimeFunc' => [ 'StreamFile', 'contentTypeFromPath' ]
+					'streamMimeFunc' => [ 'StreamFile', 'contentTypeFromPath' ],
+					'logger' => LoggerFactory::getInstance( 'timeline' ),
 				]
 			);
 		}
 
-		$hash = self::hash( $timelinesrc, $args );
-
-		// Storage destination path (excluding file extension)
-		$pathPrefix = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
-
-		$previouslyFailed = $backend->fileExists( [ 'src' => "{$pathPrefix}.err" ] );
-		$previouslyRendered = $backend->fileExists( [ 'src' => "{$pathPrefix}.png" ] );
-		if ( $previouslyRendered ) {
-			$timestamp = $backend->getFileTimestamp( [ 'src' => "{$pathPrefix}.png" ] );
-			$expired = ( $timestamp < $wgTimelineEpochTimestamp );
-		} else {
-			$expired = false;
-		}
-
-		// Create a new .map, .png (or .gif), and .err file as needed...
-		if ( $expired || ( !$previouslyRendered && !$previouslyFailed ) ) {
-			// @phan-suppress-next-line PhanTypeMismatchArgumentInternal Too aggressive inference
-			if ( !is_dir( $wgTmpDirectory ) ) {
-				// @phan-suppress-next-line PhanTypeMismatchArgumentInternal Too aggressive inference
-				mkdir( $wgTmpDirectory, 0777 );
-			}
-			$tmpFiles = [];
-			$tmpFile = TempFSFile::factory( 'timeline_' );
-			if ( !$tmpFile ) {
-				return "<div class=\"error timeline-error\">"
-					. wfMessage( 'timeline-error-temp' )->escaped()
-					. "</div>";
-			}
-			$tmpPath = $tmpFile->getPath();
-			// store plot data to file
-			file_put_contents( $tmpPath, $timelinesrc );
-
-			// temp files to clean up
-			foreach ( [ 'map', 'png', 'svg', 'err' ] as $ext ) {
-				$fileCollect = new TempFSFile( "{$tmpPath}.{$ext}" );
-				// clean this up
-				$fileCollect->autocollect();
-				$tmpFiles[] = $fileCollect;
-			}
-
-			// Get command for ploticus to read the user input and output an error,
-			// map, and rendering (png or gif) file under the same dir as the temp file.
-			$cmdline = wfEscapeShellArg( $wgTimelinePerlCommand, $wgTimelineFile )
-				. ( $svg2png ? " -s " : "" )
-				. " -i " . wfEscapeShellArg( $tmpPath )
-				. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
-				// @phan-suppress-next-line PhanTypeMismatchArgument Too aggressive inference
-				. " -T " . wfEscapeShellArg( $wgTmpDirectory )
-				. " -A " . wfEscapeShellArg( $wgArticlePath )
-				. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
-
-			$env = [];
-			if ( $wgTimelineFontDirectory !== false ) {
-				$env['GDFONTPATH'] = $wgTimelineFontDirectory;
-			}
-
-			// Actually run the command...
-			wfDebug( "Timeline cmd: $cmdline\n" );
-			$retVal = null;
-			$ret = wfShellExec( $cmdline, $retVal, $env );
-
-			// If running in svg2png mode, create the PNG file from the SVG
-			if ( $svg2png ) {
-				// Read the default timeline image size from the DVG file
-				$svgFilename = "{$tmpPath}.svg";
-				Wikimedia\suppressWarnings();
-				$svgHandle = fopen( $svgFilename, "r" );
-				Wikimedia\restoreWarnings();
-				if ( !$svgHandle ) {
-					throw new Exception( "Unable to open file $svgFilename for reading the timeline size" );
-				}
-				$svgWidth = '';
-				$svgHeight = '';
-				while ( !feof( $svgHandle ) ) {
-					$line = fgets( $svgHandle );
-					if ( preg_match( '/width="([0-9.]+)" height="([0-9.]+)"/', $line, $matches ) ) {
-						$svgWidth = $matches[1];
-						$svgHeight = $matches[2];
-						break;
-					}
-				}
-				fclose( $svgHandle );
-
-				$svgHandler = new SvgHandler();
-				wfDebug( "Rasterizing PNG timeline from SVG $svgFilename, size $svgWidth x $svgHeight\n" );
-				$rasterizeResult = $svgHandler->rasterize(
-					$svgFilename,
-					"{$tmpPath}.png",
-					$svgWidth,
-					$svgHeight
-				);
-				if ( $rasterizeResult !== true ) {
-					return "<div class=\"error\" dir=\"ltr\">FAIL: " . $rasterizeResult->getHtmlMsg() . "</div>";
-				}
-			}
-
-			// Copy the output files into storage...
-			// @TODO: store error files in another container or not at all?
-			$ops = [];
-			$backend->prepare( [ 'dir' => dirname( $pathPrefix ) ] );
-			foreach ( [ 'map', 'png', 'err' ] as $ext ) {
-				if ( file_exists( "{$tmpPath}.{$ext}" ) ) {
-					$ops[] = [ 'op' => 'store', 'src' => "{$tmpPath}.{$ext}", 'dst' => "{$pathPrefix}.{$ext}" ];
-				}
-			}
-			if ( !$backend->doQuickOperations( $ops )->isOK() ) {
-				return "<div class=\"error timeline-error\">"
-					. wfMessage( 'timeline-error-storage' )->escaped()
-					. "</div>";
-			}
-
-			if ( $ret == "" || $retVal > 0 ) {
-				return "<div class=\"error timeline-error\">"
-					. wfMessage( 'timeline-error-command' )->rawParams( htmlspecialchars( $cmdline ) )->escaped()
-					. "</div>";
-			}
-		}
-
-		$err = $backend->getFileContents( [ 'src' => "{$pathPrefix}.err" ] );
-
-		if ( $err != "" ) {
-			// Convert the error from poorly-sanitized HTML to plain text
-			$err = strtr( $err, [
-				'</p><p>' => "\n\n",
-				'<p>' => '',
-				'</p>' => '',
-				'<b>' => '',
-				'</b>' => '',
-				'<br>' => "\n"
-			] );
-			$err = Sanitizer::decodeCharReferences( $err );
-
-			// Now convert back to HTML again
-			$encErr = nl2br( htmlspecialchars( $err ) );
-			$txt = "<div class=\"error timeline-error\" dir=\"ltr\">$encErr</div>";
-		} else {
-			$map = $backend->getFileContents( [ 'src' => "{$pathPrefix}.map" ] );
-
-			$map = str_replace( ' >', ' />', $map );
-			$map = "<map name=\"timeline_" . htmlspecialchars( $hash ) . "\">{$map}</map>";
-			$map = self::fixMap( $map );
-
-			$url = "{$wgUploadPath}/timeline/{$hash}.png";
-			$txt = "<div class=\"timeline-wrapper\">" . $map
-				. "<img usemap=\"#timeline_" . htmlspecialchars( $hash )
-				. "\" " . "src=\"" . htmlspecialchars( $url ) . "\">" . "</div>";
-
-			if ( $expired ) {
-				// Replacing an older file, we may need to purge the old one.
-				global $wgUseCdn;
-				if ( $wgUseCdn ) {
-					$u = new CdnCacheUpdate( [ $url ] );
-					$u->doUpdate();
-				}
-			}
-		}
-
-		return $txt;
+		return self::$backend;
 	}
 
 	/**
-	 * Generate a hash of the plot data
+	 * Cleanup and throw errors from EasyTimeline.pl
 	 *
-	 * $args must be checked, because the same source text may be used with
-	 * different arguments.
-	 *
-	 * Uses global $wgRenderHashAppend to salt / vary the hash. Will invalidate
-	 * the cache as a side effect though old files will be left in the file
-	 * backend.
-	 *
-	 * @param string $timelinesrc
-	 * @param array $args
-	 * @return string hash
+	 * @param string $err
+	 * @throws TimelineException
+	 * @return never
 	 */
-	public static function hash( $timelinesrc, array $args ) {
-		global $wgRenderHashAppend;
+	private static function throwRawException( $err ) {
+		// Convert the error from poorly-sanitized HTML to plain text
+		$err = strtr( $err, [
+			'</p><p>' => "\n\n",
+			'<p>' => '',
+			'</p>' => '',
+			'<b>' => '',
+			'</b>' => '',
+			'<br>' => "\n"
+		] );
+		$err = Sanitizer::decodeCharReferences( $err );
 
-		$hash = md5( $timelinesrc . implode( '', $args ) );
-		if ( $wgRenderHashAppend != '' ) {
-			$hash = md5( $hash . $wgRenderHashAppend );
+		// Now convert back to HTML again
+		$encErr = nl2br( htmlspecialchars( $err ) );
+		$params = [ Html::rawElement(
+			'div',
+			[
+				'class' => [ 'error', 'timeline-error' ],
+				'lang' => 'en',
+				'dir' => 'ltr',
+			],
+			$encErr
+		) ];
+		throw new TimelineException( 'timeline-compilererr', $params );
+	}
+
+	/**
+	 * Get error information from the output returned by scripts/renderTimeline.sh
+	 * and throw a relevant error.
+	 *
+	 * @param string $stdout
+	 * @param array $options
+	 * @throws TimelineException
+	 * @return never
+	 */
+	private static function throwCompileException( $stdout, $options ) {
+		$extracted = self::extractMessage( $stdout );
+		if ( $extracted ) {
+			$message = $extracted[0];
+			$params = $extracted[1];
+		} else {
+			$message = 'timeline-compilererr';
+			$params = [];
 		}
+		// Add stdout (always in English) as a param, wrapped in <pre>
+		$params[] = Html::element(
+			'pre',
+			[ 'lang' => 'en', 'dir' => 'ltr' ],
+			$stdout
+		);
+		throw new TimelineException( $message, $params );
+	}
 
-		return $hash;
+	/**
+	 * Parse the script return value and extract any mw-msg lines. Modify the
+	 * text to remove the lines. Return the first mw-msg line as a Message
+	 * object. If there was no mw-msg line, return null.
+	 *
+	 * @param string &$stdout
+	 * @return array|null
+	 */
+	private static function extractMessage( &$stdout ) {
+		$filteredStdout = '';
+		$messageParams = [];
+		foreach ( explode( "\n", $stdout ) as $line ) {
+			if ( preg_match( '/^mw-msg:\t/', $line ) ) {
+				if ( !$messageParams ) {
+					$messageParams = array_slice( explode( "\t", $line ), 1 );
+				}
+			} else {
+				if ( $filteredStdout !== '' ) {
+					$filteredStdout .= "\n";
+				}
+				$filteredStdout .= $line;
+			}
+		}
+		$stdout = $filteredStdout;
+		if ( $messageParams ) {
+			$messageName = array_shift( $messageParams );
+			// Used messages:
+			// - timeline-readerr
+			// - timeline-scripterr
+			// - timeline-perlnotexecutable
+			// - timeline-ploticusnotexecutable
+			// - timeline-compilererr
+			// - timeline-rsvg-error
+			return [ $messageName, $messageParams ];
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -258,12 +433,12 @@ class Timeline {
 		$status = $doc->loadXML( $html );
 		Wikimedia\restoreWarnings();
 		if ( !$status ) {
-			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
+			throw new TimelineException( 'timeline-invalidmap' );
 		}
 
 		$map = $doc->firstChild;
 		if ( strtolower( $map->nodeName ) !== 'map' ) {
-			return '<div class="error">' . wfMessage( 'timeline-invalidmap' )->escaped() . '</div>';
+			throw new TimelineException( 'timeline-invalidmap' );
 		}
 		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		$name = $map->attributes->getNamedItem( 'name' )->value;
@@ -307,5 +482,25 @@ class Timeline {
 		$res .= '</map>';
 
 		return $res;
+	}
+
+	/**
+	 * Track how often we do each type of shellout in statsd
+	 *
+	 * @param string $type Type of shellout
+	 */
+	private static function recordShellout( $type ) {
+		$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
+		$statsd->increment( "timeline_shell.$type" );
+	}
+
+	/**
+	 * Track how often each error is received in statsd
+	 *
+	 * @param TimelineException $ex
+	 */
+	private static function recordError( TimelineException $ex ) {
+		$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
+		$statsd->increment( "timeline_error.{$ex->getStatsdKey()}" );
 	}
 }

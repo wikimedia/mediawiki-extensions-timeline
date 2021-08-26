@@ -6,7 +6,7 @@
 	"license-name": "GPL-2.0-only",
 	"type": "parserhook",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.36.0"
 	},
 	"MessagesDirs": {
 		"Timeline": [
@@ -14,7 +14,8 @@
 		]
 	},
 	"AutoloadClasses": {
-		"Timeline": "includes/Timeline.php"
+		"Timeline": "includes/Timeline.php",
+		"TimelineException": "includes/TimelineException.php"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {
@@ -44,12 +45,8 @@
 		"TimelinePerlCommand": {
 			"value": "/usr/bin/perl"
 		},
-		"TimelineFile": {
-			"value": "EasyTimeline.pl",
-			"path": true
-		},
-		"TimelineEpochTimestamp": {
-			"value": "20120101000000"
+		"TimelineFonts": {
+			"value": {}
 		},
 		"TimelineFontFile": {
 			"value": "FreeSans"
@@ -59,6 +56,12 @@
 		},
 		"TimelineFileBackend": {
 			"value": ""
+		},
+		"TimelineShell": {
+			"value": "/bin/bash"
+		},
+		"TimelineRsvgCommand": {
+			"value": "/usr/bin/rsvg-convert"
 		}
 	},
 	"manifest_version": 2

@@ -13,5 +13,11 @@
 	"timeline-error-command": "Used as error message when executing a command failed. $1 is the command that was run.",
 	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\".",
 	"timeline-tracking-category": "Name of the tracking category for pages using this extension",
-	"timeline-tracking-category-desc": "Description on [[Special:TrackingCategories]] for the {{msg-mw|timeline-tracking-category}} tracking category."
+	"timeline-tracking-category-desc": "Description on [[Special:TrackingCategories]] for the {{msg-mw|timeline-tracking-category}} tracking category.",
+	"timeline-readerr": "Displayed if the extension could not read a file. $1 is the path to the file that could not be read.",
+	"timeline-scripterr": "Displayed when a script fails to run for unspecified reasons",
+	"timeline-perlnotexecutable": "Displayed when Perl cannot be executed. $1 is the path to the Perl binary",
+	"timeline-ploticusnotexecutable": "Displayed when Ploticus cannot be executed. $1 is the path to the Ploticus binary",
+	"timeline-compilererr": "Displayed if EasyTimeline could not compile the input text. $1 is any error output wrapped in a <pre> tag",
+	"timeline-rsvg-error": "Displayed if rsvg could not convert the SVG into a PNG. $1 is any error output wrapped in a <pre> tag"
 }
