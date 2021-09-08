@@ -77,7 +77,9 @@ class Timeline {
 
 		// Create a new .map, .png (or .gif), and .err file as needed...
 		if ( $expired || ( !$previouslyRendered && !$previouslyFailed ) ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentInternal Too aggressive inference
 			if ( !is_dir( $wgTmpDirectory ) ) {
+				// @phan-suppress-next-line PhanTypeMismatchArgumentInternal Too aggressive inference
 				mkdir( $wgTmpDirectory, 0777 );
 			}
 			$tmpFiles = [];
@@ -105,6 +107,7 @@ class Timeline {
 				. ( $svg2png ? " -s " : "" )
 				. " -i " . wfEscapeShellArg( $tmpPath )
 				. " -m -P " . wfEscapeShellArg( $wgTimelinePloticusCommand )
+				// @phan-suppress-next-line PhanTypeMismatchArgument Too aggressive inference
 				. " -T " . wfEscapeShellArg( $wgTmpDirectory )
 				. " -A " . wfEscapeShellArg( $wgArticlePath )
 				. " -f " . wfEscapeShellArg( $wgTimelineFontFile );
