@@ -4,6 +4,7 @@
 			"AS",
 			"Ahonc",
 			"Base",
+			"DDPAT",
 			"Piramidion",
 			"Ата"
 		]
@@ -14,5 +15,7 @@
 	"timeline-error-command": "Помилка хронології. Команда була: $1",
 	"timeline-invalidmap": "Неправильна карта зображення, створена EasyTimeline",
 	"timeline-tracking-category": "Сторінки із включенням Timeline",
-	"timeline-tracking-category-desc": "Сторінка містить тег <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "Сторінка містить тег <code><nowiki><timeline></nowiki></code>",
+	"timeline-readerr": "Неможливо прочитати файл $1.",
+	"timeline-scripterr": "Не вдається запустити віддалений скрипт: $1 закрито з кодом статусу $2\n$3"
 }

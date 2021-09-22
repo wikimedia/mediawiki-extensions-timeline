@@ -13,5 +13,11 @@
 	"timeline-error-command": "Timeline-Fehler. Kommando war: $1",
 	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert",
 	"timeline-tracking-category": "Seiten, die Timeline verwenden",
-	"timeline-tracking-category-desc": "Diese Seite enthält ein <code><nowiki><timeline></nowiki></code>-Tag"
+	"timeline-tracking-category-desc": "Diese Seite enthält ein <code><nowiki><timeline></nowiki></code>-Tag",
+	"timeline-readerr": "Die Datei $1 kann nicht gelesen werden.",
+	"timeline-scripterr": "Remote-Skript kann nicht ausgeführt werden: $1 wurde mit Statuscode $2 beendet\n$3",
+	"timeline-perlnotexecutable": "Perl konnte nicht ausgeführt werden: $1 ist keine ausführbare Datei. Stelle sicher, dass <code>$wgTimelinePerlCommand</code> korrekt festgelegt ist.",
+	"timeline-ploticusnotexecutable": "Ploticus  konnte nicht ausgeführt werden: $1 ist keine ausführbare Datei. Stelle sicher, dass <code>$wgTimelinePloticusCommand</code> richtig konfiguriert ist.",
+	"timeline-compilererr": "Die Eingabe für EasyTimeline kann nicht kompiliert werden:\n$1",
+	"timeline-rsvg-error": "SVG konnte nicht zu PNG konvertiert werden:\n$1"
 }
