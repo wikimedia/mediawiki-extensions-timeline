@@ -10,5 +10,11 @@
 	"timeline-error-command": "Eror cronologich. El comand l'era: $1",
 	"timeline-invalidmap": "Mappa d'imagin minga valida ingenerada da EasyTimeline",
 	"timeline-tracking-category": "Pagine che droven Timeline",
-	"timeline-tracking-category-desc": "La pagina la conten l'eticheta <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "La pagina la conten l'eticheta <code><nowiki><timeline></nowiki></code>",
+	"timeline-readerr": "Impossibil lensger el fail $1.",
+	"timeline-scripterr": "Impossibel fà sgirà el script distant: $1 l'è vegnud foeura cont el codes de stat $2\n$3",
+	"timeline-perlnotexecutable": "Impossibel eseguì Perl: $1 l'è minga on fail eseguibil. Scicuréss che <code>$wgTimelinePerlCommand</code> el sia impostad a la sgiusta manera.",
+	"timeline-ploticusnotexecutable": "Impossibil eseguì Ploticus: $1 l'è minga on fail eseguibil. Sicuress che <code>$wgTimelinePloticusCommand</code> el sia impostad a la sgiusta manera.",
+	"timeline-compilererr": "Impossibil compilà el dad in entrada EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Impossibil trasformà on SVG in on PNG:\n$1"
 }

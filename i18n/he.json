@@ -12,5 +12,11 @@
 	"timeline-error-command": "שגיאה בציר זמן. הפקודה הייתה: $1",
 	"timeline-invalidmap": "נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline",
 	"timeline-tracking-category": "דפים המשתמשים בציר זמן",
-	"timeline-tracking-category-desc": "הדף הזה מכיל תג <code><nowiki><timeline></nowiki></code>."
+	"timeline-tracking-category-desc": "הדף הזה מכיל תג <code><nowiki><timeline></nowiki></code>.",
+	"timeline-readerr": "לא נין לקרוא את הקובץ $1.",
+	"timeline-scripterr": "לא ניתן להריץ תסריט מרוחק: $1 יצא עם קוד מצב $2\n$3",
+	"timeline-perlnotexecutable": "לא היה ניתן להריץ את Perl: הקובץ $1 אינו בר־הרצה. נא לוודא ש־<code dir=\"ltr\">$wgTimelinePerlCommand</code> מוגדר נכון.",
+	"timeline-ploticusnotexecutable": "לא היה ניתן להריץ את Ploticus: הקובץ $1 אינו בר־הרצה. נא לוודא ש־<code dir=\"ltr\">$wgTimelinePloticusCommand</code> מוגדר נכון.",
+	"timeline-compilererr": "לא ניתן להדר קלט EasyTimeline:\n$1",
+	"timeline-rsvg-error": "לא ניתן להמיר SVG ל־PNG:\n$1"
 }

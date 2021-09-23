@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Raimond Spekking",
 			"Raymond",
 			"Shirayuki",
@@ -18,6 +19,6 @@
 	"timeline-scripterr": "Displayed when a script fails to run for unspecified reasons",
 	"timeline-perlnotexecutable": "Displayed when Perl cannot be executed. $1 is the path to the Perl binary",
 	"timeline-ploticusnotexecutable": "Displayed when Ploticus cannot be executed. $1 is the path to the Ploticus binary",
-	"timeline-compilererr": "Displayed if EasyTimeline could not compile the input text. $1 is any error output wrapped in a <pre> tag",
-	"timeline-rsvg-error": "Displayed if rsvg could not convert the SVG into a PNG. $1 is any error output wrapped in a <pre> tag"
+	"timeline-compilererr": "Displayed if EasyTimeline could not compile the input text. $1 is any error output wrapped in a <nowiki><pre></nowiki> tag.",
+	"timeline-rsvg-error": "Displayed if rsvg could not convert the SVG into a PNG. $1 is any error output wrapped in a <nowiki><pre></nowiki> tag."
 }

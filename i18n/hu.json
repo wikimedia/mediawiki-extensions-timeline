@@ -3,10 +3,13 @@
 		"authors": [
 			"Dani",
 			"Glanthor Reviol",
+			"Hanna Tardos",
 			"Tacsipacsi"
 		]
 	},
 	"timeline-desc": "Idővonal készítése a <code>&lt;timeline&gt;</code> tag segítségével",
 	"timeline-invalidmap": "Az EasyTimeline érvénytelen image mapet generált",
-	"timeline-tracking-category": "Idővonalat használó lapok"
+	"timeline-tracking-category": "Idővonalat használó lapok",
+	"timeline-readerr": "A(z) $1 fájl olvasása sikertelen.",
+	"timeline-rsvg-error": "SVG PNG-vé konvertálása sikertelen: $1"
 }
