@@ -10,5 +10,11 @@
 	"timeline-error-command": "Грешка во времеследот. Наредбата гласеше: $1",
 	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline",
 	"timeline-tracking-category": "Страници што користат Времеслед",
-	"timeline-tracking-category-desc": "Страницава содржи ознака <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "Страницава содржи ознака <code><nowiki><timeline></nowiki></code>",
+	"timeline-readerr": "Не можам да ја прочитам податотеката $1.",
+	"timeline-scripterr": "Не можам да ја пуштам оддалечената скрипта: $1 излезе со состојбениот код $2\n$3",
+	"timeline-perlnotexecutable": "Perl не може да се изврши: $1 не е извршна податотека. Проверете дали <code>$wgTimelinePerlCommand</code> е правилно зададено.",
+	"timeline-ploticusnotexecutable": "Не можев да го извршам Ploticus: $1 не е извршна податотека. Проверете дали <code>$wgTimelinePloticusCommand</code> е правилно зададено.",
+	"timeline-compilererr": "Не можам да го срочам вносот на EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Не можам да претворам SVG во PNG:\n$1"
 }
