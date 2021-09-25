@@ -209,7 +209,7 @@ class Timeline {
 	 */
 	private static function boxedCommand() {
 		return MediaWikiServices::getInstance()->getShellCommandFactory()
-			->createBoxed()
+			->createBoxed( 'easytimeline' )
 			->disableNetwork()
 			->firejailDefaultSeccomp();
 	}
