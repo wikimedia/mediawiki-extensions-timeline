@@ -14,5 +14,9 @@
 	"timeline-error-command": "타임라인 오류입니다. 명령: $1",
 	"timeline-invalidmap": "EasyTimeline이 잘못된 영상 지도를 생성했습니다",
 	"timeline-tracking-category": "타임라인을 사용하는 문서",
-	"timeline-tracking-category-desc": "문서에 <code><nowiki><timeline></nowiki></code> 태그를 포함하고 있습니다"
+	"timeline-tracking-category-desc": "문서에 <code><nowiki><timeline></nowiki></code> 태그를 포함하고 있습니다",
+	"timeline-readerr": "$1 파일을 읽을 수 없습니다.",
+	"timeline-perlnotexecutable": "Perl을 실행하지 못했습니다: $1은(는) 실행 가능한 파일이 아닙니다. <code>$wgTimelinePerlCommand</code>가 올바르게 설정되었는지 확인하십시오.",
+	"timeline-ploticusnotexecutable": "Ploticus를 실행하지 못했습니다: $1은(는) 실행 가능한 파일이 아닙니다. <code>$wgTimelinePloticusCommand</code>가 올바르게 설정되었는지 확인하십시오.",
+	"timeline-rsvg-error": "SVG를 PNG로 변환할 수 없습니다:\n$1"
 }

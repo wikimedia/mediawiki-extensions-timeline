@@ -4,9 +4,11 @@
 			"Bencmq",
 			"Chenxiaoqino",
 			"Liuxinyu970226",
+			"Shimamura Sakura",
 			"Shinjiman",
 			"Shizhao",
 			"SomeyaMako",
+			"TsuyaMarisa",
 			"Xiaomingyan"
 		]
 	},
@@ -16,5 +18,10 @@
 	"timeline-error-command": "时间线错误。命令为：$1",
 	"timeline-invalidmap": "EasyTimeline生成的无效图片地图",
 	"timeline-tracking-category": "使用时间线的页面",
-	"timeline-tracking-category-desc": "页面包含<code><nowiki><timeline></nowiki></code>标签"
+	"timeline-tracking-category-desc": "页面包含<code><nowiki><timeline></nowiki></code>标签",
+	"timeline-readerr": "无法读取文件$1。",
+	"timeline-scripterr": "无法运行远程脚本：$1以状态码$2退出了\n$3",
+	"timeline-perlnotexecutable": "无法执行Perl: $1不是可执行文件。请确保正确设置<code>$wgTimelinePerlCommand</code>。",
+	"timeline-compilererr": "无法编译 EasyTimeline 输入：\n$1",
+	"timeline-rsvg-error": "无法将 SVG 转换为 PNG: $1"
 }

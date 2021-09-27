@@ -17,5 +17,9 @@
 	"timeline-tracking-category": "Сторінки із включенням Timeline",
 	"timeline-tracking-category-desc": "Сторінка містить тег <code><nowiki><timeline></nowiki></code>",
 	"timeline-readerr": "Неможливо прочитати файл $1.",
-	"timeline-scripterr": "Не вдається запустити віддалений скрипт: $1 закрито з кодом статусу $2\n$3"
+	"timeline-scripterr": "Не вдається запустити віддалений скрипт: $1 закрито з кодом статусу $2\n$3",
+	"timeline-perlnotexecutable": "Не вдалося виконати Perl: $1 не є виконуваним файлом. Переконайтеся, що <code>$wgTimelinePerlCommand</code> встановлено правильно.",
+	"timeline-ploticusnotexecutable": "Не вдалося виконати Ploticus: $1 не є виконуваним файлом. Переконайтеся, що <code>$wgTimelinePloticusCommand</code> встановлено правильно.",
+	"timeline-compilererr": "Не вдається зібрати вхід EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Не вдається конвертувати SVG у PNG:\n$1"
 }
