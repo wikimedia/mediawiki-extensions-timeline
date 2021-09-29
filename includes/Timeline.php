@@ -10,7 +10,7 @@ class Timeline {
 	/**
 	 * Bump when some change requires re-rendering all timelines
 	 */
-	private const CACHE_VERSION = 1;
+	private const CACHE_VERSION = 2;
 
 	/** @var FileBackend|null instance cache */
 	private static $backend;
