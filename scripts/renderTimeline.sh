@@ -50,7 +50,7 @@ runEasyTimeline() {
 		scripts/EasyTimeline.pl \
 		-i "file" \
 		-m -P "$ET_PLOTICUS" \
-		-t /tmp \
+		-T /tmp \
 		-A "$ET_ARTICLEPATH" \
 		-f "$ET_FONTFILE" \
 		"$svg"
