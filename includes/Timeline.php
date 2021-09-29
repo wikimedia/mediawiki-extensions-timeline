@@ -91,7 +91,13 @@ class Timeline {
 			[ 'name' => "timeline_{$hash}" ],
 			$map
 		);
-		$map = self::fixMap( $map );
+		try {
+			$map = self::fixMap( $map );
+		} catch ( TimelineException $e ) {
+			// TODO: add error tracking category
+			self::recordError( $e );
+			return $e->getHtml();
+		}
 
 		$img = Html::element(
 			'img',
