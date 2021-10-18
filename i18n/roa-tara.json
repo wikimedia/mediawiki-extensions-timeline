@@ -10,5 +10,11 @@
 	"timeline-error-command": "Errore d'a linèe d'u timebe. 'U comande ere: $1",
 	"timeline-invalidmap": "Immaggine d'a mappe invalide generate da EasyTimeline",
 	"timeline-tracking-category": "Pàggene ca ausane Timeline",
-	"timeline-tracking-category-desc": "Sta pàgene tène 'nu tag <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "Sta pàgene tène 'nu tag <code><nowiki><timeline></nowiki></code>",
+	"timeline-readerr": "Non ge riesche a leggere 'u file $1.",
+	"timeline-scripterr": "'Mbossibbele langià 'u script remote: $1 ave assute cu 'u codece de state $2\n$3",
+	"timeline-perlnotexecutable": "Perl non ge pò essere langiate: $1 non g'è 'nu file eseguibbele. Condrolle ca <code>$wgTimelinePerlCommand</code> ha state configurate accumme se deve.",
+	"timeline-ploticusnotexecutable": "Ploticus non ge pò essere eseguite: $1 non g'è 'nu fail eseguibbele. Condrolle ca <code>$wgTimelinePloticusCommand</code> ha state configurate accumme se deve.",
+	"timeline-compilererr": "'Mbossibbele combilà 'u 'ngresse de EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Non ge riesche a convertì SVG jndr'à PNG:\n$1"
 }

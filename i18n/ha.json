@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Em-em",
 			"Gwanki"
 		]
 	},
@@ -8,6 +9,6 @@
 	"timeline-scripterr": "Ba zai gudanar da rubutun nesa ba: $1 an gamsu da matsayin bayanai $2\n$3",
 	"timeline-perlnotexecutable": "Ba za a iya kashe Perl ba: $1 ba fayil ne mai aiwatarwa ba.  Tabbatar cewa an saita <code>$wgTimelinePerlCommand</code> daidai.",
 	"timeline-ploticusnotexecutable": "Ba za a iya kashe Ploticus ba: $1 ba fayil ne mai aiwatarwa ba.  Tabbatar cewa an saita <code>$wgTimelinePloticusCommand</code> daidai.",
-	"timeline-compilererr": "$1",
+	"timeline-compilererr": "Gaza samun hade sanya LokacinSauki: $1",
 	"timeline-rsvg-error": "Ba zai sauya SVG zuwa PNG ba:\n$1"
 }
