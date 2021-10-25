@@ -35,12 +35,12 @@ class Timeline {
 	 * Specially catch any TimelineExceptions and display a nice error for
 	 * users and record it in stats.
 	 *
-	 * @param string $timelinesrc
+	 * @param string|null $timelinesrc
 	 * @param array $args
 	 * @param Parser $parser
 	 * @return string HTML
 	 */
-	public static function onTagHook( $timelinesrc, array $args, Parser $parser ) {
+	public static function onTagHook( ?string $timelinesrc, array $args, Parser $parser ) {
 		global $wgUploadPath;
 
 		$pOutput = $parser->getOutput();
@@ -53,6 +53,9 @@ class Timeline {
 			'createSvg' => $createSvg,
 			'font' => self::determineFont( $args['font'] ?? null ),
 		];
+		if ( $timelinesrc === null ) {
+			$timelinesrc = '';
+		}
 
 		// Input for cache key
 		$cacheOptions = [
@@ -127,7 +130,7 @@ class Timeline {
 	 * @param array $options
 	 * @throws TimelineException
 	 */
-	private static function renderTimeline( $timelinesrc, array $options ) {
+	private static function renderTimeline( string $timelinesrc, array $options ) {
 		global $wgArticlePath, $wgTmpDirectory, $wgTimelinePerlCommand,
 			$wgTimelinePloticusCommand, $wgTimelineShell, $wgTimelineRsvgCommand,
 			$wgPhpCli;
