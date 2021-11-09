@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Santu"
 		]
 	},
-	"timeline-desc": "Nzirisci li tag <code>&lt;timeline&gt;</code> pi criari gràfichi timpurali"
+	"timeline-desc": "Nzirisci li tag <code>&lt;timeline&gt;</code> pi criari gràfichi timpurali",
+	"timeline-tracking-category-desc": "La pàggina ncludi nu tag <code><nowiki><timeline></nowiki></code>"
 }
