@@ -1,8 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Artsiom91"
+			"Artsiom91",
+			"ZlyiLev"
 		]
 	},
-	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць часавыя дыяграмы"
+	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць часавыя дыяграмы",
+	"timeline-ploticusnotexecutable": "Ploticus не можа быць выкананы: $1 не з’яўляецца выкананым файлам. Пераканайцеся, што <code>$wgTimelinePloticusCommand</code> выстаўлены карэктна."
 }
