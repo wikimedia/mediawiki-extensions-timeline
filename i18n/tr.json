@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"BaRaN6161 TURK",
-			"Joseph"
+			"Joseph",
+			"SaldırganSincap"
 		]
 	},
 	"timeline-desc": "Zaman çizelgesi oluşturmak için <code>&lt;timeline&gt;</code> etiketini ekler",
@@ -11,5 +12,11 @@
 	"timeline-error-command": "Zaman çizelgesi hatası. Komut şuydu: $1",
 	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu",
 	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar",
-	"timeline-tracking-category-desc": "Sayfa bir <code><nowiki><timeline></nowiki></code> etiketi içeriyor"
+	"timeline-tracking-category-desc": "Sayfa bir <code><nowiki><timeline></nowiki></code> etiketi içeriyor",
+	"timeline-readerr": "$1 dosyası okunamıyor.",
+	"timeline-scripterr": "Uzak komut dizisi çalıştırılamıyor: $1, durum kodu $2 ile çıkıldı\n$3",
+	"timeline-perlnotexecutable": "Perl yürütülemedi: $1 yürütülebilir bir dosya değil. <code>$wgTimelinePerlCommand</code> öğesinin doğru ayarlandığından emin olun.",
+	"timeline-ploticusnotexecutable": "Ploticus yürütülemedi: $1 yürütülebilir bir dosya değil. <code>$wgTimelinePloticusCommand</code> öğesinin doğru ayarlandığından emin olun.",
+	"timeline-compilererr": "EasyTimeline girişi derlenemiyor:\n$1",
+	"timeline-rsvg-error": "SVG, PNG'ye dönüştürülemiyor:\n$1"
 }
