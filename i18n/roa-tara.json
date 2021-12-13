@@ -5,6 +5,9 @@
 		]
 	},
 	"timeline-desc": "Aggiunge 'u tag <code>&lt;timeline&gt;</code> pe ccreà le linee de timbe",
+	"timeline-error-storage": "Errore d'a linèe d'u timebe. Non ge pozze reggistrà le file de resultate",
+	"timeline-error-temp": "Errore d'a linèe d'u timebe. Non ge pozze ccrejà le file temboranèe",
+	"timeline-error-command": "Errore d'a linèe d'u timebe. 'U comande ere: $1",
 	"timeline-invalidmap": "Immaggine d'a mappe invalide generate da EasyTimeline",
 	"timeline-tracking-category": "Pàggene ca ausane Timeline",
 	"timeline-tracking-category-desc": "Sta pàgene tène 'nu tag <code><nowiki><timeline></nowiki></code>"

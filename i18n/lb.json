@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Les Meloures"
 		]
 	},
 	"timeline-desc": "Setzt den <code>&lt;timeline&gt;</code> Tag dobäi fir Zäitlinnen ze maachen",
-	"timeline-invalidmap": "EasyTimeLine huet e Bild vun enger Kaart generéiert dat net valabel ass"
+	"timeline-invalidmap": "EasyTimeLine huet e Bild vun enger Kaart generéiert dat net valabel ass",
+	"timeline-tracking-category": "Säiten déi Timeline benotzen"
 }

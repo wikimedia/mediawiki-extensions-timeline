@@ -5,6 +5,9 @@
 		]
 	},
 	"timeline-desc": "Legger til taggen <code>&lt;timeline&gt;</code> for å opprette tidslinjer",
+	"timeline-error-storage": "Tidslinjefeil. Kunne ikke lagre resultatfiler",
+	"timeline-error-temp": "Tidslinjefeil. Kunne ikke opprette midlertidige filer",
+	"timeline-error-command": "Tidslinjefeil. Kommandoen var: $1",
 	"timeline-invalidmap": "Ugyldig bildekart opprettet av EasyTimeline",
 	"timeline-tracking-category": "Sider som bruker Timeline",
 	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg"

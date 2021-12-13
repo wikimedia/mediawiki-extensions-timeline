@@ -7,6 +7,9 @@
 		]
 	},
 	"timeline-desc": "Adiciona o elemento <code>&lt;timeline&gt;</code> para criar cronologias",
+	"timeline-error-storage": "Erro cronológico. Não foi possível armazenar os ficheiros de saída",
+	"timeline-error-temp": "Erro cronológico. Não foi possível criar os ficheiros temporários",
+	"timeline-error-command": "Erro cronológico. O comando foi: $1",
 	"timeline-invalidmap": "Foi gerado um mapa de imagem inválido pelo EasyTimeline",
 	"timeline-tracking-category": "Páginas que usam Timeline",
 	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code><nowiki><timeline></nowiki></code>"

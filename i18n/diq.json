@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Aspar"
+			"Aspar",
+			"Mirzali"
 		]
 	},
 	"timeline-desc": "qey vıraştışê teqwimi na <code>&lt;timeline&gt;</code> etiket têare keno.",
-	"timeline-invalidmap": "hetê easyTimeline ra yew xeritaya resmi ya  nemeqbul vıraziya."
+	"timeline-invalidmap": "hetê easyTimeline ra yew xeritaya resmi ya  nemeqbul vıraziya.",
+	"timeline-tracking-category": "Pelê ke xetay zemani gureynenê",
+	"timeline-tracking-category-desc": "Pele etiketê <code><nowiki><timeline></nowiki></code> ihtıwa kena"
 }
