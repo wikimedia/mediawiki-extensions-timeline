@@ -317,7 +317,7 @@ class Timeline {
 			self::$backend = new FSFileBackend(
 				[
 					'name' => 'timeline-backend',
-					'wikiId' => wfWikiID(),
+					'wikiId' => WikiMap::getCurrentWikiId(),
 					'lockManager' => new NullLockManager( [] ),
 					'containerPaths' => [ 'timeline-render' => "{$wgUploadDirectory}/timeline" ],
 					'fileMode' => 0777,
