@@ -2,9 +2,21 @@
 	"@metadata": {
 		"authors": [
 			"Bennylin",
+			"Daud I.F. Argana",
 			"IvanLanin"
 		]
 	},
 	"timeline-desc": "Menambahkan tag <code>&lt;timeline&gt;</code> untuk membuat garis waktu",
-	"timeline-invalidmap": "Peta gambar tidak sah dibuat oleh EasyTimeline"
+	"timeline-error-storage": "Galat garis waktu. Tidak dapat menyimpan berkas hasil",
+	"timeline-error-temp": "Galat garis waktu. Tidak dapat membuat berkas sementara",
+	"timeline-error-command": "Galat garis waktu. Perintahnya adalah: $1",
+	"timeline-invalidmap": "Peta gambar tidak sah dibuat oleh EasyTimeline",
+	"timeline-tracking-category": "Halaman yang menggunakan Timeline",
+	"timeline-tracking-category-desc": "Halaman yang menyertakan tag <code><nowiki><timeline></nowiki></code>.",
+	"timeline-readerr": "Tidak dapat membaca berkas $1.",
+	"timeline-scripterr": "Tidak dapat menjalankan skrip: $1 keluar dengan kode status $2 $3",
+	"timeline-perlnotexecutable": "Perl tidak dapat dieksekusi: $1 bukan merupakan berkas yang dapat dieksekusi. Pastikan <code>$wgTimelinePerlCommand</code> diatur dengan benar.",
+	"timeline-ploticusnotexecutable": "Ploticus tidak dapat dieksekusi: $1 bukan merupakan berkas yang dapat dieksekusi. Pastikan <code>$wgTimelinePloticusCommand</code> diatur dengan benar.",
+	"timeline-compilererr": "Tidak dapat mengkompilasi masukan EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Tidak dapat mengkonversi SVG ke PNG:\n$1"
 }
