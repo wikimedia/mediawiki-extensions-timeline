@@ -44,7 +44,7 @@ class Timeline {
 		global $wgUploadPath;
 
 		$pOutput = $parser->getOutput();
-		$pOutput->addModuleStyles( 'ext.timeline.styles' );
+		$pOutput->addModuleStyles( [ 'ext.timeline.styles' ] );
 
 		$parser->addTrackingCategory( 'timeline-tracking-category' );
 
