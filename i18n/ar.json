@@ -2,11 +2,21 @@
 	"@metadata": {
 		"authors": [
 			"Meno25",
+			"SaldırganSincap",
 			"ديفيد"
 		]
 	},
 	"timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
+	"timeline-error-storage": "خطأ في المخطط الزمني. لا يمكن تخزين ملفات الإخراج",
+	"timeline-error-temp": "خطأ في المخطط الزمني. تعذر إنشاء ملفات مؤقتة",
+	"timeline-error-command": "خطأ في المخطط الزمني. كان الأمر: $1",
 	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
 	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا",
-	"timeline-tracking-category-desc": "تتضمن هذه الصفحة وسم <code><nowiki><timeline></nowiki></code>."
+	"timeline-tracking-category-desc": "تتضمن هذه الصفحة وسم <code><nowiki><timeline></nowiki></code>.",
+	"timeline-readerr": "غير قادر على قراءة الملف $1.",
+	"timeline-scripterr": "تعذر تشغيل البرنامج النصي عن بعد: تم الخروج من $1 برمز الحالة $2\n$3",
+	"timeline-perlnotexecutable": "تعذر تنفيذ Perl: $1 ليس ملفًا قابلاً للتنفيذ. تأكد من تعيين <code>$wgTimelinePerlCommand</code> بشكل صحيح.",
+	"timeline-ploticusnotexecutable": "تعذر تنفيذ Ploticus: $1 ليس ملفًا قابلاً للتنفيذ. تأكد من تعيين <code>$wgTimelinePloticusCommand</code> بشكل صحيح.",
+	"timeline-compilererr": "تعذر تجميع إدخال EasyTimeline:\n$1",
+	"timeline-rsvg-error": "تعذر تحويل SVG إلى PNG:\n$1"
 }
