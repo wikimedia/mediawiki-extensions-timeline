@@ -2,10 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Meno25",
-			"ديفيد"
+			"ديفيد",
+			"SaldırganSincap"
 		]
 	},
 	"timeline-desc": "يضيف الوسم <code>&lt;timeline&gt;</code> لإنشاء الخطوط الزمنية",
+	"timeline-error-storage": "خطأ في المخطط الزمني. لا يمكن تخزين ملفات الإخراج",
+	"timeline-error-temp": "خطأ في المخطط الزمني. تعذر إنشاء ملفات مؤقتة",
+	"timeline-error-command": "خطأ في المخطط الزمني. كان الأمر: $1",
 	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
 	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا",
 	"timeline-tracking-category-desc": "تتضمن هذه الصفحة وسم <code><nowiki><timeline></nowiki></code>."
