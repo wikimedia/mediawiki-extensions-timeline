@@ -1,4 +1,11 @@
 <?php
+
+namespace MediaWiki\Extension\Timeline;
+
+use Exception;
+use Html;
+use Title;
+
 /**
  * Timeline exception
  */
