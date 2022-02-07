@@ -4,14 +4,15 @@
 			"Kghbln",
 			"Metalhead64",
 			"Raimond Spekking",
-			"Umherirrender"
+			"Umherirrender",
+			"Brettchenweber"
 		]
 	},
 	"timeline-desc": "Ergänzt das Tag <code>&lt;timeline&gt;</code> zur Erstellung von Zeitleisten",
-	"timeline-error-storage": "Timeline-Fehler. Ausgabedateien konnten nicht gespeichert werden",
-	"timeline-error-temp": "Timeline-Fehler. Temporäre Dateien konnten nicht erstellt werden",
+	"timeline-error-storage": "Timeline-Fehler. Ausgabedateien konnten nicht gespeichert werden.",
+	"timeline-error-temp": "Timeline-Fehler. Temporäre Dateien konnten nicht erstellt werden.",
 	"timeline-error-command": "Timeline-Fehler. Kommando war: $1",
-	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert",
+	"timeline-invalidmap": "EasyTimeline hat eine ungültige Grafik generiert.",
 	"timeline-tracking-category": "Seiten, die Timeline verwenden",
-	"timeline-tracking-category-desc": "Diese Seite enthält ein <code><nowiki><timeline></nowiki></code>-Tag"
+	"timeline-tracking-category-desc": "Diese Seite enthält ein <code><nowiki><timeline></nowiki></code>-Tag."
 }
