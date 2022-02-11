@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Jon Harald Søby",
 			"Raimond Spekking",
 			"Raymond",
 			"Shirayuki",
@@ -13,7 +14,7 @@
 	"timeline-error-temp": "Used as error message when temporary files cannot be created",
 	"timeline-error-command": "Used as error message when executing a command failed. $1 is the command that was run.",
 	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\".",
-	"timeline-tracking-category": "Name of the tracking category for pages using this extension",
+	"timeline-tracking-category": "{{tracking category name}}\nName of the tracking category for pages using this extension",
 	"timeline-tracking-category-desc": "Description on [[Special:TrackingCategories]] for the {{msg-mw|timeline-tracking-category}} tracking category.",
 	"timeline-readerr": "Displayed if the extension could not read a file. $1 is the path to the file that could not be read.",
 	"timeline-scripterr": "Displayed when a script fails to run for unspecified reasons",
