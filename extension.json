@@ -13,9 +13,8 @@
 			"i18n"
 		]
 	},
-	"AutoloadClasses": {
-		"Timeline": "includes/Timeline.php",
-		"TimelineException": "includes/TimelineException.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\Timeline\\": "includes/"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {
@@ -33,7 +32,7 @@
 		"remoteExtPath": "timeline"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "Timeline::onParserFirstCallInit"
+		"ParserFirstCallInit": "MediaWiki\\Extension\\Timeline\\Timeline::onParserFirstCallInit"
 	},
 	"TrackingCategories": [
 		"timeline-tracking-category"

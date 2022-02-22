@@ -1,9 +1,21 @@
 <?php
 
+namespace MediaWiki\Extension\Timeline;
+
+use DOMDocument;
+use FileBackend;
+use FSFileBackend;
+use Html;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use NullLockManager;
+use Parser;
+use Sanitizer;
 use Shellbox\Command\BoxedCommand;
+use WikiMap;
+use Wikimedia\AtEase\AtEase;
 use Wikimedia\ScopedCallback;
+use Xml;
 
 class Timeline {
 
@@ -20,7 +32,7 @@ class Timeline {
 	 * @return bool
 	 */
 	public static function onParserFirstCallInit( $parser ) {
-		$parser->setHook( 'timeline', 'Timeline::onTagHook' );
+		$parser->setHook( 'timeline', [ self::class, 'onTagHook' ] );
 
 		return true;
 	}
@@ -65,7 +77,7 @@ class Timeline {
 			// TODO: ploticus version? Given that it's
 			// dead upstream, unlikely to ever change.
 		];
-		$hash = Wikimedia\base_convert( sha1( serialize( $cacheOptions ) ), 16, 36, 31 );
+		$hash = \Wikimedia\base_convert( sha1( serialize( $cacheOptions ) ), 16, 36, 31 );
 		$backend = self::getBackend();
 		// Storage destination path (excluding file extension)
 		// TODO: Implement $wgHashedUploadDirectory layout
@@ -438,9 +450,9 @@ class Timeline {
 	private static function fixMap( $html ) {
 		global $wgUrlProtocols;
 		$doc = new DOMDocument( '1.0', 'UTF-8' );
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 		$status = $doc->loadXML( $html );
-		Wikimedia\restoreWarnings();
+		AtEase::restoreWarnings();
 		if ( !$status ) {
 			throw new TimelineException( 'timeline-invalidmap' );
 		}
