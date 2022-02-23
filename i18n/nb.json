@@ -10,5 +10,9 @@
 	"timeline-error-command": "Tidslinjefeil. Kommandoen var: $1",
 	"timeline-invalidmap": "Ugyldig bildekart opprettet av EasyTimeline",
 	"timeline-tracking-category": "Sider som bruker Timeline",
-	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg"
+	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg",
+	"timeline-readerr": "Kunne ikke lese fila $1.",
+	"timeline-perlnotexecutable": "Perl kunne ikke kjøres: $1 er ikke en kjørbar fil. Sørg for at <code>$wgTimelinePerlCommand</code> er satt riktig.",
+	"timeline-ploticusnotexecutable": "Ploticus kunne ikke kjøres: $1 er ikke en kjørbar fil. Sørg for at <code>$wgTimelinePloticusCommand</code> er satt riktig.",
+	"timeline-rsvg-error": "Kunne ikke konvertere SVG til PNG:\n$1"
 }
