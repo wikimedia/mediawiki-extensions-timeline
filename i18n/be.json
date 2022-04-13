@@ -1,8 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Artsiom91"
+			"Artsiom91",
+			"Tomato Cream",
+			"ZlyiLev"
 		]
 	},
-	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць часавыя дыяграмы"
+	"timeline-desc": "Дадае тэг <code>&lt;timeline&gt;</code> для стварэння часавых шкалаў",
+	"timeline-error-storage": "Памылка часавай шкалы. Немагчыма захаваць выходныя файлы",
+	"timeline-error-temp": "Памылка часавай шкалы. Немагчыма стварыць часовыя файлы",
+	"timeline-error-command": "Памылка часавай шкалы. Каманда: $1",
+	"timeline-invalidmap": "EasyTimeline стварыла няслушную мапу выявы",
+	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць часавыя дыяграмы",
+	"timeline-tracking-category-desc": "Старонка ўключае тэг <code><nowiki><timeline></nowiki></code>"
 }
