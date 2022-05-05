@@ -10,7 +10,7 @@
 	"timeline-error-storage": "שגיאה בציר זמן. לא היה אפשר לשמור קובצי פלט",
 	"timeline-error-temp": "שגיאה בציר זמן. לא היה אפשר לשמור קבצים זמניים",
 	"timeline-error-command": "שגיאה בציר זמן. הפקודה הייתה: $1",
-	"timeline-invalidmap": "נוצרה מפת תמונה בלתי תקינה על ידי EasyTimeline",
+	"timeline-invalidmap": "נוצרה מפת תמונה בלתי־תקינה על־ידי EasyTimeline",
 	"timeline-tracking-category": "דפים המשתמשים בציר זמן",
 	"timeline-tracking-category-desc": "הדף הזה מכיל תג <code><nowiki><timeline></nowiki></code>.",
 	"timeline-readerr": "לא נין לקרוא את הקובץ $1.",
