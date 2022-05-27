@@ -4,12 +4,13 @@
 			"IKhitron",
 			"Okras",
 			"Wikisaurus",
+			"WindEwriX",
 			"Александр Сигачёв"
 		]
 	},
 	"timeline-desc": "Добавляет тег <code>&lt;timeline&gt;</code> для создания временных шкал",
 	"timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline",
 	"timeline-tracking-category": "Страницы, использующие временные диаграммы",
-	"timeline-tracking-category-desc": "Эта страница включает в себя тег <code><nowiki><timeline></nowiki></code>",
+	"timeline-tracking-category-desc": "Эта страница включает в себя тег <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Не удаётся прочитать файл $1."
 }

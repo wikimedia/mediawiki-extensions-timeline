@@ -3,11 +3,12 @@
 		"authors": [
 			"Bdijkstra",
 			"Mainframe98",
+			"McDutchie",
 			"Siebrand"
 		]
 	},
 	"timeline-desc": "Voegt het label <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
 	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd",
 	"timeline-tracking-category": "Pagina's die Timeline gebruiken",
-	"timeline-tracking-category-desc": "De pagina bevat het label <code><nowiki><timeline></nowiki></code>."
+	"timeline-tracking-category-desc": "De pagina bevat een <code>&lt;timeline&gt;</code>-tag."
 }
