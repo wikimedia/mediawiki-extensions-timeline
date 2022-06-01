@@ -8,5 +8,5 @@
 	"timeline-desc": "Lisab sildi <code>&lt;timeline&gt;</code> ajatelgede loomiseks.",
 	"timeline-invalidmap": "EasyTimeline genereeris vigase kujutise",
 	"timeline-tracking-category": "Timeline'i kasutavad leheküljed",
-	"timeline-tracking-category-desc": "Lehekülg sisaldab silti <code><nowiki><timeline></nowiki></code>."
+	"timeline-tracking-category-desc": "Lehekülg sisaldab silti <code>&lt;timeline&gt;</code>."
 }
