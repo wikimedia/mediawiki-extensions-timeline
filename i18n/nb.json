@@ -12,7 +12,9 @@
 	"timeline-tracking-category": "Sider som bruker Timeline",
 	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg",
 	"timeline-readerr": "Kunne ikke lese fila $1.",
+	"timeline-scripterr": "Kunne ikke kjøre eksternt skript: $1 avsluttet med statuskoden $2\n$3",
 	"timeline-perlnotexecutable": "Perl kunne ikke kjøres: $1 er ikke en kjørbar fil. Sørg for at <code>$wgTimelinePerlCommand</code> er satt riktig.",
 	"timeline-ploticusnotexecutable": "Ploticus kunne ikke kjøres: $1 er ikke en kjørbar fil. Sørg for at <code>$wgTimelinePloticusCommand</code> er satt riktig.",
+	"timeline-compilererr": "Kunne ikke kompilere EasyTimeline-innputt:\n$1",
 	"timeline-rsvg-error": "Kunne ikke konvertere SVG til PNG:\n$1"
 }
