@@ -2,13 +2,21 @@
 	"@metadata": {
 		"authors": [
 			"Fulup",
+			"Huñvreüs",
 			"Pymouss"
 		]
 	},
-	"timeline-desc": "Ouzhpennañ a ra an dikedenn <code>&lt;timeline&gt;</code> da grouiñ frizennoù kronologel",
+	"timeline-desc": "Ouzhpennañ a ra ar valizenn <code>&lt;timeline&gt;</code> da grouiñ frizennoù kronologel",
 	"timeline-error-storage": "Fazi kronologiezh. Ne c'haller ket stokañ ar restroù ezvoned",
 	"timeline-error-temp": "Fazi kronologiezh. Ne c'haller ket krouiñ ar restroù padennek",
 	"timeline-error-command": "Fazi kronologiezh. $1 a oa an urzhiad.",
 	"timeline-invalidmap": "Kartenn direizh ganet dre EasyTimeline",
-	"timeline-tracking-category": "Pajennoù a implij Timeline"
+	"timeline-tracking-category": "Pajennoù a implij Timeline",
+	"timeline-tracking-category-desc": "Er bajenn ez eus ur valizenn <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Ne c'haller ket lenn ar restr $1.",
+	"timeline-scripterr": "Ne c’haller ket lañsañ ur skript a-bell: echuet $1 gant kod statud $2\n$3",
+	"timeline-perlnotexecutable": "Dibosubl eo bet lañsañ Perl: $1 n’eo ket ur restr a c’hell bezañ lañset. Bezit sur eo <code>$wgTimelinePerlCommand</code> ardremmezet mat.",
+	"timeline-ploticusnotexecutable": "Dibosubl eo bet lañsañ Ploticus: $1 n’eo ket ur restr a c’hell bezañ lañset. Bezit sur eo <code>$wgTimelinePloticusCommand</code> ardremmezet mat.",
+	"timeline-compilererr": "Ne c’haller ket kompilañ enmont EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Ne c’haller ket treuzkemm SVG da PNG:\n$1"
 }
