@@ -12,5 +12,11 @@
 	"timeline-error-command": "Erro cronológico. O comando foi: $1",
 	"timeline-invalidmap": "Foi gerado um mapa de imagem inválido pelo EasyTimeline",
 	"timeline-tracking-category": "Páginas que usam Timeline",
-	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Não foi possível ler o ficheiro $1.",
+	"timeline-scripterr": "Não foi possível executar o ficheiro de comandos remoto: $1 terminou com o código de estado $2\n$3",
+	"timeline-perlnotexecutable": "Não foi possível executar o Perl: $1 não é um ficheiro executável. Certifique-se de que <code>$wgTimelinePerlCommand</code> está definido corretamente.",
+	"timeline-ploticusnotexecutable": "Não foi possível executar o Ploticus: $1 não é um ficheiro executável. Certifique-se de que <code>$wgTimelinePloticusCommand</code> está definido corretamente.",
+	"timeline-compilererr": "Não foi possível compilar a entrada EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Não foi possível converter de SVG para PNG:\n$1"
 }
