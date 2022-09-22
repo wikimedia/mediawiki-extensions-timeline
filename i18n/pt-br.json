@@ -13,5 +13,5 @@
 	"timeline-error-command": "Erro na linha do tempo. O comando foi: $1",
 	"timeline-invalidmap": "O mapa de imagem gerado pelo EasyTimeline é inválido",
 	"timeline-tracking-category": "Páginas usando a Linha do tempo",
-	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "A página inclui uma etiqueta <code>&lt;timeline&gt;</code>"
 }
