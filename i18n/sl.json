@@ -6,5 +6,7 @@
 		]
 	},
 	"timeline-desc": "Doda značko <code>&lt;timeline&gt;</code> za ustvarjanje časovnic",
-	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline"
+	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline",
+	"timeline-tracking-category": "Strani s časovnico Timeline",
+	"timeline-tracking-category-desc": "Stran vključuje značko <code>&lt;timeline&gt;</code>"
 }
