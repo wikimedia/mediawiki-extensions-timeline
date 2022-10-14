@@ -3,9 +3,21 @@
 		"authors": [
 			"Ansumang",
 			"Kaustubh",
+			"Saurmandal",
 			"Siddhartha Ghai"
 		]
 	},
-	"timeline-desc": "टाइमलाइन बनाने के लिये <code>&lt;timeline&gt;</code> टैग जोड़ता है",
-	"timeline-invalidmap": "ईज़ी टाइमलाइन द्वारा अमान्य छवि नक्शा बनाया गया है"
+	"timeline-desc": "समयरेखा बनाने के लिए <code><timeline></code> टैग जोड़ता है",
+	"timeline-error-storage": "समयरेखा त्रुटि। आउटपुट फ़ाइलों को संग्रहीत नहीं किया जा सका।",
+	"timeline-error-temp": "समयरेखा त्रुटि। अस्थायी फ़ाइलों को बनाया न जा सका।",
+	"timeline-error-command": "समयरेखा त्रुटि। कमांड थी: $1",
+	"timeline-invalidmap": "EasyTimeline द्वारा निर्मित अमान्य नक्शा",
+	"timeline-tracking-category": "समयरेखा का इस्तेमाल करने वाले पृष्ठ",
+	"timeline-tracking-category-desc": "इस पृष्ठ पर एक <code><timeline></code> टैग मौजूद है",
+	"timeline-readerr": "$1 फ़ाइल को पढ़ा न जा सका।",
+	"timeline-scripterr": "रिमोट स्क्रिप्ट को चलाया न जा सका: $1 को स्थिति को $2 $3 के साथ निकाला गया",
+	"timeline-perlnotexecutable": "Perl को निष्पादित नहीं किया जा सका: $1 निष्पादनीय फ़ाइल नहीं है। सुनिश्चित करें कि <code>$wgTimelinePerlCommand</code> को ठीक से सेट किया गया है।",
+	"timeline-ploticusnotexecutable": "Ploticus को निष्पादित नहीं किया जा सका: $1 निष्पादनीय फ़ाइल नहीं है। सुनिश्चित करें कि <code>$wgTimelinePloticusCommand</code> को ठीक से सेट किया गया है।",
+	"timeline-compilererr": "EasyTimeline इनपुट को संकलित न किया जा सका:\n$1",
+	"timeline-rsvg-error": "SVG को PNG में बदला न जा सका:\n$1"
 }
