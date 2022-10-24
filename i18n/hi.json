@@ -7,7 +7,7 @@
 			"Saurmandal"
 		]
 	},
-	"timeline-desc": "समयरेखा बनाने के लिए <code><timeline></code> टैग जोड़ता है",
+	"timeline-desc": "समयरेखा बनाने के लिए <code>&lt;timeline&gt;</code> टैग जोड़ता है",
 	"timeline-error-storage": "समयरेखा त्रुटि। आउटपुट फ़ाइलों को संग्रहीत नहीं किया जा सका।",
 	"timeline-error-temp": "समयरेखा त्रुटि। अस्थायी फ़ाइलों को बनाया न जा सका।",
 	"timeline-error-command": "समयरेखा त्रुटि। कमांड थी: $1",
