@@ -12,7 +12,7 @@
 	"timeline-error-command": "Zaman çizelgesi hatası. Komut şuydu: $1",
 	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu",
 	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar",
-	"timeline-tracking-category-desc": "Sayfa bir <code><nowiki><timeline></nowiki></code> etiketi içeriyor",
+	"timeline-tracking-category-desc": "Sayfa bir <code>&lt;timeline&gt;</code> etiketi içeriyor",
 	"timeline-readerr": "$1 dosyası okunamıyor.",
 	"timeline-scripterr": "Uzak komut dizisi çalıştırılamıyor: $1, durum kodu $2 ile çıkıldı\n$3",
 	"timeline-perlnotexecutable": "Perl yürütülemedi: $1 yürütülebilir bir dosya değil. <code>$wgTimelinePerlCommand</code> öğesinin doğru ayarlandığından emin olun.",
