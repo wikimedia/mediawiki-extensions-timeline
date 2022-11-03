@@ -12,7 +12,7 @@
 	"timeline-error-command": "خطأ في المخطط الزمني. كان الأمر: $1",
 	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
 	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا",
-	"timeline-tracking-category-desc": "تتضمن هذه الصفحة وسم <code><nowiki><timeline></nowiki></code>.",
+	"timeline-tracking-category-desc": "تتضمن الصفحة علامة <code><timeline></code>",
 	"timeline-readerr": "غير قادر على قراءة الملف $1.",
 	"timeline-scripterr": "تعذر تشغيل البرنامج النصي عن بعد: تم الخروج من $1 برمز الحالة $2\n$3",
 	"timeline-perlnotexecutable": "تعذر تنفيذ Perl: $1 ليس ملفًا قابلاً للتنفيذ. تأكد من تعيين <code>$wgTimelinePerlCommand</code> بشكل صحيح.",
