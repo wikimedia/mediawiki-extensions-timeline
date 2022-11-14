@@ -5,5 +5,14 @@
 		]
 	},
 	"timeline-desc": "Adde le etiquetta <code>&lt;timeline&gt;</code> pro crear lineas temporal",
-	"timeline-invalidmap": "Mappa de imagine invalide generate per EasyTimeline"
+	"timeline-error-storage": "Error de chronologia. Non poteva immagazinar le files de sortita.",
+	"timeline-error-temp": "Error de chronologia. Non poteva crear files temporari.",
+	"timeline-error-command": "Error de chronologia. Le commando esseva: $1",
+	"timeline-invalidmap": "Mappa de imagine invalide generate per EasyTimeline",
+	"timeline-tracking-category": "Paginas que usa Timeline",
+	"timeline-tracking-category-desc": "Le pagina contine un etiquetta <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Impossibile leger le file $1.",
+	"timeline-scripterr": "Impossibile executar le script remote: $1 ha terminate con le codice de stato $2.\n$3",
+	"timeline-perlnotexecutable": "Perl non poteva esser executate: $1 non es un file executabile. Assecura te que <code>$wgTimelinePerlCommand</code> es definite correctemente.",
+	"timeline-ploticusnotexecutable": "Ploticus non poteva esser executate: $1 non es un file executabile. Assecura te que <code>$wgTimelinePloticusCommand</code> es definite correctemente."
 }
