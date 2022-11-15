@@ -5,5 +5,9 @@
 		]
 	},
 	"timeline-desc": "Adde le etiquetta <code>&lt;timeline&gt;</code> pro crear lineas temporal",
-	"timeline-invalidmap": "Mappa de imagine invalide generate per EasyTimeline"
+	"timeline-error-storage": "Error de chronologia. Non poteva immagazinar le files de sortita.",
+	"timeline-error-temp": "Error de chronologia. Non poteva crear files temporari.",
+	"timeline-error-command": "Error de chronologia. Le commando esseva: $1",
+	"timeline-invalidmap": "Mappa de imagine invalide generate per EasyTimeline",
+	"timeline-tracking-category": "Paginas que usa Timeline"
 }
