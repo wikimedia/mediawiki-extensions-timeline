@@ -10,5 +10,5 @@
 	"timeline-desc": "年表を作成するための <code>&lt;timeline&gt;</code> タグを追加する",
 	"timeline-invalidmap": "EasyTimeline が生成した無効なイメージマップ",
 	"timeline-tracking-category": "Timelineを使用しているページ",
-	"timeline-tracking-category-desc": "ページは<code><nowiki><timeline></nowiki></code>タグを含みます"
+	"timeline-tracking-category-desc": "ページは<code>&lt;timeline&gt;</code>タグを含みます"
 }
