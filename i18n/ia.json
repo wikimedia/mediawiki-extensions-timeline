@@ -14,5 +14,7 @@
 	"timeline-readerr": "Impossibile leger le file $1.",
 	"timeline-scripterr": "Impossibile executar le script remote: $1 ha terminate con le codice de stato $2.\n$3",
 	"timeline-perlnotexecutable": "Perl non poteva esser executate: $1 non es un file executabile. Assecura te que <code>$wgTimelinePerlCommand</code> es definite correctemente.",
-	"timeline-ploticusnotexecutable": "Ploticus non poteva esser executate: $1 non es un file executabile. Assecura te que <code>$wgTimelinePloticusCommand</code> es definite correctemente."
+	"timeline-ploticusnotexecutable": "Ploticus non poteva esser executate: $1 non es un file executabile. Assecura te que <code>$wgTimelinePloticusCommand</code> es definite correctemente.",
+	"timeline-compilererr": "Impossibile compilar le entrata EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Impossibile converter SVG in MP3:\n$1"
 }
