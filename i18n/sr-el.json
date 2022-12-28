@@ -6,7 +6,10 @@
 			"Zoranzoki21"
 		]
 	},
-	"timeline-desc": "Dodaje <code>&lt;timeline&gt;</code> oznaku za stvaranje vremenskih osa.",
-	"timeline-invalidmap": "EasyTimeline je generisao nevažeću mapu sliika",
+	"timeline-desc": "Dodaje oznaku <code>&lt;timeline&gt;</code> za pravljenje hronologija",
+	"timeline-error-storage": "Greška u hronologiji: Nije moguće uskladištiti izlazne datoteke.",
+	"timeline-error-temp": "Greška u hronologiji: Nije moguće stvoriti privremene datoteke.",
+	"timeline-error-command": "Greška u hronologiji. Komanda je bila: $1",
+	"timeline-invalidmap": "EasyTimeline je generisao nevažeću mapu slika",
 	"timeline-tracking-category": "Stranice koje koriste hronologiju"
 }
