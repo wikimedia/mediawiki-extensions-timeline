@@ -6,6 +6,9 @@
 		]
 	},
 	"timeline-desc": "Doda značko <code>&lt;timeline&gt;</code> za ustvarjanje časovnic",
+	"timeline-error-storage": "Napaka časovnice. Izhodnih datotek ni bilo mogoče shraniti.",
+	"timeline-error-temp": "Napaka časovnice. Začasnih datotek ni bilo mogoče ustvariti.",
+	"timeline-error-command": "Napaka časovnice. Ukaz je bil: $1.",
 	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline",
 	"timeline-tracking-category": "Strani s časovnico Timeline"
 }
