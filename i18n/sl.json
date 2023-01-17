@@ -6,7 +6,16 @@
 		]
 	},
 	"timeline-desc": "Doda značko <code>&lt;timeline&gt;</code> za ustvarjanje časovnic",
+	"timeline-error-storage": "Napaka časovnice. Izhodnih datotek ni bilo mogoče shraniti.",
+	"timeline-error-temp": "Napaka časovnice. Začasnih datotek ni bilo mogoče ustvariti.",
+	"timeline-error-command": "Napaka časovnice. Ukaz je bil: $1.",
 	"timeline-invalidmap": "Neveljavna slika zemljevida generirana z EasyTimeline",
 	"timeline-tracking-category": "Strani s časovnico Timeline",
-	"timeline-tracking-category-desc": "Stran vključuje značko <code>&lt;timeline&gt;</code>"
+	"timeline-tracking-category-desc": "Stran vključuje značko <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Datoteke $1 ni bilo mogoče prebrati.",
+	"timeline-scripterr": "Oddaljenega skripta ni bilo mogoče zagnati: $1 se je prekinil z oznako stanja $2 \n$3",
+	"timeline-perlnotexecutable": "Perla ni bilo mogoče izvesti: $1 ni izvedljva datoteka. Prepričajte se, da je <code>$wgTimelinePerlCommand</code> pravilno nastavljen.",
+	"timeline-ploticusnotexecutable": "Ploticusa ni bilo mogoče izvesti: $1 ni izvedljiva datoteka. Prepričajte se, da je <code>$wgTimelinePloticusCommand</code> pravilno nastavljen.",
+	"timeline-compilererr": "Vnosa EasyTimeline ni bilo mogoče prevesti:\n$1",
+	"timeline-rsvg-error": "SVG-ja ni bilo mogoče pretvoriti v PNG:\n$1"
 }
