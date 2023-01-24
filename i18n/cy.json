@@ -1,9 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Lloffiwr"
+			"Lloffiwr",
+			"Afalau"
 		]
 	},
 	"timeline-desc": "Yn ychwanegu'r tag <code>&lt;timeline&gt;</code> er mwyn cynhyrchu llinellau amser",
-	"timeline-invalidmap": "Mae'r map delweddau a gynhyrchir gan EasyTimeline yn annilys"
+	"timeline-invalidmap": "Mae'r map delweddau a gynhyrchir gan EasyTimeline yn annilys",
+	"timeline-tracking-category": "Tudalennau sy'n ddefnyddio Llinell Amser",
+	"timeline-tracking-category-desc": "Mae'r dudalen yn cynnwys tag <code>&lt;timeline&gt;</code>"
 }
