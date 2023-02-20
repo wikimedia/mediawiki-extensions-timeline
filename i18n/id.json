@@ -3,7 +3,8 @@
 		"authors": [
 			"Bennylin",
 			"Daud I.F. Argana",
-			"IvanLanin"
+			"IvanLanin",
+			"Rachmat04"
 		]
 	},
 	"timeline-desc": "Menambahkan tag <code>&lt;timeline&gt;</code> untuk membuat garis waktu",
@@ -12,7 +13,7 @@
 	"timeline-error-command": "Galat garis waktu. Perintahnya adalah: $1",
 	"timeline-invalidmap": "Peta gambar tidak sah dibuat oleh EasyTimeline",
 	"timeline-tracking-category": "Halaman yang menggunakan Timeline",
-	"timeline-tracking-category-desc": "Halaman yang menyertakan tag <code><nowiki><timeline></nowiki></code>.",
+	"timeline-tracking-category-desc": "Halaman tersebut menyertakan tag <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Tidak dapat membaca berkas $1.",
 	"timeline-scripterr": "Tidak dapat menjalankan skrip: $1 keluar dengan kode status $2 $3",
 	"timeline-perlnotexecutable": "Perl tidak dapat dieksekusi: $1 bukan merupakan berkas yang dapat dieksekusi. Pastikan <code>$wgTimelinePerlCommand</code> diatur dengan benar.",
