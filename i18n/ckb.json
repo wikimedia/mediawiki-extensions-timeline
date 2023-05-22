@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Halbast"
+		]
+	},
+	"timeline-desc": "تاگی <code><timeline></code> زیاد دەکات بۆ دروستکردنی کاتھێڵ",
+	"timeline-error-storage": "ھەڵەی کاتھێڵ. نەتواندرا فایلە دەرچووەکان ھەڵبگیرێن",
+	"timeline-error-temp": "ھەڵەی کاتھێڵ. نەتواندرا فایلە کاتییەکان دروست بکرێن",
+	"timeline-error-command": "ھەڵەی کاتھێڵ. کۆماندەکە بریتی بوو لە: $1",
+	"timeline-invalidmap": "نەخشەی وێنەیەکی نادروست دروستکرا لەلایەن EasyTimelineەوە",
+	"timeline-tracking-category": "ئەو پەڕانەی کاتھێڵ بەکاردەھێنن"
+}
