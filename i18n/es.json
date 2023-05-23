@@ -5,7 +5,8 @@
 			"Geryescalier",
 			"Macofe",
 			"MarcoAurelio",
-			"Remember the dot"
+			"Remember the dot",
+			"No se"
 		]
 	},
 	"timeline-desc": "Añade la etiqueta <code>&lt;timeline&gt;</code> para crear cronogramas",
@@ -13,5 +14,12 @@
 	"timeline-error-temp": "Error de línea de tiempo. No se pudieron crear archivos temporales",
 	"timeline-error-command": "Error de línea de tiempo. El comando fue: $1",
 	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline",
-	"timeline-tracking-category": "Páginas que usan Timeline"
+	"timeline-tracking-category": "Páginas que usan Timeline",
+	"timeline-tracking-category-desc": "La página incluye una etiqueta <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "no se puede leer el archivo $1.",
+	"timeline-scripterr": "No se puede ejecutar el script remoto: $1 salió con el código de estado $2\n$3",
+	"timeline-perlnotexecutable": "No se pudo ejecutar Perl: $1 no es un archivo ejecutable. Asegúrese de que <code>$wgTimelinePerlCommand</code> esté configurado correctamente.",
+	"timeline-ploticusnotexecutable": "Ploticus no se pudo ejecutar: $1 no es un archivo ejecutable. Asegúrate de que <code>$wgTimelinePloticusCommand</code> esté configurado correctamente.",
+	"timeline-compilererr": "No se puede compilar la entrada de EasyTimeline:\n$1",
+	"timeline-rsvg-error": "No se puede convertir SVG a PNG:\n$1"
 }
