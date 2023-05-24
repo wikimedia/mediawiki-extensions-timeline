@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Halbast"
+		]
+	},
+	"timeline-desc": "تاگی <code><timeline></code> زیاد دەکات بۆ دروستکردنی کاتھێڵ",
+	"timeline-error-storage": "ھەڵەی کاتھێڵ. نەتواندرا فایلە دەرچووەکان ھەڵبگیرێن",
+	"timeline-error-temp": "ھەڵەی کاتھێڵ. نەتواندرا فایلە کاتییەکان دروست بکرێن",
+	"timeline-error-command": "ھەڵەی کاتھێڵ. کۆماندەکە بریتی بوو لە: $1",
+	"timeline-invalidmap": "نەخشەی وێنەیەکی نادروست دروستکرا لەلایەن EasyTimelineەوە",
+	"timeline-tracking-category": "ئەو پەڕانەی کاتھێڵ بەکاردەھێنن",
+	"timeline-readerr": "نەتواندرا فایلی $1 بخوێندرێتەوە.",
+	"timeline-scripterr": "نەتواندرا سکریپتی دوور جێبەجێ بکرێت: $1 چووە دەرەوە بە کۆدی دۆخیی $2ەوە\n$3",
+	"timeline-perlnotexecutable": "نەتواندرا پێرڵ جێبەجێ بکرێت: $1 فایلێکی جێبەجێکردن نییە.\nدڵنیابەرەوە کە <code>$wgTimelinePerlCommand</code> بە دروستی داندراوە.",
+	"timeline-ploticusnotexecutable": "نەتواندرا پڵۆتیکەس جێبەجێ بکرێت: $1 فایلێکی جێبەجێکردن نییە.\nدڵنیابەرەوە کە <code>$wgTimelinePloticusCommand</code> بە دروستی داندراوە.",
+	"timeline-compilererr": "نەتواندرا تێچووی EasyTimeline کۆبکرێتەوە:\n$1",
+	"timeline-rsvg-error": "نەتواندرا ئێس ڤی جی بگۆڕدرێت بۆ پی ئێن جی:\n$1"
+}
