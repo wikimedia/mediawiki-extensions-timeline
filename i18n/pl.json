@@ -3,7 +3,8 @@
 		"authors": [
 			"Matma Rex",
 			"Rail",
-			"Sp5uhe"
+			"Sp5uhe",
+			"Msz2001"
 		]
 	},
 	"timeline-desc": "Dodaje znacznik <code>&lt;timeline&gt;</code> umożliwiający tworzenie spisu na osi czasu",
@@ -12,5 +13,11 @@
 	"timeline-error-command": "Błąd osi czasu. Komendą było: $1",
 	"timeline-invalidmap": "Nieprawidłowa mapa obrazka wygenerowana przez EasyTimeline",
 	"timeline-tracking-category": "Strony używające Timeline",
-	"timeline-tracking-category-desc": "Strona zawiera znacznik <code><nowiki><timeline></nowiki></code>"
+	"timeline-tracking-category-desc": "Strona zawiera znacznik <code><nowiki><timeline></nowiki></code>",
+	"timeline-readerr": "Nie można odczytać pliku $1.",
+	"timeline-scripterr": "Nie można uruchomić zdalnego skryptu: $1 zakończone z kodem statusu $2 \n$3",
+	"timeline-perlnotexecutable": "Perl nie mógł zostać wykonany: $1 nie jest plikiem wykonywalnym. Upewnij się, że zmienna <code>$wgTimelinePerlCommand</code> jest ustawiona poprawnie.",
+	"timeline-ploticusnotexecutable": "Ploticus nie mógł zostać wykonany: $1 nie jest plikiem wykonywalnym. Upewnij się, że zmienna <code>$wgTimelinePloticusCommand</code> jest ustawiona poprawnie.",
+	"timeline-compilererr": "Nie można skompilować wejścia EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Nie można przekonwertować SVG na PNG:\n$1"
 }
