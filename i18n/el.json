@@ -2,9 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Dead3y3",
-			"Omnipaedista"
+			"Omnipaedista",
+			"Iakovos Iason Tountas"
 		]
 	},
 	"timeline-desc": "Προσθέτει την ετικέτα <code>&lt;timeline&gt;</code> για την δημιουργία χρονολογιών",
-	"timeline-invalidmap": "Μή έγκυρος χάρτης εικόνας παρηγμένης από το EasyTimeline"
+	"timeline-error-storage": "Σφάλμα χρονολογίου. Δεν ήταν δυνατή η αποθήκευση αρχείων εξόδου",
+	"timeline-error-temp": "Σφάλμα χρονολογίου. Δεν ήταν δυνατή η δημιουργία προσωρινών αρχείων",
+	"timeline-error-command": "Σφάλμα χρονολογίου. Η εντολή ήταν: $1",
+	"timeline-invalidmap": "Μή έγκυρος χάρτης εικόνας παρηγμένης από το EasyTimeline",
+	"timeline-tracking-category": "Σελίδες που χρησιμοποιούν το Χρονολόγιο"
 }
