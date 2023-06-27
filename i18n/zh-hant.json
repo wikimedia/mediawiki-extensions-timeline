@@ -14,7 +14,7 @@
 	"timeline-error-command": "時間軸錯誤。執行失敗的命令：$1",
 	"timeline-invalidmap": "EasyTimeline 產生的影像地圖無效",
 	"timeline-tracking-category": "使用時間軸的頁面",
-	"timeline-tracking-category-desc": "含有 <code><nowiki><timeline></nowiki></code> 標籤的頁面。",
+	"timeline-tracking-category-desc": "含有 <code>&lt;timeline&gt;</code> 標籤的頁面。",
 	"timeline-readerr": "無法讀取檔案 $1。",
 	"timeline-scripterr": "無法執行遠端腳本：$1 以狀態代碼 $2 退出\n$3",
 	"timeline-perlnotexecutable": "Perl 無法執行：$1 不是一個可執行檔，請確定 <code>$wgTimelinePerlCommand</code> 已設定正確。",
