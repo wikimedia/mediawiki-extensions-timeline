@@ -2,10 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Khan27",
-			"Serkanland"
+			"Serkanland",
+			"NMW03"
 		]
 	},
 	"timeline-desc": "Zaman xətti yaratmaq üçün <code>&lt;timeline&gt;</code> etiketini edir",
+	"timeline-error-storage": "Zaman qrafiki xətası. Çıxış fayllarını saxlamaq mümkün olmadı",
+	"timeline-error-temp": "Zaman qrafiki xətası. Müvəqqəti fayllar yaratmaq mümkün olmadı",
+	"timeline-error-command": "Zaman qrafiki xətası. Əmr belə idi: $1",
 	"timeline-invalidmap": "EasyTimeline tərəfindən etibarsız şəkil xəritəsi yaradıldı",
 	"timeline-tracking-category": "Zaman diaqramının istifadə olunduğu səhifələr"
 }
