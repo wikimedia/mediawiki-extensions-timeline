@@ -2,10 +2,20 @@
 	"@metadata": {
 		"authors": [
 			"Khan27",
-			"Serkanland"
+			"Serkanland",
+			"NMW03"
 		]
 	},
 	"timeline-desc": "Zaman xətti yaratmaq üçün <code>&lt;timeline&gt;</code> etiketini edir",
+	"timeline-error-storage": "Zaman qrafiki xətası. Çıxış fayllarını saxlamaq mümkün olmadı",
+	"timeline-error-temp": "Zaman qrafiki xətası. Müvəqqəti fayllar yaratmaq mümkün olmadı",
+	"timeline-error-command": "Zaman qrafiki xətası. Əmr belə idi: $1",
 	"timeline-invalidmap": "EasyTimeline tərəfindən etibarsız şəkil xəritəsi yaradıldı",
-	"timeline-tracking-category": "Zaman diaqramının istifadə olunduğu səhifələr"
+	"timeline-tracking-category": "Zaman diaqramının istifadə olunduğu səhifələr",
+	"timeline-readerr": "$1 faylını oxumaq mümkün olmadı.",
+	"timeline-scripterr": "Uzaqdan skripti işə salmaq mümkün olmadı: $1 status kodu $2 ilə çıxdı \n$3",
+	"timeline-perlnotexecutable": "Perl icra edilə bilmədi: $1 icra edilə bilən fayl deyil. <code>$wgTimelinePerlCommand</code> parametrinin düzgün qurulduğundan əmin olun.",
+	"timeline-ploticusnotexecutable": "Ploticus icra edilə bilmədi: $1 icra edilə bilən fayl deyil. <code>$wgTimelinePloticusCommand</code> parametrinin düzgün qurulduğundan əmin olun.",
+	"timeline-compilererr": "EasyTimeline girişini tərtib etmək mümkün deyil:\n$1",
+	"timeline-rsvg-error": "SVG-ni PNGy-ə çevirmək mümkün olmadı:\n$1"
 }
