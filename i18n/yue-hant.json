@@ -1,9 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"Horacewai2",
-			"Shinjiman",
-			"Waihorace"
+			"Winston Sung"
 		]
 	},
 	"timeline-desc": "加 <code>&lt;timeline&gt;</code> 標籤去建立時間綫",
