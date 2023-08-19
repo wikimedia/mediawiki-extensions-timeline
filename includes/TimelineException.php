@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\Timeline;
 
 use Exception;
 use Html;
-use Title;
+use MediaWiki\Title\Title;
 
 /**
  * Timeline exception
