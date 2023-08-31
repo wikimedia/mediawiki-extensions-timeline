@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Assele"
+			"Assele",
+			"З. ӘЙЛЕ"
 		]
 	},
-	"timeline-desc": "Ваҡыт һыҙыҡтарын булдырыу өсөн <code>&lt;timeline&gt;</code> билдәһен өҫтәй",
+	"timeline-desc": "Ваҡыт шкалаһын булдырыу өсөн <code>&lt;timeline&gt;</code> тамғаһын өҫтәй",
 	"timeline-invalidmap": "EasyTimeline тарафынан булдырылған рәсем картаһы дөрөҫ түгел"
 }

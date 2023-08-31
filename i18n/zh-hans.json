@@ -11,7 +11,8 @@
 			"SomeyaMako",
 			"TsuyaMarisa",
 			"Xiaomingyan",
-			"列维劳德"
+			"列维劳德",
+			"Dream Star.cn"
 		]
 	},
 	"timeline-desc": "添加<code>&lt;timeline&gt;</code>标签以创建时间轴",
@@ -20,7 +21,7 @@
 	"timeline-error-command": "时间线错误。命令为：$1",
 	"timeline-invalidmap": "EasyTimeline生成的无效图片地图",
 	"timeline-tracking-category": "使用时间线的页面",
-	"timeline-tracking-category-desc": "页面包含<code>$lt;timeline$gt;</code>标签",
+	"timeline-tracking-category-desc": "页面包含<code><nowiki><timeline></nowiki></code>标签",
 	"timeline-readerr": "无法读取 $1 文件。",
 	"timeline-scripterr": "无法运行远程脚本：$1以状态码$2退出了\n$3",
 	"timeline-perlnotexecutable": "无法执行 Perl: $1 不是可执行文件。请确保 <code>$wgTimelinePerlCommand</code> 设置正确。",
