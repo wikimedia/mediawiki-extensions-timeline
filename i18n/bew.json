@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bangrapip"
+		]
+	},
+	"timeline-desc": "Nambahin tenger <code>&lt;timeline&gt;</code> bakal ngeja tawarih",
+	"timeline-error-storage": "Tawarih ngablu. Kaga' kena nampung berekas kuaran",
+	"timeline-error-temp": "Tawarih ngablu. Kaga' kena ngeja berekas sementara",
+	"timeline-error-command": "Tawarih ngablu. Perèntahnya ièlah: $1",
+	"timeline-invalidmap": "Peta gambar kaga' aci dibuat ama EasyTimeline",
+	"timeline-tracking-category": "Halaman nyang maké Timeline",
+	"timeline-tracking-category-desc": "Ni halaman nyerèntain tenger <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Kaga' bisa ngebaca berekas $1.",
+	"timeline-scripterr": "Kaga' bisa ngejalanin serat jarak jauh: $1 kuar dengen kode kewontenan $2 $3",
+	"timeline-perlnotexecutable": "Perl kaga' kena dijalanin: $1 bukan berekas nyang kena dijalanin. Pastiin <code>$wgTimelinePerlCommand</code> bener disetèlnya.",
+	"timeline-ploticusnotexecutable": "Ploticus kaga' kena dijalanin: $1 bukan berekas nyang kena dijalanin. Pastiin <code>$wgTimelinePloticusCommand</code> bener disetèlnya.",
+	"timeline-compilererr": "Kaga' bisa ngomplokin masupan EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Kaga' bisa nuker SVG ke PNG:\n$1"
+}
