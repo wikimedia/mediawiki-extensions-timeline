@@ -6,6 +6,7 @@ use DOMDocument;
 use FileBackend;
 use FSFileBackend;
 use Html;
+use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\WikiMap\WikiMap;
@@ -17,7 +18,7 @@ use Wikimedia\AtEase\AtEase;
 use Wikimedia\ScopedCallback;
 use Xml;
 
-class Timeline {
+class Timeline implements ParserFirstCallInitHook {
 
 	/**
 	 * Bump when some change requires re-rendering all timelines
@@ -29,12 +30,9 @@ class Timeline {
 
 	/**
 	 * @param Parser $parser
-	 * @return bool
 	 */
-	public static function onParserFirstCallInit( $parser ) {
+	public function onParserFirstCallInit( $parser ) {
 		$parser->setHook( 'timeline', [ self::class, 'onTagHook' ] );
-
-		return true;
 	}
 
 	/**

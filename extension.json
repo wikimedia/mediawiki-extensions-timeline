@@ -32,7 +32,12 @@
 		"remoteExtPath": "timeline"
 	},
 	"Hooks": {
-		"ParserFirstCallInit": "MediaWiki\\Extension\\Timeline\\Timeline::onParserFirstCallInit"
+		"ParserFirstCallInit": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\Timeline\\Timeline"
+		}
 	},
 	"TrackingCategories": [
 		"timeline-tracking-category"
