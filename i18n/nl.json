@@ -3,10 +3,14 @@
 		"authors": [
 			"Bdijkstra",
 			"Mainframe98",
-			"Siebrand"
+			"Siebrand",
+			"McDutchie"
 		]
 	},
-	"timeline-desc": "Voegt het label <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
+	"timeline-desc": "Voegt de tag <code>&lt;timeline&gt;</code> toe om tijdlijnen te maken",
+	"timeline-error-storage": "Tijdlijnfout. Kan uitvoerbestanden niet opslaan",
+	"timeline-error-temp": "Tijdlijnfout. Kan geen tijdelijke bestanden maken",
+	"timeline-error-command": "Tijdlijnfout. Commando was: $1",
 	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd",
 	"timeline-tracking-category": "Pagina's die Timeline gebruiken",
 	"timeline-tracking-category-desc": "De pagina bevat het label <code><nowiki><timeline></nowiki></code>."
