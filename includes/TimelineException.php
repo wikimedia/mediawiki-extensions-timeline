@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\Timeline;
 
 use Exception;
-use Html;
+use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 
 /**
