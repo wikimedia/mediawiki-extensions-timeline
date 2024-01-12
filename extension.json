@@ -20,10 +20,6 @@
 		"ext.timeline.styles": {
 			"styles": [
 				"resources/ext.timeline.styles/timeline.css"
-			],
-			"targets": [
-				"mobile",
-				"desktop"
 			]
 		}
 	},
