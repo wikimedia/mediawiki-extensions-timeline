@@ -6,7 +6,7 @@
 	"license-name": "GPL-2.0-only",
 	"type": "parserhook",
 	"requires": {
-		"MediaWiki": ">= 1.41"
+		"MediaWiki": ">= 1.42"
 	},
 	"MessagesDirs": {
 		"Timeline": [
@@ -60,9 +60,6 @@
 		},
 		"TimelineFileBackend": {
 			"value": ""
-		},
-		"TimelineShell": {
-			"value": "/bin/bash"
 		},
 		"TimelineRsvgCommand": {
 			"value": "/usr/bin/rsvg-convert"
