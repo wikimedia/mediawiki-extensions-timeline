@@ -57,9 +57,6 @@
 		"TimelineFileBackend": {
 			"value": ""
 		},
-		"TimelineShell": {
-			"value": "/bin/bash"
-		},
 		"TimelineRsvgCommand": {
 			"value": "/usr/bin/rsvg-convert"
 		}

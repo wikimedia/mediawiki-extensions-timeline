@@ -142,7 +142,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 */
 	private static function renderTimeline( string $timelinesrc, array $options ) {
 		global $wgArticlePath, $wgTmpDirectory, $wgTimelinePerlCommand,
-			$wgTimelinePloticusCommand, $wgTimelineShell, $wgTimelineRsvgCommand,
+			$wgTimelinePloticusCommand, $wgShellboxShell, $wgTimelineRsvgCommand,
 			$wgPhpCli;
 
 		/* temporary working directory to use */
@@ -164,7 +164,7 @@ class Timeline implements ParserFirstCallInitHook {
 		$command = self::boxedCommand()
 			->routeName( 'easytimeline' )
 			->params(
-				$wgTimelineShell,
+				$wgShellboxShell,
 				'scripts/renderTimeline.sh'
 			)
 			->inputFileFromString( 'file', $timelinesrc )
