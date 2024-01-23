@@ -12,19 +12,21 @@
 			"TsuyaMarisa",
 			"Xiaomingyan",
 			"列维劳德",
-			"Dream Star.cn"
+			"Dream Star.cn",
+			"LittlePaw365"
 		]
 	},
-	"timeline-desc": "添加<code>&lt;timeline&gt;</code>标签以创建时间轴",
-	"timeline-error-storage": "时间线错误。无法存储输出文件",
-	"timeline-error-temp": "时间线错误。无法创建临时文件",
-	"timeline-error-command": "时间线错误。命令为：$1",
-	"timeline-invalidmap": "EasyTimeline生成的无效图片地图",
+	"timeline-desc": "添加可创建时间线的<code>&lt;timeline&gt;</code>标签",
+	"timeline-error-storage": "时间线出错。无法存储输出文件",
+	"timeline-error-temp": "时间线出错。无法创建临时文件",
+	"timeline-error-command": "时间线出错。出错命令：$1",
+	"timeline-invalidmap": "EasyTimeline生成的图像地图无效",
 	"timeline-tracking-category": "使用时间线的页面",
-	"timeline-tracking-category-desc": "页面包含<code><nowiki><timeline></nowiki></code>标签",
-	"timeline-readerr": "无法读取 $1 文件。",
-	"timeline-scripterr": "无法运行远程脚本：$1以状态码$2退出了\n$3",
-	"timeline-perlnotexecutable": "无法执行 Perl: $1 不是可执行文件。请确保 <code>$wgTimelinePerlCommand</code> 设置正确。",
-	"timeline-compilererr": "无法编译 EasyTimeline 输入：\n$1",
-	"timeline-rsvg-error": "无法将 SVG 转换为 PNG: $1"
+	"timeline-tracking-category-desc": "页面含有<code>&lt;timeline&gt;</code>标签",
+	"timeline-readerr": "无法读取文件$1。",
+	"timeline-scripterr": "无法运行远程脚本：$1以状态码$2退出$3",
+	"timeline-perlnotexecutable": "无法执行Perl：$1不是可执行文件。请确保<code>$wgTimelinePerlCommand</code>设置正确。",
+	"timeline-ploticusnotexecutable": "无法执行Ploticus：$1不是可执行文件。请确保<code>$wgTimelinePloticusCommand</code>设置正确。",
+	"timeline-compilererr": "无法编译EasyTimeline输入：$1",
+	"timeline-rsvg-error": "无法把SVG转换为PNG：$1"
 }
