@@ -12,6 +12,7 @@ if [ -z "$ET_ARTICLEPATH" ]; then
 fi
 export ET_FONTFILE="${ET_FONTFILE:-FreeSans}"
 export ET_SVG="${ET_SVG:-no}"
+export ET_PAGETITLE="${ET_PAGETITLE:-Special:BadTitle/EasyTimelineUnknown}"
 
 errorExit() {
 	printf 'mw-msg:' 1>&2
@@ -53,6 +54,7 @@ runEasyTimeline() {
 		-T /tmp \
 		-A "$ET_ARTICLEPATH" \
 		-f "$ET_FONTFILE" \
+		-N "$ET_PAGETITLE" \
 		"$svg"
 
 	if [ $? -ne 0 ]; then
