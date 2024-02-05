@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Snævar"
+			"Snævar",
+			"Stefán Örvar Sigmundsson"
 		]
 	},
 	"timeline-desc": "Bætir við <code>&lt;timeline&gt;</code> tagi til að búa til tímalínur",
-	"timeline-invalidmap": "Ógild tímalína búin til af EasyTimeline"
+	"timeline-invalidmap": "Ógild tímalína búin til af EasyTimeline",
+	"timeline-tracking-category": "Síður sem nota Timeline"
 }
