@@ -113,7 +113,6 @@ my $tmpdir;
 my $ploticus_command;
 my $articlepath;
 my $font_file;
-my $page_title;
 
 my $true  = 1;
 my $false = 0;
@@ -256,7 +255,7 @@ else {
 exit;
 
 sub ParseArguments {
-    getopt("iTAPNef", \%options);
+    getopt("iTAPef", \%options);
 
     &Abort("Specify input file as: -i filename") if (!defined($options{"i"}));
 
@@ -284,9 +283,6 @@ sub ParseArguments {
 
     # For MediaWiki: Path of an article, relative to this servers root
     $articlepath = $options{"A"};
-
-    # For MediaWiki: Title of the page on which the timeline is being parsed
-    $page_title = $options{"N"};
 
     # font to use. Must be in environment variable
     # GDFONTPATH unless builtin "ascii" font
@@ -3944,11 +3940,6 @@ sub WritePlotFile {
 
     print "Running Ploticus to generate svg file $file_vector\n";
 
-    my $errmsgpre = "";
-    if ($page_title ne "") {
-        $errmsgpre = " -errmsgpre '" . EscapeShellArg($page_title) . "'";
-    }
-
     my $escaped_font_file = EscapeShellArg($font_file);
     my $cmd =
           EscapeShellArg($pl)
@@ -3957,8 +3948,7 @@ sub WritePlotFile {
         . EscapeShellArg($file_script)
         . " -tightcrop"
         . " -font '$escaped_font_file'"
-        . " -xml_encoding UTF-8"
-        . $errmsgpre;
+        . " -xml_encoding UTF-8";
     print "$cmd\n";
     system($cmd);
 
@@ -4003,8 +3993,7 @@ sub WritePlotFile {
         . EscapeShellArg($file_bitmap) . " "
         . EscapeShellArg($file_script)
         . " -tightcrop -font "
-        . EscapeShellArg($font_file)
-        . $errmsgpre;
+        . EscapeShellArg($font_file);
     print "$cmd\n";
     system($cmd);
 
