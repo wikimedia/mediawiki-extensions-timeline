@@ -7,5 +7,6 @@
 	},
 	"timeline-desc": "Bætir við <code>&lt;timeline&gt;</code> tagi til að búa til tímalínur",
 	"timeline-invalidmap": "Ógild tímalína búin til af EasyTimeline",
-	"timeline-tracking-category": "Síður sem nota Timeline"
+	"timeline-tracking-category": "Síður sem nota Timeline",
+	"timeline-tracking-category-desc": "Síðan inniheldur <code>&lt;timeline&gt;</code>-merki"
 }
