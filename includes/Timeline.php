@@ -14,7 +14,6 @@ use MediaWiki\WikiMap\WikiMap;
 use NullLockManager;
 use Parser;
 use Shellbox\Command\BoxedCommand;
-use Wikimedia\AtEase\AtEase;
 use Wikimedia\ScopedCallback;
 use Xml;
 
@@ -448,9 +447,8 @@ class Timeline implements ParserFirstCallInitHook {
 	private static function fixMap( $html ) {
 		global $wgUrlProtocols;
 		$doc = new DOMDocument( '1.0', 'UTF-8' );
-		AtEase::suppressWarnings();
-		$status = $doc->loadXML( $html );
-		AtEase::restoreWarnings();
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$status = @$doc->loadXML( $html );
 		if ( !$status ) {
 			throw new TimelineException( 'timeline-invalidmap' );
 		}
