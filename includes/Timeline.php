@@ -507,8 +507,11 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @param string $type Type of shellout
 	 */
 	private static function recordShellout( $type ) {
-		$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
-		$statsd->increment( "timeline_shell.$type" );
+		MediaWikiServices::getInstance()->getStatsFactory()
+			->getCounter( 'timeline_shell' )
+			->setLabel( 'type', $type )
+			->copyToStatsdAt( "timeline_shell.$type" )
+			->increment();
 	}
 
 	/**
@@ -517,7 +520,10 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @param TimelineException $ex
 	 */
 	private static function recordError( TimelineException $ex ) {
-		$statsd = MediaWikiServices::getInstance()->getStatsdDataFactory();
-		$statsd->increment( "timeline_error.{$ex->getStatsdKey()}" );
+		MediaWikiServices::getInstance()->getStatsFactory()
+			->getCounter( 'timeline_error' )
+			->setLabel( 'exception', $ex->getStatsdKey() )
+			->copyToStatsdAt( "timeline_error.{$ex->getStatsdKey()}" )
+			->increment();
 	}
 }
