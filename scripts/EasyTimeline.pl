@@ -672,6 +672,10 @@ sub CollectAttributes {
                     );
                 }
             }
+            elsif ($name eq "until") {
+                # T275249
+                $Attributes{"till"} = $value;
+            }
             else { $Attributes{$name} = $value; }
         }
         else {
@@ -1215,7 +1219,7 @@ sub ParseLineData {
                 }
                 else { $till = $attrvalue; $at = ""; }
             }
-            elsif ($attribute =~ /^(?:atpos|frompos|tillpos)$/i) {
+            elsif ($attribute =~ /^(?:atpos|frompos|untilpos|tillpos)$/i) {
                 if ($attrvalue =~ /^(?:Start|End)$/i) {
                     $attrvalue = lc($attrvalue);
                 }
@@ -1322,8 +1326,8 @@ sub ParseLineData {
             . "  Parralel to the time axis: 'from till atpos'\n"
             . "  Any direction: points(x1,y1)(x2,y2)\n"
             . "  at,from,till expect date/time values, just like with command PlotData\n"
-            . "  frompos,tillpos,atpos,x1,x2,y1,y2 expect coordinates (e.g. pixels values)\n";
-
+            . "  frompos,tillpos,atpos,x1,x2,y1,y2 expect coordinates (e.g. pixels values)\n"
+            . "  'until' and 'untilpos' may be used instead of 'till' and 'tillpos'.";
         if (   ($at ne "")
             && (($from ne "") || ($till ne "") || ($points ne "")))
         {
@@ -4848,7 +4852,7 @@ sub ValidAttributes {
             CheckAttributes(
                 $command,
                 "",
-                "at,from,till,atpos,frompos,tillpos,points,color,layer,width"
+                "at,from,till,atpos,frompos,untilpos,tillpos,points,color,layer,width"
             )
         );
     }
