@@ -5,5 +5,8 @@
 		]
 	},
 	"timeline-desc": "<code>&lt;timeline&gt;</code> тег тӀетуху цхьана хана шкал кхолла",
-	"timeline-tracking-category": "Хенан йина диаграммаш лело агӀонаш"
+	"timeline-invalidmap": "EasyTimeline дина суьртан гӀалат долу карта",
+	"timeline-tracking-category": "Хенан йина диаграммаш лело агӀонаш",
+	"timeline-tracking-category-desc": "ХӀокху агӀонна йукъахь йу тег <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "$1 файл йеша йиш йац."
 }
