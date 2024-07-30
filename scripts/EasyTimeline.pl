@@ -439,8 +439,9 @@ sub ParseScript {
             if ((!(defined($value))) || ($value eq "")) {
                 if ($name =~ /Preset/i) {
                     &Error("$name definition incomplete. No value specified\n"
-                            . "  At the moment only one preset exists: 'TimeVertical_OneBar_UnitYear'.\n"
-                            . "  See also meta.wikipedia.org/wiki/EasyTimeline/Presets"
+                        . "  Two presets are available:\n"
+                        . "  TimeVertical_OneBar_UnitYear and TimeHorizontal_AutoPlaceBars_UnitYear\n"
+                        . "  See documentation at https://www.mediawiki.org/wiki/Extension:EasyTimeline/syntax#Presets"
                     );
                 }
                 else {
@@ -2369,9 +2370,9 @@ sub ParsePreset {
         )
     {
         &Error(   "Preset value invalid.\n"
-                . "  At the moment two presets are available:\n"
+                . "  Two presets are available:\n"
                 . "  TimeVertical_OneBar_UnitYear and TimeHorizontal_AutoPlaceBars_UnitYear\n"
-                . "  See also meta.wikipedia.org/wiki/EasyTimeline/Presets");
+                . "  See documentation at https://www.mediawiki.org/wiki/Extension:EasyTimeline/syntax#Presets");
         return;
     }
 
