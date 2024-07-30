@@ -567,11 +567,10 @@ sub GetLine {
     }
 
     if ($Line !~ /^\s*$/) {
-        $Line = &EncodeInput($Line);
-
         if (!($Line =~ /^\s*Define/i)) {
-            $Line =~ s/($hDollar[a-zA-Z0-9]+)/&GetDefine($Line,$1)/ge;
+            $Line =~ s/(\$[a-zA-Z0-9]+)/&GetDefine($Line,$1)/ge;
         }
+        $Line = &EncodeInput($Line);
     }
 
     if (($#lines < 0) && (defined($commentstart))) {
@@ -708,7 +707,7 @@ sub CollectAttributes {
 sub GetDefine {
     my $command = shift;
     my $const   = shift;
-    $const = lc($const);
+    $const = lc(EncodeInput($const));
     my $value = $Consts{ lc($const) };
     if (!defined($value)) {
         &Error("Unknown constant. 'Define $const = ... ' expected.");
@@ -1099,6 +1098,7 @@ sub ParseDefine {
     $command2 =~ s/^Define\s*//i;
 
     my ($name, $value) = split($hIs, $command2);
+
     $name  =~ s/^\s*(.*?)\s*$/$1/g;
     $value =~ s/^\s*(.*?)\s*$/$1/g;
 
@@ -1113,7 +1113,8 @@ sub ParseDefine {
         return;
     }
 
-    $value =~ s/($hDollar[a-zA-Z0-9]+)/&GetDefine($command,$1)/ge;
+    $value = DecodeInput($value);
+    $value =~ s/(\$[a-zA-Z0-9]+)/&GetDefine($command,$1)/ge;
     $Consts{ lc($name) } = $value;
 }
 
