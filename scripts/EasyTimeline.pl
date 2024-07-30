@@ -988,7 +988,7 @@ sub ParseColors {
             }
         }
 
-        if (!($colorvalue =~ /^(?:gray|rgb|hsb) $hBrO .+? $hBrC/xi)) {
+        if (!($colorvalue =~ /^(?:gray|rgb|hsb|xrgb) $hBrO .+? $hBrC/xi)) {
             &Error(
                 "Color value invalid. Specify constant or 'gray/rgb/hsb(numeric values)' "
             );
@@ -1025,6 +1025,26 @@ sub ParseColors {
             else {
                 &Error(
                     "Color value invalid. Specify 'rgb(r,g,b) where 0 <= r,g,b <= 1' "
+                );
+            }
+
+            &GetData;
+            next Colors;
+        }
+
+        if ($colorvalue =~ /^xrgb/i) {
+            my $colormode = substr($colorvalue, 0, 3);
+            if (
+                $colorvalue =~ /xrgb $hBrO
+                                 ([\da-f0-9]{6}|[\da-f0-9]{12})
+                              $hBrC/xi
+                )
+            {
+                &StoreColor($colorname, $colorvalue, $legendvalue);
+            }
+            else {
+                &Error(
+                    "Color value invalid. Specify 'xrgb(ABCDEF) using 6 or 12 hex chars' "
                 );
             }
 
