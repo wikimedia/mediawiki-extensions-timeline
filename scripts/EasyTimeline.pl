@@ -1100,11 +1100,13 @@ sub ParseDateFormat {
     $datevalue = lc($datevalue);
     if (   ($datevalue ne "dd/mm/yyyy")
         && ($datevalue ne "mm/dd/yyyy")
+        && ($datevalue ne "yyyy-mm-dd")
         && ($datevalue ne "yyyy")
         && ($datevalue ne "x.y"))
     {
         &Error(
-            "Invalid DateFormat. Specify as 'dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy' or 'x.y'\n"
+            "Invalid DateFormat. Specify as 'dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd',\n"
+                . " 'yyyy' or 'x.y'\n"
                 . "  (use first two only for years >= 1800)\n");
         return;
     }
@@ -1637,15 +1639,23 @@ sub ParsePeriod {
             }
         }
         else {
+            my $year;
+
             if (   ($attrvalue =~ /^\d+$/)
                 && ($attrvalue >= 1800)
                 && ($attrvalue <= 2030))
             {
                 if ($attribute =~ /^From$/i) {
-                    $attrvalue = "01/01/" . $attrvalue;
+                    if ($DateFormat eq "yyyy-mm-dd") {
+                        $attrvalue .= "-01-01";
+                    }
+                    else { $attrvalue = "01/01/" . $attrvalue; }
                 }
                 if ($attribute =~ /^Till$/i) {
-                    if ($DateFormat eq "dd/mm/yyyy") {
+                    if ($DateFormat eq "yyyy-mm-dd") {
+                        $attrvalue .= "-12-31";
+                    }
+                    elsif ($DateFormat eq "dd/mm/yyyy") {
                         $attrvalue = "31/12/" . $attrvalue;
                     }
                     else { $attrvalue = "12/31/" . $attrvalue; }
@@ -1658,7 +1668,11 @@ sub ParsePeriod {
                 );
                 return;
             }
-            if (substr($attrvalue, 6, 4) < 1800) {
+            if ($DateFormat eq "yyyy-mm-dd") {
+                $year = substr($attrvalue, 0, 4);
+            }
+            else { $year = substr($attrvalue, 6, 4); }
+            if ($year < 1800) {
                 &Error(
                     "Period attribute '$attribute' invalid. Specify year >= 1800."
                 );
@@ -2550,13 +2564,17 @@ sub ParseScale {
             }
 
             if (   ($DateFormat eq "dd/mm/yyyy")
-                || ($DateFormat eq "mm/dd/yyyy"))
+                || ($DateFormat eq "mm/dd/yyyy")
+                || ($DateFormat eq "yyyy-mm-dd"))
             {
                 if (   ($attrvalue =~ /^\d+$/)
                     && ($attrvalue >= 1800)
                     && ($attrvalue <= 2030))
                 {
-                    $attrvalue = "01/01/" . $attrvalue;
+                    if ($DateFormat eq "yyyy-mm-dd") {
+                        $attrvalue .= "-01-01";
+                    }
+                    else { $attrvalue = "01/01/" . $attrvalue; }
                 }
             }
 
@@ -4341,7 +4359,8 @@ sub PlotScale {
     }
     else { $script .= "  stubs: none\n"; }
 
-    if ($DateFormat !~ /\//) {
+    if (   ($DateFormat eq "yyyy")
+        || ($DateFormat eq "x.y")) {
         $script .= "  ticincrement: " . $Scales{"$scale inc"} . "\n";
     }
     else {
@@ -4570,17 +4589,25 @@ sub ValidDateFormat {
         return ($true);
     }
 
-    if (!($date =~ /^\d\d\/\d\d\/\d\d\d\d$/)) { return ($false); }
-
-    if ($DateFormat eq "dd/mm/yyyy") {
-        $day   = substr($date, 0, 2);
-        $month = substr($date, 3, 2);
-        $year  = substr($date, 6, 4);
+    if ($DateFormat eq "yyyy-mm-dd") {
+        if (!($date =~ /^\d\d\d\d-\d\d-\d\d$/)) { return ($false); }
+        $day   = substr($date, 8, 2);
+        $month = substr($date, 5, 2);
+        $year  = substr($date, 0, 4);
     }
     else {
-        $day   = substr($date, 3, 2);
-        $month = substr($date, 0, 2);
-        $year  = substr($date, 6, 4);
+        if (!($date =~ /^\d\d\/\d\d\/\d\d\d\d$/)) { return ($false); }
+
+        if ($DateFormat eq "dd/mm/yyyy") {
+            $day   = substr($date, 0, 2);
+            $month = substr($date, 3, 2);
+            $year  = substr($date, 6, 4);
+        }
+        else {
+            $day   = substr($date, 3, 2);
+            $month = substr($date, 0, 2);
+            $year  = substr($date, 6, 4);
+        }
     }
 
     if ($month =~ /^(?:01|03|05|07|08|10|12)$/) {
@@ -4613,6 +4640,17 @@ sub ValidDateRange {
         return ($true);
     }
 
+    if ($DateFormat eq "yyyy-mm-dd") {
+        $day    = substr($date, 8, 2);
+        $month  = substr($date, 5, 2);
+        $year   = substr($date, 0, 4);
+        $dayf   = substr($from, 8, 2);
+        $monthf = substr($from, 5, 2);
+        $yearf  = substr($from, 0, 4);
+        $dayt   = substr($till, 8, 2);
+        $montht = substr($till, 5, 2);
+        $yeart  = substr($till, 0, 4);
+    }
     if ($DateFormat eq "dd/mm/yyyy") {
         $day    = substr($date, 0, 2);
         $month  = substr($date, 3, 2);
@@ -4681,7 +4719,12 @@ sub DaysFrom1800 {
     my @mmm = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
     my ($day, $month, $year);
     my $date = shift;
-    if ($DateFormat eq "dd/mm/yyyy") {
+    if ($DateFormat eq "yyyy-mm-dd") {
+        $day   = substr($date, 8, 2);
+        $month = substr($date, 5, 2);
+        $year  = substr($date, 0, 4);
+    }
+    elsif ($DateFormat eq "dd/mm/yyyy") {
         $day   = substr($date, 0, 2);
         $month = substr($date, 3, 2);
         $year  = substr($date, 6, 4);
@@ -4746,7 +4789,10 @@ sub DateFrom1800 {
 
     $month++;
     my $date;
-    if ($DateFormat eq "dd/mm/yyyy") {
+    if ($DateFormat eq "yyyy-mm-dd") {
+        $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+    }
+    elsif ($DateFormat eq "dd/mm/yyyy") {
         $date = sprintf("%02d/%02d/%04d", $day, $month, $year);
     }
     else { $date = sprintf("%02d/%02d/%04d", $month, $day, $year); }
