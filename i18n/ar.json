@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hhaboh162002",
 			"Meno25",
 			"SaldırganSincap",
 			"ديفيد"
@@ -11,7 +12,7 @@
 	"timeline-error-temp": "خطأ في المخطط الزمني. تعذر إنشاء ملفات مؤقتة",
 	"timeline-error-command": "خطأ في المخطط الزمني. كان الأمر: $1",
 	"timeline-invalidmap": "صورة خريطة غير صحيحة تم توليدها بواسطة EasyTimeline",
-	"timeline-tracking-category": "صفحات تستخدم خطا زمنيا",
+	"timeline-tracking-category": "صفحات تستخدم امتداد EasyTimeline",
 	"timeline-tracking-category-desc": "تتضمن الصفحة علامة <code><timeline></code>",
 	"timeline-readerr": "غير قادر على قراءة الملف $1.",
 	"timeline-scripterr": "تعذر تشغيل البرنامج النصي عن بعد: تم الخروج من $1 برمز الحالة $2\n$3",

@@ -3,6 +3,7 @@
 		"authors": [
 			"Crochet.david",
 			"DreZhsh",
+			"Escargot bleu",
 			"Gomoko",
 			"Grondin",
 			"Orlodrim",
@@ -16,7 +17,7 @@
 	"timeline-error-temp": "Erreur de chronologie. Impossible de créer des fichiers temporaires",
 	"timeline-error-command": "Erreur de chronologie. La commande était : $1",
 	"timeline-invalidmap": "Carte de l’image générée par EasyTimeline invalide",
-	"timeline-tracking-category": "Pages utilisant une frise chronologique",
+	"timeline-tracking-category": "Page utilisant l'extension EasyTimeline",
 	"timeline-tracking-category-desc": "La page contient une balise <code>&lt;timeline&gt;</code>.",
 	"timeline-readerr": "Impossible de lire le fichier $1.",
 	"timeline-scripterr": "Impossible d'exécuter le script distant : $1 s'est terminé avec le code d'état $2 $3",

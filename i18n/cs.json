@@ -9,7 +9,7 @@
 	},
 	"timeline-desc": "Přidává značku <code>&lt;timeline&gt;</code> na vytváření časových os",
 	"timeline-invalidmap": "Neplatná mapa k obrázku vytvořená pomocí EasyTimeline",
-	"timeline-tracking-category": "Stránky s časovou osou",
+	"timeline-tracking-category": "Stránky používající rozšíření EasyTimeline",
 	"timeline-readerr": "Nepodařilo se přečíst soubor $1.",
 	"timeline-scripterr": "Spuštění vzdáleného skriptu se nezdařilo: $1 byl ukončen se stavovým kódem $2\n$3",
 	"timeline-perlnotexecutable": "Nepodařilo se spustit Perl: $1 není spustitelný soubor. Ověřte, že máte správně nastaveno <code>$wgTimelinePerlCommand</code>.",

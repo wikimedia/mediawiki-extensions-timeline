@@ -11,7 +11,7 @@
 	"timeline-error-temp": "Zaman çizelgesi hatası. Geçici dosyalar oluşturulamadı",
 	"timeline-error-command": "Zaman çizelgesi hatası. Komut şuydu: $1",
 	"timeline-invalidmap": "EasyTimeline tarafından geçersiz resim haritası oluşturuldu",
-	"timeline-tracking-category": "Zaman Çizelgesi'ni kullanan sayfalar",
+	"timeline-tracking-category": "KolayZamanÇizelgesi kullanan sayfalar",
 	"timeline-tracking-category-desc": "Sayfa bir <code>&lt;timeline&gt;</code> etiketi içeriyor",
 	"timeline-readerr": "$1 dosyası okunamıyor.",
 	"timeline-scripterr": "Uzak komut dizisi çalıştırılamıyor: $1, durum kodu $2 ile çıkıldı\n$3",
