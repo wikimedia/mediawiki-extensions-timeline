@@ -9,6 +9,6 @@
 	},
 	"timeline-desc": "Aggiunge il tag <code>&lt;timeline&gt;</code> per creare grafici temporali",
 	"timeline-invalidmap": "Mappa immagine invalida generata da EasyTimeline",
-	"timeline-tracking-category": "Pagine che utilizzano Timeline",
+	"timeline-tracking-category": "Pagine che utilizzano l'estensione EasyTimeline",
 	"timeline-tracking-category-desc": "La pagina include un tag <code>&lt;timeline&gt;</code>"
 }

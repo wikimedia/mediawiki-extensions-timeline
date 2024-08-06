@@ -4,6 +4,7 @@
 			"Larske",
 			"Lejonel",
 			"Per",
+			"Sabelöga",
 			"WikiPhoenix"
 		]
 	},
@@ -12,5 +13,12 @@
 	"timeline-error-temp": "Fel i tidslinje. Kan inte skapa temporära filer",
 	"timeline-error-command": "Fel i tidslinje. Kommandot var: $1",
 	"timeline-invalidmap": "EasyTimeline har skapat en ogiltig bildkarta",
-	"timeline-tracking-category": "Sidor som använder Timeline"
+	"timeline-tracking-category": "Sidor som använder tillägger EasyTimeline",
+	"timeline-tracking-category-desc": "Sidan innehåller en <code>&lt;timeline&gt;</code>-tagg",
+	"timeline-readerr": "Kunde inte läsa filen $1.",
+	"timeline-scripterr": "Kunde inte köra fjärrskript: $1 avslutades med statuskod $2",
+	"timeline-perlnotexecutable": "Perl kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePerlCommand</code> har angetts korrekt.",
+	"timeline-ploticusnotexecutable": "Ploticus kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePloticusCommand</code> har angetts korrekt.",
+	"timeline-compilererr": "Kunde inte sammanställa EasyTimeline-inmatning:\n$1",
+	"timeline-rsvg-error": "Kunde inte konvertera SVG till PNG:"
 }

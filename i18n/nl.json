@@ -3,6 +3,7 @@
 		"authors": [
 			"Bdijkstra",
 			"Mainframe98",
+			"Mbch331",
 			"McDutchie",
 			"Siebrand"
 		]
@@ -12,7 +13,7 @@
 	"timeline-error-temp": "Tijdlijnfout. Kan geen tijdelijke bestanden maken",
 	"timeline-error-command": "Tijdlijnfout. Commando was: $1",
 	"timeline-invalidmap": "EasyTimeline heeft een ongeldige afbeelding gegenereerd",
-	"timeline-tracking-category": "Pagina's die Timeline gebruiken",
+	"timeline-tracking-category": "Pagina's die EasyTimeline gebruiken",
 	"timeline-tracking-category-desc": "De pagina bevat een <code>&lt;timeline&gt;</code>-tag.",
 	"timeline-readerr": "Het bestand $1 kan niet gelezen worden.",
 	"timeline-scripterr": "Kan extern script niet uitvoeren: $1 is afgesloten met statuscode $2\n$3",

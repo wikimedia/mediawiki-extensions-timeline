@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"BadDog",
+			"Milicevic01",
 			"Millosh"
 		]
 	},
@@ -10,5 +11,5 @@
 	"timeline-error-temp": "Грешка у хронологији: Није могуће створити привремене датотеке.",
 	"timeline-error-command": "Грешка у хронологији. Команда је била: $1",
 	"timeline-invalidmap": "EasyTimeline је генерисао неважећу мапу слика",
-	"timeline-tracking-category": "Странице које користе хронологију"
+	"timeline-tracking-category": "Странице које користе EasyTimeline екстензију"
 }
