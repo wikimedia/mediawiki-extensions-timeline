@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Crt",
+			"Samoasambia",
 			"ZeiP"
 		]
 	},
 	"timeline-desc": "Lisää <code>&lt;timeline&gt;</code>-elementin aikajanan luomiseksi.",
-	"timeline-invalidmap": "EasyTimeline loi virheellisen kuvakartan"
+	"timeline-invalidmap": "EasyTimeline loi virheellisen kuvakartan",
+	"timeline-tracking-category": "Sivut, jotka käyttävät EasyTimeline-laajennusta"
 }
