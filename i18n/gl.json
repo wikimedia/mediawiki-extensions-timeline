@@ -10,7 +10,7 @@
 	"timeline-error-temp": "Erro da liña do tempo. Non se puideron crear os ficheiros temporais",
 	"timeline-error-command": "Erro da liña do tempo. O comando foi: $1",
 	"timeline-invalidmap": "Mapa de imaxe non válido xerado por EasyTimeline",
-	"timeline-tracking-category": "Páxinas que usan Timeline",
+	"timeline-tracking-category": "Páxinas que usan a extensión EasyTimeline",
 	"timeline-tracking-category-desc": "A páxina inclúe unha etiqueta <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Non se puido ler o ficheiro $1.",
 	"timeline-scripterr": "Non se puido executar o script remoto: $1 finalizou con código de estado $2\n$3",
