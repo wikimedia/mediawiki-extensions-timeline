@@ -4,12 +4,19 @@
 			"Beginneruser",
 			"Huji",
 			"Ladsgroup",
-			"Wayiran"
+			"Wayiran",
+			"Jeeputer"
 		]
 	},
 	"timeline-desc": "برچسب <code>&lt;timeline&gt;</code> را برای نمایش خطوط زمانی می‌افزاید",
+	"timeline-error-storage": "خطای گاه‌شمار. ناتوان در ذخیرهسازی پرونده‌های خروجی",
+	"timeline-error-temp": "خطای گاه‌شمار. ناتوان در ایجاد پرونده‌های موقت",
+	"timeline-error-command": "خطای گاه‌شمار. فرمان چنین بود: $1",
 	"timeline-invalidmap": "تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline",
 	"timeline-tracking-category": "صفحاتی که از گاه‌شمار استفاده می‌کنند",
+	"timeline-tracking-category-desc": "صفحه حاوی یک برچسب <code>&lt;timeline&gt;</code> است",
 	"timeline-readerr": "قادر به خواندن پرونده $1 نیست.",
+	"timeline-scripterr": "ناتوان در راندن اسکریپت راه دور: $1 با شناسه وضعیت $2 خارج شد $3",
+	"timeline-compilererr": "ناتوان در جمع‌آوری ورودی گاه‌شمار آسان:\n$1",
 	"timeline-rsvg-error": "قادر به تبدیل SVG به PNG نیست:\n$1"
 }

@@ -6,7 +6,16 @@
 		]
 	},
 	"timeline-desc": "Engade a etiqueta <code>&lt;timeline&gt;</code> para crear liñas do tempo",
-	"timeline-invalidmap": "Mapa inválido da imaxe xerada por EasyTimeline",
+	"timeline-error-storage": "Erro da liña do tempo. Non se puideron almacenar os ficheiros de saída",
+	"timeline-error-temp": "Erro da liña do tempo. Non se puideron crear os ficheiros temporais",
+	"timeline-error-command": "Erro da liña do tempo. O comando foi: $1",
+	"timeline-invalidmap": "Mapa de imaxe non válido xerado por EasyTimeline",
 	"timeline-tracking-category": "Páxinas que usan Timeline",
-	"timeline-tracking-category-desc": "A páxina inclúe unha etiqueta <code>&lt;timeline&gt;</code>"
+	"timeline-tracking-category-desc": "A páxina inclúe unha etiqueta <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Non se puido ler o ficheiro $1.",
+	"timeline-scripterr": "Non se puido executar o script remoto: $1 finalizou con código de estado $2\n$3",
+	"timeline-perlnotexecutable": "Non se puido executar Perl: $1 non é un ficheiro executable. Asegúrate de que <code>$wgTimelinePerlCommand</code> estea configurado correctamente.",
+	"timeline-ploticusnotexecutable": "Non se puido executar Ploticus: $1 non é un ficheiro executable. Asegúrate de que <code>$wgTimelinePloticusCommand</code> estea configurado correctamente.",
+	"timeline-compilererr": "Non se puido compilar a entrada de EasyTimeline:\n$1",
+	"timeline-rsvg-error": "Non se puido converter de SVG a PNG:\n$1"
 }
