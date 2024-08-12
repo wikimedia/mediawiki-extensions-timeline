@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"-jem-",
 			"Crazymadlover",
 			"Geryescalier",
 			"Macofe",
@@ -14,7 +15,7 @@
 	"timeline-error-temp": "Error de línea de tiempo. No se pudieron crear archivos temporales",
 	"timeline-error-command": "Error de línea de tiempo. El comando fue: $1",
 	"timeline-invalidmap": "Mapa de imagen inválida generada por EasyTimeline",
-	"timeline-tracking-category": "Páginas que usan Timeline",
+	"timeline-tracking-category": "Páginas que usan la extensión EasyTimeline",
 	"timeline-tracking-category-desc": "La página incluye una etiqueta <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "no se puede leer el archivo $1.",
 	"timeline-scripterr": "No se puede ejecutar el script remoto: $1 salió con el código de estado $2\n$3",
