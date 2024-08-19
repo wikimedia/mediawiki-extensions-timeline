@@ -22,7 +22,7 @@
 	"timeline-error-temp": "时间线出错。无法创建临时文件",
 	"timeline-error-command": "时间线出错。出错命令：$1",
 	"timeline-invalidmap": "EasyTimeline生成的图像地图无效",
-	"timeline-tracking-category": "使用EasyTimeline扩展的页面",
+	"timeline-tracking-category": "使用简易时间线扩展的页面",
 	"timeline-tracking-category-desc": "页面含有<code>&lt;timeline&gt;</code>标签",
 	"timeline-readerr": "无法读取文件$1。",
 	"timeline-scripterr": "无法运行远程脚本：$1以状态码$2退出$3",

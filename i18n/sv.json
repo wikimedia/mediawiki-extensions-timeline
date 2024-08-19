@@ -13,7 +13,7 @@
 	"timeline-error-temp": "Fel i tidslinje. Kan inte skapa temporära filer",
 	"timeline-error-command": "Fel i tidslinje. Kommandot var: $1",
 	"timeline-invalidmap": "EasyTimeline har skapat en ogiltig bildkarta",
-	"timeline-tracking-category": "Sidor som använder tillägger EasyTimeline",
+	"timeline-tracking-category": "Sidor som använder tillägget EasyTimeline",
 	"timeline-tracking-category-desc": "Sidan innehåller en <code>&lt;timeline&gt;</code>-tagg",
 	"timeline-readerr": "Kunde inte läsa filen $1.",
 	"timeline-scripterr": "Kunde inte köra fjärrskript: $1 avslutades med statuskod $2",
