@@ -9,7 +9,7 @@
 	"timeline-error-temp": "Tidslinjefeil. Kunne ikke opprette midlertidige filer",
 	"timeline-error-command": "Tidslinjefeil. Kommandoen var: $1",
 	"timeline-invalidmap": "Ugyldig bildekart opprettet av EasyTimeline",
-	"timeline-tracking-category": "Sider som bruker Timeline",
+	"timeline-tracking-category": "Sider som bruker EasyTimeline-utvidelsen",
 	"timeline-tracking-category-desc": "Siden inkluderer en <code><nowiki><timeline></nowiki></code>-tagg",
 	"timeline-readerr": "Kunne ikke lese fila $1.",
 	"timeline-scripterr": "Kunne ikke kjøre eksternt skript: $1 avsluttet med statuskoden $2\n$3",
