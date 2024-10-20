@@ -3,8 +3,6 @@
 namespace MediaWiki\Extension\Timeline;
 
 use DOMDocument;
-use FileBackend;
-use FSFileBackend;
 use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Html\Html;
 use MediaWiki\Logger\LoggerFactory;
@@ -12,10 +10,12 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
+use MediaWiki\Xml\Xml;
 use NullLockManager;
 use Shellbox\Command\BoxedCommand;
+use Wikimedia\FileBackend\FileBackend;
+use Wikimedia\FileBackend\FSFileBackend;
 use Wikimedia\ScopedCallback;
-use Xml;
 
 class Timeline implements ParserFirstCallInitHook {
 
