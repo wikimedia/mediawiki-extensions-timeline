@@ -5,12 +5,14 @@
 			"Okras",
 			"Wikisaurus",
 			"WindEwriX",
-			"Александр Сигачёв"
+			"Александр Сигачёв",
+			"Yurina Tatiana"
 		]
 	},
 	"timeline-desc": "Добавляет тег <code>&lt;timeline&gt;</code> для создания временных шкал",
 	"timeline-invalidmap": "Ошибочная карта изображения, созданная EasyTimeline",
 	"timeline-tracking-category": "Страницы, использующие временные диаграммы",
 	"timeline-tracking-category-desc": "Эта страница включает в себя тег <code>&lt;timeline&gt;</code>",
-	"timeline-readerr": "Не удаётся прочитать файл $1."
+	"timeline-readerr": "Не удаётся прочитать файл $1.",
+	"timeline-rsvg-error": "Невозможно сконвертировать SVG в PNG:\n$1"
 }
