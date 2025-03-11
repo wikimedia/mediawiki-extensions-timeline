@@ -11,7 +11,7 @@
 	"timeline-error-temp": "Fazi kronologiezh. Ne c'haller ket krouiñ ar restroù padennek",
 	"timeline-error-command": "Fazi kronologiezh. $1 a oa an urzhiad.",
 	"timeline-invalidmap": "Kartenn direizh ganet dre EasyTimeline",
-	"timeline-tracking-category": "Pajennoù a implij Timeline",
+	"timeline-tracking-category": "Pajennoù a ra gant an astenn EasyTimeline",
 	"timeline-tracking-category-desc": "Er bajenn ez eus ur valizenn <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Ne c'haller ket lenn ar restr $1.",
 	"timeline-scripterr": "Ne c’haller ket lañsañ ur skript a-bell: echuet $1 gant kod statud $2\n$3",
