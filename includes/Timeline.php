@@ -10,7 +10,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
-use MediaWiki\Xml\Xml;
 use NullLockManager;
 use Shellbox\Command\BoxedCommand;
 use Wikimedia\FileBackend\FileBackend;
@@ -459,7 +458,7 @@ class Timeline implements ParserFirstCallInitHook {
 		}
 		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		$name = $map->attributes->getNamedItem( 'name' )->value;
-		$res = Xml::openElement( 'map', [ 'name' => $name ] );
+		$res = Html::openElement( 'map', [ 'name' => $name ] );
 
 		$allowedAttribs = [ 'shape', 'coords', 'href', 'nohref', 'alt', 'tabindex', 'title' ];
 		foreach ( $map->childNodes as $node ) {
@@ -494,9 +493,9 @@ class Timeline implements ParserFirstCallInitHook {
 				continue;
 			}
 
-			$res .= Xml::element( 'area', $attributes );
+			$res .= Html::element( 'area', $attributes );
 		}
-		$res .= '</map>';
+		$res .= Html::closeElement( 'map' );
 
 		return $res;
 	}
