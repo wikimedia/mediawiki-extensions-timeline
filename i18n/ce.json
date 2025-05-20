@@ -5,9 +5,13 @@
 		]
 	},
 	"timeline-desc": "<code>&lt;timeline&gt;</code> тег тӀетуху цхьана хана шкал кхолла",
+	"timeline-error-storage": "Хенан гӀалат. Арахецна файлаш латто аьтто ца баьлла",
+	"timeline-error-temp": "Хенан гӀалат. Цхьана ханна файлаш кхолла аьтто ца баьлла",
+	"timeline-error-command": "Хенан гӀалат. Команда: $1",
 	"timeline-invalidmap": "EasyTimeline дина суьртан гӀалат долу карта",
-	"timeline-tracking-category": "Хенан йина диаграммаш лело агӀонаш",
+	"timeline-tracking-category": "EasyTimeline шордар лелош йолу агӀонаш",
 	"timeline-tracking-category-desc": "ХӀокху агӀонна йукъахь йу тег <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "$1 файл йеша йиш йац.",
+	"timeline-scripterr": "ДӀайаьккхина скрипт йолайалийта аьтто бац: $1 статусан кодца чекхдаьккхина $2\n$3",
 	"timeline-rsvg-error": "SVG → PNG хийца аьтто бац:\n$1"
 }
