@@ -8,5 +8,6 @@
 	"timeline-invalidmap": "EasyTimeline дина суьртан гӀалат долу карта",
 	"timeline-tracking-category": "Хенан йина диаграммаш лело агӀонаш",
 	"timeline-tracking-category-desc": "ХӀокху агӀонна йукъахь йу тег <code>&lt;timeline&gt;</code>",
-	"timeline-readerr": "$1 файл йеша йиш йац."
+	"timeline-readerr": "$1 файл йеша йиш йац.",
+	"timeline-rsvg-error": "SVG → PNG хийца аьтто бац:\n$1"
 }
