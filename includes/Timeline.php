@@ -196,7 +196,7 @@ class Timeline implements ParserFirstCallInitHook {
 
 		$stdout = $result->getStdout();
 		if ( $result->getExitCode() != 0 || !strlen( $stdout ) ) {
-			self::throwCompileException( $stdout, $options );
+			self::throwCompileException( $stdout );
 		}
 
 		// Copy the output files into storage...
@@ -377,11 +377,10 @@ class Timeline implements ParserFirstCallInitHook {
 	 * and throw a relevant error.
 	 *
 	 * @param string $stdout
-	 * @param array $options
 	 * @throws TimelineException
 	 * @return never
 	 */
-	private static function throwCompileException( $stdout, $options ) {
+	private static function throwCompileException( $stdout ) {
 		$extracted = self::extractMessage( $stdout );
 		if ( $extracted ) {
 			$message = $extracted[0];
@@ -441,6 +440,7 @@ class Timeline implements ParserFirstCallInitHook {
 	/**
 	 * Do a security check on the image map HTML
 	 * @param string $html
+	 * @throws TimelineException
 	 * @return string HTML
 	 */
 	private static function fixMap( $html ) {
