@@ -9,7 +9,7 @@
 	"timeline-error-temp": "Грешка во времеследот. Не можев да создадам привремени податотеки",
 	"timeline-error-command": "Грешка во времеследот. Наредбата гласеше: $1",
 	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline",
-	"timeline-tracking-category": "Страници што го користат додатокто EasyTimeline",
+	"timeline-tracking-category": "Страници што го користат додатокот EasyTimeline",
 	"timeline-tracking-category-desc": "Страницава содржи ознака <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Не можам да ја прочитам податотеката $1.",
 	"timeline-scripterr": "Не можам да ја пуштам оддалечената скрипта: $1 излезе со состојбениот код $2\n$3",
