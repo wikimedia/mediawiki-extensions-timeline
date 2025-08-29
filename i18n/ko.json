@@ -14,7 +14,7 @@
 	"timeline-error-temp": "타임라인 오류입니다. 임시 파일을 만들지 못했습니다",
 	"timeline-error-command": "타임라인 오류입니다. 명령: $1",
 	"timeline-invalidmap": "EasyTimeline이 잘못된 영상 지도를 생성했습니다",
-	"timeline-tracking-category": "EasyTimeline 확장 프로그램을 사용하는 문서",
+	"timeline-tracking-category": "EasyTimeline 확장 기능을 사용하는 문서",
 	"timeline-tracking-category-desc": "문서에 <code>&lt;timeline&gt;</code> 태그를 포함하고 있습니다",
 	"timeline-readerr": "$1 파일을 읽을 수 없습니다.",
 	"timeline-scripterr": "원격 스크립트를 실행할 수 없음: $1이 $2 $3 상태 코드로 종료됨",
