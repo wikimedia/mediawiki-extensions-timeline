@@ -13,7 +13,7 @@
 	"timeline-error-temp": "Памылка часавай шкалы. Немагчыма стварыць часовыя файлы",
 	"timeline-error-command": "Памылка часавай шкалы. Каманда: $1",
 	"timeline-invalidmap": "EasyTimeline стварыла няслушную мапу выявы",
-	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць часавыя дыяграмы",
+	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць пашырэнне EasyTimeline",
 	"timeline-tracking-category-desc": "Старонка ўключае тэг <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Немагчыма прачытаць файл $1.",
 	"timeline-scripterr": "Немагчыма запусціць аддалены скрыпт: $1 выйшаў з кодам стану $2\n$3",
