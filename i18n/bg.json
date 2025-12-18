@@ -8,6 +8,6 @@
 	},
 	"timeline-desc": "Добавя етикета <code>&lt;timeline&gt;</code> за създаване на времеви линии",
 	"timeline-invalidmap": "Невалидна карта на изображението, генерирана от EasyTimeline",
-	"timeline-tracking-category": "Страници, използващи Timeline",
+	"timeline-tracking-category": "Страници, използващи разширението EasyTimeline",
 	"timeline-tracking-category-desc": "Страницата съдържа <code>&lt;timeline&gt;</code> таг"
 }
