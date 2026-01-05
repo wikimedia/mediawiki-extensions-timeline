@@ -21,5 +21,5 @@
 	"timeline-perlnotexecutable": "Perl kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePerlCommand</code> har angetts korrekt.",
 	"timeline-ploticusnotexecutable": "Ploticus kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePloticusCommand</code> har angetts korrekt.",
 	"timeline-compilererr": "Kunde inte sammanställa EasyTimeline-inmatning:\n$1",
-	"timeline-rsvg-error": "Kunde inte konvertera SVG till PNG:"
+	"timeline-rsvg-error": "Kunde inte konvertera SVG till PNG:\n$1"
 }
