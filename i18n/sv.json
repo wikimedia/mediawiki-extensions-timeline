@@ -5,7 +5,8 @@
 			"Lejonel",
 			"Per",
 			"Sabelöga",
-			"WikiPhoenix"
+			"WikiPhoenix",
+			"Stefan2255"
 		]
 	},
 	"timeline-desc": "Lägger till taggen <code>&lt;timeline&gt;</code> för att skapa tidslinjer",
@@ -16,9 +17,9 @@
 	"timeline-tracking-category": "Sidor som använder tillägget EasyTimeline",
 	"timeline-tracking-category-desc": "Sidan innehåller en <code>&lt;timeline&gt;</code>-tagg",
 	"timeline-readerr": "Kunde inte läsa filen $1.",
-	"timeline-scripterr": "Kunde inte köra fjärrskript: $1 avslutades med statuskod $2",
+	"timeline-scripterr": "Kunde inte köra fjärrskript: $1 avslutades med statuskod $2\n$3",
 	"timeline-perlnotexecutable": "Perl kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePerlCommand</code> har angetts korrekt.",
 	"timeline-ploticusnotexecutable": "Ploticus kunde inte köras: $1 är inte en körbar fil. Se till att <code>$wgTimelinePloticusCommand</code> har angetts korrekt.",
 	"timeline-compilererr": "Kunde inte sammanställa EasyTimeline-inmatning:\n$1",
-	"timeline-rsvg-error": "Kunde inte konvertera SVG till PNG:"
+	"timeline-rsvg-error": "Kunde inte konvertera SVG till PNG:\n$1"
 }

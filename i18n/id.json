@@ -5,16 +5,17 @@
 			"Daud I.F. Argana",
 			"IvanLanin",
 			"Rachmat04",
-			"Rtnf"
+			"Rtnf",
+			"Penyuwangi"
 		]
 	},
-	"timeline-desc": "Menambahkan tag <code>&lt;timeline&gt;</code> untuk membuat garis waktu",
+	"timeline-desc": "Menambahkan tanda <code>&lt;timeline&gt;</code> untuk membuat linimasa",
 	"timeline-error-storage": "Galat garis waktu. Tidak dapat menyimpan berkas hasil",
 	"timeline-error-temp": "Galat garis waktu. Tidak dapat membuat berkas sementara",
 	"timeline-error-command": "Galat garis waktu. Perintahnya adalah: $1",
 	"timeline-invalidmap": "Peta gambar tidak sah dibuat oleh EasyTimeline",
 	"timeline-tracking-category": "Halaman yang menggunakan ekstensi EasyTimeline",
-	"timeline-tracking-category-desc": "Halaman tersebut menyertakan tag <code>&lt;timeline&gt;</code>",
+	"timeline-tracking-category-desc": "Halaman tersebut menyertakan tanda <code>&lt;timeline&gt;</code>",
 	"timeline-readerr": "Tidak dapat membaca berkas $1.",
 	"timeline-scripterr": "Tidak dapat menjalankan skrip: $1 keluar dengan kode status $2 $3",
 	"timeline-perlnotexecutable": "Perl tidak dapat dieksekusi: $1 bukan merupakan berkas yang dapat dieksekusi. Pastikan <code>$wgTimelinePerlCommand</code> diatur dengan benar.",
