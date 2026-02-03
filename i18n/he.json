@@ -11,7 +11,7 @@
 	"timeline-error-temp": "שגיאה בציר זמן. לא היה אפשר לשמור קבצים זמניים",
 	"timeline-error-command": "שגיאה בציר זמן. הפקודה הייתה: $1",
 	"timeline-invalidmap": "נוצרה מפת תמונה בלתי־תקינה על־ידי EasyTimeline",
-	"timeline-tracking-category": "דפים המשתמשים בהרחבה EasyTimeline",
+	"timeline-tracking-category": "דפים שמשתמשים בהרחבה EasyTimeline",
 	"timeline-tracking-category-desc": "הדף הזה מכיל תג <code><code>&lt;timeline&gt;</code></code>.",
 	"timeline-readerr": "לא נין לקרוא את הקובץ $1.",
 	"timeline-scripterr": "לא ניתן להריץ תסריט מרוחק: $1 יצא עם קוד מצב $2\n$3",
