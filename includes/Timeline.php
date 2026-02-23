@@ -7,6 +7,7 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
 use MediaWiki\Html\Html;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\StreamFile;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
@@ -329,8 +330,8 @@ class Timeline implements ParserFirstCallInitHook {
 					'lockManager' => new NullLockManager( [] ),
 					'containerPaths' => [ 'timeline-render' => "{$wgUploadDirectory}/timeline" ],
 					'fileMode' => 0777,
-					'obResetFunc' => 'wfResetOutputBuffers',
-					'streamMimeFunc' => [ 'StreamFile', 'contentTypeFromPath' ],
+					'obResetFunc' => wfResetOutputBuffers( ... ),
+					'streamMimeFunc' => StreamFile::contentTypeFromPath( ... ),
 					'logger' => LoggerFactory::getInstance( 'timeline' ),
 				]
 			);
