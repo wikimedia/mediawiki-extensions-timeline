@@ -5,6 +5,7 @@
 			"Nieszczarda2",
 			"Red Winged Duck",
 			"Renessaince",
+			"Ucukor",
 			"ZlyiLev"
 		]
 	},
@@ -14,7 +15,7 @@
 	"timeline-readerr": "Немагчыма прачытаць файл $1.",
 	"timeline-scripterr": "Немагчыма запусціць аддалены скрыпт: $1 выйшаў з кодам стану $2 $3",
 	"timeline-perlnotexecutable": "Немагчыма выканаць Perl: $1 не зьяўляецца выканальным файлам. Пераканайцеся, што <code>$wgTimelinePerlCommand</code> выстаўлены карэктна.",
-	"timeline-ploticusnotexecutable": "Ploticus ня можа быць выкананы: $1 не з'яўляецца выкананым файлам. Пераканайцеся, што <code>$wgTimelinePloticusCommand</code> выстаўлены карэктна.",
+	"timeline-ploticusnotexecutable": "Ploticus ня можа быць выкананы: $1 не зьяўляецца выкананым файлам. Пераканайцеся, што <code>$wgTimelinePloticusCommand</code> выстаўлены карэктна.",
 	"timeline-compilererr": "Немагчыма скампіляваць увод EasyTimeline:\n$1",
 	"timeline-rsvg-error": "Канвэртаваць SVG у PNG немагчыма: $1"
 }
