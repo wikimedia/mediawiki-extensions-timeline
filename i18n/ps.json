@@ -4,6 +4,17 @@
 			"شاه زمان پټان"
 		]
 	},
+	"timeline-desc": "د مهالوېش جوړولو لپاره <code>&lt;timeline&gt;</code> نښلن ورگډوي",
+	"timeline-error-storage": "مهالوېش تېروتنه. بهرلېږونکې دوتنې نشي زخيره کولی",
+	"timeline-error-temp": "مهالوېش تېروتنه. لنډمهاله دوتنې نشو جوړولی",
+	"timeline-error-command": "مهالوېش تېروتنه. امر داو: $1",
+	"timeline-invalidmap": "د اسان‌مهالوېش له لارې رامنځته شوې ناسمه انځور نخشه",
+	"timeline-tracking-category": "هغه مخونه چې اسان‌مهالوېش شاتاړی کاروي",
+	"timeline-tracking-category-desc": "په مخ کې د <code>&lt;timeline&gt;</code> نښلن رانغاړل شوی دی",
 	"timeline-readerr": "$1 دوتنه نشي لوستل کېدای.",
+	"timeline-scripterr": "د لرې‌پروت سکريپټ چلولو توان نه لري: $1 د $2 کوډ دريځ سره وويستل شو $3",
+	"timeline-perlnotexecutable": "Perl نشي ترسره کېدی: $1 د ترسراوي وړ دوتنه نه ده. ځان ډاډه کړئ چې <code>$wgTimelinePerlCommand</code> کوډ سم اوڼل شوی دی.",
+	"timeline-ploticusnotexecutable": "Ploticus ترسره نه شو: $1 د ترسراوي وړ دوتنه نه ده. ځان ډاډه کړئ چې <code>$wgTimelinePloticusCommand</code> کوډ سم اوڼل شوی دی.",
+	"timeline-compilererr": "د اسان‌مهالوېش د ورکړې راټولولو توان نه لري:",
 	"timeline-rsvg-error": "اېس‌وي‌جي په پي‌اېن‌جي نشي اړول کېدای: $1"
 }
