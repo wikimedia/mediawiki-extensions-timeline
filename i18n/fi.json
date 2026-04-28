@@ -3,7 +3,8 @@
 		"authors": [
 			"Crt",
 			"Samoasambia",
-			"ZeiP"
+			"ZeiP",
+			"Pxos"
 		]
 	},
 	"timeline-desc": "Lisää <code>&lt;timeline&gt;</code>-elementin aikajanan luomiseksi.",
@@ -11,7 +12,7 @@
 	"timeline-error-temp": "Timeline-virhe. Väliaikaisia tiedostoja ei voitu luoda",
 	"timeline-error-command": "Timeline-virhe. Komento oli: $1",
 	"timeline-invalidmap": "EasyTimeline loi virheellisen kuvakartan",
-	"timeline-tracking-category": "Sivut, jotka käyttävät EasyTimeline-laajennusta",
+	"timeline-tracking-category": "EasyTimeline-laajennusta käyttävät sivut",
 	"timeline-tracking-category-desc": "Sivu sisältää <code>&lt;timeline&gt;</code>-elementin",
 	"timeline-readerr": "Tiedostoa $1 ei voitu lukea.",
 	"timeline-compilererr": "EasyTimeline-syötteen kokoaminen ei onnistunut:\n$1",
