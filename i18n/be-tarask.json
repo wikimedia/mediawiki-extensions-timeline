@@ -13,7 +13,7 @@
 	"timeline-invalidmap": "Няслушная выява мапы створаная праз EasyTimeline",
 	"timeline-tracking-category": "Старонкі, якія выкарыстоўваюць пашырэньне EasyTimeline",
 	"timeline-readerr": "Немагчыма прачытаць файл $1.",
-	"timeline-scripterr": "Немагчыма запусціць аддалены скрыпт: $1 выйшаў з кодам стану $2 $3",
+	"timeline-scripterr": "Немагчыма запусьціць аддалены скрыпт: $1 выйшаў з кодам статусу $2 $3",
 	"timeline-perlnotexecutable": "Немагчыма выканаць Perl: $1 не зьяўляецца выканальным файлам. Пераканайцеся, што <code>$wgTimelinePerlCommand</code> выстаўлены карэктна.",
 	"timeline-ploticusnotexecutable": "Ploticus ня можа быць выкананы: $1 не зьяўляецца выкананым файлам. Пераканайцеся, што <code>$wgTimelinePloticusCommand</code> выстаўлены карэктна.",
 	"timeline-compilererr": "Немагчыма скампіляваць увод EasyTimeline:\n$1",
