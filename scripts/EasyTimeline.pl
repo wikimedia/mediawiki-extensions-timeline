@@ -2724,7 +2724,16 @@ sub ParseTextData {
             }
             elsif ($attribute =~ /^Text$/i) {
                 $text = $attrvalue;
-                $text =~ s/\\n/~/gs;
+                # Strip newline-ish content that would otherwise
+                # survive WriteText mode "^" (which splits only on
+                # caret) and reach the generated ploticus script.
+                # Two forms can arrive here: a real newline char,
+                # produced by ExtractText from a 'text:"...\n..."'
+                # value, and the literal two-char sequence \n that
+                # ParseText derives from '~'. Both are mapped to '~'
+                # so they cannot close out the ploticus 'text:'
+                # attribute and inject column-0 directives.
+                $text =~ s/(?:\n|\\n)/~/gs;
                 if ($text =~ /\~/) {
                     &Warning("TextData attribute 'text' contains ~ (tilde).\n"
                             . "Tilde will not be translated into newline character (only in PlotData)"
@@ -3985,8 +3994,13 @@ sub WritePlotFile {
     print "Running Ploticus to generate svg file $file_vector\n";
 
     my $escaped_font_file = EscapeShellArg($font_file);
+    # -noshell disables ploticus directives that invoke /bin/sh
+    # (#proc getdata command:, #proc getdata file:, #shell ... #endshell).
+    # EasyTimeline never emits any of these, so this is a no-op for
+    # legitimate input but blocks command execution via injection.
     my $cmd =
           EscapeShellArg($pl)
+        . " -noshell"
         . " $map -" . "svg" . " -o "
         . EscapeShellArg($file_vector) . " "
         . EscapeShellArg($file_script)
@@ -4032,6 +4046,7 @@ sub WritePlotFile {
 
     $cmd =
           EscapeShellArg($pl)
+        . " -noshell"
         . " $map -"
         . $image_file_fmt . " -o "
         . EscapeShellArg($file_bitmap) . " "
