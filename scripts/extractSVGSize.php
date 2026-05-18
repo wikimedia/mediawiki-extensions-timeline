@@ -4,8 +4,6 @@ namespace MediaWiki\Extension\Timeline;
 
 /**
  * Exit with a localized error message
- *
- * @param string $msg
  */
 function errorExit( string $msg ) {
 	fwrite( STDERR, "mw-msg:\t$msg\n" );
