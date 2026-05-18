@@ -60,7 +60,7 @@ class Timeline implements ParserFirstCallInitHook {
 		$createSvg = ( $args['method'] ?? null ) === 'svg2png';
 		$options = [
 			'createSvg' => $createSvg,
-			'font' => self::determineFont( $args['font'] ?? null ),
+			'font' => self::determineFont( $args['font'] ?? '' ),
 		];
 		if ( $timelinesrc === null ) {
 			$timelinesrc = '';
@@ -288,7 +288,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 * Given a user's input of font, identify the font
 	 * directory and font path that should be set
 	 *
-	 * @param ?string $input
+	 * @param string $input
 	 * @return array with 'dir', 'file' keys. Note that 'dir' might be false.
 	 */
 	private static function determineFont( $input ) {
