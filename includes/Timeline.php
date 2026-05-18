@@ -319,9 +319,23 @@ class Timeline implements ParserFirstCallInitHook {
 	/**
 	 * Cleanup and throw errors from EasyTimeline.pl
 	 *
+	 * Only the well-formed error envelope emitted by EasyTimeline.pl's
+	 * Abort() routine is reflected back to the requester. Anything else
+	 * in file.err is treated as attacker-influenced (e.g. via a future
+	 * ploticus injection bug) and is logged server-side only, with a
+	 * generic error surfaced to the user.
+	 *
 	 * @throws TimelineException
 	 */
 	private static function throwRawException( string $err ): never {
+		if ( !str_starts_with( $err, '<p>EasyTimeline ' ) ) {
+			LoggerFactory::getInstance( 'timeline' )->warning(
+				'Unexpected EasyTimeline file.err contents',
+				[ 'error' => $err ]
+			);
+			throw new TimelineException( 'timeline-compilererr', [ '' ] );
+		}
+
 		// Convert the error from poorly-sanitized HTML to plain text
 		$err = strtr( $err, [
 			'</p><p>' => "\n\n",
