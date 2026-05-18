@@ -817,7 +817,13 @@ sub ParseBarData {
             # }
             elsif ($attribute =~ /^Text$/i) {
                 $text = $attrvalue;
-                $text =~ s/\\n/~/gs;
+                # Strip newline-ish content that would otherwise close
+                # out the BarData label and reach the 'stubs: text'
+                # block of the generated ploticus script as a column-0
+                # directive. \v covers LF, CR and other vertical
+                # whitespace; \\n catches the literal two-char form
+                # that ParseText derives from '~'.
+                $text =~ s/(?:\v|\\n)/~/gs;
                 if ($text =~ /\~/) {
                     &Warning( "BarData attribute 'text' contains ~ (tilde).\n"
                             . "Tilde will not be translated into newline character (only in PlotData)"
@@ -2519,6 +2525,10 @@ sub ParseScale {
             delete($Attributes{"grid"});
         }
         elsif ($attribute =~ /Text/i) {
+            # Strip newline-ish content that would otherwise close out
+            # the 'stubs: list' arg in PlotScale and reach the
+            # generated ploticus script as a column-0 directive.
+            $attrvalue =~ s/(?:\v|\\n)/~/gs;
             $attrvalue =~ s/\~/\\n/g;
             $attrvalue =~ s/^\"//g;
             $attrvalue =~ s/\"$//g;
@@ -2727,13 +2737,14 @@ sub ParseTextData {
                 # Strip newline-ish content that would otherwise
                 # survive WriteText mode "^" (which splits only on
                 # caret) and reach the generated ploticus script.
-                # Two forms can arrive here: a real newline char,
-                # produced by ExtractText from a 'text:"...\n..."'
-                # value, and the literal two-char sequence \n that
-                # ParseText derives from '~'. Both are mapped to '~'
-                # so they cannot close out the ploticus 'text:'
-                # attribute and inject column-0 directives.
-                $text =~ s/(?:\n|\\n)/~/gs;
+                # Two forms can arrive here: real vertical whitespace
+                # (LF / CR / VT / FF / etc.) produced by ExtractText
+                # from a 'text:"...\n..."' value, and the literal
+                # two-char sequence \n that ParseText derives from
+                # '~'. Both are mapped to '~' so they cannot close out
+                # the ploticus 'text:' attribute and inject column-0
+                # directives.
+                $text =~ s/(?:\v|\\n)/~/gs;
                 if ($text =~ /\~/) {
                     &Warning("TextData attribute 'text' contains ~ (tilde).\n"
                             . "Tilde will not be translated into newline character (only in PlotData)"
