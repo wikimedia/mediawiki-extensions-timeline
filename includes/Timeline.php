@@ -22,14 +22,11 @@ class Timeline implements ParserFirstCallInitHook {
 	/**
 	 * Bump when some change requires re-rendering all timelines
 	 */
-	private const CACHE_VERSION = 3;
+	private const int CACHE_VERSION = 3;
 
-	/** @var FileBackend|null instance cache */
-	private static $backend;
+	private static ?FileBackend $backend = null;
 
-	/**
-	 * @param Parser $parser
-	 */
+	/** @inheritDoc */
 	public function onParserFirstCallInit( $parser ) {
 		$parser->setHook( 'timeline', [ self::class, 'onTagHook' ] );
 	}
@@ -43,13 +40,8 @@ class Timeline implements ParserFirstCallInitHook {
 	 *
 	 * Specially catch any TimelineExceptions and display a nice error for
 	 * users and record it in stats.
-	 *
-	 * @param string|null $timelinesrc
-	 * @param array $args
-	 * @param Parser $parser
-	 * @return string HTML
 	 */
-	public static function onTagHook( ?string $timelinesrc, array $args, Parser $parser ) {
+	public static function onTagHook( ?string $timelinesrc, array $args, Parser $parser ): string {
 		global $wgUploadPath;
 
 		$pOutput = $parser->getOutput();
@@ -95,13 +87,14 @@ class Timeline implements ParserFirstCallInitHook {
 			}
 		}
 
-		$map = $backend->getFileContents( [ 'src' => "{$pathPrefix}.map" ] );
-
-		$map = str_replace( ' >', ' />', $map );
 		$map = Html::rawElement(
 			'map',
 			[ 'name' => "timeline_{$hash}" ],
-			$map
+			str_replace(
+				' >',
+				' />',
+				$backend->getFileContents( [ 'src' => "{$pathPrefix}.map" ] )
+			)
 		);
 		try {
 			$map = self::fixMap( $map );
@@ -137,9 +130,10 @@ class Timeline implements ParserFirstCallInitHook {
 	 *
 	 * @param string $timelinesrc
 	 * @param array $options
+	 *
 	 * @throws TimelineException
 	 */
-	private static function renderTimeline( string $timelinesrc, array $options ) {
+	private static function renderTimeline( string $timelinesrc, array $options ): void {
 		global $wgArticlePath, $wgTmpDirectory, $wgTimelinePerlCommand,
 			$wgTimelinePloticusCommand, $wgShellboxShell, $wgTimelineRsvgCommand,
 			$wgPhpCli;
@@ -220,12 +214,7 @@ class Timeline implements ParserFirstCallInitHook {
 		}
 	}
 
-	/**
-	 * Return a BoxedCommand object
-	 *
-	 * @return BoxedCommand
-	 */
-	private static function boxedCommand() {
+	private static function boxedCommand(): BoxedCommand {
 		return MediaWikiServices::getInstance()->getShellCommandFactory()
 			->createBoxed( 'easytimeline' )
 			->disableNetwork()
@@ -234,26 +223,22 @@ class Timeline implements ParserFirstCallInitHook {
 
 	/**
 	 * Add an input file from the scripts directory
-	 *
-	 * @param BoxedCommand $command
-	 * @param string $script
 	 */
-	private static function addScript( BoxedCommand $command, string $script ) {
+	private static function addScript( BoxedCommand $command, string $script ): void {
 		$command->inputFileFromFile( "scripts/$script",
 			__DIR__ . "/../scripts/$script" );
 	}
 
 	/**
 	 * Creates the specified local directory if it does not exist yet.
-	 * Otherwise does nothing.
+	 * Otherwise, it does nothing.
 	 *
 	 * @param string $path Local path to directory to be created.
 	 * @param int|null $mode Chmod value of the new directory.
 	 *
-	 * @throws TimelineException if the directory does not exist and could not
-	 * 	be created.
+	 * @throws TimelineException
 	 */
-	private static function createDirectory( $path, $mode = null ) {
+	private static function createDirectory( string $path, ?int $mode = null ): void {
 		if ( !is_dir( $path ) ) {
 			$rc = wfMkdirParents( $path, $mode, __METHOD__ );
 			if ( !$rc ) {
@@ -266,10 +251,8 @@ class Timeline implements ParserFirstCallInitHook {
 	 * Deletes a local directory with no subdirectories with all files in it.
 	 *
 	 * @param string $dir Local path to the directory that is to be deleted.
-	 *
-	 * @return bool true on success, false on error
 	 */
-	private static function eraseDirectory( $dir ) {
+	private static function eraseDirectory( string $dir ): void {
 		if ( file_exists( $dir ) ) {
 			// @phan-suppress-next-line PhanPluginUseReturnValueInternalKnown
 			array_map( 'unlink', glob( "$dir/*", GLOB_NOSORT ) );
@@ -277,11 +260,7 @@ class Timeline implements ParserFirstCallInitHook {
 			if ( !$rc ) {
 				wfDebug( __METHOD__ . ": Unable to remove directory $dir\n." );
 			}
-			return $rc;
 		}
-
-		/* Nothing to do */
-		return true;
 	}
 
 	/**
@@ -291,7 +270,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @param string $input
 	 * @return array with 'dir', 'file' keys. Note that 'dir' might be false.
 	 */
-	private static function determineFont( $input ) {
+	private static function determineFont( string $input ): array {
 		global $wgTimelineFonts, $wgTimelineFontFile, $wgTimelineFontDirectory;
 		// Try the user-specified font, if invalid, use "default"
 		$fullPath = $wgTimelineFonts[$input] ?? $wgTimelineFonts['default'] ?? false;
@@ -311,8 +290,6 @@ class Timeline implements ParserFirstCallInitHook {
 	/**
 	 * Files are saved to the file backend $wgTimelineFileBackend if set. Else
 	 * default to FSFileBackend named 'timeline-backend'.
-	 *
-	 * @return FileBackend
 	 */
 	public static function getBackend(): FileBackend {
 		global $wgTimelineFileBackend, $wgUploadDirectory;
@@ -343,11 +320,9 @@ class Timeline implements ParserFirstCallInitHook {
 	/**
 	 * Cleanup and throw errors from EasyTimeline.pl
 	 *
-	 * @param string $err
 	 * @throws TimelineException
-	 * @return never
 	 */
-	private static function throwRawException( $err ) {
+	private static function throwRawException( string $err ): never {
 		// Convert the error from poorly-sanitized HTML to plain text
 		$err = strtr( $err, [
 			'</p><p>' => "\n\n",
@@ -377,11 +352,9 @@ class Timeline implements ParserFirstCallInitHook {
 	 * Get error information from the output returned by scripts/renderTimeline.sh
 	 * and throw a relevant error.
 	 *
-	 * @param string $stdout
 	 * @throws TimelineException
-	 * @return never
 	 */
-	private static function throwCompileException( $stdout ) {
+	private static function throwCompileException( string $stdout ): never {
 		$extracted = self::extractMessage( $stdout );
 		if ( $extracted ) {
 			$message = $extracted[0];
@@ -403,11 +376,8 @@ class Timeline implements ParserFirstCallInitHook {
 	 * Parse the script return value and extract any mw-msg lines. Modify the
 	 * text to remove the lines. Return the first mw-msg line as a Message
 	 * object. If there was no mw-msg line, return null.
-	 *
-	 * @param string &$stdout
-	 * @return array|null
 	 */
-	private static function extractMessage( &$stdout ) {
+	private static function extractMessage( string &$stdout ): ?array {
 		$filteredStdout = '';
 		$messageParams = [];
 		foreach ( explode( "\n", $stdout ) as $line ) {
@@ -440,11 +410,10 @@ class Timeline implements ParserFirstCallInitHook {
 
 	/**
 	 * Do a security check on the image map HTML
-	 * @param string $html
+	 *
 	 * @throws TimelineException
-	 * @return string HTML
 	 */
-	private static function fixMap( $html ) {
+	private static function fixMap( string $html ): string {
 		global $wgUrlProtocols;
 		$doc = new DOMDocument( '1.0', 'UTF-8' );
 		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
@@ -475,10 +444,10 @@ class Timeline implements ParserFirstCallInitHook {
 					$ok = false;
 					break;
 				}
-				if ( $lcName == 'href' && substr( $value, 0, 1 ) !== '/' ) {
+				if ( $lcName == 'href' && !str_starts_with( $value, '/' ) ) {
 					$ok = false;
 					foreach ( $wgUrlProtocols as $protocol ) {
-						if ( substr( $value, 0, strlen( $protocol ) ) == $protocol ) {
+						if ( str_starts_with( $value, $protocol ) ) {
 							$ok = true;
 							break;
 						}
@@ -503,10 +472,8 @@ class Timeline implements ParserFirstCallInitHook {
 
 	/**
 	 * Track how often we do each type of shellout in statsd
-	 *
-	 * @param string $type Type of shellout
 	 */
-	private static function recordShellout( $type ) {
+	private static function recordShellout( string $type ): void {
 		MediaWikiServices::getInstance()->getStatsFactory()
 			->getCounter( 'timeline_shell_total' )
 			->setLabel( 'type', $type )
@@ -516,10 +483,8 @@ class Timeline implements ParserFirstCallInitHook {
 
 	/**
 	 * Track how often each error is received in statsd
-	 *
-	 * @param TimelineException $ex
 	 */
-	private static function recordError( TimelineException $ex ) {
+	private static function recordError( TimelineException $ex ): void {
 		MediaWikiServices::getInstance()->getStatsFactory()
 			->getCounter( 'timeline_error_total' )
 			->setLabel( 'exception', $ex->getStatsdKey() )
