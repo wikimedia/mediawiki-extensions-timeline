@@ -6,27 +6,20 @@ use Exception;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 
-/**
- * Timeline exception
- */
 class TimelineException extends Exception {
-
-	/** @var array */
-	private $args;
-
 	/**
 	 * @param string $message Message key
 	 * @param array $args message arguments (optional)
 	 */
-	public function __construct( $message, array $args = [] ) {
+	public function __construct(
+		$message,
+		private readonly array $args = []
+	) {
 		parent::__construct( $message );
-		$this->args = $args;
 	}
 
 	/**
 	 * Key for use in statsd metrics
-	 *
-	 * @return string
 	 */
 	public function getStatsdKey(): string {
 		// Normalize message key into _ for statsd
@@ -37,10 +30,8 @@ class TimelineException extends Exception {
 	 * Get the exception as localized HTML
 	 *
 	 * TODO: inject context?
-	 *
-	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		return Html::rawElement(
 			'div',
 			[ 'class' => [ 'error', 'timeline-error' ] ],
