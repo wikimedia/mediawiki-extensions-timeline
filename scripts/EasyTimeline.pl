@@ -4160,7 +4160,7 @@ sub WritePlotFile {
             {$1 style="fill:blue;">$3}gx;
         }
         else {
-            $svg =~ s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . $linksSVG[$1] . '">' . $2 . '<\/a>'/gxe;
+            $svg =~ s/\[(\d+)\[ (.*?) \]\d+\]/'<a style="fill:blue;" xlink:href="' . &NormalizeURLForSVG($linksSVG[$1]) . '">' . $2 . '<\/a>'/gxe;
         }
 
         open $file_vector_handle, '>', $file_vector
@@ -5145,6 +5145,20 @@ sub NormalizeURL {
     $url =~ s/(https?)\:?\/?\/?/$1:\/\//
         ;    # add possibly missing special characters
     $url =~ s/ /%20/g;
+    return ($url);
+}
+
+sub NormalizeURLForSVG {
+    my $url = shift;
+    # Turn relative URLs into full URLs by appending them to the article path
+    # (which is expanded in PHP before being passed to this script).
+    # This way, the SVG is more likely to pass the checks in UploadVerification,
+    # which do not support relative URLs.
+    if ($url !~ /^https?:\/\//) {
+        my $newurl = $articlepath;
+        $newurl =~ s/\$1/$url/;
+        $url = $newurl;
+    }
     return ($url);
 }
 
