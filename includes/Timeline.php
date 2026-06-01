@@ -78,7 +78,7 @@ class Timeline implements ParserFirstCallInitHook {
 		$backend = self::getBackend();
 		// Storage destination path (excluding file extension)
 		// TODO: Implement $wgHashedUploadDirectory layout
-		$pathPrefix = 'mwstore://' . $backend->getName() . "/timeline-render/$hash";
+		$pathPrefix = $backend->getContainerStoragePath( 'timeline-render' ) . "/$hash";
 
 		$options += [
 			'pathPrefix' => $pathPrefix,
@@ -314,7 +314,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 *
 	 * @return FileBackend
 	 */
-	private static function getBackend(): FileBackend {
+	public static function getBackend(): FileBackend {
 		global $wgTimelineFileBackend, $wgUploadDirectory;
 
 		if ( $wgTimelineFileBackend ) {
