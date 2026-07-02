@@ -238,11 +238,15 @@ class Timeline implements ParserFirstCallInitHook {
 		// Save .map, .png, .svg files
 		foreach ( [ 'map', 'png', 'svg' ] as $ext ) {
 			if ( $result->wasReceived( "file.$ext" ) ) {
-				$ops[] = [
-					'op' => 'store',
+				$op = [
+					'op'  => 'store',
 					'src' => "{$factoryDirectory}/file.{$ext}",
-					'dst' => "{$pathPrefix}.{$ext}"
+					'dst' => "{$pathPrefix}.{$ext}",
 				];
+				if ( $ext === 'map' ) {
+					$op['headers'] = [ 'Content-Type' => 'text/plain; charset=utf-8' ];
+				}
+				$ops[] = $op;
 			}
 		}
 		if ( !$backend->doQuickOperations( $ops )->isOK() ) {
