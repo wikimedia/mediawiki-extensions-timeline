@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\Timeline;
 
 use Exception;
 use MediaWiki\Html\Html;
-use MediaWiki\Title\Title;
+use MediaWiki\Page\PageReferenceValue;
 
 class TimelineException extends Exception {
 	/**
@@ -37,7 +37,7 @@ class TimelineException extends Exception {
 			[ 'class' => [ 'error', 'timeline-error' ] ],
 			wfMessage( $this->message, ...$this->args )
 				->inContentLanguage()
-				->title( Title::makeTitle( NS_SPECIAL, 'Badtitle' ) )
+				->page( PageReferenceValue::localReference( NS_SPECIAL, 'Badtitle' ) )
 				->parse()
 		);
 	}
