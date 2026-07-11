@@ -527,7 +527,6 @@ class Timeline implements ParserFirstCallInitHook {
 		MediaWikiServices::getInstance()->getStatsFactory()
 			->getCounter( 'timeline_shell_total' )
 			->setLabel( 'type', $type )
-			->copyToStatsdAt( "timeline_shell.$type" )
 			->increment();
 	}
 
@@ -538,7 +537,6 @@ class Timeline implements ParserFirstCallInitHook {
 		MediaWikiServices::getInstance()->getStatsFactory()
 			->getCounter( 'timeline_error_total' )
 			->setLabel( 'exception', $ex->getStatsdKey() )
-			->copyToStatsdAt( "timeline_error.{$ex->getStatsdKey()}" )
 			->increment();
 	}
 }
