@@ -3354,6 +3354,7 @@ sub WriteProcAnnotate {
         }
 
         $text =~ s/\[\[(.*?)\]\]/$1/s;
+        $text = &EncodeInput($text);
 
         if   ($text =~ /^\s/) { push @PlotTextsPng, "  text: \n\\$text\n\n"; }
         else                  { push @PlotTextsPng, "  text: $text\n\n"; }
