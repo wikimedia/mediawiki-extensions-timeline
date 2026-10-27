@@ -1,9 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Helix84"
+			"Helix84",
+			"Wizzard"
 		]
 	},
 	"timeline-desc": "Pridáva značku <code>&lt;timeline&gt;</code> pre tvorbu časových línií",
-	"timeline-invalidmap": "Neplatná obrazová mapa, ktorú vytvoril EasyTimeline"
+	"timeline-error-storage": "Chyba časovej osi. Výstupné súbory sa nepodarilo uložiť",
+	"timeline-error-temp": "Chyba časovej osi. Dočasné súbory sa nepodarilo vytvoriť",
+	"timeline-error-command": "Chyba časovej osi. Príkaz bol: $1",
+	"timeline-invalidmap": "Neplatná obrazová mapa, ktorú vytvoril EasyTimeline",
+	"timeline-tracking-category": "Stránky používajúce rozšírenie EasyTimeline",
+	"timeline-tracking-category-desc": "Stránka obsahuje značku <code>&lt;timeline&gt;</code>",
+	"timeline-readerr": "Súbor $1 sa nedá prečítať.",
+	"timeline-scripterr": "Vzdialený skript sa nedá spustiť: $1 skončil so stavovým kódom $2\\n$3",
+	"timeline-perlnotexecutable": "Perl sa nepodarilo spustiť: $1 nie je spustiteľný súbor. Skontrolujte, či je <code>$wgTimelinePerlCommand</code> nastavené správne.",
+	"timeline-ploticusnotexecutable": "Ploticus sa nepodarilo spustiť: $1 nie je spustiteľný súbor. Skontrolujte, či je <code>$wgTimelinePloticusCommand</code> nastavené správne.",
+	"timeline-compilererr": "Vstup EasyTimeline sa nedá skompilovať:\\n$1",
+	"timeline-rsvg-error": "SVG sa nedá previesť na PNG:\\n$1"
 }
