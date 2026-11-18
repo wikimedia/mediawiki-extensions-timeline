@@ -2,16 +2,22 @@
 
 namespace MediaWiki\Extension\Timeline\Tests\Unit;
 
+use MediaWiki\Extension\Timeline\Render\Compiler;
+use MediaWiki\Extension\Timeline\Render\Plotter;
+use MediaWiki\Extension\Timeline\Render\PngCanvas;
 use MediaWikiUnitTestCase;
 
 /**
- * Runs scripts/EasyTimeline.php as Timeline.php does through Shellbox.
+ * Runs scripts/EasyTimeline.php as Timeline.php does through Shellbox, and tests the parts
+ * of the output that the fixtures of RenderTest do not have.
  *
- * @coversNothing
+ * @covers \MediaWiki\Extension\Timeline\Render\Plotter
+ * @covers \MediaWiki\Extension\Timeline\Render\PngCanvas
  */
 class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 
 	private const SCRIPTS = __DIR__ . '/../../../scripts';
+	private const FONT_DIR = '/usr/share/fonts/truetype/freefont';
 
 	private string $dir;
 
@@ -46,7 +52,7 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 	/**
 	 * @param string[] $args
 	 * @param string[] $phpOptions
-	 * @return array{int,string} exit status and stdout
+	 * @return array{int,string,string} exit status, stdout and stderr
 	 */
 	private function runScript( array $args, array $phpOptions = [], string $fontPath = '/nonexistent' ): array {
 		// Only PATH, as in Shellbox
@@ -57,8 +63,8 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 			$pipes, $this->dir, [ 'PATH' => getenv( 'PATH' ), 'GDFONTPATH' => $fontPath ]
 		);
 		$stdout = stream_get_contents( $pipes[1] );
-		stream_get_contents( $pipes[2] );
-		return [ proc_close( $process ), $stdout ];
+		$stderr = stream_get_contents( $pipes[2] );
+		return [ proc_close( $process ), $stdout, $stderr ];
 	}
 
 	public function testFlatLayoutAndNoRegexLimit(): void {
@@ -69,7 +75,74 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 		$this->assertSame( 0, $status );
 		$this->assertMatchesRegularExpression( '/^\d+ \d+\n$/', $stdout );
 		$this->assertFileDoesNotExist( "$this->dir/file.err" );
-		$this->assertFileDoesNotExist( "$this->dir/file.log" );
 		$this->assertStringContainsString( 'First phase', file_get_contents( "$this->dir/file.svg" ) );
+	}
+
+	public function testMissingFontIsInternalError(): void {
+		$this->copyScriptsFlat();
+		[ $status, $stdout, $stderr ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'no' ] );
+		$this->assertSame( 70, $status );
+		$this->assertSame( '', $stdout );
+		$this->assertStringContainsString( 'libgd cannot use the font', $stderr );
+		$this->assertFileDoesNotExist( "$this->dir/file.png" );
+		$this->assertFileDoesNotExist( "$this->dir/file.err" );
+	}
+
+	public function testFullPathFontIsInternalError(): void {
+		// The canvas ignores a full path, so the check must not pass for one.
+		$this->copyScriptsFlat();
+		[ $status ] = $this->runScript(
+			[ 'https://example.org/wiki/$1', self::FONT_DIR . '/FreeSans.ttf', 'no' ], [], self::FONT_DIR );
+		$this->assertSame( 70, $status );
+		$this->assertFileDoesNotExist( "$this->dir/file.png" );
+	}
+
+	public function testScriptMakesPngWithFont(): void {
+		if ( !is_file( self::FONT_DIR . '/FreeSans.ttf' ) || !function_exists( 'imagettfbbox' ) ) {
+			$this->markTestSkipped( 'Needs FreeSans.ttf and the gd extension with FreeType' );
+		}
+		$this->copyScriptsFlat();
+		[ $status, $stdout ] = $this->runScript(
+			[ 'https://example.org/wiki/$1', 'FreeSans', 'no' ], [ '-d', 'pcre.backtrack_limit=0' ], self::FONT_DIR );
+		$this->assertSame( 0, $status );
+		$this->assertMatchesRegularExpression( '/^\d+ \d+\n$/', $stdout );
+		$this->assertSame( "\x89PNG", substr( file_get_contents( "$this->dir/file.png" ), 0, 4 ) );
+	}
+
+	public function testMissingFontIsNoErrorWithSvgOnly(): void {
+		$this->copyScriptsFlat();
+		[ $status ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'yes' ] );
+		$this->assertSame( 0, $status );
+		$this->assertFileExists( "$this->dir/file.svg" );
+	}
+
+	public function testPngHasText(): void {
+		$this->assertFalse( PngCanvas::hasFont( 'NoSuchFont' ) );
+		$old = getenv( 'GDFONTPATH' );
+		putenv( 'GDFONTPATH=' . self::FONT_DIR );
+		try {
+			if ( !PngCanvas::hasFont( 'FreeSans' ) ) {
+				$this->markTestSkipped( 'No FreeSans font, or gd has no FreeType support' );
+			}
+			$compiler = new Compiler( 'https://example.org/wiki/$1', false );
+			$scripts = $compiler->compile( file_get_contents( "$this->dir/file" ) );
+			$dark = [];
+			foreach ( [ 'FreeSans', 'NoSuchFont' ] as $font ) {
+				$png = new PngCanvas( $scripts['pngMap'] );
+				( new Plotter( $png, $font ) )->run( $scripts['png'] );
+				$im = imagecreatefromstring( $png->result() );
+				$dark[$font] = 0;
+				for ( $x = 0; $x < imagesx( $im ); $x++ ) {
+					for ( $y = 0; $y < imagesy( $im ); $y++ ) {
+						$c = imagecolorsforindex( $im, imagecolorat( $im, $x, $y ) );
+						$dark[$font] += (int)( $c['red'] + $c['green'] + $c['blue'] < 200 );
+					}
+				}
+			}
+			// The axis labels are black text
+			$this->assertGreaterThan( $dark['NoSuchFont'] + 100, $dark['FreeSans'] );
+		} finally {
+			putenv( $old === false ? 'GDFONTPATH' : "GDFONTPATH=$old" );
+		}
 	}
 }

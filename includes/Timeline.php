@@ -448,6 +448,7 @@ class Timeline implements ParserFirstCallInitHook {
 			$messageName = array_shift( $messageParams );
 			// Used messages:
 			// - timeline-compilererr
+			// - timeline-error-internal
 			// - timeline-rsvg-error
 			return [ $messageName, $messageParams ];
 		} else {

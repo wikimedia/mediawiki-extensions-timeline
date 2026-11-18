@@ -89,9 +89,32 @@ final class PngCanvas extends Canvas {
 	 * PLGG_font: a font name for libgd to look up in GDFONTPATH.
 	 */
 	public function font( string $font ): void {
-		if ( !str_starts_with( $font, '/' ) ) {
-			$this->fontName = preg_replace( '/\.ttf$/', '', $font );
+		$name = self::gdFontName( $font );
+		if ( $name !== null ) {
+			$this->fontName = $name;
 		}
+	}
+
+	/**
+	 * The name that libgd gets for a font, or null for a name that the canvas ignores
+	 * (a full path).
+	 */
+	private static function gdFontName( string $font ): ?string {
+		return str_starts_with( $font, '/' ) ? null : preg_replace( '/\.ttf$/', '', $font );
+	}
+
+	/**
+	 * Whether the canvas can draw text with this font. It cannot when the name is a full
+	 * path, when the font is not in GDFONTPATH, or when the gd extension has no FreeType
+	 * support.
+	 */
+	public static function hasFont( string $font ): bool {
+		$name = self::gdFontName( $font );
+		if ( $name === null || !function_exists( 'imagettfbbox' ) ) {
+			return false;
+		}
+		// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		return @imagettfbbox( 10, 0, $name, 'x' ) !== false;
 	}
 
 	public function color( string $color ): string {

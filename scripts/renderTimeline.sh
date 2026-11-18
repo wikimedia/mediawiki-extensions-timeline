@@ -20,8 +20,10 @@ errorExit() {
 }
 
 # Prints the SVG size as "width height"
-size=$("$ET_PHP" scripts/EasyTimeline.php "$ET_ARTICLEPATH" "${ET_FONTFILE:-FreeSans}" "${ET_SVG:-no}") \
-	|| errorExit timeline-compilererr
+size=$("$ET_PHP" scripts/EasyTimeline.php "$ET_ARTICLEPATH" "${ET_FONTFILE:-FreeSans}" "${ET_SVG:-no}")
+# For an error in the timeline, the script writes file.err and its status is 0. Each other
+# status is a failure of the script, which prints the details, or of PHP.
+[ "$?" -ne 0 ] && errorExit timeline-error-internal
 
 if [ "$ET_SVG" = yes ] && [ -n "$size" ]; then
 	# shellcheck disable=SC2086

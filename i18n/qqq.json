@@ -12,6 +12,7 @@
 	"timeline-desc": "{{desc|name=Timeline|url=https://www.mediawiki.org/wiki/Extension:EasyTimeline}}",
 	"timeline-error-storage": "Used as error message when the outputted files cannot be stored",
 	"timeline-error-temp": "Used as error message when temporary files cannot be created",
+	"timeline-error-internal": "Error message shown when the program that draws the timeline fails for a reason that is not an error in the text of the timeline, for example a missing font.\n* $1 - the details of the error, in English",
 	"timeline-error-command": "Used as error message when executing a command failed. $1 is the command that was run.",
 	"timeline-invalidmap": "Used as error message if failed to load XML or the first node in XML is not \"map\".",
 	"timeline-tracking-category": "{{tracking category name}}\nName of the tracking category for pages using this extension",

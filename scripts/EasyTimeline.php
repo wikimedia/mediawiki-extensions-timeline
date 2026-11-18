@@ -25,6 +25,10 @@ set_time_limit( 120 );
 ini_set( 'pcre.backtrack_limit', '1000000' );
 ini_set( 'pcre.recursion_limit', '100000' );
 
+// Exit status for a failure that is not an error in the timeline (EX_SOFTWARE of sysexits.h).
+// renderTimeline.sh takes each status that is not 0 as such a failure.
+const EXIT_INTERNAL = 70;
+
 // The classes are in lib/. Shellbox makes nested directories incorrectly, so Timeline.php
 // sends them next to this script.
 spl_autoload_register( static function ( string $class ): void {
@@ -32,8 +36,23 @@ spl_autoload_register( static function ( string $class ): void {
 	require is_file( __DIR__ . "/lib/$name" ) ? __DIR__ . "/lib/$name" : __DIR__ . "/$name";
 } );
 
+/**
+ * Stop for a failure that is not an error in the timeline. renderTimeline.sh shows the
+ * reason to the user, with the message timeline-error-internal. The reason must have no
+ * text from the timeline: Timeline.php takes an "mw-msg:" line of the output as a message key.
+ */
+function internalError( string $reason ): never {
+	fwrite( STDERR, $reason . "\n" );
+	exit( EXIT_INTERNAL );
+}
+
 [ , $articlePath, $fontName, $svgOnly ] = $argv + [ '', '/$1', 'FreeSans', 'no' ];
 $source = file_get_contents( 'file' );
+// With svg only, rsvg-convert makes the PNG and the PNG of this script is not used.
+if ( $svgOnly !== 'yes' && !PngCanvas::hasFont( $fontName ) ) {
+	internalError( 'libgd cannot use the font: it is not in GDFONTPATH, its name is a full path, or '
+		. 'the gd extension has no FreeType support. The PNG would have no text.' );
+}
 $compiler = new Compiler( $articlePath, $svgOnly === 'yes' );
 try {
 	$scripts = $compiler->compile( $source === false ? '' : $source );
@@ -62,7 +81,9 @@ try {
 	}
 } catch ( CompileError $e ) {
 	file_put_contents( 'file.err', $e->getMessage() );
-} catch ( \Throwable ) {
-	echo "Internal error\n";
-	exit( 1 );
+} catch ( \Throwable $e ) {
+	// Not the message of the exception: it can have text from the timeline.
+	$caller = $e->getTrace()[0] ?? [];
+	internalError( get_class( $e ) . ' at ' . basename( $e->getFile() ) . ':' . $e->getLine()
+		. ', from ' . basename( $caller['file'] ?? '?' ) . ':' . ( $caller['line'] ?? '?' ) );
 }
