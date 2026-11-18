@@ -144,7 +144,7 @@ final class Plotter {
 			}
 			if ( str_starts_with( $tok, '#' ) ) {
 				if ( $tok === '#+' || $tok === '#print' ) {
-					$line = (string)substr( $line, strpos( $line, $tok ) + strlen( $tok ) + 1 );
+					$line = substr( $line, strpos( $line, $tok ) + strlen( $tok ) + 1 );
 				} elseif ( !Regex::match( '/^(?:#proc|#endproc$|#clone|#ifspec|#saveas|#intrailer$|##)/', $tok ) ) {
 					// #if and friends, secondary ops and unknown directives: not rendered
 					continue;
@@ -196,11 +196,11 @@ final class Plotter {
 	 */
 	private static function getok( string $s, int &$ix = 0 ): string {
 		$len = strlen( $s );
-		while ( $ix < $len && str_contains( " \t\n", $s[$ix] ) ) {
+		while ( $ix < $len && self::inSet( $s[$ix], " \t\n" ) ) {
 			$ix++;
 		}
 		$start = $ix;
-		while ( $ix < $len && !str_contains( " \t\n\r", $s[$ix] ) && $ix - $start <= 255 ) {
+		while ( $ix < $len && !self::inSet( $s[$ix], " \t\n\r" ) && $ix - $start <= 255 ) {
 			$ix++;
 		}
 		return substr( $s, $start, $ix - $start );
@@ -342,7 +342,7 @@ final class Plotter {
 			if ( $this->curline >= $this->procstop ) {
 				$this->attrState = $this->attrState === 1 ? 0 : 3;
 			}
-			return [ $attr, (string)substr( $line, $ix ) ];
+			return [ $attr, substr( $line, $ix ) ];
 		}
 	}
 
@@ -487,7 +487,7 @@ final class Plotter {
 			'r' => 'J',
 			default => strtoupper( $op ),
 		};
-		if ( !str_contains( 'TCJDU', $op ) ) {
+		if ( !self::inSet( $op, 'TCJDU' ) ) {
 			$op = 'C';
 		}
 		$slen = strlen( $s );
@@ -581,7 +581,7 @@ final class Plotter {
 			$this->colorChgPending = $s !== $this->curColor;
 			return;
 		}
-		if ( $this->colorChgPending && str_contains( 'LTCJszv.', $op ) ) {
+		if ( $this->colorChgPending && self::inSet( $op, 'LTCJszv.' ) ) {
 			$this->pcode( 'k', 0.0, 0.0, $this->nextColor );
 			$this->colorChgPending = false;
 			if ( $op === 'v' ) {
@@ -650,11 +650,11 @@ final class Plotter {
 			$this->lmly = $y;
 		}
 		$txtWidth = 0.0;
-		if ( str_contains( 'TCJ', $op ) ) {
+		if ( self::inSet( $op, 'TCJ' ) ) {
 			$txtWidth = strlen( $s ) * $this->curTextWidth;
 		}
 		if ( $this->keepingBb ) {
-			if ( str_contains( 'LP.', $op ) ) {
+			if ( self::inSet( $op, 'LP.' ) ) {
 				if ( $this->prevOp === 'M' ) {
 					$this->bb( $this->lmlx, $this->lmly );
 				}
@@ -1023,7 +1023,7 @@ final class Plotter {
 			$this->color( $color );
 		}
 		$this->textsize( $p );
-		if ( !str_contains( 'LCRDU?', $align ) ) {
+		if ( !self::inSet( $align, 'LCRDU?' ) ) {
 			$align = '?';
 		}
 		return [ $align, $adjx, $adjy ];
@@ -1121,6 +1121,13 @@ final class Plotter {
 		} else {
 			$this->pcode( 'z', 0.0, 0.0, $this->curBkColor );
 		}
+	}
+
+	/**
+	 * strchr( $set, $c ) for a single character.
+	 */
+	private static function inSet( string $c, string $set ): bool {
+		return str_contains( $set, $c );
 	}
 
 	/**
@@ -1228,7 +1235,7 @@ final class Plotter {
 		$base = [ 'label' => self::LE_LABEL, 'tag' => self::LE_TAG, 'parm1' => self::LE_PARM1 ][$field];
 		$off = $this->legMem[$base + $i] ?? 0;
 		$end = strpos( $this->legText, "\0", $off );
-		return substr( $this->legText, $off, $end === false ? null : $end - $off );
+		return $end === false ? substr( $this->legText, $off ) : substr( $this->legText, $off, $end - $off );
 	}
 
 	/**
@@ -1501,7 +1508,7 @@ final class Plotter {
 		for ( $i = 0; $i < $len; $i++ ) {
 			$c = $in[$i];
 			$o = ord( $c );
-			if ( ctype_alnum( $c ) || str_contains( '.-~_', $c ) ) {
+			if ( ctype_alnum( $c ) || self::inSet( $c, '.-~_' ) ) {
 				$out .= $c;
 			} elseif ( $o >= 0x80 ) {
 				$out .= '%FF';

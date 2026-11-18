@@ -244,6 +244,7 @@ final class PngCanvas extends Canvas {
 		}
 		// A missing font is not an error: ploticus skipped the text then.
 		set_error_handler( static fn () => true );
+		$box = false;
 		try {
 			$box = imagettftext( $im, $this->textSize, 0, $x, $y, $this->curColor, $this->fontName, $s );
 		} finally {

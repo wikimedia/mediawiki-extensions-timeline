@@ -235,7 +235,7 @@ final class SvgCanvas extends Canvas {
 	}
 
 	private function point( string $abs, string $rel, float $x, float $y ): void {
-		$x = $x * self::DPI;
+		$x *= self::DPI;
 		$y = $this->height - ( $y * self::DPI );
 		if ( !$this->pathInProgress ) {
 			$this->printStyle();

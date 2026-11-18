@@ -14,8 +14,7 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\Timeline\\": "includes/",
-		"MediaWiki\\Extension\\Timeline\\Render\\": "scripts/lib/"
+		"MediaWiki\\Extension\\Timeline\\": "includes/"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {

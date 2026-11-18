@@ -45,7 +45,7 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 	 */
 	private function copyScriptsFlat(): void {
 		copy( self::SCRIPTS . '/EasyTimeline.php', "$this->dir/scripts/EasyTimeline.php" );
-		foreach ( glob( self::SCRIPTS . '/lib/*.php' ) as $file ) {
+		foreach ( glob( __DIR__ . '/../../../includes/Render/*.php' ) as $file ) {
 			copy( $file, "$this->dir/scripts/" . basename( $file ) );
 		}
 	}

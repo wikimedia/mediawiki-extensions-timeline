@@ -107,7 +107,8 @@ final class Compiler {
 			$result = $this->writePlotFile();
 		}
 		$this->checkErrors();
-		return $result;
+		// Every path without a result recorded an error, so checkErrors() threw.
+		return $result ?? throw new \LogicException( 'unreachable' );
 	}
 
 	/**
@@ -1871,7 +1872,8 @@ final class Compiler {
 			$this->error2( 'Command PlotArea missing or invalid' );
 		}
 		$time = self::str( $this->axis['time'] ?? null );
-		if ( $time === '' || $time === '0' ) {
+		// Perl truth: '' and '0' are false
+		if ( !$time ) {
 			$this->error2( 'Command TimeAxis missing or invalid' );
 		}
 		if ( Regex::match( '/auto/i', self::str( $this->image['width'] ?? null ) ) && Regex::match( '/x/i', $time ) ) {
@@ -2747,6 +2749,7 @@ final class Compiler {
 			$entry = substr( $entry, 0, -1 );
 			$f = explode( '|', $entry );
 			$this->script .= "#proc line\n";
+			$at = $from = $till = $points = '';
 			if ( Regex::match( '/^[12]/', $entry ) ) {
 				[ $mode, $at, $from, $till, $color, $width ] = $f;
 			} else {
@@ -2969,7 +2972,8 @@ final class Compiler {
 		$days -= (int)( ( $year - 1 - 1800 ) / 100 );
 		for ( $m = $month - 2; $m >= 0; $m-- ) {
 			$days += $mmm[$m] ?? 0;
-			if ( $m === 1 && $year % 4 === 0 && $year % 100 !== 0 ) {
+			// Perl % works on integers
+			if ( $m === 1 && (int)$year % 4 === 0 && (int)$year % 100 !== 0 ) {
 				$days++;
 			}
 		}

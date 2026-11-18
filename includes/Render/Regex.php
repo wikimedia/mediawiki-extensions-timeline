@@ -16,13 +16,13 @@ final class Regex {
 	/**
 	 * @param string $pattern
 	 * @param string $subject
-	 * @param array|null &$matches
+	 * @param string[] &$matches @phan-output-reference
 	 * @param int $flags
 	 * @param int $offset
 	 * @return int 1 for a match, 0 for none
 	 */
 	public static function match(
-		string $pattern, string $subject, &$matches = null, int $flags = 0, int $offset = 0
+		string $pattern, string $subject, &$matches = [], int $flags = 0, int $offset = 0
 	): int {
 		$result = preg_match( $pattern, $subject, $matches, $flags, $offset );
 		if ( $result === false ) {
@@ -34,13 +34,13 @@ final class Regex {
 	/**
 	 * @param string $pattern
 	 * @param string $subject
-	 * @param array|null &$matches
+	 * @param array &$matches @phan-output-reference
 	 * @param int $flags
 	 * @param int $offset
 	 * @return int The number of matches
 	 */
 	public static function matchAll(
-		string $pattern, string $subject, &$matches = null, int $flags = 0, int $offset = 0
+		string $pattern, string $subject, &$matches = [], int $flags = 0, int $offset = 0
 	): int {
 		$result = preg_match_all( $pattern, $subject, $matches, $flags, $offset );
 		if ( $result === false ) {

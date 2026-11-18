@@ -29,11 +29,12 @@ ini_set( 'pcre.recursion_limit', '100000' );
 // renderTimeline.sh takes each status that is not 0 as such a failure.
 const EXIT_INTERNAL = 70;
 
-// The classes are in lib/. Shellbox makes nested directories incorrectly, so Timeline.php
-// sends them next to this script.
+// The classes are in includes/Render/. Shellbox makes nested directories incorrectly, so
+// Timeline.php sends them next to this script.
 spl_autoload_register( static function ( string $class ): void {
 	$name = substr( strrchr( $class, '\\' ), 1 ) . '.php';
-	require is_file( __DIR__ . "/lib/$name" ) ? __DIR__ . "/lib/$name" : __DIR__ . "/$name";
+	$file = __DIR__ . "/../includes/Render/$name";
+	require is_file( $file ) ? $file : __DIR__ . "/$name";
 } );
 
 /**

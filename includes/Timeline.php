@@ -67,7 +67,7 @@ class Timeline implements ParserFirstCallInitHook {
 			'code' => $timelinesrc,
 			'options' => $options,
 			'ExtVersion' => self::CACHE_VERSION,
-			// Bump CACHE_VERSION when a change in scripts/ changes the output.
+			// Bump CACHE_VERSION when a change in scripts/ or includes/Render/ changes the output.
 		];
 		$hash = \Wikimedia\base_convert( sha1( serialize( $cacheOptions ) ), 16, 36, 31 );
 		$backend = self::getBackend();
@@ -180,7 +180,7 @@ class Timeline implements ParserFirstCallInitHook {
 		self::addScript( $command, 'EasyTimeline.php' );
 		// Shellbox makes "scriptslib" for the directory of "scripts/lib/X.php" and cannot
 		// write the file, so the classes go next to EasyTimeline.php, which looks there too.
-		foreach ( glob( __DIR__ . '/../scripts/lib/*.php' ) as $file ) {
+		foreach ( glob( __DIR__ . '/Render/*.php' ) as $file ) {
 			$command->inputFileFromFile( 'scripts/' . basename( $file ), $file );
 		}
 
