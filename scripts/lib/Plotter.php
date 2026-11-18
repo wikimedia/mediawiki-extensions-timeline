@@ -1640,10 +1640,10 @@ final class Plotter {
 			}
 		}
 		$nle = $this->legMem[self::LE_NLE] ?? 0;
-		// An empty specifyorder is an unwritten malloc(16) buffer in ploticus. In the SVG
-		// process it is fresh zeroed memory (no order: draw all); in the PNG process it is
-		// a recycled chunk holding a pointer, which matches no entry.
-		if ( $nle < 1 || ( $orderGiven && $order === '' && $this->canvas instanceof PngCanvas ) ) {
+		// EasyTimeline.pl wrote an empty specifyorder for a legend column that has no
+		// entries. ploticus then read a buffer that it did not write: it drew nothing, or all
+		// entries one more time, as the memory was. Nothing is what the timeline asks for.
+		if ( $nle < 1 || ( $orderGiven && $order === '' ) ) {
 			if ( !$noclear ) {
 				$this->legMem[self::LE_NLE] = 0;
 				$this->legMem[self::LE_AVAIL] = 0;

@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\Timeline\Tests\Unit;
 use MediaWiki\Extension\Timeline\Render\Compiler;
 use MediaWiki\Extension\Timeline\Render\Plotter;
 use MediaWiki\Extension\Timeline\Render\PngCanvas;
+use MediaWiki\Extension\Timeline\Render\SvgCanvas;
 use MediaWikiUnitTestCase;
 
 /**
@@ -144,5 +145,30 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 		} finally {
 			putenv( $old === false ? 'GDFONTPATH' : "GDFONTPATH=$old" );
 		}
+	}
+
+	public function testLegendColumnWithNoEntries(): void {
+		// Three columns for two entries: the last column has no entries
+		$source = <<<'TIMELINE'
+ImageSize  = width:600 height:200
+PlotArea   = left:50 right:50 bottom:80 top:20
+DateFormat = yyyy
+Period     = from:1900 till:2000
+TimeAxis   = orientation:horizontal
+Legend     = orientation:vertical columns:3 position:bottom
+Colors =
+  id:first  value:red  legend:FirstEntry
+  id:second value:blue legend:SecondEntry
+PlotData =
+  bar:a from:1900 till:1950 color:first
+  bar:b from:1950 till:2000 color:second
+TIMELINE;
+		$compiler = new Compiler( 'https://example.org/wiki/$1', false );
+		$scripts = $compiler->compile( $source );
+		$svg = new SvgCanvas( $scripts['svgMap'] );
+		( new Plotter( $svg, 'FreeSans' ) )->run( $scripts['svg'] );
+		$text = $compiler->fixSvg( $svg->result() );
+		$this->assertSame( 1, substr_count( $text, 'FirstEntry' ) );
+		$this->assertSame( 1, substr_count( $text, 'SecondEntry' ) );
 	}
 }
