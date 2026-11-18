@@ -1,0 +1,6 @@
+ImageSize = width:200 height:100
+PlotArea = left:10 right:10 top:10 bottom:10
+Unknown = foo
+DateFormat = dd/mm/yy
+Period = from:1990
+TimeAxis = orientation:sideways

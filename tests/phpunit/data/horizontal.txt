@@ -1,0 +1,38 @@
+
+ImageSize  = width:700 height:220
+PlotArea   = left:110 right:20 top:30 bottom:50
+DateFormat = dd/mm/yyyy
+Period     = from:01/01/1990 till:31/12/2010
+TimeAxis   = orientation:horizontal format:yyyy
+AlignBars  = justify
+
+Colors =
+  id:grid    value:gray(0.85)
+  id:first   value:rgb(0.6,0.8,1)   legend:First_phase
+  id:second  value:xrgb(ffcc66)     legend:Second_phase
+  id:bg      value:rgb(0.95,0.95,0.9)
+
+ScaleMajor = unit:year increment:5 start:1990 gridcolor:grid
+ScaleMinor = unit:year increment:1 start:1990
+
+BackgroundColors = canvas:bg
+Legend = orientation:horizontal position:bottom
+
+BarData =
+  bar:alpha text:"[[Alpha project]]"
+  bar:beta  text:Beta link:https://example.org/beta
+  bar:gamma text:"Gamma & sons"
+
+PlotData =
+  width:12 textcolor:black align:left anchor:from shift:(4,-4) fontsize:S
+  bar:alpha from:01/03/1991 till:15/06/1998 color:first  text:"[[Alpha phase|First]]"
+  bar:alpha from:15/06/1998 till:end         color:second text:Second
+  bar:beta  from:start      till:01/01/2003  color:first  text:"Beta <one>" link:https://example.org/b1
+  bar:gamma at:01/07/2005 mark:(line,red) text:"Event~two lines" align:center
+
+LineData =
+  at:01/01/2000 color:red layer:back width:1
+
+TextData =
+  pos:(10,210) textcolor:black fontsize:M
+  text:"A ""quoted"" title"

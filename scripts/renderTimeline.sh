@@ -1,17 +1,14 @@
 #!/bin/sh
 
-# Get parameters from environment
+# Render ./file into file.png, file.svg and file.map (or file.err with the error report).
+# Parameters come from the environment, see includes/Timeline.php.
 
-export ET_PHP="${ET_PHP:-php}"
-export ET_PERL="${ET_PERL:-perl}"
-export ET_PLOTICUS="${ET_PLOTICUS:-ploticus}"
-export ET_RSVG="${ET_RSVG:-rsvg-convert}"
+ET_PHP="${ET_PHP:-php}"
+ET_RSVG="${ET_RSVG:-rsvg-convert}"
 if [ -z "$ET_ARTICLEPATH" ]; then
 	# Not possible/straightforward to use $ in parameter expansion
-	export ET_ARTICLEPATH='/$1';
+	ET_ARTICLEPATH='/$1'
 fi
-export ET_FONTFILE="${ET_FONTFILE:-FreeSans}"
-export ET_SVG="${ET_SVG:-no}"
 
 errorExit() {
 	printf 'mw-msg:' 1>&2
@@ -22,64 +19,13 @@ errorExit() {
 	exit 1
 }
 
-runPhp() {
-	"$ET_PHP" "$@"
-	status="$?"
-	if [ "$status" -ne 0 ]; then
-		if [ "$status" -eq 20 ]; then
-			# Error already shown
-			exit 1
-		fi
-		errorExit timeline-scripterr "$1" "$status"
-	fi
-}
+# Prints the SVG size as "width height"
+size=$("$ET_PHP" scripts/EasyTimeline.php "$ET_ARTICLEPATH" "${ET_FONTFILE:-FreeSans}" "${ET_SVG:-no}") \
+	|| errorExit timeline-compilererr
 
-runEasyTimeline() {
-	if [ ! -x "$ET_PERL" ]; then
-		errorExit timeline-perlnotexecutable "$ET_PERL"
-	fi
-	if [ ! -x "$ET_PLOTICUS" ]; then
-		errorExit timeline-ploticusnotexecutable "$ET_PLOTICUS"
-	fi
-	if [ "$ET_SVG" = yes ]; then
-		svg="-s"
-	else
-		svg=""
-	fi
-	"$ET_PERL" \
-		scripts/EasyTimeline.pl \
-		-i "file" \
-		-m -P "$ET_PLOTICUS" \
-		-T /tmp \
-		-A "$ET_ARTICLEPATH" \
-		-f "$ET_FONTFILE" \
-		"$svg"
-
-	if [ $? -ne 0 ]; then
-		errorExit timeline-compilererr
-	fi
-}
-
-getSVGSize() {
-	runPhp scripts/extractSVGSize.php file.svg > dims
-	read -r ET_WIDTH ET_HEIGHT < dims
-	export ET_WIDTH
-	export ET_HEIGHT
-}
-
-runRsvg() {
-	"$ET_RSVG" \
-		-w "$ET_WIDTH" \
-		-h "$ET_HEIGHT" \
-		-o file.png \
-		file.svg
-	if [ $? -ne 0 ]; then
-		errorExit timeline-rsvg-error
-	fi
-}
-
-runEasyTimeline
-if [ "$ET_SVG" = yes ]; then
-	getSVGSize
-	runRsvg
+if [ "$ET_SVG" = yes ] && [ -n "$size" ]; then
+	# shellcheck disable=SC2086
+	set -- $size
+	"$ET_RSVG" -w "$1" -h "$2" -o file.png file.svg || errorExit timeline-rsvg-error
 fi
+echo "$size"

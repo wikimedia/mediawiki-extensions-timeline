@@ -67,8 +67,7 @@ class Timeline implements ParserFirstCallInitHook {
 			'code' => $timelinesrc,
 			'options' => $options,
 			'ExtVersion' => self::CACHE_VERSION,
-			// TODO: ploticus version? Given that it's
-			// dead upstream, unlikely to ever change.
+			// Bump CACHE_VERSION when a change in scripts/ changes the output.
 		];
 		$hash = \Wikimedia\base_convert( sha1( serialize( $cacheOptions ) ), 16, 36, 31 );
 		$backend = self::getBackend();
@@ -127,7 +126,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 *
 	 * A temporary factory directory is created to store things while they're
 	 * being made. The renderTimeline.sh script is invoked via BoxedCommand
-	 * which calls EasyTimeline.pl which calls ploticus.
+	 * which calls EasyTimeline.php (and rsvg-convert for method=svg2png).
 	 *
 	 * The rendered timeline is saved in the file backend using the provided
 	 * 'pathPrefix'.
@@ -138,9 +137,7 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @throws TimelineException
 	 */
 	private static function renderTimeline( string $timelinesrc, array $options ): void {
-		global $wgArticlePath, $wgTmpDirectory, $wgTimelinePerlCommand,
-			$wgTimelinePloticusCommand, $wgShellboxShell, $wgTimelineRsvgCommand,
-			$wgPhpCli;
+		global $wgArticlePath, $wgTmpDirectory, $wgShellboxShell, $wgTimelineRsvgCommand, $wgPhpCli;
 
 		/* temporary working directory to use */
 		$fuzz = md5( (string)mt_rand() );
@@ -175,15 +172,15 @@ class Timeline implements ParserFirstCallInitHook {
 			->environment( [
 				'ET_ARTICLEPATH' => MediaWikiServices::getInstance()->getUrlUtils()->expand( $wgArticlePath ) ?? '',
 				'ET_FONTFILE' => $options['font']['file'],
-				'ET_PERL' => $wgTimelinePerlCommand,
-				'ET_PLOTICUS' => $wgTimelinePloticusCommand,
 				'ET_PHP' => $wgPhpCli,
 				'ET_RSVG' => $wgTimelineRsvgCommand,
 				'ET_SVG' => $options['createSvg'] ? 'yes' : 'no',
 			] + $env );
 		self::addScript( $command, 'renderTimeline.sh' );
-		self::addScript( $command, 'EasyTimeline.pl' );
-		self::addScript( $command, 'extractSVGSize.php' );
+		self::addScript( $command, 'EasyTimeline.php' );
+		foreach ( glob( __DIR__ . '/../scripts/lib/*.php' ) as $file ) {
+			self::addScript( $command, 'lib/' . basename( $file ) );
+		}
 
 		$result = $command->execute();
 		self::recordShellout( 'render_timeline' );
@@ -358,13 +355,11 @@ class Timeline implements ParserFirstCallInitHook {
 	}
 
 	/**
-	 * Cleanup and throw errors from EasyTimeline.pl
+	 * Cleanup and throw errors from EasyTimeline.php
 	 *
-	 * Only the well-formed error envelope emitted by EasyTimeline.pl's
-	 * Abort() routine is reflected back to the requester. Anything else
-	 * in file.err is treated as attacker-influenced (e.g. via a future
-	 * ploticus injection bug) and is logged server-side only, with a
-	 * generic error surfaced to the user.
+	 * Only the well-formed error envelope emitted by Compiler::abort()
+	 * is reflected back to the requester. Anything else in file.err is
+	 * logged server-side only, with a generic error surfaced to the user.
 	 *
 	 * @throws TimelineException
 	 */
@@ -450,10 +445,6 @@ class Timeline implements ParserFirstCallInitHook {
 		if ( $messageParams ) {
 			$messageName = array_shift( $messageParams );
 			// Used messages:
-			// - timeline-readerr
-			// - timeline-scripterr
-			// - timeline-perlnotexecutable
-			// - timeline-ploticusnotexecutable
 			// - timeline-compilererr
 			// - timeline-rsvg-error
 			return [ $messageName, $messageParams ];

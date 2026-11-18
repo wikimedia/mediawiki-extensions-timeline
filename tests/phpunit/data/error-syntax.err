@@ -1,0 +1,9 @@
+<p>EasyTimeline 1.90</p><p><b>Timeline generation failed: 4 errors found</b></p>
+Line 3: Unknown = foo<br>
+- Command &#39;Unknown&#39; unknown.<br><br>
+Line 4: DateFormat = dd/mm/yy<br>
+- Invalid DateFormat. Specify as &#39;dd/mm/yyyy&#39;, &#39;mm/dd/yyyy&#39;, &#39;yyyy-mm-dd&#39;,<br>  &#39;yyyy&#39; or &#39;x.y&#39;<br>  (use first two only for years &#62;= 1800)<br>  <br><br>
+Line 5: Period = from:1990<br>
+- Period definition incomplete. <br>  Syntax: &#39;Period = from:.. till:..&#39;<br><br>
+Line 6: TimeAxis = orientation:sideways<br>
+- TimeAxis attribute &#39;orientation&#39; invalid.<br>  Specify hor[izontal] or ver[tical]<br><br>

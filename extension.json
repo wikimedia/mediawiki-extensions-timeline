@@ -14,7 +14,8 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\Timeline\\": "includes/"
+		"MediaWiki\\Extension\\Timeline\\": "includes/",
+		"MediaWiki\\Extension\\Timeline\\Render\\": "scripts/lib/"
 	},
 	"ResourceModules": {
 		"ext.timeline.styles": {
@@ -39,12 +40,6 @@
 		"timeline-tracking-category"
 	],
 	"config": {
-		"TimelinePloticusCommand": {
-			"value": "/usr/bin/ploticus"
-		},
-		"TimelinePerlCommand": {
-			"value": "/usr/bin/perl"
-		},
 		"TimelineFonts": {
 			"value": {}
 		},

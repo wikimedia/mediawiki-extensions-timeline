@@ -1,0 +1,21 @@
+Preset = TimeHorizontal_AutoPlaceBars_UnitYear
+ImageSize = width:500
+Period = from:1960 till:1990
+ScaleMajor = increment:10 start:1960
+
+Colors =
+  id:a value:skyblue legend:Member
+  id:b value:orange legend:Leader
+
+BarData =
+  barset:band
+  bar:solo text:Solo
+
+PlotData =
+  barset:band
+  from:1960 till:1975 color:a text:"First member"
+  from:1962 till:1990 color:b text:"Second member"
+  from:1965 till:1970 color:a text:"Third member"
+  barset:break
+  from:1970 till:1980 color:a text:Fourth
+  bar:solo from:1975 till:1985 color:b text:"[[Solo artist]]"

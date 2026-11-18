@@ -1,0 +1,24 @@
+Preset = TimeVertical_OneBar_UnitYear
+ImageSize = width:300 height:400
+Period = from:1900 till:2000
+ScaleMajor = increment:20 start:1900
+ScaleMinor = increment:5 start:1900
+
+Colors =
+  id:war value:rgb(0.9,0.3,0.3) legend:War
+  id:peace value:limegreen legend:Peace
+
+PlotData =
+  from:1914 till:1918 color:war text:"First World War"
+  from:1918 till:1939 color:peace text:Interwar
+  from:1939 till:1945 color:war text:"[[Second World War]]"
+  at:1969 text:"Moon landing" mark:(line,black)
+
+TextData =
+  tabs:(70-left,150-right)
+  pos:(10,30) fontsize:XS
+  text:"Left^Middle^Right"
+
+LineData =
+  points:(20,20)(280,20) color:black width:2
+  from:1950 till:1960 atpos:60 color:blue

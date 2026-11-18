@@ -1,0 +1,5 @@
+ImageSize = width:2000 height:100
+PlotArea = left:10 right:10 top:10 bottom:10
+DateFormat = yyyy
+Period = from:1990 till:2000
+TimeAxis = orientation:horizontal
