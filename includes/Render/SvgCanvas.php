@@ -4,6 +4,10 @@ namespace MediaWiki\Extension\Timeline\Render;
 
 /**
  * SVG output, as written by the ploticus SVG driver (svg.c by B. Traill).
+ *
+ * Unlike that driver, this writes no script elements, event handlers or link rectangles
+ * for a timeline with links on its bars. MediaWiki refuses an SVG that has them, and the
+ * links of the bars are in the image map of the PNG.
  */
 final class SvgCanvas extends Canvas {
 	private const DPI = 72;
@@ -38,11 +42,6 @@ final class SvgCanvas extends Canvas {
 		$o = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 			. "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \n"
 			. "  \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\" [ \n";
-		if ( $this->clickmap ) {
-			$o .= "     <!ATTLIST svg \n        xmlns:a3 CDATA #IMPLIED \n"
-				. "        a3:scriptImplementation CDATA #IMPLIED> \n"
-				. "     <!ATTLIST script \n         a3:scriptImplementation CDATA #IMPLIED> \n";
-		}
 		$o .= "<!ENTITY ff \"font-family:\">\n<!ENTITY fs \"font-size:\">\n<!ENTITY fw \"font-weight:\">\n"
 			. "<!ENTITY fst \"font-style:\">\n<!ENTITY sw \"stroke-width:\">\n<!ENTITY as \"text-anchor:start;\">\n"
 			. "<!ENTITY am \"text-anchor:middle;\">\n<!ENTITY ae \"text-anchor:end;\">\n]>\n"
@@ -52,7 +51,7 @@ final class SvgCanvas extends Canvas {
 		$this->viewBoxOffset = strlen( $o );
 		$o .= sprintf( "  viewBox=\"0 0  %-5.2f %-5.2f\" \n", $width * self::DPI, $this->height )
 			. "  xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n"
-			. $this->scriptHeader( " > \n" )
+			. " > \n"
 			// Room for the final transform; the typo is in the original.
 			. "<g tranform=\"translate(0,0)\"" . str_repeat( ' ', 71 ) . "\n\n"
 			. '<g style="' . self::DEF_FILL . self::DEF_STROKE . self::DEF_FONT . "\">\n";
@@ -178,19 +177,12 @@ final class SvgCanvas extends Canvas {
 			$this->out .= '</g>';
 		}
 		$this->out .= "</g>\n";
-		if ( $this->clickmap ) {
-			$this->out .= "<g style=\"fill-opacity:0;fill:red;\">\n";
-			foreach ( $regions as [ $url, $label, $rx1, $ry1, $rx2, $ry2 ] ) {
-				$this->linkRegion( $url, $label, $rx1, $ry1, $rx2, $ry2 );
-			}
-			$this->out .= "</g>\n";
-		}
 		$this->out .= "</g>\n</svg>\n";
 		$p = self::DPI;
 		$head = '  viewBox="0 0 ' . Printf::f( ( $x2 - $x1 ) * $p, '-5.2' ) . ' '
 			. Printf::f( ( $y2 - $y1 ) * $p, '-5.2' )
 			. "\"      \n  xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n"
-			. $this->scriptHeader( ">\n" )
+			. ">\n"
 			. '<g transform="translate(' . Printf::f( $x1 * $p * -1.0, '-5.2' ) . ','
 			. Printf::f( ( $this->height - ( $y2 * $p ) ) * -1.0, '-5.2' ) . ')" >';
 		// Written over the provisional header without truncating it
@@ -199,17 +191,6 @@ final class SvgCanvas extends Canvas {
 
 	public function result(): string {
 		return $this->out;
-	}
-
-	private function scriptHeader( string $plain ): string {
-		if ( !$this->clickmap ) {
-			return $plain;
-		}
-		return "  onload=\"init(evt)\"\n"
-			. "  xmlns:a3=\"http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/\" \n"
-			. "  a3:scriptImplementation=\"Adobe\" >\n"
-			. "<script type=\"text/ecmascript\" a3:scriptImplementation=\"Adobe\" xlink:href=\"ViewBox.js\"/> \n"
-			. "<script type=\"text/ecmascript\" a3:scriptImplementation=\"Adobe\" xlink:href=\"GraphPopups.js\"/> \n";
 	}
 
 	private function printStyle(): void {
@@ -246,31 +227,6 @@ final class SvgCanvas extends Canvas {
 		}
 		$this->lastX = $x;
 		$this->lastY = $y;
-	}
-
-	private function linkRegion( string $url, string $label, int $x1, int $y1, int $x2, int $y2 ): void {
-		[ $url, $target ] = self::splitTarget( $url );
-		$p = self::DPI;
-		$xx1 = ( $x1 / 100.0 ) * $p;
-		$yy1 = $this->height - ( $y1 / 100.0 ) * $p;
-		$xx2 = ( $x2 / 100.0 ) * $p;
-		$yy2 = $this->height - ( $y2 / 100.0 ) * $p;
-		if ( $url !== '' ) {
-			$url = str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], $url );
-			$this->out .= "<a $target xlink:href=\"$url\">\n";
-		}
-		$this->out .= '<rect x="' . Printf::g( $xx1, 4 ) . '" y="' . Printf::g( $yy1, 4 )
-			. '" width="' . Printf::g( $xx2 - $xx1, 4 )
-			. '" height="' . Printf::g( abs( $yy2 - $yy1 ), 4 ) . '" ';
-		if ( $label !== '' ) {
-			$this->out .= "onmouseover='DisplayInfo(evt, \""
-				. str_replace( [ '&', '<', '>', '"', "'" ], [ '&amp;', '&lt;', '&gt;', '&quot;', ' ' ], $label )
-				. "\" )' onmouseout='RemoveInfo ();'";
-		}
-		$this->out .= " />\n";
-		if ( $url !== '' ) {
-			$this->out .= "</a>\n";
-		}
 	}
 
 	/**

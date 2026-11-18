@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" 
   "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [ 
-     <!ATTLIST svg 
-        xmlns:a3 CDATA #IMPLIED 
-        a3:scriptImplementation CDATA #IMPLIED> 
-     <!ATTLIST script 
-         a3:scriptImplementation CDATA #IMPLIED> 
 <!ENTITY ff "font-family:">
 <!ENTITY fs "font-size:">
 <!ENTITY fw "font-weight:">
@@ -22,12 +17,8 @@ SVG Driver by B.Traill
 <svg xmlns="http://www.w3.org/2000/svg" 
   viewBox="0 0 501.59 162.04"      
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  onload="init(evt)"
-  xmlns:a3="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" 
-  a3:scriptImplementation="Adobe"  width="696.652777777778" height="225.055555555556">
-<script type="text/ecmascript" a3:scriptImplementation="Adobe" xlink:href="ViewBox.js"/> 
-<script type="text/ecmascript" a3:scriptImplementation="Adobe" xlink:href="GraphPopups.js"/> 
-<g transform="translate(8.32 ,-2.04)" >                                                        
+ width="696.652777777778" height="225.055555555556">
+<g transform="translate(8.32 ,-2.04)" >                                                          
 
 <g style="fill:#000000;stroke:#000000;&ff;Helvetica;">
 <g style="&ff;FreeSans;&sw;0.6;&fs;10pt;&as;">
@@ -118,10 +109,5 @@ SVG Driver by B.Traill
 <path d="M159.2 160.5l0 -8.64l8.64 0l0 8.64z" fill="#ffcc66" stroke="#ffcc66"/>
 <text x="175.04" y="160.48" stroke="none">Second phase</text>
 </g></g>
-<g style="fill-opacity:0;fill:red;">
-<a  xlink:href="https%3A%2F%2Fexample.org%2Fb1">
-<rect x="79.2" y="67.68" width="253.4" height="8.64" onmouseover='DisplayInfo(evt, "example.org/.." )' onmouseout='RemoveInfo ();' />
-</a>
-</g>
 </g>
 </svg>

@@ -48,4 +48,20 @@ class RenderTest extends MediaWikiUnitTestCase {
 		$this->assertStringEqualsFile( "$base.png.sha1", sha1( $png->result() ) . "\n" );
 		$this->assertStringEqualsFile( "$base.map", Compiler::fixMap( $png->map() ?? '' ) );
 	}
+
+	public function testSvgWithLinksOnBarsHasNoScript(): void {
+		// horizontal.txt has "link:" on a bar. MediaWiki refuses an SVG with a script.
+		$compiler = new Compiler( 'https://example.org/wiki/$1', false );
+		$scripts = $compiler->compile( file_get_contents( __DIR__ . '/../data/horizontal.txt' ) );
+		$this->assertTrue( $scripts['svgMap'] );
+		$svg = new SvgCanvas( $scripts['svgMap'] );
+		( new Plotter( $svg, 'FreeSans' ) )->run( $scripts['svg'] );
+		$text = $compiler->fixSvg( $svg->result() );
+		$this->assertStringNotContainsString( '<script', $text );
+		$this->assertDoesNotMatchRegularExpression( '/\son[a-z]+\s*=/i', $text );
+		// The link of the bar is in the image map of the PNG.
+		$png = new PngCanvas( $scripts['pngMap'] );
+		( new Plotter( $png, 'NoSuchFont' ) )->run( $scripts['png'] );
+		$this->assertStringContainsString( 'href="https://example.org/b1"', Compiler::fixMap( $png->map() ?? '' ) );
+	}
 }
