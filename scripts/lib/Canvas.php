@@ -107,7 +107,7 @@ abstract class Canvas {
 	 * @return float[]|null
 	 */
 	protected static function xrgb( string $s ): ?array {
-		preg_match( '/^[0-9a-fA-F]{0,12}/', $s, $m );
+		Regex::match( '/^[0-9a-fA-F]{0,12}/', $s, $m );
 		$h = $m[0];
 		if ( strlen( $h ) === 6 ) {
 			return [ hexdec( substr( $h, 0, 2 ) ) / 255.0, hexdec( substr( $h, 2, 2 ) ) / 255.0,
@@ -146,7 +146,7 @@ abstract class Canvas {
 	 * @return array{0: float, 1: int} value and number of consumed bytes (0 if no number)
 	 */
 	private static function strtod( string $s ): array {
-		if ( !preg_match( self::FLOAT_RE, $s, $m ) ) {
+		if ( !Regex::match( self::FLOAT_RE, $s, $m ) ) {
 			return [ 0.0, 0 ];
 		}
 		$t = strtolower( $m[1] );
@@ -167,7 +167,7 @@ abstract class Canvas {
 	}
 
 	public static function atoi( string $s ): int {
-		if ( !preg_match( '/^[ \t\n\r\f\x0B]*([+-]?\d+)/', $s, $m ) ) {
+		if ( !Regex::match( '/^[ \t\n\r\f\x0B]*([+-]?\d+)/', $s, $m ) ) {
 			return 0;
 		}
 		return (int)$m[1];
@@ -187,7 +187,7 @@ abstract class Canvas {
 	 * @return string[]
 	 */
 	public static function tokens( string $s, int $max = PHP_INT_MAX ): array {
-		$t = preg_split( '/[ \t\n\r\f\x0B]+/', trim( $s, " \t\n\r\f\v" ), -1, PREG_SPLIT_NO_EMPTY );
+		$t = Regex::split( '/[ \t\n\r\f\x0B]+/', trim( $s, " \t\n\r\f\v" ), -1, PREG_SPLIT_NO_EMPTY );
 		return array_slice( $t, 0, $max );
 	}
 

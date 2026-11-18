@@ -42,7 +42,7 @@ final class Printf {
 		if ( !( $x == 0.0 && fdiv( 1, $x ) < 0 ) ) {
 			return sprintf( "%{$spec}f", $x );
 		}
-		preg_match( '/^(-?)(\d*)(?:\.(\d+))?$/', $spec, $m );
+		Regex::match( '/^(-?)(\d*)(?:\.(\d+))?$/', $spec, $m );
 		$s = '-' . sprintf( '%.' . ( $m[3] ?? '6' ) . 'f', 0.0 );
 		return str_pad( $s, (int)$m[2], ' ', $m[1] ? STR_PAD_RIGHT : STR_PAD_LEFT );
 	}

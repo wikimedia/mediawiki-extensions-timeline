@@ -99,7 +99,7 @@ final class Compiler {
 	 * @throws CompileError
 	 */
 	public function compile( string $source ): array {
-		preg_match_all( '/[^\n]*\n|[^\n]+$/', $source, $m );
+		Regex::matchAll( '/[^\n]*\n|[^\n]+$/', $source, $m );
 		$this->lines = $m[0];
 		$this->parseScript();
 		$result = null;
@@ -146,7 +146,7 @@ final class Compiler {
 		$this->storeColor( 'barcoldefault', self::encodeInput( 'rgb(0,0.6,0)' ), '' );
 
 		while ( !$this->inputParsed ) {
-			if ( preg_match( '/^\s*$/', $this->command ) ) {
+			if ( Regex::match( '/^\s*$/', $this->command ) ) {
 				$this->getCommand();
 				continue;
 			}
@@ -155,45 +155,45 @@ final class Compiler {
 				$this->getCommand();
 				continue;
 			}
-			if ( preg_match( '/%3D%.*%3D%/', $this->command ) ) {
+			if ( Regex::match( '/%3D%.*%3D%/', $this->command ) ) {
 				$this->error( "Invalid statement. Multiple '=' found." );
 				$this->getCommand();
 				continue;
 			}
 
 			$parts = explode( self::H_IS, $this->command );
-			$name = preg_replace( '/^\s*(.*?)\s*$/', '$1', $parts[0] );
+			$name = Regex::replace( '/^\s*(.*?)\s*$/', '$1', $parts[0] );
 			$value = $parts[1] ?? null;
 
-			if ( preg_match( '/PlotDividers/i', $name ) ) {
+			if ( Regex::match( '/PlotDividers/i', $name ) ) {
 				$this->error( "Command 'PlotDividers' has been renamed to 'LineData', please adjust." );
 				$this->getCommand();
 				continue;
 			}
-			if ( preg_match( '/DrawLines/i', $name ) ) {
+			if ( Regex::match( '/DrawLines/i', $name ) ) {
 				$this->error( "Command 'DrawLines' has been renamed to 'LineData', please adjust.\n"
 					. "  Reason for change is consistency: LineData now follows the same syntax rules as "
 						. "PlotData and TextData." );
 				$this->getCommand();
 				continue;
 			}
-			if ( !preg_match( '/^(?:Define)\s/', $name ) && !preg_match(
+			if ( !Regex::match( '/^(?:Define)\s/', $name ) && !Regex::match(
 				'/^(?:AlignBars|BarData|BackgroundColors|Colors|DateFormat|LineData|ScaleMajor|ScaleMinor|'
 				. 'LegendLeft|LegendTop|ImageSize|PlotArea|Legend|Period|PlotData|Preset|TextData|TimeAxis)$/i',
 				$name
 			) ) {
-				$this->error( "Command '" . preg_replace( '/[^a-zA-Z].*$/s', '', $this->command ) . "' unknown." );
+				$this->error( "Command '" . Regex::replace( '/[^a-zA-Z].*$/s', '', $this->command ) . "' unknown." );
 				$this->getCommand();
 				continue;
 			}
 
 			if ( $value !== null ) {
-				$value = preg_replace( '/^\s*(.*?)\s*/', '$1', $value, 1 );
+				$value = Regex::replace( '/^\s*(.*?)\s*/', '$1', $value, 1 );
 			}
-			if ( !preg_match( '/^(?:BarData|Colors|LineData|PlotData|TextData)$/i', $name )
+			if ( !Regex::match( '/^(?:BarData|Colors|LineData|PlotData|TextData)$/i', $name )
 				&& ( $value === null || $value === '' )
 			) {
-				if ( preg_match( '/Preset/i', $name ) ) {
+				if ( Regex::match( '/Preset/i', $name ) ) {
 					$this->error( "$name definition incomplete. No value specified\n"
 						. "  Two presets are available:\n"
 						. "  TimeVertical_OneBar_UnitYear and TimeHorizontal_AutoPlaceBars_UnitYear\n"
@@ -206,7 +206,7 @@ final class Compiler {
 				continue;
 			}
 
-			if ( preg_match( '/^(?:BackgroundColors|Colors|Period|ScaleMajor|ScaleMinor|TimeAxis)$/i', $name ) ) {
+			if ( Regex::match( '/^(?:BackgroundColors|Colors|Period|ScaleMajor|ScaleMinor|TimeAxis)$/i', $name ) ) {
 				foreach ( self::split( ' ', $value ) as $attribute ) {
 					$attrValue = explode( ':', $attribute )[1] ?? '';
 					// The attribute name check of the Perl original never fails (precedence bug).
@@ -220,37 +220,37 @@ final class Compiler {
 
 			$c = $this->command;
 			$next = true;
-			if ( preg_match( '/^AlignBars/i', $c ) ) {
+			if ( Regex::match( '/^AlignBars/i', $c ) ) {
 				$this->parseAlignBars();
-			} elseif ( preg_match( '/^BackgroundColors/i', $c ) ) {
+			} elseif ( Regex::match( '/^BackgroundColors/i', $c ) ) {
 				$next = $this->parseBackgroundColors();
-			} elseif ( preg_match( '/^BarData/i', $c ) ) {
+			} elseif ( Regex::match( '/^BarData/i', $c ) ) {
 				$this->parseBarData();
-			} elseif ( preg_match( '/^Colors/i', $c ) ) {
+			} elseif ( Regex::match( '/^Colors/i', $c ) ) {
 				$this->parseColors();
-			} elseif ( preg_match( '/^DateFormat/i', $c ) ) {
+			} elseif ( Regex::match( '/^DateFormat/i', $c ) ) {
 				$this->parseDateFormat();
-			} elseif ( preg_match( '/^Define/i', $c ) ) {
+			} elseif ( Regex::match( '/^Define/i', $c ) ) {
 				$this->parseDefine();
-			} elseif ( preg_match( '/^ImageSize/i', $c ) ) {
+			} elseif ( Regex::match( '/^ImageSize/i', $c ) ) {
 				$this->parseImageSize();
-			} elseif ( preg_match( '/^Legend/i', $c ) ) {
+			} elseif ( Regex::match( '/^Legend/i', $c ) ) {
 				$this->parseLegend();
-			} elseif ( preg_match( '/^LineData/i', $c ) ) {
+			} elseif ( Regex::match( '/^LineData/i', $c ) ) {
 				$this->parseLineData();
-			} elseif ( preg_match( '/^Period/i', $c ) ) {
+			} elseif ( Regex::match( '/^Period/i', $c ) ) {
 				$this->parsePeriod();
-			} elseif ( preg_match( '/^PlotArea/i', $c ) ) {
+			} elseif ( Regex::match( '/^PlotArea/i', $c ) ) {
 				$this->parsePlotArea();
-			} elseif ( preg_match( '/^PlotData/i', $c ) ) {
+			} elseif ( Regex::match( '/^PlotData/i', $c ) ) {
 				$this->parsePlotData();
-			} elseif ( preg_match( '/^Preset/i', $c ) ) {
+			} elseif ( Regex::match( '/^Preset/i', $c ) ) {
 				$this->parsePreset();
-			} elseif ( preg_match( '/^Scale/i', $c ) ) {
+			} elseif ( Regex::match( '/^Scale/i', $c ) ) {
 				$this->parseScale();
-			} elseif ( preg_match( '/^TextData/i', $c ) ) {
+			} elseif ( Regex::match( '/^TextData/i', $c ) ) {
 				$this->parseTextData();
-			} elseif ( preg_match( '/^TimeAxis/i', $c ) ) {
+			} elseif ( Regex::match( '/^TimeAxis/i', $c ) ) {
 				$this->parseTimeAxis();
 			}
 			if ( !$next ) {
@@ -278,28 +278,29 @@ final class Compiler {
 			return '';
 		}
 		// The part behind <timeline> does not count as line 1
-		if ( preg_match( '/^\s*$/', $this->lines[0] ) ) {
+		if ( Regex::match( '/^\s*$/', $this->lines[0] ) ) {
 			$this->line = array_shift( $this->lines );
 		}
 
 		$commentStart = null;
 		$this->line = '';
-		while ( $this->lines && preg_match( '/^\s*$/', $this->line ) ) {
+		while ( $this->lines && Regex::match( '/^\s*$/', $this->line ) ) {
 			$this->lineNo++;
 			$line = array_shift( $this->lines );
 			if ( str_ends_with( $line, "\n" ) ) {
 				$line = substr( $line, 0, -1 );
 			}
 			// preserve '#' within double quotes
-			$line = preg_replace_callback( '/("[^"]*")/', static fn ( $m ) => str_replace( '#', '%?+', $m[1] ), $line );
+			$line = Regex::replaceCallback( '/("[^"]*")/',
+				static fn ( $m ) => str_replace( '#', '%?+', $m[1] ), $line );
 
-			$line = preg_replace( '/#>.*?<#/', '', $line );
+			$line = Regex::replace( '/#>.*?<#/', '', $line );
 			if ( str_contains( $line, '#>' ) ) {
 				$commentStart = $this->lineNo;
-				$line = preg_replace( '/#>.*?$/', '', $line, 1 );
+				$line = Regex::replace( '/#>.*?$/', '', $line, 1 );
 			} elseif ( str_contains( $line, '<#' ) ) {
 				$commentStart = null;
-				$line = preg_replace( '/^.*?<#/', '', $line, 1 );
+				$line = Regex::replace( '/^.*?<#/', '', $line, 1 );
 			} elseif ( $commentStart !== null ) {
 				$this->line = '';
 				continue;
@@ -307,16 +308,16 @@ final class Compiler {
 
 			// remove single line comments (keep html char tags, like &#32;)
 			$line = str_replace( '&#', '&$%', $line );
-			$line = preg_replace( '/#.*$/', '', $line, 1 );
+			$line = Regex::replace( '/#.*$/', '', $line, 1 );
 			$line = str_replace( '&$%', '&#', $line );
 			$line = str_replace( '%?+', '#', $line );
-			$line = preg_replace( '/\s*$/', '', $line );
+			$line = Regex::replace( '/\s*$/', '', $line );
 			$this->line = str_replace( "\t", ' ', $line );
 		}
 
-		if ( !preg_match( '/^\s*$/', $this->line ) ) {
-			if ( !preg_match( '/^\s*Define/i', $this->line ) ) {
-				$this->line = preg_replace_callback( '/(\$[a-zA-Z0-9]+)/',
+		if ( !Regex::match( '/^\s*$/', $this->line ) ) {
+			if ( !Regex::match( '/^\s*Define/i', $this->line ) ) {
+				$this->line = Regex::replaceCallback( '/(\$[a-zA-Z0-9]+)/',
 					fn ( $m ) => $this->getDefine( $m[1] ), $this->line );
 			}
 			$this->line = self::encodeInput( $this->line );
@@ -341,17 +342,17 @@ final class Compiler {
 			$this->command = $this->getLine();
 		}
 
-		if ( preg_match( '/^\s/', $this->command ) ) {
+		if ( Regex::match( '/^\s/', $this->command ) ) {
 			$this->error( "New command expected instead of data line (= line starting with spaces). Data "
 				. "line(s) ignored.\n" );
 			$this->command = $this->getLine();
-			while ( $this->lines && preg_match( '/^\s/', $this->command ) ) {
+			while ( $this->lines && Regex::match( '/^\s/', $this->command ) ) {
 				$this->command = $this->getLine();
 			}
 		}
 
-		if ( preg_match( '/^[^\s]/', $this->command ) ) {
-			$this->collectAttributes( preg_replace( '/^.*%3D%\s*/', '', $this->command, 1 ) );
+		if ( Regex::match( '/^[^\s]/', $this->command ) ) {
+			$this->collectAttributes( Regex::replace( '/^.*%3D%\s*/', '', $this->command, 1 ) );
 		}
 	}
 
@@ -364,16 +365,16 @@ final class Compiler {
 		$this->noData = false;
 		$line = $this->getLine();
 
-		if ( preg_match( '/^[^\s]/', $line ) ) {
+		if ( Regex::match( '/^[^\s]/', $line ) ) {
 			$this->commandNext = $line;
 			$this->noData = true;
 			return;
 		}
-		if ( preg_match( '/^\s*$/', $line ) ) {
+		if ( Regex::match( '/^\s*$/', $line ) ) {
 			$this->noData = true;
 			return;
 		}
-		$this->collectAttributes( preg_replace( '/^\s*/', '', $line ) );
+		$this->collectAttributes( Regex::replace( '/^\s*/', '', $line ) );
 	}
 
 	/**
@@ -381,17 +382,17 @@ final class Compiler {
 	 */
 	private function collectAttributes( string $line ): void {
 		// replace colon (:), would conflict with syntax
-		$line = preg_replace( '/(\slink\:[^\s\:]*)\:/i', "\$1'colon'", $line, 1 );
-		$line = preg_replace( '/(\stext\:[^\s\:]*)\:/i', "\$1'colon'", $line, 1 );
-		$line = preg_replace( '/(https?)\:/i', "\$1'colon'", $line, 1 );
+		$line = Regex::replace( '/(\slink\:[^\s\:]*)\:/i', "\$1'colon'", $line, 1 );
+		$line = Regex::replace( '/(\stext\:[^\s\:]*)\:/i', "\$1'colon'", $line, 1 );
+		$line = Regex::replace( '/(https?)\:/i', "\$1'colon'", $line, 1 );
 
 		[ $line, $text ] = $this->extractText( $line );
-		$text = preg_replace( "/'colon'/", ':', $text, 1 );
+		$text = Regex::replace( "/'colon'/", ':', $text, 1 );
 
-		$line = preg_replace_callback( '/(%28%.+?%29%)/',
-			static fn ( $m ) => preg_replace( '/\s/', '', $m[1] ), $line );
-		$line = preg_replace( '/\s*\:\s*/', ':', $line );
-		$line = preg_replace_callback( '/([a-zA-Z0-9\_]+)\:/', static fn ( $m ) => strtolower( $m[1] ) . ':', $line );
+		$line = Regex::replaceCallback( '/(%28%.+?%29%)/',
+			static fn ( $m ) => Regex::replace( '/\s/', '', $m[1] ), $line );
+		$line = Regex::replace( '/\s*\:\s*/', ':', $line );
+		$line = Regex::replaceCallback( '/([a-zA-Z0-9\_]+)\:/', static fn ( $m ) => strtolower( $m[1] ) . ':', $line );
 
 		$name = null;
 		foreach ( self::split( ' ', $line ) as $field ) {
@@ -403,10 +404,10 @@ final class Compiler {
 					$value = strtolower( $value );
 				}
 				if ( $name === 'link' ) {
-					$value = preg_replace( "/'colon'/", ':', $value, 1 );
+					$value = Regex::replace( "/'colon'/", ':', $value, 1 );
 				}
 				if ( $value === '' ) {
-					if ( !preg_match( '/Text/i', $name ) ) {
+					if ( !Regex::match( '/Text/i', $name ) ) {
 						$this->error( "No value specified for attribute '$name'. Attribute ignored." );
 					}
 				} elseif ( $name === 'until' ) {
@@ -453,7 +454,7 @@ final class Compiler {
 	private function parseAlignBars(): void {
 		$this->checkPreset( 'AlignBars' );
 		$align = self::str( $this->attributes['single'] ?? null );
-		if ( !preg_match( '/^(?:justify|early|late)$/i', $align ) ) {
+		if ( !Regex::match( '/^(?:justify|early|late)$/i', $align ) ) {
 			$this->error( "AlignBars value '$align' invalid. Specify 'justify', 'early' or 'late'." );
 			return;
 		}
@@ -473,7 +474,7 @@ final class Compiler {
 
 		foreach ( array_keys( $this->attributes ) as $attribute ) {
 			$attrValue = self::str( $this->attributes[$attribute] );
-			if ( preg_match( '/Canvas/i', $attribute ) ) {
+			if ( Regex::match( '/Canvas/i', $attribute ) ) {
 				if ( !$this->colorPredefined( $attrValue ) && !isset( $this->colors[strtolower( $attrValue )] ) ) {
 					$this->error( "BackgroundColors definition invalid. Attribute '$attribute': unknown color "
 						. "'$attrValue'.\n"
@@ -481,7 +482,7 @@ final class Compiler {
 					return true;
 				}
 				$this->attributes['canvas'] = $this->colors[strtolower( $attrValue )] ?? strtolower( $attrValue );
-			} elseif ( preg_match( '/Bars/i', $attribute ) ) {
+			} elseif ( Regex::match( '/Bars/i', $attribute ) ) {
 				if ( !isset( $this->colors[strtolower( $attrValue )] ) ) {
 					$this->error( "BackgroundColors definition invalid. Attribute '$attribute' unknown color "
 						. "'$attrValue'.\n"
@@ -518,15 +519,15 @@ final class Compiler {
 
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
-				if ( preg_match( '/^Bar$/i', $attribute ) ) {
+				if ( Regex::match( '/^Bar$/i', $attribute ) ) {
 					$bar = $attrValue;
-				} elseif ( preg_match( '/^BarSet$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^BarSet$/i', $attribute ) ) {
 					$barset = $attrValue;
-				} elseif ( preg_match( '/^Text$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Text$/i', $attribute ) ) {
 					$text = self::newlinesToTildes( $attrValue );
-				} elseif ( preg_match( '/^Link$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Link$/i', $attribute ) ) {
 					$link = self::parseText( $attrValue );
-					if ( preg_match( '/\[.*\]/', $link ) ) {
+					if ( Regex::match( '/\[.*\]/', $link ) ) {
 						$this->error( "BarData attribute 'link' contains implicit (wiki style) link.\n"
 							. "Use implicit link style with attribute 'text' only.\n" );
 						$this->getData();
@@ -554,11 +555,11 @@ final class Compiler {
 				continue;
 			}
 			if ( $link !== '' ) {
-				if ( preg_match( '/\[.*\]/', $text ) ) {
-					$text = preg_replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
+				if ( Regex::match( '/\[.*\]/', $text ) ) {
+					$text = Regex::replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
 				}
 			}
-			if ( $bar !== '' && !preg_match( '/[a-zA-Z0-9\_]+/', $bar ) ) {
+			if ( $bar !== '' && !Regex::match( '/[a-zA-Z0-9\_]+/', $bar ) ) {
 				$this->error( "BarData attribute bar:'$bar' invalid.\nUse only characters 'a'-'z', 'A'-'Z', "
 					. "'0'-'9', '_'\n" );
 				$this->getData();
@@ -611,19 +612,19 @@ final class Compiler {
 			$colorValue = '';
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
-				if ( preg_match( '/Id/i', $attribute ) ) {
+				if ( Regex::match( '/Id/i', $attribute ) ) {
 					$colorName = $attrValue;
-				} elseif ( preg_match( '/Legend/i', $attribute ) ) {
+				} elseif ( Regex::match( '/Legend/i', $attribute ) ) {
 					$legendValue = $attrValue;
-					if ( preg_match( '/^[yY]$/', $legendValue ) ) {
+					if ( Regex::match( '/^[yY]$/', $legendValue ) ) {
 						$this->legendData[] = $colorName;
-					} elseif ( !preg_match( '/^[nN]$/', $attrValue ) ) {
+					} elseif ( !Regex::match( '/^[nN]$/', $attrValue ) ) {
 						$legendValue = self::parseText( $legendValue );
 						$this->legendData[] = $legendValue;
 					}
-				} elseif ( preg_match( '/Value/i', $attribute ) ) {
+				} elseif ( Regex::match( '/Value/i', $attribute ) ) {
 					$colorValue = $attrValue;
-					if ( preg_match( '/^white$/i', $colorValue ) ) {
+					if ( Regex::match( '/^white$/i', $colorValue ) ) {
 						$colorValue = 'gray' . self::H_BRO . '0.999' . self::H_BRC;
 					}
 				}
@@ -633,26 +634,26 @@ final class Compiler {
 			$message = 'Color value invalid.';
 			if ( $this->colorPredefined( $colorValue ) ) {
 				$valid = true;
-			} elseif ( preg_match( '/^[a-z]+$/i', $colorValue )
-				&& !preg_match( '/^(?:gray|rgb|hsb)/i', $colorValue )
+			} elseif ( Regex::match( '/^[a-z]+$/i', $colorValue )
+				&& !Regex::match( '/^(?:gray|rgb|hsb)/i', $colorValue )
 			) {
 				$valid = false;
 				$message = "Color value invalid: unknown constant '$colorValue'.";
-			} elseif ( !preg_match( '/^(?:gray|rgb|hsb|xrgb) %28% .+? %29%/xi', $colorValue ) ) {
+			} elseif ( !Regex::match( '/^(?:gray|rgb|hsb|xrgb) %28% .+? %29%/xi', $colorValue ) ) {
 				$valid = false;
 				$message = "Color value invalid. Specify constant or 'gray/rgb/hsb(numeric values)' ";
-			} elseif ( preg_match( '/^gray/i', $colorValue ) ) {
-				$valid = (bool)preg_match( '/gray %28% (?:0|1|0\.\d+) %29%/xi', $colorValue );
+			} elseif ( Regex::match( '/^gray/i', $colorValue ) ) {
+				$valid = (bool)Regex::match( '/gray %28% (?:0|1|0\.\d+) %29%/xi', $colorValue );
 				$message = "Color value invalid. Specify 'gray(x) where 0 <= x <= 1' ";
-			} elseif ( preg_match( '/^rgb/i', $colorValue ) ) {
-				$valid = (bool)preg_match( '/rgb %28% (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) %29%/xi',
+			} elseif ( Regex::match( '/^rgb/i', $colorValue ) ) {
+				$valid = (bool)Regex::match( '/rgb %28% (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) %29%/xi',
 					$colorValue );
 				$message = "Color value invalid. Specify 'rgb(r,g,b) where 0 <= r,g,b <= 1' ";
-			} elseif ( preg_match( '/^xrgb/i', $colorValue ) ) {
-				$valid = (bool)preg_match( '/xrgb %28% ([\da-f0-9]{6}|[\da-f0-9]{12}) %29%/xi', $colorValue );
+			} elseif ( Regex::match( '/^xrgb/i', $colorValue ) ) {
+				$valid = (bool)Regex::match( '/xrgb %28% ([\da-f0-9]{6}|[\da-f0-9]{12}) %29%/xi', $colorValue );
 				$message = "Color value invalid. Specify 'xrgb(ABCDEF) using 6 or 12 hex chars' ";
-			} elseif ( preg_match( '/^hsb/i', $colorValue ) ) {
-				$valid = (bool)preg_match( '/hsb %28% (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) %29%/xi',
+			} elseif ( Regex::match( '/^hsb/i', $colorValue ) ) {
+				$valid = (bool)Regex::match( '/hsb %28% (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) \, (?:0|1|0\.\d+) %29%/xi',
 					$colorValue );
 				$message = "Color value invalid. Specify 'hsb(h,s,b) where 0 <= h,s,b <= 1' ";
 			}
@@ -677,7 +678,7 @@ final class Compiler {
 	 */
 	private function parseDateFormat(): void {
 		$this->checkPreset( 'DateFormat' );
-		$dateValue = strtolower( preg_replace( '/\s/', '', self::str( $this->attributes['single'] ?? null ) ) );
+		$dateValue = strtolower( Regex::replace( '/\s/', '', self::str( $this->attributes['single'] ?? null ) ) );
 		if ( !in_array( $dateValue, [ 'dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd', 'yyyy', 'x.y' ], true ) ) {
 			$this->error( "Invalid DateFormat. Specify as 'dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd',\n"
 				. " 'yyyy' or 'x.y'\n"
@@ -691,21 +692,21 @@ final class Compiler {
 	 * @throws CompileError
 	 */
 	private function parseDefine(): void {
-		$command2 = preg_replace( '/^Define\s*/i', '', $this->command, 1 );
+		$command2 = Regex::replace( '/^Define\s*/i', '', $this->command, 1 );
 		$parts = explode( self::H_IS, $command2 );
-		$name = preg_replace( '/^\s*(.*?)\s*$/', '$1', $parts[0] );
-		$value = preg_replace( '/^\s*(.*?)\s*$/', '$1', $parts[1] ?? '' );
+		$name = Regex::replace( '/^\s*(.*?)\s*$/', '$1', $parts[0] );
+		$value = Regex::replace( '/^\s*(.*?)\s*$/', '$1', $parts[1] ?? '' );
 
 		if ( !str_starts_with( $name, self::H_DOLLAR ) ) {
 			$this->error( "Define '$name' invalid. Name does not start with '\$'." );
 			return;
 		}
-		if ( !preg_match( '/^%24%[a-zA-Z0-9\_]+$/', $name ) ) {
+		if ( !Regex::match( '/^%24%[a-zA-Z0-9\_]+$/', $name ) ) {
 			$this->error( "Define '$name' invalid. Valid characters are 'a'-'z', 'A'-'Z', '0'-'9', '_'." );
 			return;
 		}
 		$value = self::decodeInput( $value );
-		$value = preg_replace_callback( '/(\$[a-zA-Z0-9]+)/', fn ( $m ) => $this->getDefine( $m[1] ), $value );
+		$value = Regex::replaceCallback( '/(\$[a-zA-Z0-9]+)/', fn ( $m ) => $this->getDefine( $m[1] ), $value );
 		$this->consts[strtolower( $name )] = $value;
 	}
 
@@ -752,11 +753,11 @@ final class Compiler {
 
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
-				if ( preg_match( '/^(?:At|From|Till)$/i', $attribute ) ) {
-					if ( preg_match( '/^Start$/i', $attrValue ) ) {
+				if ( Regex::match( '/^(?:At|From|Till)$/i', $attribute ) ) {
+					if ( Regex::match( '/^Start$/i', $attrValue ) ) {
 						$attrValue = self::str( $this->period['from'] );
 					}
-					if ( preg_match( '/^End$/i', $attrValue ) ) {
+					if ( Regex::match( '/^End$/i', $attrValue ) ) {
 						$attrValue = self::str( $this->period['till'] ?? null );
 					}
 					if ( !$this->validDateFormat( $attrValue ) ) {
@@ -771,19 +772,19 @@ final class Compiler {
 						$this->getData();
 						continue 2;
 					}
-					if ( preg_match( '/At/i', $attribute ) ) {
+					if ( Regex::match( '/At/i', $attribute ) ) {
 						$at = $attrValue;
 						$from = '';
 						$till = '';
-					} elseif ( preg_match( '/From/i', $attribute ) ) {
+					} elseif ( Regex::match( '/From/i', $attribute ) ) {
 						$from = $attrValue;
 						$at = '';
 					} else {
 						$till = $attrValue;
 						$at = '';
 					}
-				} elseif ( preg_match( '/^(?:atpos|frompos|untilpos|tillpos)$/i', $attribute ) ) {
-					if ( preg_match( '/^(?:Start|End)$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^(?:atpos|frompos|untilpos|tillpos)$/i', $attribute ) ) {
+					if ( Regex::match( '/^(?:Start|End)$/i', $attrValue ) ) {
 						$attrValue = strtolower( $attrValue );
 					} elseif ( !self::validAbs( $attrValue ) ) {
 						$this->error( "LineData attribute '$attribute' invalid.\n"
@@ -791,14 +792,14 @@ final class Compiler {
 						$this->getData();
 						continue 2;
 					}
-					if ( preg_match( '/atpos/i', $attribute ) ) {
+					if ( Regex::match( '/atpos/i', $attribute ) ) {
 						$atpos = self::normalize( $attrValue );
-					} elseif ( preg_match( '/frompos/i', $attribute ) ) {
+					} elseif ( Regex::match( '/frompos/i', $attribute ) ) {
 						$frompos = self::normalize( $attrValue );
 					} else {
 						$tillpos = self::normalize( $attrValue );
 					}
-				} elseif ( preg_match( '/Color/i', $attribute ) ) {
+				} elseif ( Regex::match( '/Color/i', $attribute ) ) {
 					if ( !$this->colorPredefined( $attrValue ) && !isset( $this->colors[strtolower( $attrValue )] ) ) {
 						$this->error( "LineData  attribute '$attribute' invalid. Unknown color '$attrValue'.\n"
 							. "  Specify command 'Color' before this command." );
@@ -809,21 +810,21 @@ final class Compiler {
 						$attrValue = $this->colors[strtolower( $attrValue )];
 					}
 					$color = $attrValue;
-				} elseif ( preg_match( '/Layer/i', $attribute ) ) {
-					if ( !preg_match( '/^(?:back|front)$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/Layer/i', $attribute ) ) {
+					if ( !Regex::match( '/^(?:back|front)$/i', $attrValue ) ) {
 						$this->error( "LineData attribute '$attrValue' invalid.\nSpecify back(default) or front" );
 						$this->getData();
 						continue 2;
 					}
 					$layer = $attrValue;
-				} elseif ( preg_match( '/Points/i', $attribute ) ) {
-					if ( !preg_match( '/^%28%(\d+)\,(\d+)%29%%28%(\d+)\,(\d+)%29%$/', $attrValue, $m ) ) {
+				} elseif ( Regex::match( '/Points/i', $attribute ) ) {
+					if ( !Regex::match( '/^%28%(\d+)\,(\d+)%29%%28%(\d+)\,(\d+)%29%$/', $attrValue, $m ) ) {
 						$this->error( "LineData attribute '$attrValue' invalid.\nSpecify 'points:(x1,y1)(x2,y2)'" );
 						$this->getData();
 						continue 2;
 					}
 					$points = "$m[1],$m[2],$m[3],$m[4]";
-				} elseif ( preg_match( '/Width/i', $attribute ) ) {
+				} elseif ( Regex::match( '/Width/i', $attribute ) ) {
 					if ( !self::validAbs( $attrValue ) ) {
 						$this->error( "LineData attribute '$attribute' invalid.\n"
 							. "Specify value as x[.y][px, in, cm] examples: '200', '20px', '1.3in'" );
@@ -921,13 +922,13 @@ final class Compiler {
 
 		foreach ( $this->attributes as $attribute => $attrValue ) {
 			$attrValue = self::str( $attrValue );
-			if ( preg_match( '/Width|Height/i', $attribute ) ) {
-				if ( !preg_match( '/auto/i', $attrValue ) && !self::validAbs( $attrValue ) ) {
+			if ( Regex::match( '/Width|Height/i', $attribute ) ) {
+				if ( !Regex::match( '/auto/i', $attrValue ) && !self::validAbs( $attrValue ) ) {
 					$this->error( "ImageSize attribute '$attribute' invalid.\n"
 						. "Specify value as x[.y][px, in, cm] examples: '200', '20px', '1.3in'" );
 					return;
 				}
-			} elseif ( preg_match( '/BarIncrement/i', $attribute ) ) {
+			} elseif ( Regex::match( '/BarIncrement/i', $attribute ) ) {
 				if ( !self::validAbs( $attrValue ) ) {
 					$this->error( "ImageSize attribute '$attribute' invalid.\n"
 						. "Specify value as x[.y][px, in, cm] examples: '200', '20px', '1.3in'" );
@@ -938,8 +939,8 @@ final class Compiler {
 		}
 
 		$a = $this->attributes;
-		$auto = preg_match( '/auto/i', self::str( $a['width'] ?? null ) )
-			|| preg_match( '/auto/i', self::str( $a['height'] ?? null ) );
+		$auto = Regex::match( '/auto/i', self::str( $a['width'] ?? null ) )
+			|| Regex::match( '/auto/i', self::str( $a['height'] ?? null ) );
 		if ( $auto && self::str( $a['barinc'] ?? null ) === '' ) {
 			$this->error( "ImageSize attribute 'barincrement' missing.\n"
 				. "Automatic determination of image width or height implies specification of this attribute" );
@@ -965,23 +966,23 @@ final class Compiler {
 		$invalidPos = "invalid.\nSpecify value as x[.y][px, in, cm] examples: '200', '20px', '1.3in'";
 		foreach ( $this->attributes as $attribute => $attrValue ) {
 			$attrValue = self::str( $attrValue );
-			if ( preg_match( '/Columns/i', $attribute ) ) {
+			if ( Regex::match( '/Columns/i', $attribute ) ) {
 				if ( self::num( $attrValue ) < 1 || self::num( $attrValue ) > 4 ) {
 					$this->error( "Legend attribute 'columns' invalid. Specify 1,2,3 or 4" );
 					return;
 				}
-			} elseif ( preg_match( '/Orientation/i', $attribute ) ) {
-				if ( !preg_match( '/^(?:hor|horizontal|ver|vertical)$/i', $attrValue ) ) {
+			} elseif ( Regex::match( '/Orientation/i', $attribute ) ) {
+				if ( !Regex::match( '/^(?:hor|horizontal|ver|vertical)$/i', $attrValue ) ) {
 					$this->error( "Legend attribute '$attrValue' invalid. Specify hor[izontal] or ver[tical]" );
 					return;
 				}
 				$this->attributes['orientation'] = substr( $attrValue, 0, 3 );
-			} elseif ( preg_match( '/Position/i', $attribute ) ) {
-				if ( !preg_match( '/^(?:top|bottom|right)$/i', $attrValue ) ) {
+			} elseif ( Regex::match( '/Position/i', $attribute ) ) {
+				if ( !Regex::match( '/^(?:top|bottom|right)$/i', $attrValue ) ) {
 					$this->error( "Legend attribute '$attrValue' invalid.\nSpecify top, bottom or right" );
 					return;
 				}
-			} elseif ( preg_match( '/Left|Top|ColumnWidth/i', $attribute ) ) {
+			} elseif ( Regex::match( '/Left|Top|ColumnWidth/i', $attribute ) ) {
 				if ( !self::validAbsRel( $attrValue ) ) {
 					$this->error( "Legend attribute '$attribute' $invalidPos" );
 					return;
@@ -1004,7 +1005,7 @@ final class Compiler {
 
 		$position = self::str( $a['position'] ?? null );
 		$orientation = self::str( $a['orientation'] ?? null );
-		if ( preg_match( '/right/i', $position ) ) {
+		if ( Regex::match( '/right/i', $position ) ) {
 			if ( isset( $a['columns'] ) ) {
 				$this->error( "Legend definition invalid.\nAttribute 'columns' and 'position:right' are "
 					. "mutually exclusive." );
@@ -1016,8 +1017,8 @@ final class Compiler {
 				return;
 			}
 		}
-		if ( preg_match( '/hor/i', $orientation ) ) {
-			if ( preg_match( '/right/i', $position ) ) {
+		if ( Regex::match( '/hor/i', $orientation ) ) {
+			if ( Regex::match( '/right/i', $position ) ) {
 				$this->error( "Legend definition invalid.\n"
 					. "'position:right' and 'orientation:horizontal' are mutually exclusive." );
 				return;
@@ -1055,25 +1056,25 @@ final class Compiler {
 		foreach ( $this->attributes as $attribute => $attrValue ) {
 			$attrValue = self::str( $attrValue );
 			if ( $this->dateFormat === 'yyyy' ) {
-				if ( !preg_match( '/^\-?\d+$/', $attrValue ) ) {
+				if ( !Regex::match( '/^\-?\d+$/', $attrValue ) ) {
 					$this->error( "Period definition invalid.\nInvalid year '$attrValue' specified for "
 						. "attribute '$attribute'." );
 					return;
 				}
 			} elseif ( $this->dateFormat === 'x.y' ) {
-				if ( !preg_match( '/^\-?\d+(?:\.\d+)?$/', $attrValue ) ) {
+				if ( !Regex::match( '/^\-?\d+(?:\.\d+)?$/', $attrValue ) ) {
 					$this->error( "Period definition invalid.\nInvalid year '$attrValue' specified for "
 						. "attribute '$attribute'." );
 					return;
 				}
 			} else {
-				if ( preg_match( '/^\d+$/', $attrValue ) && self::num( $attrValue ) >= 1800
+				if ( Regex::match( '/^\d+$/', $attrValue ) && self::num( $attrValue ) >= 1800
 					&& self::num( $attrValue ) <= 2030
 				) {
-					if ( preg_match( '/^From$/i', $attribute ) ) {
+					if ( Regex::match( '/^From$/i', $attribute ) ) {
 						$attrValue = $this->dateFormat === 'yyyy-mm-dd' ? "$attrValue-01-01" : "01/01/$attrValue";
 					}
-					if ( preg_match( '/^Till$/i', $attribute ) ) {
+					if ( Regex::match( '/^Till$/i', $attribute ) ) {
 						if ( $this->dateFormat === 'yyyy-mm-dd' ) {
 							$attrValue .= '-12-31';
 						} elseif ( $this->dateFormat === 'dd/mm/yyyy' ) {
@@ -1187,8 +1188,8 @@ final class Compiler {
 
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
-				if ( preg_match( '/^Bar$/i', $attribute ) ) {
-					if ( !preg_match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
+				if ( Regex::match( '/^Bar$/i', $attribute ) ) {
+					if ( !Regex::match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
 						$this->error( "PlotData attribute '$attribute' invalid.\n"
 							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n" );
 						$this->getData();
@@ -1205,16 +1206,16 @@ final class Compiler {
 					}
 					$bar = $attrValue;
 					$prevbar = $bar;
-				} elseif ( preg_match( '/^BarSet$/i', $attribute ) ) {
-					if ( !preg_match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
+				} elseif ( Regex::match( '/^BarSet$/i', $attribute ) ) {
+					if ( !Regex::match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
 						$this->error( "PlotData attribute '$attribute' invalid.\n"
 							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n" );
 						$this->getData();
 						continue 2;
 					}
-					if ( preg_match( '/break/i', $attrValue ) ) {
+					if ( Regex::match( '/break/i', $attrValue ) ) {
 						$barndx = 0;
-					} elseif ( preg_match( '/skip/i', $attrValue ) ) {
+					} elseif ( Regex::match( '/skip/i', $attrValue ) ) {
 						$barndx++;
 						$this->barDefined( $prevbar . '#' . $barndx );
 					} else {
@@ -1230,11 +1231,11 @@ final class Compiler {
 						}
 						$prevbar = $bar;
 					}
-				} elseif ( preg_match( '/^(?:At|From|Till)$/i', $attribute ) ) {
-					if ( preg_match( '/^Start$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^(?:At|From|Till)$/i', $attribute ) ) {
+					if ( Regex::match( '/^Start$/i', $attrValue ) ) {
 						$attrValue = self::str( $this->period['from'] );
 					}
-					if ( preg_match( '/^End$/i', $attrValue ) ) {
+					if ( Regex::match( '/^End$/i', $attrValue ) ) {
 						$attrValue = self::str( $this->period['till'] ?? null );
 					}
 					if ( !$this->validDateFormat( $attrValue ) ) {
@@ -1249,55 +1250,57 @@ final class Compiler {
 						$this->getData();
 						continue 2;
 					}
-					if ( preg_match( '/^At$/i', $attribute ) ) {
+					if ( Regex::match( '/^At$/i', $attribute ) ) {
 						$at = $attrValue;
-					} elseif ( preg_match( '/^From$/i', $attribute ) ) {
+					} elseif ( Regex::match( '/^From$/i', $attribute ) ) {
 						$from = $attrValue;
 					} else {
 						$till = $attrValue;
 					}
-				} elseif ( preg_match( '/^(?:Color|TextColor)$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^(?:Color|TextColor)$/i', $attribute ) ) {
 					if ( !$this->colorPredefined( $attrValue ) && !isset( $this->colors[strtolower( $attrValue )] ) ) {
 						$this->error( "PlotData invalid. Attribute '$attribute' "
-							. ( preg_match( '/^Color$/i', $attribute ) ? 'has' : 'contains' )
+							. ( Regex::match( '/^Color$/i', $attribute ) ? 'has' : 'contains' )
 							. " unknown color '$attrValue'.\n  Specify command 'Color' before this command." );
 						$this->getData();
 						continue 2;
 					}
-					if ( preg_match( '/^Color$/i', $attribute ) ) {
+					if ( Regex::match( '/^Color$/i', $attribute ) ) {
 						$color = $attrValue;
 					} else {
 						$textcolor = $this->colors[strtolower( $attrValue )] ?? strtolower( $attrValue );
 					}
-				} elseif ( preg_match( '/^Width$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Width$/i', $attribute ) ) {
 					$width = self::normalize( $attrValue );
 					if ( self::num( $width ) > self::num( $this->maxBarWidth ) ) {
 						$this->maxBarWidth = $width;
 					}
-				} elseif ( preg_match( '/^FontSize$/i', $attribute ) ) {
-					if ( !preg_match( '/\d+(?:\.\d)?/', $attrValue ) && !preg_match( '/xs|s|m|l|xl/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^FontSize$/i', $attribute ) ) {
+					if ( !Regex::match( '/\d+(?:\.\d)?/', $attrValue )
+						&& !Regex::match( '/xs|s|m|l|xl/i', $attrValue )
+					) {
 						$this->error( "PlotData invalid. Specify for attribute '$attribute' a number of XS,S,M,L,XL." );
 						$this->getData();
 						continue 2;
 					}
 					$fontsize = $attrValue;
-				} elseif ( preg_match( '/^Anchor$/i', $attribute ) ) {
-					if ( !preg_match( '/^(?:from|till|middle)$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^Anchor$/i', $attribute ) ) {
+					if ( !Regex::match( '/^(?:from|till|middle)$/i', $attrValue ) ) {
 						$this->error( "PlotData value '$attribute' invalid. Specify 'from', 'till' or 'middle'." );
 						$this->getData();
 						continue 2;
 					}
 					$anchor = strtolower( $attrValue );
-				} elseif ( preg_match( '/^Align$/i', $attribute ) ) {
-					if ( !preg_match( '/^(?:left|right|center)$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^Align$/i', $attribute ) ) {
+					if ( !Regex::match( '/^(?:left|right|center)$/i', $attrValue ) ) {
 						$this->error( "PlotData value '$attribute' invalid. Specify 'left', 'right' or 'center'." );
 						$this->getData();
 						continue 2;
 					}
 					$align = strtolower( $attrValue );
-				} elseif ( preg_match( '/^Shift$/i', $attribute ) ) {
-					$shift = preg_replace( '/%28%(.*?)%29%/', '$1', $attrValue, 1 );
-					$shift = preg_replace( '/\s/', '', $shift );
+				} elseif ( Regex::match( '/^Shift$/i', $attribute ) ) {
+					$shift = Regex::replace( '/%28%(.*?)%29%/', '$1', $attrValue, 1 );
+					$shift = Regex::replace( '/\s/', '', $shift );
 					$xy = self::split( '/,/', $shift );
 					if ( ( $xy[0] ?? '' ) !== '' ) {
 						$shiftx = self::normalize( $xy[0] );
@@ -1314,16 +1317,16 @@ final class Compiler {
 						$this->getData();
 						continue 2;
 					}
-				} elseif ( preg_match( '/^Text$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Text$/i', $attribute ) ) {
 					$text = str_replace( '\\n', "\n", self::parseText( $attrValue ) );
-					$text = preg_replace_callback( '/(\[\[? [^\]]* \n [^\]]* \]?\])/x',
+					$text = Regex::replaceCallback( '/(\[\[? [^\]]* \n [^\]]* \]?\])/x',
 						static fn ( $m ) => self::normalizeWikiLink( $m[1] ), $text );
-				} elseif ( preg_match( '/^Link$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Link$/i', $attribute ) ) {
 					$link = self::encodeUrl( self::normalizeUrl( self::parseText( $attrValue ) ) );
-				} elseif ( preg_match( '/^Mark$/i', $attribute ) ) {
-					$sub = self::split( '/,/', preg_replace( '/%28% (.*) %29%/x', '$1', $attrValue, 1 ) );
+				} elseif ( Regex::match( '/^Mark$/i', $attribute ) ) {
+					$sub = self::split( '/,/', Regex::replace( '/%28% (.*) %29%/x', '$1', $attrValue, 1 ) );
 					$mark = $sub[0] ?? '';
-					if ( !preg_match( '/^(?:Line|None)$/i', $mark ) ) {
+					if ( !Regex::match( '/^(?:Line|None)$/i', $mark ) ) {
 						$this->error( "PlotData invalid. Value '$mark' for attribute 'mark' unknown." );
 						$this->getData();
 						continue 2;
@@ -1451,7 +1454,7 @@ final class Compiler {
 						$at = $this->dateMedium( $from, $till );
 					}
 				}
-				if ( $mark !== '' && !preg_match( '/none/i', $mark ) ) {
+				if ( $mark !== '' && !Regex::match( '/none/i', $mark ) ) {
 					$mc = strtolower( $markcolor );
 					$this->plotLines[] = "$bar,$from,$from,$mc,,,\n";
 					$this->plotLines[] = "$bar,$till,$till,$mc,,,\n";
@@ -1460,13 +1463,13 @@ final class Compiler {
 			}
 
 			if ( $at !== '' ) {
-				if ( $mark !== '' && !preg_match( '/none/i', $mark ) ) {
+				if ( $mark !== '' && !Regex::match( '/none/i', $mark ) ) {
 					$this->plotLines[] = "$bar,$at,$at," . strtolower( $markcolor ) . ",,,\n";
 				}
 				if ( $text !== '' ) {
 					if ( $link !== '' ) {
-						if ( preg_match( '/\[.*\]/', $text ) ) {
-							$text = preg_replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
+						if ( Regex::match( '/\[.*\]/', $text ) ) {
+							$text = Regex::replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
 						}
 						if ( $hint === '' ) {
 							$hint = self::externalLinkToHint( $link );
@@ -1505,7 +1508,7 @@ final class Compiler {
 			return;
 		}
 		$preset = self::str( $this->attributes['single'] ?? null );
-		if ( !preg_match( '/^(?:TimeVertical_OneBar_UnitYear|TimeHorizontal_AutoPlaceBars_UnitYear)$/i', $preset ) ) {
+		if ( !Regex::match( '/^(?:TimeVertical_OneBar_UnitYear|TimeHorizontal_AutoPlaceBars_UnitYear)$/i', $preset ) ) {
 			$this->error( "Preset value invalid.\n"
 				. "  Two presets are available:\n"
 				. "  TimeVertical_OneBar_UnitYear and TimeHorizontal_AutoPlaceBars_UnitYear\n"
@@ -1515,7 +1518,7 @@ final class Compiler {
 		$this->preset = $preset;
 		$bro = self::H_BRO;
 		$brc = self::H_BRC;
-		if ( preg_match( '/^TimeVertical_OneBar_UnitYear/i', $preset ) ) {
+		if ( Regex::match( '/^TimeVertical_OneBar_UnitYear/i', $preset ) ) {
 			$this->dateFormat = 'yyyy';
 			$this->alignBars = 'early';
 			$this->axis['format'] = 'yyyy';
@@ -1558,7 +1561,7 @@ final class Compiler {
 	 * @throws CompileError
 	 */
 	private function parseScale(): void {
-		$scale = preg_match( '/ScaleMajor/i', $this->command ) ? 'Major' : 'Minor';
+		$scale = Regex::match( '/ScaleMajor/i', $this->command ) ? 'Major' : 'Minor';
 		if ( !$this->validAttributes( 'Scale' . $scale ) ) {
 			return;
 		}
@@ -1572,7 +1575,7 @@ final class Compiler {
 		usort( $keys, static fn ( $a, $b ) => ( $b === 'grid' ) <=> ( $a === 'grid' ) );
 		foreach ( $keys as $attribute ) {
 			$attrValue = self::str( $this->attributes[$attribute] ?? null );
-			if ( preg_match( '/Grid/i', $attribute ) ) {
+			if ( Regex::match( '/Grid/i', $attribute ) ) {
 				if ( !$this->colorPredefined( $attrValue ) && !isset( $this->colors[strtolower( $attrValue )] ) ) {
 					$this->error( "Scale attribute '$attribute' invalid. Unknown color '$attrValue'.\n"
 						. "  Specify command 'Color' before this command." );
@@ -1580,32 +1583,32 @@ final class Compiler {
 				}
 				$this->attributes["$scale grid"] = $attrValue;
 				unset( $this->attributes['grid'] );
-			} elseif ( preg_match( '/Text/i', $attribute ) ) {
+			} elseif ( Regex::match( '/Text/i', $attribute ) ) {
 				$attrValue = str_replace( '~', '\\n', self::newlinesToTildes( $attrValue ) );
-				$attrValue = preg_replace( '/^"/', '', $attrValue );
-				$this->attributes["$scale stubs"] = preg_replace( '/"$/', '', $attrValue );
-			} elseif ( preg_match( '/Unit/i', $attribute ) ) {
+				$attrValue = Regex::replace( '/^"/', '', $attrValue );
+				$this->attributes["$scale stubs"] = Regex::replace( '/"$/', '', $attrValue );
+			} elseif ( Regex::match( '/Unit/i', $attribute ) ) {
 				if ( $this->dateFormat === 'yyyy' ) {
-					if ( !preg_match( '/^(?:year|years)$/i', $attrValue ) ) {
+					if ( !Regex::match( '/^(?:year|years)$/i', $attrValue ) ) {
 						$this->error( "Scale attribute '$attribute' invalid. DateFormat 'yyyy' implies 'unit:year'." );
 						return;
 					}
-				} elseif ( !preg_match( '/^(?:year|month|day)s?$/i', $attrValue ) ) {
+				} elseif ( !Regex::match( '/^(?:year|month|day)s?$/i', $attrValue ) ) {
 					$this->error( "Scale attribute '$attribute' invalid. Specify year, month or day." );
 					return;
 				}
-				$this->attributes["$scale unit"] = preg_replace( '/s$/', '', $attrValue, 1 );
+				$this->attributes["$scale unit"] = Regex::replace( '/s$/', '', $attrValue, 1 );
 				unset( $this->attributes['unit'] );
-			} elseif ( preg_match( '/Increment/i', $attribute ) ) {
-				if ( !preg_match( '/^\d+$/i', $attrValue ) || self::num( $attrValue ) == 0 ) {
+			} elseif ( Regex::match( '/Increment/i', $attribute ) ) {
+				if ( !Regex::match( '/^\d+$/i', $attrValue ) || self::num( $attrValue ) == 0 ) {
 					$this->error( "Scale attribute '$attribute' invalid. Specify positive integer." );
 					return;
 				}
 				$this->attributes["$scale inc"] = $attrValue;
 				unset( $this->attributes['increment'] );
-			} elseif ( preg_match( '/Start/i', $attribute ) ) {
+			} elseif ( Regex::match( '/Start/i', $attribute ) ) {
 				if ( in_array( $this->dateFormat, [ 'dd/mm/yyyy', 'mm/dd/yyyy', 'yyyy-mm-dd' ], true )
-					&& preg_match( '/^\d+$/', $attrValue ) && self::num( $attrValue ) >= 1800
+					&& Regex::match( '/^\d+$/', $attrValue ) && self::num( $attrValue ) >= 1800
 					&& self::num( $attrValue ) <= 2030
 				) {
 					$attrValue = $this->dateFormat === 'yyyy-mm-dd' ? "$attrValue-01-01" : "01/01/$attrValue";
@@ -1661,16 +1664,16 @@ final class Compiler {
 
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
-				if ( preg_match( '/^FontSize$/i', $attribute ) ) {
-					if ( !preg_match( '/\d+(?:\.\d)?/', $attrValue )
-						&& !preg_match( '/^(?:xs|s|m|l|xl)$/i', $attrValue )
+				if ( Regex::match( '/^FontSize$/i', $attribute ) ) {
+					if ( !Regex::match( '/\d+(?:\.\d)?/', $attrValue )
+						&& !Regex::match( '/^(?:xs|s|m|l|xl)$/i', $attrValue )
 					) {
 						$this->error( "TextData invalid. Attribute '$attribute': specify number of XS,S,M,L,XL." );
 						$this->getData();
 						continue 2;
 					}
 					$fontsize = $attrValue;
-					if ( !preg_match( '/^(?:xs|s|m|l|xl)$/i', $fontsize ) ) {
+					if ( !Regex::match( '/^(?:xs|s|m|l|xl)$/i', $fontsize ) ) {
 						if ( self::num( $fontsize ) < 6 ) {
 							$fontsize = 6;
 						}
@@ -1678,21 +1681,21 @@ final class Compiler {
 							$fontsize = 30;
 						}
 					}
-				} elseif ( preg_match( '/^LineHeight$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^LineHeight$/i', $attribute ) ) {
 					$lineheight = self::normalize( $attrValue );
 					if ( self::num( $lineheight ) < -0.4 || self::num( $lineheight ) > 0.4 ) {
 						$this->error( "TextData attribute 'lineheight' invalid.\n"
 							. "Specify value up to 40 pixels = 0.4 inch\n"
 							. "Run with option -b (bypass checks) when this is correct.\n" );
 					}
-				} elseif ( preg_match( '/^Pos$/i', $attribute ) ) {
-					$xy = self::split( '/,/', preg_replace( '/\s*%28%(.*)%29%\s*/', '$1', $attrValue, 1 ) );
+				} elseif ( Regex::match( '/^Pos$/i', $attribute ) ) {
+					$xy = self::split( '/,/', Regex::replace( '/\s*%28%(.*)%29%\s*/', '$1', $attrValue, 1 ) );
 					$posx = self::normalize( $xy[0] ?? '' );
 					$posy = self::normalize( $xy[1] ?? '' );
 					$pos = self::str( $posx ) . ',' . self::str( $posy );
-				} elseif ( preg_match( '/^Tabs$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Tabs$/i', $attribute ) ) {
 					$tabs = $attrValue;
-				} elseif ( preg_match( '/^(?:Color|TextColor)$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^(?:Color|TextColor)$/i', $attribute ) ) {
 					if ( !$this->colorPredefined( $attrValue ) && !isset( $this->colors[strtolower( $attrValue )] ) ) {
 						$this->error( "TextData invalid. Attribute '$attribute' contains unknown color '$attrValue'.\n"
 							. "  Specify command 'Color' before this command." );
@@ -1700,9 +1703,9 @@ final class Compiler {
 						continue 2;
 					}
 					$textcolor = $this->colors[strtolower( $attrValue )] ?? strtolower( $attrValue );
-				} elseif ( preg_match( '/^Text$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Text$/i', $attribute ) ) {
 					$text = self::newlinesToTildes( $attrValue );
-				} elseif ( preg_match( '/^Link$/i', $attribute ) ) {
+				} elseif ( Regex::match( '/^Link$/i', $attribute ) ) {
 					$link = self::encodeUrl( self::normalizeUrl( self::parseText( $attrValue ) ) );
 				}
 			}
@@ -1741,21 +1744,21 @@ final class Compiler {
 			}
 
 			if ( $link !== '' ) {
-				if ( preg_match( '/\[.*\]/', $text ) ) {
-					$text = preg_replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
+				if ( Regex::match( '/\[.*\]/', $text ) ) {
+					$text = Regex::replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
 				}
 				$hint = self::externalLinkToHint( $link );
 			}
 			// tab inside an implicit link is ignored
-			$text = preg_replace_callback( '/(\[+ [^\]]* \^ [^\]]* \]+)/x',
+			$text = Regex::replaceCallback( '/(\[+ [^\]]* \^ [^\]]* \]+)/x',
 				static fn ( $m ) => str_replace( '^', ' ', $m[1] ), $text );
 
 			if ( self::str( $tabs ) !== '' ) {
-				$tabs = preg_replace( '/^\s*%28%(.*)%29%\s*$/', '$1', $tabs, 1 );
+				$tabs = Regex::replace( '/^\s*%28%(.*)%29%\s*$/', '$1', $tabs, 1 );
 				$tabList = self::split( '/,/', $tabs );
 				foreach ( $tabList as $tab ) {
-					$tab = preg_replace( '/^\s*(.*)\s*$/', '$1', $tab );
-					if ( !preg_match( '/\d+\-(?:center|left|right)$/', $tab ) ) {
+					$tab = Regex::replace( '/^\s*(.*)\s*$/', '$1', $tab );
+					if ( !Regex::match( '/\d+\-(?:center|left|right)$/', $tab ) ) {
 						$this->error( "Specify attribute 'tabs' as 'n-a,n-a,n-a,.. where n = numeric value, "
 							. "a = left|right|center." );
 						while ( !$this->inputParsed && !$this->noData ) {
@@ -1788,14 +1791,14 @@ final class Compiler {
 	 */
 	private static function defaultLineHeight( mixed $fontsize, array $named ): mixed {
 		$fs = self::str( $fontsize );
-		if ( preg_match( '/^(?:XS|S|M|L|XL)$/i', $fs ) ) {
-			if ( preg_match( '/XS/i', $fs ) ) {
+		if ( Regex::match( '/^(?:XS|S|M|L|XL)$/i', $fs ) ) {
+			if ( Regex::match( '/XS/i', $fs ) ) {
 				return $named[0];
-			} elseif ( preg_match( '/S/i', $fs ) ) {
+			} elseif ( Regex::match( '/S/i', $fs ) ) {
 				return $named[1];
-			} elseif ( preg_match( '/M/i', $fs ) ) {
+			} elseif ( Regex::match( '/M/i', $fs ) ) {
 				return $named[2];
-			} elseif ( preg_match( '/XL/i', $fs ) ) {
+			} elseif ( Regex::match( '/XL/i', $fs ) ) {
 				return $named[4];
 			}
 			return $named[3];
@@ -1818,19 +1821,19 @@ final class Compiler {
 
 		foreach ( $this->attributes as $attribute => $attrValue ) {
 			$attrValue = self::str( $attrValue );
-			if ( preg_match( '/Format/i', $attribute ) ) {
-				if ( preg_match( '/^yy$/i', $attrValue ) ) {
+			if ( Regex::match( '/Format/i', $attribute ) ) {
+				if ( Regex::match( '/^yy$/i', $attrValue ) ) {
 					$this->error( "TimeAxis attribute '$attribute' valid but not available, waiting for bug fix.\n"
 						. "Please specify 'format:yyyy' instead of 'format:yy'." );
 					return;
 				}
-				if ( $this->dateFormat === 'yyyy' && !preg_match( '/^(?:yy|yyyy)$/i', $attrValue ) ) {
+				if ( $this->dateFormat === 'yyyy' && !Regex::match( '/^(?:yy|yyyy)$/i', $attrValue ) ) {
 					$this->error( "TimeAxis attribute '$attribute' invalid.\n"
 						. "DateFormat 'yyyy' implies 'format:yy' or 'format:yyyy'." );
 					return;
 				}
-			} elseif ( preg_match( '/Order/i', $attribute ) ) {
-				if ( !preg_match( '/^(?:normal|reverse)$/i', $attrValue ) ) {
+			} elseif ( Regex::match( '/Order/i', $attribute ) ) {
+				if ( !Regex::match( '/^(?:normal|reverse)$/i', $attrValue ) ) {
 					$this->error( "TimeAxis attribute '$attribute' invalid.\n"
 						. "  Specify 'order:normal' (default) or 'order:reverse'\n"
 						. "  normal =\n"
@@ -1838,16 +1841,16 @@ final class Compiler {
 						. "  horizontal axis: highest date at right side\n" );
 					return;
 				}
-				if ( preg_match( '/reverse/i', $attrValue ) && $this->dateFormat !== 'yyyy' ) {
+				if ( Regex::match( '/reverse/i', $attrValue ) && $this->dateFormat !== 'yyyy' ) {
 					$this->error( "TimeAxis attribute '$attribute' invalid.\n"
 						. "  'order:reverse' is only possible with DateFormat=yyyy (sorry)\n" );
 					return;
 				}
 				$this->attributes['order'] = strtolower( $attrValue );
-			} elseif ( preg_match( '/Orientation/i', $attribute ) ) {
-				if ( preg_match( '/^hor(?:izontal)?$/i', $attrValue ) ) {
+			} elseif ( Regex::match( '/Orientation/i', $attribute ) ) {
+				if ( Regex::match( '/^hor(?:izontal)?$/i', $attrValue ) ) {
 					$this->attributes['time'] = 'x';
-				} elseif ( preg_match( '/^ver(?:tical)?$/i', $attrValue ) ) {
+				} elseif ( Regex::match( '/^ver(?:tical)?$/i', $attrValue ) ) {
 					$this->attributes['time'] = 'y';
 				} else {
 					$this->error( "TimeAxis attribute '$attribute' invalid.\nSpecify hor[izontal] or ver[tical]" );
@@ -1871,10 +1874,10 @@ final class Compiler {
 		if ( $time === '' || $time === '0' ) {
 			$this->error2( 'Command TimeAxis missing or invalid' );
 		}
-		if ( preg_match( '/auto/i', self::str( $this->image['width'] ?? null ) ) && preg_match( '/x/i', $time ) ) {
+		if ( Regex::match( '/auto/i', self::str( $this->image['width'] ?? null ) ) && Regex::match( '/x/i', $time ) ) {
 			$this->error2( "ImageSize value 'width:auto' only allowed with TimeAxis value 'orientation:vertical'" );
 		}
-		if ( preg_match( '/auto/i', self::str( $this->image['height'] ?? null ) ) && preg_match( '/y/i', $time ) ) {
+		if ( Regex::match( '/auto/i', self::str( $this->image['height'] ?? null ) ) && Regex::match( '/y/i', $time ) ) {
 			$this->error2( "ImageSize value 'height:auto' only allowed with TimeAxis value 'orientation:horizontal'" );
 		}
 	}
@@ -1884,14 +1887,14 @@ final class Compiler {
 	 */
 	private static function normalize( mixed $number, mixed $reference = null ): mixed {
 		$s = self::str( $number );
-		if ( $s === '' || preg_match( '/auto/i', $s ) ) {
+		if ( $s === '' || Regex::match( '/auto/i', $s ) ) {
 			return $number;
 		}
-		$val = self::num( preg_replace( '/[^\d\.\-].*$/s', '', $s ) );
-		$dim = preg_replace( '/\d/', '', $s );
-		if ( preg_match( '/in/i', $dim ) ) {
+		$val = self::num( Regex::replace( '/[^\d\.\-].*$/s', '', $s ) );
+		$dim = Regex::replace( '/\d/', '', $s );
+		if ( Regex::match( '/in/i', $dim ) ) {
 			$n = $val;
-		} elseif ( preg_match( '/cm/i', $dim ) ) {
+		} elseif ( Regex::match( '/cm/i', $dim ) ) {
 			$n = $val / 2.54;
 		} elseif ( str_contains( $dim, '%' ) ) {
 			$n = self::num( $reference ) * $val / 100;
@@ -1907,7 +1910,7 @@ final class Compiler {
 		$s = static fn ( $v ) => self::str( $v );
 		$n = static fn ( $v ) => self::num( $v );
 
-		if ( preg_match( '/auto/i', $s( $img['width'] ?? null ) ) ) {
+		if ( Regex::match( '/auto/i', $s( $img['width'] ?? null ) ) ) {
 			foreach ( [ 'width', 'left', 'right' ] as $attribute ) {
 				if ( str_contains( $s( $pa[$attribute] ?? null ), '%' ) ) {
 					$this->error2( "You specified 'ImageSize = width:auto'.\n"
@@ -1925,7 +1928,7 @@ final class Compiler {
 				return;
 			}
 		}
-		if ( preg_match( '/auto/i', $s( $img['height'] ?? null ) ) ) {
+		if ( Regex::match( '/auto/i', $s( $img['height'] ?? null ) ) ) {
 			foreach ( [ 'height', 'top', 'bottom' ] as $attribute ) {
 				if ( str_contains( $s( $pa[$attribute] ?? null ), '%' ) ) {
 					$this->error2( "You specified 'ImageSize = height:auto'.\n"
@@ -1955,10 +1958,10 @@ final class Compiler {
 		$pa['top'] = self::normalize( $pa['top'] ?? null, $img['height'] );
 
 		$barsMinus1 = count( $this->bars ) - 1;
-		if ( preg_match( '/auto/i', $s( $img['width'] ) ) ) {
+		if ( Regex::match( '/auto/i', $s( $img['width'] ) ) ) {
 			$pa['width'] = $barsMinus1 * $n( $img['barinc'] );
 			$img['width'] = $n( $pa['left'] ) + $pa['width'] + $n( $pa['right'] );
-		} elseif ( preg_match( '/auto/i', $s( $img['height'] ) ) ) {
+		} elseif ( Regex::match( '/auto/i', $s( $img['height'] ) ) ) {
 			$pa['height'] = $barsMinus1 * $n( $img['barinc'] );
 			$img['height'] = $n( $pa['top'] ) + $pa['height'] + $n( $pa['bottom'] );
 		}
@@ -2040,8 +2043,8 @@ final class Compiler {
 			$position = $s( $lg['position'] ?? null );
 			if ( !isset( $lg['columns'] ) ) {
 				$lg['columns'] = 1;
-				if ( preg_match( '/ver/i', $s( $lg['orientation'] ) )
-					&& preg_match( '/^(?:top|bottom)$/i', $position )
+				if ( Regex::match( '/ver/i', $s( $lg['orientation'] ) )
+					&& Regex::match( '/^(?:top|bottom)$/i', $position )
 				) {
 					$cnt = count( $this->legendData ) - 1;
 					if ( $cnt > 10 ) {
@@ -2053,19 +2056,19 @@ final class Compiler {
 			}
 			$colWidth = static fn () => sprintf( '%02f',
 				( $n( $pa['left'] ) + $n( $pa['width'] ) - 0.2 ) / $n( $lg['columns'] ) );
-			if ( preg_match( '/top/i', $position ) ) {
+			if ( Regex::match( '/top/i', $position ) ) {
 				$lg['left'] ??= $pa['left'];
 				$lg['top'] ??= $n( $img['height'] ) - 0.2;
 				if ( !isset( $lg['columnwidth'] ) && $n( $lg['columns'] ) > 1 ) {
 					$lg['columnwidth'] = $colWidth();
 				}
-			} elseif ( preg_match( '/bottom/i', $position ) ) {
+			} elseif ( Regex::match( '/bottom/i', $position ) ) {
 				$lg['left'] ??= $pa['left'];
 				$lg['top'] ??= $n( $pa['bottom'] ) - 0.4;
 				if ( !isset( $lg['columnwidth'] ) && $n( $lg['columns'] ) > 1 ) {
 					$lg['columnwidth'] = $colWidth();
 				}
-			} elseif ( preg_match( '/right/i', $position ) ) {
+			} elseif ( Regex::match( '/right/i', $position ) ) {
 				$lg['left'] ??= $n( $pa['left'] ) + $n( $pa['width'] ) + 0.2;
 				$lg['top'] ??= $n( $pa['bottom'] ) + $n( $pa['height'] ) - 0.2;
 			}
@@ -2085,7 +2088,7 @@ final class Compiler {
 		$n = static fn ( $v ) => self::num( $v );
 		$axisTime = $s( $this->axis['time'] ?? null );
 		$axisBars = $axisTime === 'x' ? 'y' : 'x';
-		$reverse = (bool)preg_match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
+		$reverse = (bool)Regex::match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
 		$pa = &$this->plotArea;
 		$canvas = $this->backgroundColors['canvas'] ?? null;
 
@@ -2197,7 +2200,7 @@ final class Compiler {
 		$this->script .= "\n([inc3])\n\n";
 
 		foreach ( $this->plotLines as $i => $entry ) {
-			$bar = preg_replace( '/\#.*/', '', self::split( '/,/', $entry )[0] ?? '' );
+			$bar = Regex::replace( '/\#.*/', '', self::split( '/,/', $entry )[0] ?? '' );
 			$this->plotLines[$i] = Printf::f( $n( $this->barWidths[$bar] ?? null ), '6.3' ) . ',' . $entry;
 		}
 		$this->plotBarsNow = $this->plotLines;
@@ -2221,14 +2224,14 @@ final class Compiler {
 			foreach ( $bars2 as $bar ) {
 				$hint = '';
 				$text = self::str( $this->barLegend[strtolower( $bar )] ?? null );
-				if ( preg_match( '/^\s*$/', $text ) ) {
+				if ( Regex::match( '/^\s*$/', $text ) ) {
 					$text = '\\';
 				}
 				$link = $this->barLink[strtolower( $bar )] ?? null;
-				if ( $link === null && preg_match( '/\[.*\]/', $text ) ) {
+				if ( $link === null && Regex::match( '/\[.*\]/', $text ) ) {
 					[ $text, $link, $hint ] = $this->processWikiLink( $text, '', $hint );
 				}
-				$text = preg_replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
+				$text = Regex::replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
 				$scriptPng2 .= "$text\n";
 				if ( $link !== null ) {
 					$this->linksSvg[] = $link;
@@ -2247,11 +2250,11 @@ final class Compiler {
 			foreach ( $bars2 as $bar ) {
 				$hint = '';
 				$text = self::str( $this->barLegend[strtolower( $bar )] ?? null );
-				if ( preg_match( '/^\s*$/', $text ) ) {
+				if ( Regex::match( '/^\s*$/', $text ) ) {
 					$text = '\\';
 				}
 				$link = $this->barLink[strtolower( $bar )] ?? null;
-				if ( $link === null && preg_match( '/\[.*\]/', $text ) ) {
+				if ( $link === null && Regex::match( '/\[.*\]/', $text ) ) {
 					[ $text, $link, $hint ] = $this->processWikiLink( $text, '', $hint );
 				}
 				if ( $link === null || $link === '' ) {
@@ -2263,7 +2266,7 @@ final class Compiler {
 					if ( $hint !== '' ) {
 						$scriptPng3 .= "  clickmaplabel: $hint\n";
 					}
-					$text = preg_replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
+					$text = Regex::replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
 				}
 				$scriptPng2 .= "$text\n";
 				$barcnt--;
@@ -2275,8 +2278,8 @@ final class Compiler {
 		$this->script .= "\n([inc1])\n\n\n([inc2])\n\n";
 
 		$fixLocation = function ( string $cmd ) use ( $barsMinus1 ): string {
-			if ( preg_match( '/^\s*location/', $cmd ) ) {
-				$cmd = preg_replace_callback( '/(.*)\[(.*)\](.*)/',
+			if ( Regex::match( '/^\s*location/', $cmd ) ) {
+				$cmd = Regex::replaceCallback( '/(.*)\[(.*)\](.*)/',
 					static fn ( $m ) => $m[1] . self::str( $barsMinus1 - self::num( $m[2] ) + 2 ) . $m[3], $cmd, 1 );
 			}
 			return $cmd;
@@ -2304,7 +2307,7 @@ final class Compiler {
 			}
 			$lg = &$this->legend;
 			$perColumn = 999;
-			if ( preg_match( '/ver/i', $s( $lg['orientation'] ) ) && $n( $lg['columns'] ) > 1 ) {
+			if ( Regex::match( '/ver/i', $s( $lg['orientation'] ) ) && $n( $lg['columns'] ) > 1 ) {
 				$perColumn = 0;
 				while ( $n( $lg['columns'] ) * $perColumn < count( $this->legendData ) ) {
 					$perColumn++;
@@ -2312,7 +2315,7 @@ final class Compiler {
 			}
 			for ( $i = 1; $i <= $n( $lg['columns'] ); $i++ ) {
 				$this->script .= "#proc legend\n  noclear: yes\n";
-				$this->script .= preg_match( '/ver/i', $s( $lg['orientation'] ) )
+				$this->script .= Regex::match( '/ver/i', $s( $lg['orientation'] ) )
 					? "  format: multiline\n" : "  format: singleline\n";
 				$this->script .= "  seglen: 0.2\n  swatchsize: 0.12\n  textdetails: size=S\n";
 				$this->script .= '  location: ' . $s( $n( $lg['left'] ) + 0.2 ) . ' ' . $s( $lg['top'] ) . "\n";
@@ -2333,9 +2336,9 @@ final class Compiler {
 		$svg = str_replace( '([inc2])', $scriptSvg2, $svg );
 		$svg = str_replace( '([inc3])', '', $svg );
 		$svg = self::replaceSizes( $svg, [ '7', '8.9', '10.5', '13', '17' ] );
-		$svg = preg_replace_callback( '/(\n  location:.*)/', fn ( $m ) => $this->shiftOnePixelForSvg( $m[1] ), $svg );
+		$svg = Regex::replaceCallback( '/(\n  location:.*)/', fn ( $m ) => $this->shiftOnePixelForSvg( $m[1] ), $svg );
 
-		$png = preg_replace( '/dopagebox: no/', 'dopagebox: yes', $this->script, 1 );
+		$png = Regex::replace( '/dopagebox: no/', 'dopagebox: yes', $this->script, 1 );
 		$png = str_replace( '([inc1])', $scriptPng1, $png );
 		$png = str_replace( '([inc2])', $scriptPng2, $png );
 		$png = str_replace( '([inc3])', $scriptPng3, $png );
@@ -2359,7 +2362,7 @@ final class Compiler {
 	private static function replaceSizes( string $script, array $sizes ): string {
 		foreach ( [ 'textsize ', 'size=' ] as $prefix ) {
 			foreach ( [ 'XS', 'S', 'M', 'L', 'XL' ] as $i => $name ) {
-				$script = preg_replace( '/' . $prefix . $name . '/i', $prefix . $sizes[$i], $script );
+				$script = Regex::replace( '/' . $prefix . $name . '/i', $prefix . $sizes[$i], $script );
 			}
 		}
 		return $script;
@@ -2413,8 +2416,8 @@ final class Compiler {
 		string $mode, string $bar, mixed $shiftx, mixed $posx, mixed $posy, string $text, string $textcolor,
 		mixed $fontsize, string $align, string $link, string $hint, mixed $tabs = null
 	): void {
-		if ( preg_match( '/reverse/i', self::str( $this->axis['order'] ?? null ) ) ) {
-			$negate = static fn ( $v ) => preg_replace_callback( '/(.*)(\(s\))/',
+		if ( Regex::match( '/reverse/i', self::str( $this->axis['order'] ?? null ) ) ) {
+			$negate = static fn ( $v ) => Regex::replaceCallback( '/(.*)(\(s\))/',
 				static fn ( $m ) => self::str( self::neg( $m[1] ) ) . $m[2], self::str( $v ), 1 );
 			if ( ( $this->axis['time'] ?? '' ) === 'y' ) {
 				$posy = $negate( $posy );
@@ -2430,7 +2433,7 @@ final class Compiler {
 					$outside = true;
 				}
 				$size = self::str( $this->image[$dim] ?? null );
-				if ( !preg_match( '/auto/i', $size ) && self::num( $pos ) > self::num( $size ) / 100 ) {
+				if ( !Regex::match( '/auto/i', $size ) && self::num( $pos ) > self::num( $size ) / 100 ) {
 					$outside = true;
 				}
 			}
@@ -2443,11 +2446,11 @@ final class Compiler {
 			return;
 		}
 
-		$tabList = array_map( static fn ( $t ) => preg_replace( '/^\s*(.*)\s*$/', '$1', $t ),
+		$tabList = array_map( static fn ( $t ) => Regex::replace( '/^\s*(.*)\s*$/', '$1', $t ),
 			self::split( '/,/', $tabs ) );
 		$posx0 = $posx;
 		$dy = 0;
-		if ( preg_match( '/\[\[.*\]\]/', $text ) ) {
+		if ( Regex::match( '/\[\[.*\]\]/', $text ) ) {
 			$link = '';
 			$hint = '';
 		}
@@ -2459,11 +2462,11 @@ final class Compiler {
 		}
 
 		foreach ( $items as $item ) {
-			if ( !preg_match( '/^[\n\s]*$/', $item ) ) {
+			if ( !Regex::match( '/^[\n\s]*$/', $item ) ) {
 				[ $item, $link2, $hint2 ] = $this->processWikiLink( $item, '', '' );
 				if ( $link2 === '' ) {
 					$link2 = $link;
-					if ( $link !== '' && !preg_match( '/\[\[.*\]\]/', $item ) ) {
+					if ( $link !== '' && !Regex::match( '/\[\[.*\]\]/', $item ) ) {
 						$item = "[[$item]]";
 					}
 				}
@@ -2492,7 +2495,7 @@ final class Compiler {
 			$parts = explode( '+', $posy );
 			$this->posy1 = $parts[0];
 			$this->posy2 = $parts[1] ?? null;
-		} elseif ( preg_match( '/.+\-/', $posy ) ) {
+		} elseif ( Regex::match( '/.+\-/', $posy ) ) {
 			$parts = explode( '-', $posy );
 			if ( str_starts_with( $posy, '-' ) ) {
 				$this->posy1 = '-' . ( $parts[1] ?? '' );
@@ -2533,7 +2536,7 @@ final class Compiler {
 		}
 		$textdetails = "  textdetails: align=$align size=" . self::str( $fontsize ) . " color=$textcolor";
 		$location = '  location: ' . self::str( $xpos ) . ' ' . self::str( $ypos ) . "\n";
-		$textLine = static fn ( $t ) => preg_match( '/^\s/', $t ) ? "  text: \n\\$t\n\n" : "  text: $t\n\n";
+		$textLine = static fn ( $t ) => Regex::match( '/^\s/', $t ) ? "  text: \n\\$t\n\n" : "  text: $t\n\n";
 
 		array_push( $this->plotTextsPng, "#proc annotate\n", $location, "$textdetails\n" );
 		array_push( $this->plotTextsSvg, "#proc annotate\n", $location, "$textdetails\n" );
@@ -2545,9 +2548,9 @@ final class Compiler {
 			$this->linksSvg[] = self::decodeInput( $link );
 			$lcnt = count( $this->linksSvg ) - 1;
 			$wrap = static fn ( $m ) => "[$lcnt" . "[$m[1]]$lcnt]";
-			$text2 = preg_replace_callback( '/\[\[([^\]]+)\]\]/', $wrap, $text2, 1 );
-			$text2 = preg_replace_callback( '/\[\[([^\]]+)$/', $wrap, $text2, 1 );
-			$text2 = preg_replace_callback( '/^([^\[]+)\]\]/', $wrap, $text2, 1 );
+			$text2 = Regex::replaceCallback( '/\[\[([^\]]+)\]\]/', $wrap, $text2, 1 );
+			$text2 = Regex::replaceCallback( '/\[\[([^\]]+)$/', $wrap, $text2, 1 );
+			$text2 = Regex::replaceCallback( '/^([^\[]+)\]\]/', $wrap, $text2, 1 );
 		}
 		$text3 = self::encodeHtml( $text2 );
 		if ( $text2 !== $text3 ) {
@@ -2575,13 +2578,13 @@ final class Compiler {
 		if ( $hint !== '' ) {
 			$this->plotTextsPng[] = "  clickmaplabel: $hint\n";
 		}
-		$this->plotTextsPng[] = preg_replace( '/color=[^\s]+/', 'color=' . self::LINK_COLOR, $textdetails, 1 ) . "\n";
+		$this->plotTextsPng[] = Regex::replace( '/color=[^\s]+/', 'color=' . self::LINK_COLOR, $textdetails, 1 ) . "\n";
 
 		$text = self::decodeInput( $text );
-		if ( preg_match( '/^[^\[]+\]\]/', $text ) ) {
+		if ( Regex::match( '/^[^\[]+\]\]/', $text ) ) {
 			$text = "[[$text";
 		}
-		if ( preg_match( '/\[\[[^\]]+$/', $text ) ) {
+		if ( Regex::match( '/\[\[[^\]]+$/', $text ) ) {
 			$text .= ']]';
 		}
 		$pos1 = strpos( $text, '[[' );
@@ -2595,13 +2598,13 @@ final class Compiler {
 				}
 			}
 		}
-		$text = preg_replace( '/\[\[(.*?)\]\]/s', '$1', $text, 1 );
+		$text = Regex::replace( '/\[\[(.*?)\]\]/s', '$1', $text, 1 );
 		$this->plotTextsPng[] = $textLine( $text );
 	}
 
 	private function plotBarsScript(): void {
 		$axisTime = self::str( $this->axis['time'] ?? null );
-		$reverse = (bool)preg_match( '/reverse/i', self::str( $this->axis['order'] ?? null ) );
+		$reverse = (bool)Regex::match( '/reverse/i', self::str( $this->axis['order'] ?? null ) );
 		while ( $this->plotBarsNow ) {
 			$later = [];
 			$maxwidth = 0;
@@ -2651,7 +2654,7 @@ final class Compiler {
 	private function plotScale( string $scale, bool $grid ): void {
 		$s = static fn ( $v ) => self::str( $v );
 		$axisTime = $s( $this->axis['time'] ?? null );
-		$reverse = (bool)preg_match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
+		$reverse = (bool)Regex::match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
 		$from = $this->dateToFloat( $this->period['from'] );
 		$till = $this->dateToFloat( $this->period['till'] ?? null );
 
@@ -2679,10 +2682,10 @@ final class Compiler {
 		} else {
 			$unitName = $s( $this->scales["$scale unit"] ?? null );
 			$unit = 1;
-			if ( preg_match( '/month/i', $unitName ) ) {
+			if ( Regex::match( '/month/i', $unitName ) ) {
 				$unit = 1 / 12;
 			}
-			if ( preg_match( '/day/i', $unitName ) ) {
+			if ( Regex::match( '/day/i', $unitName ) ) {
 				$unit = 1 / 365;
 			}
 			$this->script .= "  ticincrement: $inc " . $s( $unit ) . "\n";
@@ -2733,7 +2736,7 @@ final class Compiler {
 		$s = static fn ( $v ) => self::str( $v );
 		$n = static fn ( $v ) => self::num( $v );
 		$axisTime = $s( $this->axis['time'] ?? null );
-		$reverse = (bool)preg_match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
+		$reverse = (bool)Regex::match( '/reverse/i', $s( $this->axis['order'] ?? null ) );
 		$pa = $this->plotArea;
 		$img = $this->image;
 
@@ -2744,7 +2747,7 @@ final class Compiler {
 			$entry = substr( $entry, 0, -1 );
 			$f = explode( '|', $entry );
 			$this->script .= "#proc line\n";
-			if ( preg_match( '/^[12]/', $entry ) ) {
+			if ( Regex::match( '/^[12]/', $entry ) ) {
 				[ $mode, $at, $from, $till, $color, $width ] = $f;
 			} else {
 				[ $mode, $points, $color, $width ] = $f;
@@ -2811,12 +2814,12 @@ final class Compiler {
 	}
 
 	private function shiftOnePixelForSvg( string $line ): string {
-		$line = preg_replace( '/location:\s*/', '', $line, 1 );
+		$line = Regex::replace( '/location:\s*/', '', $line, 1 );
 		$xy = self::split( ' ', $line );
 		$posx = $xy[0] ?? '';
 		$posy = $xy[1] ?? '';
 		$this->shiftY( $posy, 0 );
-		if ( !preg_match( '/(s)/', self::str( $this->posy1 ) ) ) {
+		if ( !Regex::match( '/(s)/', self::str( $this->posy1 ) ) ) {
 			$posy = self::str( self::num( $posy ) + 0.01 );
 		} else {
 			$posy = $this->shiftY( $posy, 0.01, true );
@@ -2834,14 +2837,14 @@ final class Compiler {
 		foreach ( self::split( '/(?<=\n)/', $map ) as $line ) {
 			$line = rtrim( $line, "\n" );
 			if ( str_contains( $line, '&&' ) ) {
-				$coords = preg_replace( '/^.*coords\="([^"]*)".*$/', '$1', $line );
-				$line = preg_replace( '/\&\&[^"]*/', '', $line, 1 );
+				$coords = Regex::replace( '/^.*coords\="([^"]*)".*$/', '$1', $line );
+				$line = Regex::replace( '/\&\&[^"]*/', '', $line, 1 );
 				$c = self::split( '/,/', $coords );
 				$len = self::num( $c[2] ?? null ) - self::num( $c[0] ?? null );
 				$c[0] = self::num( $c[0] ?? null ) - 2 * ( $len - 25 );
 				$c[2] = $c[0] + $len;
 				ksort( $c );
-				$line = preg_replace( '/' . $coords . '/', implode( ',', array_map( [ self::class, 'str' ], $c ) ),
+				$line = Regex::replace( '/' . $coords . '/', implode( ',', array_map( [ self::class, 'str' ], $c ) ),
 					$line, 1 );
 			}
 			$out .= "$line\n";
@@ -2853,26 +2856,26 @@ final class Compiler {
 	 * Add size and links to the SVG written by ploticus.
 	 */
 	public function fixSvg( string $svg ): string {
-		if ( !preg_match( '/<svg[^>]+?(width|height)/', $svg ) ) {
-			preg_match( '/<svg[^>]+?viewBox="0 0 ([\d.]+) ([\d.]+)"/', $svg, $m );
+		if ( !Regex::match( '/<svg[^>]+?(width|height)/', $svg ) ) {
+			Regex::match( '/<svg[^>]+?viewBox="0 0 ([\d.]+) ([\d.]+)"/', $svg, $m );
 			$width = self::str( self::num( $m[1] ?? null ) * 100 / 72 );
 			$height = self::str( self::num( $m[2] ?? null ) * 100 / 72 );
-			$svg = preg_replace_callback( '/<svg[^>]+/', static fn ( $m ) => "$m[0] width=\"$width\" "
+			$svg = Regex::replaceCallback( '/<svg[^>]+/', static fn ( $m ) => "$m[0] width=\"$width\" "
 				. "height=\"$height\"",
 				$svg, 1 );
 		}
-		$svg = preg_replace_callback( '/\{\{(\d+)\}\}x+/', fn ( $m ) => $this->textsSvg[(int)$m[1]] ?? '', $svg );
+		$svg = Regex::replaceCallback( '/\{\{(\d+)\}\}x+/', fn ( $m ) => $this->textsSvg[(int)$m[1]] ?? '', $svg );
 		if ( $this->svgOnly ) {
-			return preg_replace( '/(<text.*?)>\[(\d+)\[(.*?)\]\d+\]/', '$1 style="fill:blue;">$3', $svg );
+			return Regex::replace( '/(<text.*?)>\[(\d+)\[(.*?)\]\d+\]/', '$1 style="fill:blue;">$3', $svg );
 		}
-		return preg_replace_callback( '/\[(\d+)\[(.*?)\]\d+\]/', fn ( $m ) => '<a style="fill:blue;" xlink:href="'
+		return Regex::replaceCallback( '/\[(\d+)\[(.*?)\]\d+\]/', fn ( $m ) => '<a style="fill:blue;" xlink:href="'
 			. $this->normalizeUrlForSvg( $this->linksSvg[(int)$m[1]] ?? '' ) . '">' . $m[2] . '</a>', $svg );
 	}
 
 	// ---------------------------------------------------------------- validation helpers
 
 	private function colorPredefined( string $color ): bool {
-		if ( preg_match( '/^(?:black|white|tan1|tan2|red|magenta|claret|coral|pink|orange|redorange|lightorange|'
+		if ( Regex::match( '/^(?:black|white|tan1|tan2|red|magenta|claret|coral|pink|orange|redorange|lightorange|'
 			. 'yellow|yellow2|dullyellow|yelloworange|brightgreen|green|kelleygreen|teal|drabgreen|yellowgreen|'
 			. 'limegreen|brightblue|darkblue|blue|oceanblue|skyblue|purple|lavender|lightpurple|powderblue|'
 			. 'powderblue2)$/i', $color )
@@ -2886,11 +2889,11 @@ final class Compiler {
 	}
 
 	private static function validAbs( string $value ): bool {
-		return (bool)preg_match( '/^\d+\.?\d*(?:px|in|cm)?$/i', $value );
+		return (bool)Regex::match( '/^\d+\.?\d*(?:px|in|cm)?$/i', $value );
 	}
 
 	private static function validAbsRel( string $value ): bool {
-		return (bool)preg_match( '/^\d+\.?\d*(?:px|in|cm|%25%)?$/i', $value );
+		return (bool)Regex::match( '/^\d+\.?\d*(?:px|in|cm|%25%)?$/i', $value );
 	}
 
 	/**
@@ -2908,13 +2911,13 @@ final class Compiler {
 
 	private function validDateFormat( string $date ): bool {
 		if ( $this->dateFormat === 'yyyy' ) {
-			return (bool)preg_match( '/^\-?\d+$/', $date );
+			return (bool)Regex::match( '/^\-?\d+$/', $date );
 		}
 		if ( $this->dateFormat === 'x.y' ) {
-			return (bool)preg_match( '/^\-?\d+(?:\.\d+)?$/', $date );
+			return (bool)Regex::match( '/^\-?\d+(?:\.\d+)?$/', $date );
 		}
 		$re = $this->dateFormat === 'yyyy-mm-dd' ? '/^\d\d\d\d-\d\d-\d\d$/' : '/^\d\d\/\d\d\/\d\d\d\d$/';
-		if ( !preg_match( $re, $date ) ) {
+		if ( !Regex::match( $re, $date ) ) {
 			return false;
 		}
 		[ $day, $month, $year ] = array_map( 'intval', $this->dateParts( $date ) );
@@ -2978,7 +2981,7 @@ final class Compiler {
 		if ( !str_contains( $this->dateFormat, '/' ) ) {
 			return $date;
 		}
-		$year = preg_replace( '/.*\//', '', $date );
+		$year = Regex::replace( '/.*\//', '', $date );
 		$fraction = ( self::num( $this->daysFrom1800( $date ) ) - self::num( $this->daysFrom1800( "01/01/$year" ) ) )
 			/ 365.25;
 		return self::num( $year ) + $fraction;
@@ -3019,28 +3022,28 @@ final class Compiler {
 	private function extractText( string $data ): array {
 		$text = '';
 		// special case: allow embedded spaces when 'text' is last attribute
-		if ( preg_match( '/text\:[^\:]+$/', $data ) ) {
-			$text = preg_replace( '/^.*?text\:/', '', $data, 1 );
-			$text = preg_replace( '/^(.*?)\s*$/', '$1', $text, 1 );
+		if ( Regex::match( '/text\:[^\:]+$/', $data ) ) {
+			$text = Regex::replace( '/^.*?text\:/', '', $data, 1 );
+			$text = Regex::replace( '/^(.*?)\s*$/', '$1', $text, 1 );
 			$text = str_replace( '\\n', "\n", $text );
 			$text = str_replace( '""', '@#$', $text );
 			$text = str_replace( '"', '', $text );
 			$text = str_replace( '@#$', '"', $text );
-			$data = preg_replace( '/text\:.*$/', '', $data, 1 );
+			$data = Regex::replace( '/text\:.*$/', '', $data, 1 );
 		}
 		// extract text between double quotes
 		$data = str_replace( '""', '@#$', $data );
-		if ( preg_match( '/text\:\s*"/', $data ) ) {
-			$text = preg_replace( '/^.*?text\:\s*"/', '', $data, 1 );
+		if ( Regex::match( '/text\:\s*"/', $data ) ) {
+			$text = Regex::replace( '/^.*?text\:\s*"/', '', $data, 1 );
 			if ( !str_contains( $text, '"' ) ) {
 				$this->error( "PlotData invalid. Attribute 'text': no closing \" found." );
 				return [ 'x', 'x' ];
 			}
-			$text = preg_replace( '/".*$/', '', $text, 1 );
+			$text = Regex::replace( '/".*$/', '', $text, 1 );
 			$text = str_replace( '@#$', '"', $text );
 			$text = str_replace( '\\n', "\n", $text );
 		}
-		$data = preg_replace( '/text\:\s*"[^"]*"/', '', $data, 1 );
+		$data = Regex::replace( '/text\:\s*"[^"]*"/', '', $data, 1 );
 		return [ str_replace( '@#$', '"', $data ), $text ];
 	}
 
@@ -3048,7 +3051,7 @@ final class Compiler {
 	 * Line breaks would end a ploticus attribute, replace them.
 	 */
 	private static function newlinesToTildes( string $text ): string {
-		return preg_replace( '/(?:\r\n|[\r\n]|\\\\n)/', '~', $text );
+		return Regex::replace( '/(?:\r\n|[\r\n]|\\\\n)/', '~', $text );
 	}
 
 	private static function parseText( string $text ): string {
@@ -3068,7 +3071,7 @@ final class Compiler {
 				return true;
 			}
 		}
-		if ( !preg_match( '/^(.*\#)(\d+)$/s', $bar, $m ) ) {
+		if ( !Regex::match( '/^(.*\#)(\d+)$/s', $bar, $m ) ) {
 			return false;
 		}
 		$prev = strtolower( $m[1] . self::str( self::num( $m[2] ) - 1 ) );
@@ -3142,7 +3145,7 @@ final class Compiler {
 	private function checkPreset( string $command ): void {
 		$addValue = true;
 		if ( strtolower( $command ) === strtolower( $this->prevPresetCommand )
-			&& preg_match( '/^(?:DrawLines|PlotData|TextData)$/i', $command )
+			&& Regex::match( '/^(?:DrawLines|PlotData|TextData)$/i', $command )
 		) {
 			$addValue = false;
 		}
@@ -3172,7 +3175,7 @@ final class Compiler {
 			if ( $action === '=' && $attrValue === '' ) {
 				$this->attributes[$attrName] = $attrPreset;
 			}
-			if ( $action === '=' && $attrValue !== '' && !preg_match( "/$attrPreset/i", $attrValue ) ) {
+			if ( $action === '=' && $attrValue !== '' && !Regex::match( "/$attrPreset/i", $attrValue ) ) {
 				if ( $attrName === 'single' ) {
 					$this->error( "Conflicting settings.\nPreset defines '$attrPreset'." );
 				} else {
@@ -3186,7 +3189,7 @@ final class Compiler {
 	// ---------------------------------------------------------------- links and encoding
 
 	private static function normalizeUrl( string $url ): string {
-		$url = preg_replace( '/(https?)\:?\/?\/?/', '$1://', $url, 1 );
+		$url = Regex::replace( '/(https?)\:?\/?\/?/', '$1://', $url, 1 );
 		return str_replace( ' ', '%20', $url );
 	}
 
@@ -3194,8 +3197,8 @@ final class Compiler {
 	 * Relative URLs become full URLs, as upload verification does not accept relative URLs.
 	 */
 	private function normalizeUrlForSvg( string $url ): string {
-		if ( !preg_match( '/^https?:\/\//', $url ) ) {
-			$url = preg_replace( '/\$1/', str_replace( [ '\\', '$' ], [ '\\\\', '\\$' ], $url ),
+		if ( !Regex::match( '/^https?:\/\//', $url ) ) {
+			$url = Regex::replace( '/\$1/', str_replace( [ '\\', '$' ], [ '\\\\', '\\$' ], $url ),
 				$this->articlePath, 1 );
 		}
 		return $url;
@@ -3205,16 +3208,16 @@ final class Compiler {
 	 * A wiki link with line breaks becomes one link per line.
 	 */
 	private static function normalizeWikiLink( string $text ): string {
-		$double = (bool)preg_match( '/\[\[.*\]\]/', $text );
-		$text = preg_replace( '/\[\[?/', '', $text, 1 );
-		$text = preg_replace( '/\]?\]/', '', $text, 1 );
+		$double = (bool)Regex::match( '/\[\[.*\]\]/', $text );
+		$text = Regex::replace( '/\[\[?/', '', $text, 1 );
+		$text = Regex::replace( '/\]?\]/', '', $text, 1 );
 		$parts = explode( '|', $text );
 		$hide = $parts[0];
 		$show = $parts[1] ?? '';
 		if ( $show === '' ) {
 			$show = $hide;
 		}
-		$hide = preg_replace( '/\s*\n\s*/', ' ', $hide );
+		$hide = Regex::replace( '/\s*\n\s*/', ' ', $hide );
 		$lines = self::split( '/\n/', $show );
 		foreach ( $lines as &$part ) {
 			$part = $double ? "[[$hide|$part]]" : "[$hide|$part]";
@@ -3235,30 +3238,30 @@ final class Compiler {
 		$hint = $chomp( $hint );
 
 		if ( $link !== '' ) {
-			$text = preg_replace( '/\[\[[^\|]+\|(.*)\]\]/', '$1', $text );
-			$text = preg_replace( '/\[\[[^\:]+\:(.*)\]\]/', '$1', $text );
-		} elseif ( preg_match( '/\[.+\]/', $text ) ) {
+			$text = Regex::replace( '/\[\[[^\|]+\|(.*)\]\]/', '$1', $text );
+			$text = Regex::replace( '/\[\[[^\:]+\:(.*)\]\]/', '$1', $text );
+		} elseif ( Regex::match( '/\[.+\]/', $text ) ) {
 			// keep first link in text segment, remove others
 			$link = str_replace( "\n", '', $text );
-			$link = preg_replace( '/^[^\[\]]*\[/', '[', $link, 1 );
+			$link = Regex::replace( '/^[^\[\]]*\[/', '[', $link, 1 );
 			$wikilink = str_starts_with( $link, '[[' );
-			$link = preg_replace( '/^[^\[]*\[+([^\[\]]*)\].*$/', '$1', $link, 1 );
-			$link = preg_replace( '/\|.*$/', '', $link, 1 );
+			$link = Regex::replace( '/^[^\[]*\[+([^\[\]]*)\].*$/', '$1', $link, 1 );
+			$link = Regex::replace( '/\|.*$/', '', $link, 1 );
 			if ( $wikilink ) {
 				$link = "[[$link]]";
 			}
-			$text = preg_replace( '/(\[+)[^\|\]]+\|([^\]]*)(\]+)/', '$1$2$3', $text );
-			$text = preg_replace( '/(https?)\:/', '$1colon', $text );
-			$text = preg_replace( '/\[+([^\]]+)\]+/', '{{{$1}}}', $text, 1 );
-			$text = preg_replace( '/\[+([^\]]+)\]+/', '$1', $text );
-			$text = preg_replace( '/\{\{\{([^\}]*)\}\}\}/', '[[$1]]', $text, 1 );
+			$text = Regex::replace( '/(\[+)[^\|\]]+\|([^\]]*)(\]+)/', '$1$2$3', $text );
+			$text = Regex::replace( '/(https?)\:/', '$1colon', $text );
+			$text = Regex::replace( '/\[+([^\]]+)\]+/', '{{{$1}}}', $text, 1 );
+			$text = Regex::replace( '/\[+([^\]]+)\]+/', '$1', $text );
+			$text = Regex::replace( '/\{\{\{([^\}]*)\}\}\}/', '[[$1]]', $text, 1 );
 		}
 
 		if ( $wikilink ) {
-			$title = preg_replace( '/^\[\[(.*)\]\]$/', '$1', $link, 1 );
+			$title = Regex::replace( '/^\[\[(.*)\]\]$/', '$1', $link, 1 );
 			$title = str_replace( ' ', '_', $title );
 			$urlpart = self::encodeUrl( $title );
-			$link = preg_replace( '/\$1/', str_replace( [ '\\', '$' ], [ '\\\\', '\\$' ], $urlpart ),
+			$link = Regex::replace( '/\$1/', str_replace( [ '\\', '$' ], [ '\\\\', '\\$' ], $urlpart ),
 				$this->articlePath, 1 );
 			if ( $hint === '' && $title !== '' ) {
 				$hint = $title;
@@ -3275,8 +3278,8 @@ final class Compiler {
 	}
 
 	private static function externalLinkToHint( string $hint ): string {
-		$hint = preg_replace( '/^https?\:?\/?\/?/', '', $hint, 1 );
-		$hint = preg_replace( '/\/.*$/', '', $hint, 1 );
+		$hint = Regex::replace( '/^https?\:?\/?\/?/', '', $hint, 1 );
+		$hint = Regex::replace( '/\/.*$/', '', $hint, 1 );
 		return self::encodeHtml( "$hint/.." );
 	}
 
@@ -3286,21 +3289,21 @@ final class Compiler {
 	private static function encodeInput( string $text ): string {
 		// revert encoding of '<' & '>' by MediaWiki
 		$text = str_replace( [ '&lt;', '&gt;' ], [ '<', '>' ], $text );
-		return preg_replace_callback( '/([\`\{\}\%\&\@\$\(\)\;\=])/',
+		return Regex::replaceCallback( '/([\`\{\}\%\&\@\$\(\)\;\=])/',
 			static fn ( $m ) => '%' . sprintf( '%X', ord( $m[1] ) ) . '%', $text );
 	}
 
 	private static function decodeInput( string $text ): string {
-		return preg_replace_callback( '/\%([0-9A-F]{2})\%/', static fn ( $m ) => chr( hexdec( $m[1] ) ), $text );
+		return Regex::replaceCallback( '/\%([0-9A-F]{2})\%/', static fn ( $m ) => chr( hexdec( $m[1] ) ), $text );
 	}
 
 	private static function encodeHtml( string $text ): string {
-		$text = preg_replace_callback( '/([\<\>\&\'"])/', static fn ( $m ) => '&#' . ord( $m[1] ) . ';', $text );
+		$text = Regex::replaceCallback( '/([\<\>\&\'"])/', static fn ( $m ) => '&#' . ord( $m[1] ) . ';', $text );
 		return str_replace( "\n", '<br>', $text );
 	}
 
 	private static function encodeUrl( string $url ): string {
-		return preg_replace_callback( '/([^0-9a-zA-Z\%\:\/\._])/',
+		return Regex::replaceCallback( '/([^0-9a-zA-Z\%\:\/\._])/',
 			static fn ( $m ) => self::H_PERC . sprintf( '%02X', ord( $m[1] ) ), $url );
 	}
 
@@ -3310,7 +3313,7 @@ final class Compiler {
 	 * @throws CompileError
 	 */
 	private function error( string $msg ): void {
-		$msg = preg_replace( '/\n\s*/', "\n  ", self::decodeInput( $msg ) );
+		$msg = Regex::replace( '/\n\s*/', "\n  ", self::decodeInput( $msg ) );
 		$this->cntErrors++;
 		$this->errors[] = "Line {$this->lineNo}: " . self::decodeInput( $this->line ) . "\n";
 		$this->errors[] = "- $msg\n\n";
@@ -3320,7 +3323,7 @@ final class Compiler {
 	}
 
 	private function error2( string $msg ): void {
-		$msg = preg_replace( '/\n\s*/', "\n  ", self::decodeInput( $msg ) );
+		$msg = Regex::replace( '/\n\s*/', "\n  ", self::decodeInput( $msg ) );
 		$this->cntErrors++;
 		$this->errors[] = "- $msg\n";
 	}
@@ -3352,7 +3355,7 @@ final class Compiler {
 		if ( $v === true ) {
 			return 1;
 		}
-		if ( !preg_match(
+		if ( !Regex::match(
 			'/^[ \t\n\r\f\x0B]*([+-]?)(?:(\d+)(\.\d*)?([eE][+-]?\d+)?|(\.\d+)([eE][+-]?\d+)?|(inf(?:inity)?|nan))/i',
 			$v, $m
 		) ) {
@@ -3411,7 +3414,7 @@ final class Compiler {
 		if ( $s === '' ) {
 			return [];
 		}
-		$parts = preg_split( $re, $s );
+		$parts = Regex::split( $re, $s );
 		while ( $parts && end( $parts ) === '' ) {
 			array_pop( $parts );
 		}
@@ -3422,7 +3425,7 @@ final class Compiler {
 	 * Unary minus on a scalar.
 	 */
 	private static function neg( mixed $v ): int|float|string {
-		if ( is_string( $v ) && preg_match( '/^[A-Za-z_]/', $v ) ) {
+		if ( is_string( $v ) && Regex::match( '/^[A-Za-z_]/', $v ) ) {
 			return '-' . $v;
 		}
 		$n = self::num( $v );

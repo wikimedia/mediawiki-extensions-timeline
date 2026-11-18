@@ -111,7 +111,7 @@ final class SvgCanvas extends Canvas {
 			'C' => 'middle',
 			default => 'end',
 		};
-		$esc = preg_replace_callback( '/[<>]|&(?!#(?:x|\d))/', static fn ( $m ) => match ( $m[0] ) {
+		$esc = Regex::replaceCallback( '/[<>]|&(?!#(?:x|\d))/', static fn ( $m ) => match ( $m[0] ) {
 			'<' => '&lt;',
 			'>' => '&gt;',
 			default => '&amp;',

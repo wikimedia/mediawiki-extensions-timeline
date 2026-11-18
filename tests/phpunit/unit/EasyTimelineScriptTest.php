@@ -110,6 +110,22 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 		$this->assertSame( "\x89PNG", substr( file_get_contents( "$this->dir/file.png" ), 0, 4 ) );
 	}
 
+	public function testRegexFailureIsInternalError(): void {
+		// A line that is too long for a regular expression of the compiler. Without the check
+		// in Regex, the compiler ignored the line and made an image.
+		$this->copyScriptsFlat();
+		$source = file_get_contents( "$this->dir/file" ) . "\nTextData =\n  pos:(10,10) text:\""
+			. str_repeat( '~', 1500000 ) . "\"\n";
+		file_put_contents( "$this->dir/file", $source );
+		[ $status, $stdout, $stderr ] = $this->runScript( [ 'https://example.org/wiki/$1', 'FreeSans', 'yes' ] );
+		$this->assertSame( 70, $status );
+		$this->assertSame( '', $stdout );
+		$this->assertStringContainsString( 'RuntimeException at Regex.php', $stderr );
+		$this->assertStringNotContainsString( '~~~', $stderr );
+		$this->assertFileDoesNotExist( "$this->dir/file.svg" );
+		$this->assertFileDoesNotExist( "$this->dir/file.err" );
+	}
+
 	public function testMissingFontIsNoErrorWithSvgOnly(): void {
 		$this->copyScriptsFlat();
 		[ $status ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'yes' ] );

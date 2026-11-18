@@ -76,7 +76,7 @@ try {
 	}
 	$svgText = $compiler->fixSvg( $svg->result() );
 	file_put_contents( 'file.svg', $svgText );
-	if ( preg_match( '/width="([0-9.]+)" height="([0-9.]+)"/', $svgText, $m ) ) {
+	if ( Regex::match( '/width="([0-9.]+)" height="([0-9.]+)"/', $svgText, $m ) ) {
 		echo (int)$m[1] . ' ' . (int)$m[2] . "\n";
 	}
 } catch ( CompileError $e ) {

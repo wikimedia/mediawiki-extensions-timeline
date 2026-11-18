@@ -145,7 +145,7 @@ final class Plotter {
 			if ( str_starts_with( $tok, '#' ) ) {
 				if ( $tok === '#+' || $tok === '#print' ) {
 					$line = (string)substr( $line, strpos( $line, $tok ) + strlen( $tok ) + 1 );
-				} elseif ( !preg_match( '/^(?:#proc|#endproc$|#clone|#ifspec|#saveas|#intrailer$|##)/', $tok ) ) {
+				} elseif ( !Regex::match( '/^(?:#proc|#endproc$|#clone|#ifspec|#saveas|#intrailer$|##)/', $tok ) ) {
 					// #if and friends, secondary ops and unknown directives: not rendered
 					continue;
 				}
@@ -180,7 +180,7 @@ final class Plotter {
 				continue;
 			}
 			if ( $c === '@' && !ctype_space( $in[$i + 1] ?? ' ' ) ) {
-				preg_match( '/^[A-Za-z0-9_]*/', substr( $in, $i + 1 ), $m );
+				Regex::match( '/^[A-Za-z0-9_]*/', substr( $in, $i + 1 ), $m );
 				$name = $m[0];
 				$out .= $this->vars[$name] ?? ( '@' . $name );
 				$i += strlen( $name );
@@ -908,7 +908,7 @@ final class Plotter {
 	private function jdate( string $s ): ?int {
 		$iso = $this->fmtstring === 'yyyy-mm-dd';
 		$sep = $iso ? '-' : '/';
-		if ( !preg_match( "#^\\s*([+-]?\\d+)$sep\\s*([+-]?\\d+)$sep\\s*([+-]?\\d+)#", $s, $m ) ) {
+		if ( !Regex::match( "#^\\s*([+-]?\\d+)$sep\\s*([+-]?\\d+)$sep\\s*([+-]?\\d+)#", $s, $m ) ) {
 			return null;
 		}
 		$len = strlen( $s );
@@ -1007,7 +1007,7 @@ final class Plotter {
 			} elseif ( str_starts_with( $a, 'align=' ) ) {
 				$align = strtoupper( $a[6] ?? "\0" );
 			} elseif ( str_starts_with( $a, 'adjust=' ) ) {
-				preg_match( '/^([^,]*)(?:,(.*))?$/', substr( $a, 7 ), $m );
+				Regex::match( '/^([^,]*)(?:,(.*))?$/', substr( $a, 7 ), $m );
 				$v1 = Canvas::scanFloat( $m[1] ?? '' );
 				$v2 = $v1 === null ? null : Canvas::scanFloat( $m[2] ?? '' );
 				if ( $this->flip ) {
@@ -1470,7 +1470,7 @@ final class Plotter {
 				continue;
 			}
 			if ( $in[$i] === '@' ) {
-				preg_match( '/^[A-Za-z0-9_]*/', Canvas::tokens( substr( $in, $i + 1 ), 1 )[0] ?? '', $m );
+				Regex::match( '/^[A-Za-z0-9_]*/', Canvas::tokens( substr( $in, $i + 1 ), 1 )[0] ?? '', $m );
 				$name = $m[0] ?? '';
 				$ifld = Canvas::atoi( $name );
 				if ( $ifld > 0 && $ifld < 128 ) {

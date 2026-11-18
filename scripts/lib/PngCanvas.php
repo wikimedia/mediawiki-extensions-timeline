@@ -100,7 +100,7 @@ final class PngCanvas extends Canvas {
 	 * (a full path).
 	 */
 	private static function gdFontName( string $font ): ?string {
-		return str_starts_with( $font, '/' ) ? null : preg_replace( '/\.ttf$/', '', $font );
+		return str_starts_with( $font, '/' ) ? null : Regex::replace( '/\.ttf$/', '', $font );
 	}
 
 	/**
