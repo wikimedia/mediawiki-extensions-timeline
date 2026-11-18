@@ -20,9 +20,16 @@ ini_set( 'log_errors', '0' );
 // Fail cleanly before the Shellbox limits kill the process; real timelines need < 10 MB and < 1 s.
 ini_set( 'memory_limit', '256M' );
 set_time_limit( 120 );
+// Shellbox gives the command only PATH. A php.ini that takes its values from the environment
+// then has an empty pcre.backtrack_limit, and each preg_* function fails with no message.
+ini_set( 'pcre.backtrack_limit', '1000000' );
+ini_set( 'pcre.recursion_limit', '100000' );
 
+// The classes are in lib/. Shellbox makes nested directories incorrectly, so Timeline.php
+// sends them next to this script.
 spl_autoload_register( static function ( string $class ): void {
-	require __DIR__ . '/lib/' . substr( strrchr( $class, '\\' ), 1 ) . '.php';
+	$name = substr( strrchr( $class, '\\' ), 1 ) . '.php';
+	require is_file( __DIR__ . "/lib/$name" ) ? __DIR__ . "/lib/$name" : __DIR__ . "/$name";
 } );
 
 [ , $articlePath, $fontName, $svgOnly ] = $argv + [ '', '/$1', 'FreeSans', 'no' ];

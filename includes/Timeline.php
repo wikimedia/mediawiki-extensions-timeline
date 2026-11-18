@@ -178,8 +178,10 @@ class Timeline implements ParserFirstCallInitHook {
 			] + $env );
 		self::addScript( $command, 'renderTimeline.sh' );
 		self::addScript( $command, 'EasyTimeline.php' );
+		// Shellbox makes "scriptslib" for the directory of "scripts/lib/X.php" and cannot
+		// write the file, so the classes go next to EasyTimeline.php, which looks there too.
 		foreach ( glob( __DIR__ . '/../scripts/lib/*.php' ) as $file ) {
-			self::addScript( $command, 'lib/' . basename( $file ) );
+			$command->inputFileFromFile( 'scripts/' . basename( $file ), $file );
 		}
 
 		$result = $command->execute();
