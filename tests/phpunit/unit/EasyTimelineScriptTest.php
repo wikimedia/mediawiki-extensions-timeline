@@ -12,6 +12,7 @@ use MediaWikiUnitTestCase;
  * Runs scripts/EasyTimeline.php as Timeline.php does through Shellbox, and tests the parts
  * of the output that the fixtures of RenderTest do not have.
  *
+ * @covers \MediaWiki\Extension\Timeline\Render\Compiler
  * @covers \MediaWiki\Extension\Timeline\Render\Plotter
  * @covers \MediaWiki\Extension\Timeline\Render\PngCanvas
  */
@@ -124,6 +125,69 @@ class EasyTimelineScriptTest extends MediaWikiUnitTestCase {
 		$this->assertStringNotContainsString( '~~~', $stderr );
 		$this->assertFileDoesNotExist( "$this->dir/file.svg" );
 		$this->assertFileDoesNotExist( "$this->dir/file.err" );
+	}
+
+	private const HEADER = "ImageSize = width:400 height:200\nPlotArea = left:60 right:20 bottom:30 top:20\n"
+		. "DateFormat = yyyy\nPeriod = from:1900 till:2000\nTimeAxis = orientation:horizontal\n";
+
+	public static function provideTotalText(): iterable {
+		// A Define makes each text much longer than its line of the source
+		yield 'under the limits' => [ str_repeat( 'a', 100 ) . '~', 20, null ];
+		yield 'too long' => [ str_repeat( 'a', 999 ), 26, 'longer than 500000 characters in total' ];
+		yield 'too many segments' => [ str_repeat( 'a~', 25 ), 11, 'more than 5000 segments in total' ];
+	}
+
+	/**
+	 * @dataProvider provideTotalText
+	 */
+	public function testTotalTextIsLimited( string $define, int $lines, ?string $error ): void {
+		$this->copyScriptsFlat();
+		$text = str_repeat( '$a', 20 );
+		file_put_contents( "$this->dir/file", self::HEADER . "Define \$a = $define\nPlotData =\n"
+			. str_repeat( "  bar:A from:1900 till:2000 text:$text\n", $lines ) );
+		[ $status, $stdout ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'yes' ] );
+		$this->assertSame( 0, $status );
+		if ( $error !== null ) {
+			$this->assertSame( '', $stdout );
+			$this->assertStringContainsString( $error, file_get_contents( "$this->dir/file.err" ) );
+			$this->assertFileDoesNotExist( "$this->dir/file.svg" );
+		} else {
+			$this->assertMatchesRegularExpression( '/^\d+ \d+\n$/', $stdout );
+			$this->assertFileDoesNotExist( "$this->dir/file.err" );
+		}
+	}
+
+	public static function provideLargeSvgs(): iterable {
+		yield 'side' => [ 'fontsize:15000 text:"one~two~three"', 'Output SVG is larger than 10000x10000 pixels' ];
+		yield 'size with an exponent' => [ 'fontsize:1e30 text:"one~two~three"', 'Output SVG has no usable size' ];
+	}
+
+	/**
+	 * @dataProvider provideLargeSvgs
+	 */
+	public function testSvgSideIsLimited( string $attributes, string $error ): void {
+		$this->copyScriptsFlat();
+		file_put_contents( "$this->dir/file", self::HEADER
+			. "PlotData =\n  bar:A from:1900 till:2000 $attributes\n" );
+		[ $status, $stdout ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'yes' ] );
+		$this->assertSame( 0, $status );
+		$this->assertSame( '', $stdout );
+		$this->assertStringContainsString( $error, file_get_contents( "$this->dir/file.err" ) );
+		$this->assertFileDoesNotExist( "$this->dir/file.svg" );
+	}
+
+	public function testSvgDimensionsAreLimited(): void {
+		// Large text extends the SVG far past the image, and rsvg-convert makes a PNG of that size
+		$this->copyScriptsFlat();
+		$text = str_repeat( 'W', 70 ) . str_repeat( '~W', 70 );
+		file_put_contents( "$this->dir/file", self::HEADER
+			. "PlotData =\n  bar:A from:1900 till:2000 fontsize:100 text:\"$text\"\n" );
+		[ $status, $stdout ] = $this->runScript( [ 'https://example.org/wiki/$1', 'NoSuchFont', 'yes' ] );
+		$this->assertSame( 0, $status );
+		$this->assertSame( '', $stdout );
+		$this->assertStringContainsString( 'Output SVG has more than 16 megapixels',
+			file_get_contents( "$this->dir/file.err" ) );
+		$this->assertFileDoesNotExist( "$this->dir/file.svg" );
 	}
 
 	public function testMissingFontIsNoErrorWithSvgOnly(): void {

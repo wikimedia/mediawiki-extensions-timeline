@@ -29,6 +29,15 @@ ini_set( 'pcre.recursion_limit', '100000' );
 // renderTimeline.sh takes each status that is not 0 as such a failure.
 const EXIT_INTERNAL = 70;
 
+// Largest SVG to write. Timeline.php checks the size again before it verifies the file.
+const MAX_SVG_SIZE = 5 * 1024 * 1024;
+
+// Largest width and height of the SVG in pixels. The image is at most 1600x2000, but text can
+// extend the SVG past the image. rsvg-convert makes a PNG of this size.
+const MAX_SVG_PIXELS = 10000;
+// Largest area of the SVG in pixels. The largest image has 3.2 million.
+const MAX_SVG_AREA = 16000000;
+
 // The classes are in includes/Render/. Shellbox makes nested directories incorrectly, so
 // Timeline.php sends them next to this script.
 spl_autoload_register( static function ( string $class ): void {
@@ -60,6 +69,24 @@ try {
 
 	$svg = new SvgCanvas( $scripts['svgMap'] );
 	( new Plotter( $svg, $fontName ) )->run( $scripts['svg'] );
+	// MediaWiki checks the SVG like an upload and stores it, so bound its size like that of the PNG.
+	// Before the PNG: a timeline over a limit does not get one.
+	$svgText = $compiler->fixSvg( $svg->result() );
+	if ( strlen( $svgText ) > MAX_SVG_SIZE ) {
+		$compiler->fail( 'Output SVG size exceeds ' . ( MAX_SVG_SIZE >> 20 ) . " MB. Image deleted.\n" );
+	}
+	$hasSize = Regex::match( '/width="([0-9.]+)" height="([0-9.]+)"/', $svgText, $size );
+	if ( !$hasSize ) {
+		// A very large size is written with an exponent
+		$compiler->fail( "Output SVG has no usable size. Image deleted.\n" );
+	}
+	if ( (float)$size[1] > MAX_SVG_PIXELS || (float)$size[2] > MAX_SVG_PIXELS ) {
+		$compiler->fail( 'Output SVG is larger than ' . MAX_SVG_PIXELS . 'x' . MAX_SVG_PIXELS
+			. " pixels. Image deleted.\n" );
+	}
+	if ( (float)$size[1] * (float)$size[2] > MAX_SVG_AREA ) {
+		$compiler->fail( 'Output SVG has more than ' . ( MAX_SVG_AREA / 1000000 ) . " megapixels. Image deleted.\n" );
+	}
 	$png = new PngCanvas( $scripts['pngMap'] );
 	( new Plotter( $png, $fontName ) )->run( $scripts['png'] );
 
@@ -75,11 +102,8 @@ try {
 	if ( $map !== null ) {
 		file_put_contents( 'file.map', Compiler::fixMap( $map ) );
 	}
-	$svgText = $compiler->fixSvg( $svg->result() );
 	file_put_contents( 'file.svg', $svgText );
-	if ( Regex::match( '/width="([0-9.]+)" height="([0-9.]+)"/', $svgText, $m ) ) {
-		echo (int)$m[1] . ' ' . (int)$m[2] . "\n";
-	}
+	echo (int)$size[1] . ' ' . (int)$size[2] . "\n";
 } catch ( CompileError $e ) {
 	file_put_contents( 'file.err', $e->getMessage() );
 } catch ( \Throwable $e ) {

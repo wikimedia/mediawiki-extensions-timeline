@@ -12,8 +12,23 @@ namespace MediaWiki\Extension\Timeline\Render;
  */
 final class Compiler {
 	private const VERSION = '1.90';
+	/** Characters of the value of a Define, after the expansion of the Defines in it */
+	private const MAX_DEFINE_LENGTH = 1000;
+	/** Bytes of all lines of a timeline, after the expansion of the Defines in them */
+	private const MAX_EXPANDED_LENGTH = 2000000;
+	/** Bars of a timeline. The image is at most 2000 pixels high. */
+	private const MAX_BARS = 1000;
+	/** Bytes of a text attribute, with the characters that encodeInput() hides as %XX% */
+	private const MAX_TEXT_LENGTH = 20000;
+	/** Bytes and segments of all text attributes of a timeline. The time to draw grows with both. */
+	private const MAX_TOTAL_TEXT_LENGTH = 500000;
+	private const MAX_TOTAL_TEXT_SEGMENTS = 5000;
+	/** Different bar widths of a timeline: each one is a pass over all bars */
+	private const MAX_BAR_WIDTHS = 100;
 	/** Delimits the placeholder of an SVG text, see writeProcAnnotate() and fixSvg() */
 	private const PLACEHOLDER = "\x01";
+	/** Bytes of a line of the error report; at most 11 errors are reported */
+	private const MAX_ERROR_LINE = 1000;
 	private const LINK_COLOR = 'brightblue';
 
 	// Encoded forms of special characters, see encodeInput()
@@ -48,6 +63,9 @@ final class Compiler {
 	private bool $mapPng = false;
 	private bool $mapSvg = false;
 	private int $warnTextOutsideArea = 0;
+	private int $totalTextLength = 0;
+	private int $totalTextSegments = 0;
+	private int $expandedLength = 0;
 
 	/** @var array<string,mixed> */
 	private array $attributes = [];
@@ -324,6 +342,13 @@ final class Compiler {
 			if ( !Regex::match( '/^\s*Define/i', $this->line ) ) {
 				$this->line = Regex::replaceCallback( '/(\$[a-zA-Z0-9]+)/',
 					fn ( $m ) => $this->getDefine( $m[1] ), $this->line );
+				// A Define can be used many times in a line, in an id as in a text
+				$this->expandedLength += strlen( $this->line );
+				if ( $this->expandedLength > self::MAX_EXPANDED_LENGTH ) {
+					$this->line = '';
+					$this->abort( 'The timeline is longer than ' . self::MAX_EXPANDED_LENGTH
+						. ' characters after the expansion of its Defines' );
+				}
 			}
 			$this->line = self::encodeInput( $this->line );
 		}
@@ -594,6 +619,10 @@ final class Compiler {
 	}
 
 	private function addBar( string $bar ): void {
+		// Bar lookups scan all bars, so the cost grows with the square of their number
+		if ( count( $this->bars ) >= self::MAX_BARS ) {
+			$this->abort( 'More than ' . self::MAX_BARS . ' bars defined' );
+		}
 		if ( ( $this->axis['time'] ?? '' ) === 'x' ) {
 			$this->bars[] = $bar;
 		} else {
@@ -718,6 +747,12 @@ final class Compiler {
 		}
 		$value = self::decodeInput( $value );
 		$value = Regex::replaceCallback( '/(\$[a-zA-Z0-9]+)/', fn ( $m ) => $this->getDefine( $m[1] ), $value );
+		// A Define that uses another one twice doubles its length: stop that before it grows
+		if ( strlen( $value ) > self::MAX_DEFINE_LENGTH ) {
+			$this->error( "Define '$name' invalid. Its value is longer than " . self::MAX_DEFINE_LENGTH
+				. ' characters.' );
+			return;
+		}
 		$this->consts[strtolower( $name )] = $value;
 	}
 
@@ -1296,6 +1331,8 @@ final class Compiler {
 						$this->getData();
 						continue 2;
 					}
+					// No range check here, unlike TextData: existing timelines have other sizes.
+					// The Plotter limits the size.
 					$fontsize = $attrValue;
 				} elseif ( Regex::match( '/^Anchor$/i', $attribute ) ) {
 					if ( !Regex::match( '/^(?:from|till|middle)$/i', $attrValue ) ) {
@@ -2538,6 +2575,11 @@ final class Compiler {
 		string $bar, mixed $shiftx, mixed $xpos, mixed $ypos, string $text, string $textcolor,
 		mixed $fontsize, string $align, string $link, string $hint
 	): void {
+		// Each segment is a proc of the plot script: "~" in PlotData and "^" in TextData start one
+		if ( ++$this->totalTextSegments > self::MAX_TOTAL_TEXT_SEGMENTS ) {
+			$this->abort( 'The text attributes have more than ' . self::MAX_TOTAL_TEXT_SEGMENTS
+				. ' segments in total' );
+		}
 		if ( strlen( $text ) > 250 ) {
 			$this->error( 'Text segments can be up to 250 characters long. This segment is ' . strlen( $text )
 				. " chars.\n"
@@ -2625,7 +2667,11 @@ final class Compiler {
 	private function plotBarsScript(): void {
 		$axisTime = self::str( $this->axis['time'] ?? null );
 		$reverse = (bool)Regex::match( '/reverse/i', self::str( $this->axis['order'] ?? null ) );
+		$passes = 0;
 		while ( $this->plotBarsNow ) {
+			if ( ++$passes > self::MAX_BAR_WIDTHS ) {
+				$this->fail( 'More than ' . self::MAX_BAR_WIDTHS . ' different bar widths.' );
+			}
 			$later = [];
 			$maxwidth = 0;
 			foreach ( $this->plotBarsNow as $entry ) {
@@ -3071,6 +3117,18 @@ final class Compiler {
 			$text = str_replace( '\\n', "\n", $text );
 		}
 		$data = Regex::replace( '/text\:\s*"[^"]*"/', '', $data, 1 );
+		// Some regular expressions on the text (tabs in links, wiki links) take time quadratic
+		// in its length. A segment is at most 250 characters, so this allows 80 segments.
+		if ( strlen( $text ) > self::MAX_TEXT_LENGTH ) {
+			$this->error( "Attribute 'text' invalid. It is longer than " . self::MAX_TEXT_LENGTH . ' characters.' );
+			return [ str_replace( '@#$', '"', $data ), '' ];
+		}
+		// A Define makes a long text from a short line, so the size of the source is no limit
+		$this->totalTextLength += strlen( $text );
+		if ( $this->totalTextLength > self::MAX_TOTAL_TEXT_LENGTH ) {
+			$this->abort( 'The text attributes are longer than ' . self::MAX_TOTAL_TEXT_LENGTH
+				. ' characters in total' );
+		}
 		return [ str_replace( '@#$', '"', $data ), $text ];
 	}
 
@@ -3104,6 +3162,9 @@ final class Compiler {
 		$prev = strtolower( $m[1] . self::str( self::num( $m[2] ) - 1 ) );
 		foreach ( $this->bars as $i => $b ) {
 			if ( strtolower( $b ) === $prev ) {
+				if ( count( $this->bars ) >= self::MAX_BARS ) {
+					$this->abort( 'More than ' . self::MAX_BARS . ' bars defined' );
+				}
 				array_splice( $this->bars, $i + 1, 0, [ strtolower( $bar ) ] );
 				$this->barLegend[strtolower( $bar )] = ' ';
 				return true;
@@ -3419,6 +3480,13 @@ final class Compiler {
 		$html = '<p>EasyTimeline ' . self::VERSION . '</p><p><b>Timeline generation failed: '
 			. self::encodeHtml( self::decodeInput( $msg ) ) . "</b></p>\n";
 		foreach ( $this->errors as $line ) {
+			// An error quotes the line after Define expansion, which can be very long
+			if ( strlen( $line ) > self::MAX_ERROR_LINE ) {
+				// Without mbstring, which the renderer does not need otherwise: cut, then
+				// remove the bytes of a character that the cut divided
+				$line = substr( $line, 0, self::MAX_ERROR_LINE );
+				$line = Regex::replace( '/[\xC0-\xFF][\x80-\xBF]*$/', '', $line ) . " ...\n";
+			}
 			$html .= self::encodeHtml( $line ) . "\n";
 		}
 		throw new CompileError( $html );

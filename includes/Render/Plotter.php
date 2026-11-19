@@ -11,6 +11,8 @@ namespace MediaWiki\Extension\Timeline\Render;
  * Quirks of the C code that change the output are kept.
  */
 final class Plotter {
+	/** Largest text size in points */
+	private const MAX_TEXT_SIZE = 100.0;
 	private const LINEAR = 0;
 	private const DATE = 2;
 	private const FILLCHAR = "\x03";
@@ -433,6 +435,8 @@ final class Plotter {
 
 	private function textsize( int $x ): void {
 		$p = $x === 0 ? (float)$this->stdTextSize : $x * ( $this->stdTextSize / 10.0 );
+		// libgd/FreeType memory and the image size grow with the text size
+		$p = max( -self::MAX_TEXT_SIZE, min( self::MAX_TEXT_SIZE, $p ) );
 		$this->curTextHeight = ( $p + 2.0 ) / 72.0;
 		if ( Canvas::trunc( $p ) !== $this->curTextSize ) {
 			$this->pcode( 'I', $p, 0.0, '' );

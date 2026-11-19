@@ -29,6 +29,12 @@ class Timeline implements ParserFirstCallInitHook {
 	 */
 	private const int CACHE_VERSION = 3;
 
+	/** Bytes of file.err, and of the output of the script, that are shown */
+	private const int MAX_ERROR_SIZE = 64 * 1024;
+
+	/** Largest file.svg, file.png or file.map that is verified and stored, in bytes */
+	private const int MAX_OUTPUT_SIZE = 5 * 1024 * 1024;
+
 	/** Messages that scripts/renderTimeline.sh names in its "mw-msg:" line */
 	private const array SCRIPT_MESSAGES = [
 		'timeline-error-internal',
@@ -205,6 +211,17 @@ class Timeline implements ParserFirstCallInitHook {
 		}
 
 		$svgFile = "{$factoryDirectory}/file.svg";
+		// verifyUpload() reads the whole file on this server, and the files are stored: do not
+		// do that for an output that no real timeline has (the renderer has this limit for the SVG).
+		foreach ( [ 'svg', 'png', 'map' ] as $ext ) {
+			$file = "{$factoryDirectory}/file.$ext";
+			$size = is_file( $file ) ? filesize( $file ) : false;
+			if ( $size !== false && $size > self::MAX_OUTPUT_SIZE ) {
+				LoggerFactory::getInstance( 'timeline' )->info(
+					'Timeline output file.{ext} too large: {size} bytes', [ 'ext' => $ext, 'size' => $size ] );
+				throw new TimelineException( 'timeline-error-storage' );
+			}
+		}
 
 		$request = new FauxRequest( [], true );
 		$request->setUpload( 'file', [
@@ -373,6 +390,11 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @throws TimelineException
 	 */
 	private static function throwRawException( string $err ): never {
+		// The renderer bounds its report. Do not log or process a larger one here.
+		if ( strlen( $err ) > self::MAX_ERROR_SIZE ) {
+			$err = mb_strcut( $err, 0, self::MAX_ERROR_SIZE ) . "\n...";
+		}
+
 		if ( !str_starts_with( $err, '<p>EasyTimeline ' ) ) {
 			LoggerFactory::getInstance( 'timeline' )->warning(
 				'Unexpected EasyTimeline file.err contents',
@@ -416,6 +438,9 @@ class Timeline implements ParserFirstCallInitHook {
 	 */
 	private static function throwCompileException( string $stdout ): never {
 		$message = self::extractMessage( $stdout ) ?? 'timeline-compilererr';
+		if ( strlen( $stdout ) > self::MAX_ERROR_SIZE ) {
+			$stdout = mb_strcut( $stdout, 0, self::MAX_ERROR_SIZE ) . "\n...";
+		}
 		// Add stdout (always in English) as a param, wrapped in <pre>. A raw param: the HTML
 		// is complete, and the output can quote the timeline (rsvg-convert quotes the SVG).
 		$params = [ Message::rawParam( Html::element(
