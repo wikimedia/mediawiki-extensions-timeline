@@ -7,6 +7,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
 use MediaWiki\Output\StreamFile;
 use MediaWiki\Parser\Hook\ParserFirstCallInitHook;
 use MediaWiki\Parser\Parser;
@@ -27,6 +28,12 @@ class Timeline implements ParserFirstCallInitHook {
 	 * Bump when some change requires re-rendering all timelines
 	 */
 	private const int CACHE_VERSION = 3;
+
+	/** Messages that scripts/renderTimeline.sh names in its "mw-msg:" line */
+	private const array SCRIPT_MESSAGES = [
+		'timeline-error-internal',
+		'timeline-rsvg-error',
+	];
 
 	private static ?FileBackend $backend = null;
 
@@ -387,7 +394,9 @@ class Timeline implements ParserFirstCallInitHook {
 
 		// Now convert back to HTML again
 		$encErr = nl2br( htmlspecialchars( $err ) );
-		$params = [ Html::rawElement(
+		// A raw param: the text is HTML-escaped already, and the message must not parse it as
+		// wikitext ({{...}} of the timeline would be expanded)
+		$params = [ Message::rawParam( Html::rawElement(
 			'div',
 			[
 				'class' => [ 'error', 'timeline-error' ],
@@ -395,7 +404,7 @@ class Timeline implements ParserFirstCallInitHook {
 				'dir' => 'ltr',
 			],
 			$encErr
-		) ];
+		) ) ];
 		throw new TimelineException( 'timeline-compilererr', $params );
 	}
 
@@ -406,36 +415,32 @@ class Timeline implements ParserFirstCallInitHook {
 	 * @throws TimelineException
 	 */
 	private static function throwCompileException( string $stdout ): never {
-		$extracted = self::extractMessage( $stdout );
-		if ( $extracted ) {
-			$message = $extracted[0];
-			$params = $extracted[1];
-		} else {
-			$message = 'timeline-compilererr';
-			$params = [];
-		}
-		// Add stdout (always in English) as a param, wrapped in <pre>
-		$params[] = Html::element(
+		$message = self::extractMessage( $stdout ) ?? 'timeline-compilererr';
+		// Add stdout (always in English) as a param, wrapped in <pre>. A raw param: the HTML
+		// is complete, and the output can quote the timeline (rsvg-convert quotes the SVG).
+		$params = [ Message::rawParam( Html::element(
 			'pre',
 			[ 'lang' => 'en', 'dir' => 'ltr' ],
 			$stdout
-		);
+		) ) ];
 		throw new TimelineException( $message, $params );
 	}
 
 	/**
-	 * Parse the script return value and extract any mw-msg lines. Modify the
-	 * text to remove the lines. Return the first mw-msg line as a Message
-	 * object. If there was no mw-msg line, return null.
+	 * Parse the script return value and extract the mw-msg line. Modify the text to remove
+	 * the mw-msg lines. Return the message key, or null if there was no mw-msg line.
+	 *
+	 * The output also has the stderr of rsvg-convert, which can quote the SVG, so a line
+	 * there can look like a mw-msg line too. renderTimeline.sh writes its own line after
+	 * the command fails, so the last line is used, only a known key is accepted, and
+	 * the line gives no message params.
 	 */
-	private static function extractMessage( string &$stdout ): ?array {
+	private static function extractMessage( string &$stdout ): ?string {
 		$filteredStdout = '';
-		$messageParams = [];
+		$messageName = null;
 		foreach ( explode( "\n", $stdout ) as $line ) {
-			if ( preg_match( '/^mw-msg:\t/', $line ) ) {
-				if ( !$messageParams ) {
-					$messageParams = array_slice( explode( "\t", $line ), 1 );
-				}
+			if ( preg_match( '/^mw-msg:\t([^\t]*)/', $line, $m ) ) {
+				$messageName = $m[1];
 			} else {
 				if ( $filteredStdout !== '' ) {
 					$filteredStdout .= "\n";
@@ -444,16 +449,13 @@ class Timeline implements ParserFirstCallInitHook {
 			}
 		}
 		$stdout = $filteredStdout;
-		if ( $messageParams ) {
-			$messageName = array_shift( $messageParams );
-			// Used messages:
-			// - timeline-compilererr
-			// - timeline-error-internal
-			// - timeline-rsvg-error
-			return [ $messageName, $messageParams ];
-		} else {
+		if ( $messageName === null ) {
 			return null;
 		}
+		if ( !in_array( $messageName, self::SCRIPT_MESSAGES, true ) ) {
+			$messageName = 'timeline-error-internal';
+		}
+		return $messageName;
 	}
 
 	/**

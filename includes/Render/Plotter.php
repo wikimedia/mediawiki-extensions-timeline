@@ -142,6 +142,10 @@ final class Plotter {
 			if ( !in_array( $tok, [ '#if', '#elseif', '#set', '#call', '#setifnotgiven' ], true ) ) {
 				$line = $this->valueSubst( $line );
 			}
+			// The value of a variable must not make a directive (the check below uses $tok)
+			if ( !str_starts_with( $tok, '#' ) && str_starts_with( self::getok( $line ), '#' ) ) {
+				continue;
+			}
 			if ( str_starts_with( $tok, '#' ) ) {
 				if ( $tok === '#+' || $tok === '#print' ) {
 					$line = substr( $line, strpos( $line, $tok ) + strlen( $tok ) + 1 );

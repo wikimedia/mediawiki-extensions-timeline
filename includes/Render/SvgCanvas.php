@@ -131,7 +131,9 @@ final class SvgCanvas extends Canvas {
 		} elseif ( str_starts_with( $color, 'xrgb' ) ) {
 			$rgb = self::xrgb( substr( $color, 5 ) );
 		} elseif ( str_starts_with( $color, 'x' ) ) {
-			$this->curColor = '#' . substr( $color, 1 );
+			// The color is written into attributes as it is: allow only hex digits
+			$hex = substr( $color, 1 );
+			$this->curColor = Regex::match( '/^(?:[0-9a-f]{3}|[0-9a-f]{6})\z/', $hex ) ? "#$hex" : '#000000';
 			return $color;
 		} elseif ( self::isNumber( $color ) ) {
 			// sscanf( "%f" ) reads a C float

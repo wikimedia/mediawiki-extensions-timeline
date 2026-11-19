@@ -12,6 +12,8 @@ namespace MediaWiki\Extension\Timeline\Render;
  */
 final class Compiler {
 	private const VERSION = '1.90';
+	/** Delimits the placeholder of an SVG text, see writeProcAnnotate() and fixSvg() */
+	private const PLACEHOLDER = "\x01";
 	private const LINK_COLOR = 'brightblue';
 
 	// Encoded forms of special characters, see encodeInput()
@@ -99,6 +101,8 @@ final class Compiler {
 	 * @throws CompileError
 	 */
 	public function compile( string $source ): array {
+		// The SVG text placeholders use this character, so the source must not have it
+		$source = str_replace( self::PLACEHOLDER, '', $source );
 		Regex::matchAll( '/[^\n]*\n|[^\n]+$/', $source, $m );
 		$this->lines = $m[0];
 		$this->parseScript();
@@ -560,9 +564,15 @@ final class Compiler {
 					$text = Regex::replace( '/\[+ (?:[^\|]* \|)? ([^\]]*) \]+/x', '$1', $text );
 				}
 			}
-			if ( $bar !== '' && !Regex::match( '/[a-zA-Z0-9\_]+/', $bar ) ) {
+			if ( $barset !== '' && !self::isValidId( $barset ) ) {
+				$this->error( "BarData attribute barset:'$barset' invalid.\nUse only characters 'a'-'z', 'A'-'Z', "
+					. "'0'-'9', '_'. The id must not start with '#' or contain ','.\n" );
+				$this->getData();
+				continue;
+			}
+			if ( $bar !== '' && !self::isValidId( $bar ) ) {
 				$this->error( "BarData attribute bar:'$bar' invalid.\nUse only characters 'a'-'z', 'A'-'Z', "
-					. "'0'-'9', '_'\n" );
+					. "'0'-'9', '_'. The id must not start with '#' or contain ','.\n" );
 				$this->getData();
 				continue;
 			}
@@ -1190,9 +1200,10 @@ final class Compiler {
 			foreach ( $this->attributes as $attribute => $attrValue ) {
 				$attrValue = self::str( $attrValue );
 				if ( Regex::match( '/^Bar$/i', $attribute ) ) {
-					if ( !Regex::match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
+					if ( !self::isValidId( $attrValue ) ) {
 						$this->error( "PlotData attribute '$attribute' invalid.\n"
-							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n" );
+							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'. "
+							. "The id must not start with '#' or contain ','.\n" );
 						$this->getData();
 						continue 2;
 					}
@@ -1208,9 +1219,10 @@ final class Compiler {
 					$bar = $attrValue;
 					$prevbar = $bar;
 				} elseif ( Regex::match( '/^BarSet$/i', $attribute ) ) {
-					if ( !Regex::match( '/[a-zA-Z0-9\_]+/', $attrValue ) ) {
+					if ( !self::isValidId( $attrValue ) ) {
 						$this->error( "PlotData attribute '$attribute' invalid.\n"
-							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'\n" );
+							. "Use only characters 'a'-'z', 'A'-'Z', '0'-'9', '_'. "
+							. "The id must not start with '#' or contain ','.\n" );
 						$this->getData();
 						continue 2;
 					}
@@ -2234,13 +2246,14 @@ final class Compiler {
 					[ $text, $link, $hint ] = $this->processWikiLink( $text, '', $hint );
 				}
 				$text = Regex::replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
-				$scriptPng2 .= "$text\n";
+				$scriptPng2 .= self::dataLine( $text ) . "\n";
 				if ( $link !== null ) {
-					$this->linksSvg[] = $link;
+					// fixSvg() writes the link into the SVG, after the script is decoded
+					$this->linksSvg[] = self::decodeInput( $link );
 					$lcnt = count( $this->linksSvg ) - 1;
 					$scriptSvg2 .= "[$lcnt" . "[$text]$lcnt]\n";
 				} else {
-					$scriptSvg2 .= "$text\n";
+					$scriptSvg2 .= self::dataLine( $text ) . "\n";
 				}
 			}
 			$scriptPng2 .= "\n";
@@ -2270,7 +2283,7 @@ final class Compiler {
 					}
 					$text = Regex::replace( '/\[+([^\]]*)\]+/', '$1', $text, 1 );
 				}
-				$scriptPng2 .= "$text\n";
+				$scriptPng2 .= self::dataLine( $text ) . "\n";
 				$barcnt--;
 			}
 			$scriptPng2 .= "\n";
@@ -2325,7 +2338,7 @@ final class Compiler {
 				for ( $j = 1; $j <= $perColumn; $j++ ) {
 					$category = array_shift( $this->legendData );
 					if ( $category !== null ) {
-						$this->script .= "$category\n";
+						$this->script .= self::dataLine( $category ) . "\n";
 					}
 				}
 				$this->script .= "\n";
@@ -2347,8 +2360,8 @@ final class Compiler {
 		$png = self::replaceSizes( $png, [ '6', '8', '10', '14', '18' ] );
 
 		return [
-			'svg' => self::decodeInput( $svg ),
-			'png' => self::decodeInput( $png ),
+			'svg' => self::decodeScript( $svg ),
+			'png' => self::decodeScript( $png ),
 			'svgMap' => $this->mapSvg,
 			'pngMap' => $this->mapPng,
 		];
@@ -2557,8 +2570,11 @@ final class Compiler {
 		$text3 = self::encodeHtml( $text2 );
 		if ( $text2 !== $text3 ) {
 			// placeholder, replaced by the real text after SVG generation
-			$this->textsSvg[] = self::decodeInput( $text3 );
-			$text3 = '{{' . ( count( $this->textsSvg ) - 1 ) . '}}';
+			// encodeInput() hides "&", so encodeHtml() did not see it. Encode each "&" that does
+			// not start a character reference, which a text can have (&#32; or &amp;).
+			$this->textsSvg[] = Regex::replace(
+				'/&(?!#[0-9]+;|#x[0-9a-fA-F]+;|(?:amp|lt|gt|quot|apos);)/', '&#38;', self::decodeInput( $text3 ) );
+			$text3 = self::PLACEHOLDER . ( count( $this->textsSvg ) - 1 ) . self::PLACEHOLDER;
 			$text3 .= str_repeat( 'x', max( 0, strlen( $text2 ) - strlen( $text3 ) ) );
 		}
 		$this->plotTextsSvg[] = $textLine( $text3 );
@@ -2601,6 +2617,8 @@ final class Compiler {
 			}
 		}
 		$text = Regex::replace( '/\[\[(.*?)\]\]/s', '$1', $text, 1 );
+		// writePlotFile() decodes the whole script once more: keep a "%" of the text a "%"
+		$text = str_replace( '%', self::H_PERC, $text );
 		$this->plotTextsPng[] = $textLine( $text );
 	}
 
@@ -2867,12 +2885,17 @@ final class Compiler {
 				. "height=\"$height\"",
 				$svg, 1 );
 		}
-		$svg = Regex::replaceCallback( '/\{\{(\d+)\}\}x+/', fn ( $m ) => $this->textsSvg[(int)$m[1]] ?? '', $svg );
+		// Only the placeholders of the compiler: the text of the timeline cannot have the character
+		$svg = Regex::replaceCallback( '/' . self::PLACEHOLDER . '(\d+)' . self::PLACEHOLDER . 'x*/',
+			fn ( $m ) => $this->textsSvg[(int)$m[1]] ?? '', $svg );
 		if ( $this->svgOnly ) {
 			return Regex::replace( '/(<text.*?)>\[(\d+)\[(.*?)\]\d+\]/', '$1 style="fill:blue;">$3', $svg );
 		}
+		// The URL of an inline link [url text] is not encoded: escape it for the attribute
 		return Regex::replaceCallback( '/\[(\d+)\[(.*?)\]\d+\]/', fn ( $m ) => '<a style="fill:blue;" xlink:href="'
-			. $this->normalizeUrlForSvg( $this->linksSvg[(int)$m[1]] ?? '' ) . '">' . $m[2] . '</a>', $svg );
+			. htmlspecialchars( $this->normalizeUrlForSvg( $this->linksSvg[(int)$m[1]] ?? '' ),
+				ENT_QUOTES | ENT_XML1, 'UTF-8', false )
+			. '">' . $m[2] . '</a>', $svg );
 	}
 
 	// ---------------------------------------------------------------- validation helpers
@@ -3194,7 +3217,8 @@ final class Compiler {
 
 	private static function normalizeUrl( string $url ): string {
 		$url = Regex::replace( '/(https?)\:?\/?\/?/', '$1://', $url, 1 );
-		return str_replace( ' ', '%20', $url );
+		// Not a bare "%20": with the "%" of a following %XX% it would be decoded as one
+		return str_replace( ' ', self::H_PERC . '20', $url );
 	}
 
 	/**
@@ -3297,8 +3321,64 @@ final class Compiler {
 			static fn ( $m ) => '%' . sprintf( '%X', ord( $m[1] ) ) . '%', $text );
 	}
 
-	private static function decodeInput( string $text ): string {
-		return Regex::replaceCallback( '/\%([0-9A-F]{2})\%/', static fn ( $m ) => chr( hexdec( $m[1] ) ), $text );
+	/**
+	 * A line of a multiline value in the plot script, from the timeline. The Plotter takes each
+	 * line whose first word starts with "#" as a directive and each one that starts with "//" as
+	 * a comment, also after spaces, so such a line gets a "\\" in front. The Plotter removes that
+	 * "\\" from a line of a multiline value. An empty line ends the value, so it becomes "\\".
+	 */
+	private static function dataLine( string $text ): string {
+		if ( trim( $text ) === '' ) {
+			return '\\';
+		}
+		return Regex::replace( '/^(\s*)(?=#|\/\/)/', '$1\\\\', $text );
+	}
+
+	/**
+	 * Decode the complete plot script. The Plotter replaces "@NAME" by the value of a variable
+	 * in each line, and "@@" by "@": write the "@" of the timeline as "@@".
+	 *
+	 * In the same pass as the other characters: a "%40%" that is typed in the timeline is
+	 * "%25%40%25%" here, and its "%40%" is not an "@".
+	 */
+	private static function decodeScript( string $script ): string {
+		return self::decodeInput( $script, '@@' );
+	}
+
+	/**
+	 * Whether the id of a bar or bar set can be used. The id is written at the start of a line
+	 * of the plot script, where a "#" starts a directive.
+	 *
+	 * The pattern for the allowed characters is not anchored, as in the Perl script, because
+	 * existing timelines have ids with other characters.
+	 */
+	private static function isValidId( string $id ): bool {
+		if ( Regex::match( '/^\s*#/', $id ) ) {
+			return false;
+		}
+		// The id is also a field of records that are joined with commas
+		if ( str_contains( $id, ',' ) ) {
+			return false;
+		}
+		return Regex::match( '/[a-zA-Z0-9\_]+/', $id ) === 1;
+	}
+
+	/**
+	 * @param string $text
+	 * @param string $at What an encoded "@" becomes, see decodeScript()
+	 */
+	private static function decodeInput( string $text, string $at = '@' ): string {
+		// Never the placeholder character: compile() removes it from the source, and it must
+		// not come back from an encoded form
+		// Also lower case: the value of an attribute is made lower case in some places, with
+		// the encoded characters in it. Without this, the "%" of such a form stays, and is
+		// decoded with the characters of the timeline next to it.
+		return Regex::replaceCallback( '/\%([0-9A-Fa-f]{2})\%/',
+			static fn ( $m ) => match ( $m[1] ) {
+				'01' => '',
+				'40' => $at,
+				default => chr( hexdec( $m[1] ) ),
+			}, $text );
 	}
 
 	private static function encodeHtml( string $text ): string {
