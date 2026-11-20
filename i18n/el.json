@@ -13,10 +13,6 @@
 	"timeline-invalidmap": "Μή έγκυρος χάρτης εικόνας παρηγμένης από το EasyTimeline",
 	"timeline-tracking-category": "Σελίδες που χρησιμοποιούν το Χρονολόγιο",
 	"timeline-tracking-category-desc": "Η σελίδα περιλαμβάνει μια ετικέτα <code>&lt;timeline&gt;</code>",
-	"timeline-readerr": "Αδυναμία ανάγνωσης του αρχείου $1.",
-	"timeline-scripterr": "Αδυναμία εκτέλεσης του απομακρυσμένου σεναρίου: $1 εξήλθε με κωδικό κατάστασης $2 \n$3",
-	"timeline-perlnotexecutable": "Δεν ήταν δυνατή η εκτέλεση του Perl: $1 δεν είναι εκτελέσιμο αρχείο. Βεβαιωθείτε ότι <code>$wgTimelinePerlCommand</code> έχει ρυθμιστεί σωστά.",
-	"timeline-ploticusnotexecutable": "Το Ploticus δεν ήταν δυνατό να εκτελεστεί: $1 δεν είναι εκτελέσιμο αρχείο. Βεβαιωθείτε ότι <code>$wgTimelinePloticusCommand</code> έχει ρυθμιστεί σωστά.",
 	"timeline-compilererr": "Αδυναμία μεταγλώττισης της εισόδου του EasyTimeLine:\n$1",
 	"timeline-rsvg-error": "Δεν είναι δυνατή η μετατροπή του SVG σε PNG:\n $1"
 }

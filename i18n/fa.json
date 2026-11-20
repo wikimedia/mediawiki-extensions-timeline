@@ -15,8 +15,6 @@
 	"timeline-invalidmap": "تصویر نقشهٔ نامعتبر ایجادشده توسط EasyTimeline",
 	"timeline-tracking-category": "صفحه‌هایی که از افزونه گاه‌شمار آسان استفاده می‌کنند",
 	"timeline-tracking-category-desc": "صفحه حاوی یک برچسب <code>&lt;timeline&gt;</code> است",
-	"timeline-readerr": "قادر به خواندن پرونده $1 نیست.",
-	"timeline-scripterr": "ناتوان در راندن اسکریپت راه دور: $1 با شناسه وضعیت $2 خارج شد $3",
 	"timeline-compilererr": "ناتوان در جمع‌آوری ورودی گاه‌شمار آسان:\n$1",
 	"timeline-rsvg-error": "قادر به تبدیل SVG به PNG نیست:\n$1"
 }

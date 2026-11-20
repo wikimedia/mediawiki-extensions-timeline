@@ -14,7 +14,6 @@
 	"timeline-invalidmap": "EasyTimeline loi virheellisen kuvakartan",
 	"timeline-tracking-category": "EasyTimeline-laajennusta käyttävät sivut",
 	"timeline-tracking-category-desc": "Sivu sisältää <code>&lt;timeline&gt;</code>-elementin",
-	"timeline-readerr": "Tiedostoa $1 ei voitu lukea.",
 	"timeline-compilererr": "EasyTimeline-syötteen kokoaminen ei onnistunut:\n$1",
 	"timeline-rsvg-error": "Muunnos SVG:stä PNG:ksi ei onnistunut:\n$1"
 }
