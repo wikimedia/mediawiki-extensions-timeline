@@ -7,6 +7,7 @@
 	"timeline-desc": "Додава ознака <code>&lt;timeline&gt;</code> за да прави времеследи",
 	"timeline-error-storage": "Грешка во времеследот. Не можев да складирам изводни податотеки",
 	"timeline-error-temp": "Грешка во времеследот. Не можев да создадам привремени податотеки",
+	"timeline-error-internal": "Грешка во времеследот. Испишувачот запре поради внатрешна грешка:\n$1",
 	"timeline-error-command": "Грешка во времеследот. Наредбата гласеше: $1",
 	"timeline-invalidmap": "Грешна карта за слика доздадена од EasyTimeline",
 	"timeline-tracking-category": "Страници што го користат додатокот EasyTimeline",

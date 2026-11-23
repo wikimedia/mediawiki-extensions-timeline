@@ -20,6 +20,7 @@
 	"timeline-desc": "添加可创建时间线的<code>&lt;timeline&gt;</code>标签",
 	"timeline-error-storage": "时间线出错。无法存储输出文件",
 	"timeline-error-temp": "时间线出错。无法创建临时文件",
+	"timeline-error-internal": "时间线出错。渲染器因内部错误而停止：\n$1",
 	"timeline-error-command": "时间线出错。出错命令：$1",
 	"timeline-invalidmap": "EasyTimeline生成的图像地图无效",
 	"timeline-tracking-category": "使用简易时间线扩展的页面",
